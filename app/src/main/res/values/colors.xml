@@ -8,4 +8,6 @@
     <color name="green">#8DC640</color>
     <color name="light_grey">#E0E0E0</color>
     <color name="light_blue">#2196F3</color>
+    <color name="black">#000000</color>
+    <color name="sea_blue">#4DB6AC</color>
 </resources>

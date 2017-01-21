@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="in.truskills.liveexams">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashScreen"
+            android:name=".MiscellaneousScreens.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -19,10 +24,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".MainScreens.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".in.truskills.liveexams.authentication.Signup_Login" />
-        <activity android:name=".authentication.Signup_Login"></activity>
+        <activity android:name=".authentication.Signup_Login" />
+        <activity android:name=".MiscellaneousScreens.TermsAndConditions" />
+        <activity android:name=".authentication.ForgotPassword"></activity>
     </application>
 
 </manifest>

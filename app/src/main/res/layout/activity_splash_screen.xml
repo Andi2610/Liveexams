@@ -4,7 +4,7 @@
     android:id="@+id/activity_splash_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.truskills.liveexams.SplashScreen"
+    tools:context="in.truskills.liveexams.MiscellaneousScreens.SplashScreen"
     android:background="@color/colorPrimary">
 
     <!--Logo of the application-->
