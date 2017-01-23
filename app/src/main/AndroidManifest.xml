@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -25,10 +27,33 @@
         </activity>
         <activity
             android:name=".MainScreens.MainActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".authentication.Signup_Login" />
-        <activity android:name=".MiscellaneousScreens.TermsAndConditions" />
-        <activity android:name=".authentication.ForgotPassword"></activity>
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".MainScreens.SearchResultsActivity" />
+        </activity>
+        <activity android:name=".authentication.Signup_Login"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MiscellaneousScreens.TermsAndConditions"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".authentication.ForgotPassword"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".MainScreens.SearchResultsActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"
+                android:value=".SearchResultsActivity" />
+        </activity>
+        <activity android:name=".ParticularExam.ParticularExamMainActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -3,15 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:icon="@drawable/add_icon"
-        android:title="Add"
-        android:orderInCategory="30"
-        app:showAsAction="ifRoom"
-        android:id="@+id/addIcon"></item>
-
-    <item
-        android:id="@+id/search"
-        android:orderInCategory="70"
+        android:id="@+id/searchAllExams"
+        android:orderInCategory="100"
         android:title="Search"
         android:icon="@drawable/search"
         app:actionViewClass="android.widget.SearchView"
