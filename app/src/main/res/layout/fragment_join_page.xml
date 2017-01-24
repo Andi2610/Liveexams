@@ -64,15 +64,17 @@
                 android:gravity="center"
                 android:text="Description:hjczhjxvcjhzvchjzv\nshgsghahga\nhsvhgvhgvx"/>
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/join_button"
-                android:padding="10dp"
-                android:textSize="20dp"
-                android:text="JOIN"
-                android:background="@color/orange"
-                android:layout_gravity="bottom" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/join_button"
+        android:padding="10dp"
+        android:textSize="20dp"
+        android:text="JOIN"
+        android:background="@color/orange"
+        android:layout_alignParentBottom="true" />
+
 </RelativeLayout>
