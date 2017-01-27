@@ -20,11 +20,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import in.truskills.liveexams.MiscellaneousScreens.VariablesDefined;
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.authentication.Signup_Login;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +53,7 @@ public class AllExams extends Fragment {
     AllExamsListAdapter allExamsListAdapter;
     List<Values> valuesList,filteredList;
     Values values;
+    RequestQueue requestQueue;
 
     public AllExams() {
         // Required empty public constructor
@@ -59,24 +76,27 @@ public class AllExams extends Fragment {
         Log.d("here","inOnAcCr");
         allExamsList=(RecyclerView)getActivity().findViewById(R.id.allExamsList);
         linearLayoutManager = new LinearLayoutManager(getActivity());
+
+        requestQueue = Volley.newRequestQueue(getActivity());
+
         valuesList=new ArrayList<>();
 
-        values=new Values("ABC","20/04/2016","23/04/2016","3 Hours");
-        valuesList.add(values);
-        values=new Values("XYZ","10/05/2015","11/05/2015","1 Hour");
-        valuesList.add(values);
-        values=new Values("DEF","20/04/2016","23/04/2016","3 Hours");
-        valuesList.add(values);
-        values=new Values("GHI","10/05/2015","11/05/2015","1 Hour");
-        valuesList.add(values);
-        values=new Values("JEE MAIN","20/04/2016","23/04/2016","3 Hours");
-        valuesList.add(values);
-        values=new Values("JEE ADVANCED","10/05/2015","11/05/2015","1 Hour");
-        valuesList.add(values);
-        values=new Values("CLAT","20/04/2016","23/04/2016","3 Hours");
-        valuesList.add(values);
-        values=new Values("GMAT","10/05/2015","11/05/2015","1 Hour");
-        valuesList.add(values);
+//        values=new Values("ABC","20/04/2016","23/04/2016","3 Hours");
+//        valuesList.add(values);
+//        values=new Values("XYZ","10/05/2015","11/05/2015","1 Hour");
+//        valuesList.add(values);
+//        values=new Values("DEF","20/04/2016","23/04/2016","3 Hours");
+//        valuesList.add(values);
+//        values=new Values("GHI","10/05/2015","11/05/2015","1 Hour");
+//        valuesList.add(values);
+//        values=new Values("JEE MAIN","20/04/2016","23/04/2016","3 Hours");
+//        valuesList.add(values);
+//        values=new Values("JEE ADVANCED","10/05/2015","11/05/2015","1 Hour");
+//        valuesList.add(values);
+//        values=new Values("CLAT","20/04/2016","23/04/2016","3 Hours");
+//        valuesList.add(values);
+//        values=new Values("GMAT","10/05/2015","11/05/2015","1 Hour");
+//        valuesList.add(values);
         Log.d("here","size"+valuesList.size());
         allExamsListAdapter=new AllExamsListAdapter(valuesList,getActivity());
 
@@ -107,15 +127,31 @@ public class AllExams extends Fragment {
                 public boolean onQueryTextChange(String s) {
                     s = s.toString().toLowerCase();
                     filteredList = new ArrayList<>();
+                    String url = VariablesDefined.api+"searchExams/"+s;
+                    JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET,
+                            url, new Response.Listener<JSONObject>() {
 
-                    for (int i = 0; i < valuesList.size(); i++) {
-
-                        final String text = valuesList.get(i).name.toLowerCase();
-                        if (text.contains(s)) {
-
-                            filteredList.add(new Values(valuesList.get(i).name,valuesList.get(i).startDateValue,valuesList.get(i).endDateValue,valuesList.get(i).durationValue));
+                        @Override
+                        public void onResponse(JSONObject response) {
+                                Log.d("response=",response.toString()+"");
                         }
-                    }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("response", error.getMessage()+"");
+                            Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    requestQueue.add(stringRequest);
+
+//                    for (int i = 0; i < valuesList.size(); i++) {
+//
+//                        final String text = valuesList.get(i).name.toLowerCase();
+//                        if (text.contains(s)) {
+//
+//                            filteredList.add(new Values(valuesList.get(i).name,valuesList.get(i).startDateValue,valuesList.get(i).endDateValue,valuesList.get(i).durationValue));
+//                        }
+//                    }
                     allExamsListAdapter=new AllExamsListAdapter(filteredList,getActivity());
                     allExamsList.setAdapter(allExamsListAdapter);
                     allExamsListAdapter.notifyDataSetChanged();

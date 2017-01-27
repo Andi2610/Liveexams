@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity
     static final int REQUEST_CAMERA=1,SELECT_FILE=1;
     private String userChoosenTask,defaultImage;
     SharedPreferences prefs;
-    CharSequence[] items;
     Bitmap icon;
+    CharSequence[] items;
 
 
     @Override
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         icon = BitmapFactory.decodeResource(getResources(),
                 R.drawable.camera);
 
-        defaultImage=BitmapToString(icon);
+        String defaultImage=BitmapToString(icon);
 
         Bitmap myImage=StringToBitmap(prefs.getString("navImage",defaultImage));
 

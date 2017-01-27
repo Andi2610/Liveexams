@@ -66,7 +66,7 @@
                         android:textColorHint="@color/white"
                         android:lines="1"
                         android:inputType="text"
-                        android:hint="NAME"
+                        android:hint="USERNAME"
                         android:id="@+id/signupName"
                         android:layout_margin="10dp"/>
 
@@ -264,8 +264,8 @@
                         android:textColorHint="@color/white"
                         android:lines="1"
                         android:inputType="text"
-                        android:hint="EMAIL ID"
-                        android:id="@+id/loginEmail"
+                        android:hint="USERNAME"
+                        android:id="@+id/loginName"
                         android:layout_margin="10dp" />
 
                     <EditText

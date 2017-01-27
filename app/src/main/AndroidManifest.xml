@@ -32,17 +32,20 @@
                 android:name="android.app.default_searchable"
                 android:value=".MainScreens.SearchResultsActivity" />
         </activity>
-        <activity android:name=".authentication.Signup_Login"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".MiscellaneousScreens.TermsAndConditions"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".authentication.ForgotPassword"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".authentication.Signup_Login"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MiscellaneousScreens.TermsAndConditions"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.ForgotPassword"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainScreens.SearchResultsActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -52,7 +55,10 @@
                 android:resource="@xml/searchable"
                 android:value=".SearchResultsActivity" />
         </activity>
-        <activity android:name=".ParticularExam.ParticularExamMainActivity"
+        <activity
+            android:name=".ParticularExam.ParticularExamMainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Quiz.QuizMainActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 
