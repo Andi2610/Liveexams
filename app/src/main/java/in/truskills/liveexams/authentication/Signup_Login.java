@@ -46,6 +46,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -87,7 +88,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //Shared Preferences for user's selected language
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        prefs.getString("language", "English");
 
         //Initialise the request for Volley connection
         requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -492,9 +492,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         language = selectedLanguage;
 
         if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && !language.equals("LANGUAGE") && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
-            SharedPreferences.Editor e = prefs.edit();
-            e.putString("language", selectedLanguage);
-            e.apply();
             signupFunction();
         } else {
             if (name.equals(""))
@@ -536,7 +533,14 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 Log.d("response=",response.toString()+"");
-
+                try {
+                    HashMap<String ,String> mapper=VariablesDefined.signupParser(response);
+                    Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
+                    if(mapper.get("success").equals("true"))
+                        signupDrawer.close();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -581,9 +585,29 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 Log.d("response=",response.toString()+"");
-                Intent i = new Intent(Signup_Login.this, MainActivity.class);
-                startActivity(i);
-                finish();
+                Intent i = null;
+                try {
+                    HashMap<String ,String> mapper=VariablesDefined.loginParser(response);
+                    if(mapper.get("success").equals("true")) {
+                        Log.d("response","inIf");
+                        SharedPreferences.Editor e=prefs.edit();
+                        e.putString("id",mapper.get("id"));
+                        e.putString("emailAddress",mapper.get("emailAddress"));
+                        e.putString("language",mapper.get("language"));
+                        e.putString("profileImageUrl",mapper.get("profileImageUrl"));
+                        e.apply();
+                        Toast.makeText(Signup_Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        i = new Intent(Signup_Login.this, MainActivity.class);
+                        i.putExtra("joinedExams",mapper.get("joinedExams"));
+                        startActivity(i);
+                        finish();
+                    }else{
+                        Log.d("response","inElse");
+                        Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {

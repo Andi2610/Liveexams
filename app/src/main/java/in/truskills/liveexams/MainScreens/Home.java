@@ -22,9 +22,14 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import in.truskills.liveexams.MiscellaneousScreens.VariablesDefined;
 import in.truskills.liveexams.R;
 
 public class Home extends Fragment {
@@ -36,6 +41,8 @@ public class Home extends Fragment {
     List<Values> valuesList,filteredList;
     Values values;
     HomeInterface ob;
+    Bundle bundle;
+    String joinedExams;
 
     public Home() {
         // Required empty public constructor
@@ -53,19 +60,29 @@ public class Home extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        bundle=getArguments();
+        joinedExams=bundle.getString("joinedExams");
+
         add=(Button)getActivity().findViewById(R.id.add);
         myExamsList=(RecyclerView)getActivity().findViewById(R.id.myExamsList);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         valuesList=new ArrayList<>();
 
-        values=new Values("JEE MAIN","20/04/2016","23/04/2016","3 Hours");
-        valuesList.add(values);
-        values=new Values("JEE ADVANCED","10/05/2015","11/05/2015","1 Hour");
-        valuesList.add(values);
-        values=new Values("CLAT","20/04/2016","23/04/2016","3 Hours");
-        valuesList.add(values);
-        values=new Values("GMAT","10/05/2015","11/05/2015","1 Hour");
-        valuesList.add(values);
+        if(!joinedExams.equals("noJoinedExams")){
+            try {
+                HashMap<String, ArrayList<String>> mapper=VariablesDefined.myExamsParser(joinedExams);
+                JSONArray arr=new JSONArray(joinedExams);
+                int length=arr.length();
+                Log.d("response","length="+length);
+                for(int i=0;i<length;++i){
+                    values=new Values(mapper.get("ExamName").get(i),mapper.get("StartDate").get(i),mapper.get("EndDate").get(i),mapper.get("ExamDuration").get(i));
+                    valuesList.add(values);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         myExamsListAdapter=new MyExamsListAdapter(valuesList,getActivity());
 

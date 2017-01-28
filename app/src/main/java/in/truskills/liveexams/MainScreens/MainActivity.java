@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     TextView navName,navEmail;
     static final int REQUEST_CAMERA=1,SELECT_FILE=1;
     private String userChoosenTask,defaultImage;
+    String joinedExams;
+    Bundle bundle;
     SharedPreferences prefs;
     Bitmap icon;
     CharSequence[] items;
@@ -59,7 +61,13 @@ public class MainActivity extends AppCompatActivity
 
         prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
+        joinedExams=getIntent().getStringExtra("joinedExams");
+
+        bundle = new Bundle();
+        bundle.putString("joinedExams",joinedExams);
+
         Home fragment = new Home();
+        fragment.setArguments(bundle);
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction trans = manager.beginTransaction();
         trans.replace(R.id.fragment, fragment, "Home");

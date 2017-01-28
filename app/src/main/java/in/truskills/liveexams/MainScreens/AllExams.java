@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -36,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import in.truskills.liveexams.MiscellaneousScreens.VariablesDefined;
@@ -54,6 +56,7 @@ public class AllExams extends Fragment {
     List<Values> valuesList,filteredList;
     Values values;
     RequestQueue requestQueue;
+    Handler h;
 
     public AllExams() {
         // Required empty public constructor
@@ -78,25 +81,10 @@ public class AllExams extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         requestQueue = Volley.newRequestQueue(getActivity());
+        h=new Handler();
 
         valuesList=new ArrayList<>();
 
-//        values=new Values("ABC","20/04/2016","23/04/2016","3 Hours");
-//        valuesList.add(values);
-//        values=new Values("XYZ","10/05/2015","11/05/2015","1 Hour");
-//        valuesList.add(values);
-//        values=new Values("DEF","20/04/2016","23/04/2016","3 Hours");
-//        valuesList.add(values);
-//        values=new Values("GHI","10/05/2015","11/05/2015","1 Hour");
-//        valuesList.add(values);
-//        values=new Values("JEE MAIN","20/04/2016","23/04/2016","3 Hours");
-//        valuesList.add(values);
-//        values=new Values("JEE ADVANCED","10/05/2015","11/05/2015","1 Hour");
-//        valuesList.add(values);
-//        values=new Values("CLAT","20/04/2016","23/04/2016","3 Hours");
-//        valuesList.add(values);
-//        values=new Values("GMAT","10/05/2015","11/05/2015","1 Hour");
-//        valuesList.add(values);
         Log.d("here","size"+valuesList.size());
         allExamsListAdapter=new AllExamsListAdapter(valuesList,getActivity());
 
@@ -127,38 +115,50 @@ public class AllExams extends Fragment {
                 public boolean onQueryTextChange(String s) {
                     s = s.toString().toLowerCase();
                     filteredList = new ArrayList<>();
-                    String url = VariablesDefined.api+"searchExams/"+s;
-                    JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET,
+                    String url = VariablesDefined.api + "searchExams/" + s;
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                             url, new Response.Listener<JSONObject>() {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                                Log.d("response=",response.toString()+"");
+                            Log.d("response=", response.toString() + "");
+                            try {
+                                HashMap<String, ArrayList<String>> mapper = VariablesDefined.allExamsParser(response);
+                                int length = response.getJSONArray("response").length();
+                                for (int i = 0; i < length; ++i) {
+                                    values = new Values(mapper.get("ExamName").get(i), mapper.get("StartDate").get(i), mapper.get("EndDate").get(i), mapper.get("ExamDuration").get(i));
+                                    filteredList.add(values);
+                                    h.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            populateList(filteredList);
+                                        }
+                                    });
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d("response", error.getMessage()+"");
+                            Log.d("response", error.getMessage() + "");
                             Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    requestQueue.add(stringRequest);
-
-//                    for (int i = 0; i < valuesList.size(); i++) {
-//
-//                        final String text = valuesList.get(i).name.toLowerCase();
-//                        if (text.contains(s)) {
-//
-//                            filteredList.add(new Values(valuesList.get(i).name,valuesList.get(i).startDateValue,valuesList.get(i).endDateValue,valuesList.get(i).durationValue));
-//                        }
-//                    }
-                    allExamsListAdapter=new AllExamsListAdapter(filteredList,getActivity());
-                    allExamsList.setAdapter(allExamsListAdapter);
-                    allExamsListAdapter.notifyDataSetChanged();
+                    requestQueue.add(jsonObjectRequest);
                     return true;
                 }
             });
         }
+    }
+
+    public void populateList(List<Values> list){
+        Log.d("response",list.size()+"=size");
+        allExamsListAdapter=new AllExamsListAdapter(list,getActivity());
+        allExamsList.setAdapter(allExamsListAdapter);
+        allExamsListAdapter.notifyDataSetChanged();
     }
 
 }
