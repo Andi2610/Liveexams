@@ -1,4 +1,4 @@
-package in.truskills.liveexams.MiscellaneousScreens;
+package in.truskills.liveexams.Miscellaneous;
 
 import android.content.Intent;
 import android.os.Bundle;

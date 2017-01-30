@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import in.truskills.liveexams.MiscellaneousScreens.VariablesDefined;
+import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 
 public class Home extends Fragment {
@@ -61,8 +60,12 @@ public class Home extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+//        getActivity().getActionBar().setTitle("HOME");
+
         bundle=getArguments();
         joinedExams=bundle.getString("joinedExams");
+
+        Log.d("here","inOnAcCrOfHome");
 
         add=(Button)getActivity().findViewById(R.id.add);
         myExamsList=(RecyclerView)getActivity().findViewById(R.id.myExamsList);
@@ -76,8 +79,11 @@ public class Home extends Fragment {
                 int length=arr.length();
                 Log.d("response","length="+length);
                 for(int i=0;i<length;++i){
-                    values=new Values(mapper.get("ExamName").get(i),mapper.get("StartDate").get(i),mapper.get("EndDate").get(i),mapper.get("ExamDuration").get(i));
-                    valuesList.add(values);
+                    Log.d("response","mapper="+mapper.get("ExamId").get(i));
+                    if(mapper.get("leftExam").get(i).equals("false")){
+                        values=new Values(mapper.get("ExamName").get(i),mapper.get("StartDate").get(i),mapper.get("EndDate").get(i),mapper.get("ExamDuration").get(i),mapper.get("ExamId").get(i));
+                        valuesList.add(values);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -133,7 +139,7 @@ public class Home extends Fragment {
                         final String text = valuesList.get(i).name.toLowerCase();
                         if (text.contains(s)) {
 
-                            filteredList.add(new Values(valuesList.get(i).name,valuesList.get(i).startDateValue,valuesList.get(i).endDateValue,valuesList.get(i).durationValue));
+                            filteredList.add(new Values(valuesList.get(i).name,valuesList.get(i).startDateValue,valuesList.get(i).endDateValue,valuesList.get(i).durationValue,valuesList.get(i).examId));
                         }
                     }
                     myExamsListAdapter=new MyExamsListAdapter(filteredList,getActivity());

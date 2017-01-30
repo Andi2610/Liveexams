@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("HOME");
 
         prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity
 
         bundle = new Bundle();
         bundle.putString("joinedExams",joinedExams);
+
+        Log.d("here","inOnCreateMain");
+
 
         Home fragment = new Home();
         fragment.setArguments(bundle);
@@ -248,15 +251,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }else if(f!=null && f.isVisible()){
+        }
+        else if(f!=null&&f.isVisible()){
             finish();
-        }else {
-            Home fragment = new Home();
-            FragmentTransaction t = manager.beginTransaction();
-            t.replace(R.id.fragment, fragment, "Home");
-            t.commit();
-            String title = "HOME";
-            getSupportActionBar().setTitle(title);
+        }
+        else{
+            super.onBackPressed();
         }
     }
 
@@ -267,20 +267,18 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Home fragment = new Home();
+            fragment.setArguments(bundle);
             FragmentTransaction t = manager.beginTransaction();
             t.replace(R.id.fragment, fragment, "Home");
             t.commit();
-            String title = "HOME";
-            getSupportActionBar().setTitle(title);
             navigationView.setCheckedItem(R.id.nav_home);
 
         } else if (id == R.id.nav_calendar) {
             Calendar fragment = new Calendar();
             FragmentTransaction t = manager.beginTransaction();
             t.replace(R.id.fragment, fragment, "Calendar");
+            t.addToBackStack("Home");
             t.commit();
-            String title = "CALENDAR";
-            getSupportActionBar().setTitle(title);
             navigationView.setCheckedItem(R.id.nav_calendar);
         }
 
@@ -313,6 +311,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
         t.replace(R.id.fragment, f, "AllExams");
+        t.addToBackStack(null);
         t.commit();
         String title = "ADD NEW EXAMS";
         getSupportActionBar().setTitle(title);

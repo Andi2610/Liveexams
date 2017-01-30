@@ -1,6 +1,5 @@
-package in.truskills.liveexams.MiscellaneousScreens;
+package in.truskills.liveexams.Miscellaneous;
 
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -10,7 +9,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by Shivansh Gupta on 26-01-2017.
@@ -31,6 +29,11 @@ public class VariablesDefined {
     private static String StartTime="StartTime";
     private static String EndTime="EndTime";
     private static String ExamDuration="ExamDuration";
+    private static String enrolled="enrolled";
+    private static String timestamp="timestamp";
+    private static String exam="exam";
+    private static String Description="Description";
+    private static String leftExam="leftExam";
 
 
     public static HashMap signupParser(String result) throws JSONException {
@@ -71,6 +74,8 @@ public class VariablesDefined {
         ArrayList<String> EndTimeList = new ArrayList<>();
         ArrayList<String> StartTimeList = new ArrayList<>();
         ArrayList<String> ExamDurationList = new ArrayList<>();
+        ArrayList<String> ExamIdList = new ArrayList<>();
+        ArrayList<String> leftExamList = new ArrayList<>();
         HashMap<String,ArrayList<String>> mapper=new HashMap<>();
         for(int i = 0; i < jsonArray.length(); i++)
         {
@@ -84,6 +89,8 @@ public class VariablesDefined {
                 EndTimeList.add(jsonObject.getString(EndTime));
                 StartDateList.add(jsonObject.getString(StartDate));
                 EndDateList.add(jsonObject.getString(EndDate));
+                ExamIdList.add(key);
+                leftExamList.add(jsonObject.getString(leftExam));
             }
         }
         mapper.put("ExamName",ExamNameList);
@@ -91,7 +98,13 @@ public class VariablesDefined {
         mapper.put("StartDate",StartDateList);
         mapper.put("EndDate",EndDateList);
         mapper.put("StartTime",StartTimeList);
-        mapper.put("EndTime",EndTimeList);;
+        mapper.put("EndTime",EndTimeList);
+        mapper.put("ExamId",ExamIdList);
+        mapper.put("leftExam",leftExamList);
+
+        for(int i=0;i<ExamIdList.size();++i)
+            Log.d("response",ExamIdList.get(i));
+
         return mapper;
     }
 
@@ -103,6 +116,7 @@ public class VariablesDefined {
         ArrayList<String> EndTimeList = new ArrayList<>();
         ArrayList<String> StartTimeList = new ArrayList<>();
         ArrayList<String> ExamDurationList = new ArrayList<>();
+        ArrayList<String> ExamIdList = new ArrayList<>();
         HashMap<String,ArrayList<String>> mapper=new HashMap<>();
         for(int i = 0; i < jsonArray.length(); i++)
         {
@@ -114,14 +128,39 @@ public class VariablesDefined {
                 EndTimeList.add(jsonObject.getString(EndTime));
                 StartDateList.add(jsonObject.getString(StartDate));
                 EndDateList.add(jsonObject.getString(EndDate));
-
+                ExamIdList.add(jsonObject.getString(id));
         }
         mapper.put("ExamName",ExamNameList);
         mapper.put("ExamDuration",ExamDurationList);
         mapper.put("StartDate",StartDateList);
         mapper.put("EndDate",EndDateList);
         mapper.put("StartTime",StartTimeList);
-        mapper.put("EndTime",EndTimeList);;
+        mapper.put("EndTime",EndTimeList);
+        mapper.put("ExamId",ExamIdList);
         return mapper;
     }
+
+    public static HashMap examDetailsParser(String result) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
+        JSONObject jsonObj=new JSONObject(result);
+        JSONObject jsonObject=jsonObj.getJSONObject(response);
+        mapper.put("enrolled",jsonObject.getString(enrolled));
+        mapper.put("timestamp",jsonObject.getString(timestamp));
+        String examDetails=jsonObject.getJSONArray(exam).toString();
+        mapper.put("examDetails",examDetails);
+        return mapper;
+    }
+
+    public static HashMap join_start_Parser(String result) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
+        JSONArray jsonArray=new JSONArray(result);
+        JSONObject jsonObject=jsonArray.getJSONObject(0);
+        mapper.put("StartDate",jsonObject.getString(StartDate));
+        mapper.put("EndDate",jsonObject.getString(EndDate));
+        mapper.put("StartTime",jsonObject.getString(StartTime));
+        mapper.put("EndTime",jsonObject.getString(EndTime));
+        mapper.put("Description",jsonObject.getString(Description));
+        return mapper;
+    }
+
 }

@@ -3,12 +3,10 @@ package in.truskills.liveexams.ParticularExam;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,9 +18,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 
 /**
@@ -31,11 +42,12 @@ import in.truskills.liveexams.R;
 public class JoinPage extends Fragment {
 
     JoinPageInterface ob;
-    TextView startDetailsJoinPage,endDetailsJoinPage;
+    TextView startDetailsJoinPage,endDetailsJoinPage,descriptionJoinPage;
     Spinner myLanguageJoinPage;
-    String selectedLanguage;
+    String selectedLanguage,timestamp,examDetails,examId;
     SharedPreferences prefs;
     Button join_button;
+    Bundle b;
 
     public JoinPage() {
         // Required empty public constructor
@@ -54,23 +66,72 @@ public class JoinPage extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         prefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        Log.d("response","inOnAcCrJoin");
+
+        ob=(JoinPageInterface)getActivity();
+        ob.changeTitleForJoinPage();
 
         startDetailsJoinPage=(TextView)getActivity().findViewById(R.id.startDetailsJoinPage);
         endDetailsJoinPage=(TextView)getActivity().findViewById(R.id.endDetailsJoinPage);
+        descriptionJoinPage=(TextView)getActivity().findViewById(R.id.descriptionJoinPage);
         myLanguageJoinPage=(Spinner)getActivity().findViewById(R.id.myLanguageJoinPage);
         join_button=(Button)getActivity().findViewById(R.id.join_button);
+
+        b=getArguments();
+
+        timestamp=b.getString("timestamp");
+        examDetails=b.getString("examDetails");
+        examId=b.getString("examId");
+
+        try {
+            HashMap<String,String> mapper= VariablesDefined.join_start_Parser(examDetails);
+            descriptionJoinPage.setText(mapper.get("Description"));
+            startDetailsJoinPage.setText(mapper.get("StartDate")+"\n"+mapper.get("StartTime"));
+            endDetailsJoinPage.setText(mapper.get("EndDate")+"\n"+mapper.get("EndTime"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         join_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ob=(JoinPageInterface)getActivity();
+
+                //Enroll User
+                final RequestQueue requestQueue= Volley.newRequestQueue(getActivity());
+                String url=VariablesDefined.api+"enrollUser/"+prefs.getString("userId","abc");
+                StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                        url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("response=",response.toString()+"");
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("response", error.getMessage());
+                        Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                    }
+                }){
+                    @Override
+                    protected Map<String,String> getParams(){
+                        Map<String,String> params = new HashMap<String, String>();
+                        params.put("examId",examId);
+                        params.put("language",selectedLanguage);
+                        return params;
+                    }
+                };
+                requestQueue.add(stringRequest);
+
                 StartPage f=new StartPage();
+                f.setArguments(b);
                 ob.changeFragmentFromJoinPage(f,"name");
             }
         });
 
-        startDetailsJoinPage.setText("Thursday\n12th January 2017\n8:00 AM");
-        endDetailsJoinPage.setText("Saturday\n14th January 2017\n7:00 PM");
+//        startDetailsJoinPage.setText("Thursday\n12th January 2017\n8:00 AM");
+//        endDetailsJoinPage.setText("Saturday\n14th January 2017\n7:00 PM");
 
         ArrayList<String> listOfLanguages=new ArrayList<>();
         listOfLanguages.add("LANGUAGE");
@@ -116,7 +177,16 @@ public class JoinPage extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d("response","inResJoin");
+    }
 }
 interface JoinPageInterface{
     public void changeFragmentFromJoinPage(Fragment f,String title);
+    public void changeTitleForJoinPage();
+
 }

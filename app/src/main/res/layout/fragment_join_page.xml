@@ -62,8 +62,7 @@
                 android:layout_marginTop="20dp"
                 android:id="@+id/descriptionJoinPage"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:text="Description:hjczhjxvcjhzvchjzv\nshgsghahga\nhsvhgvhgvx"/>
+                android:gravity="center"/>
 
         </LinearLayout>
     </ScrollView>

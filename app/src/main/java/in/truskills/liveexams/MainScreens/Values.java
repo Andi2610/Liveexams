@@ -5,12 +5,13 @@ package in.truskills.liveexams.MainScreens;
  */
 
 public class Values {
-    String name,startDateValue,endDateValue,durationValue;
-    Values(String name,String startDateValue,String endDateValue,String durationValue) {
+    String name,startDateValue,endDateValue,durationValue,examId;
+    Values(String name,String startDateValue,String endDateValue,String durationValue,String examId) {
         this.name=name;
         this.startDateValue=startDateValue;
         this.endDateValue=endDateValue;
         this.durationValue=durationValue;
+        this.examId=examId;
     }
 
     public String getName() {
@@ -18,7 +19,7 @@ public class Values {
     }
 
     public void setName(String s) {
-        this.name = name;
+        name = s;
     }
 
     public String getStartDateValue() {
@@ -26,7 +27,7 @@ public class Values {
     }
 
     public void setStartDateValue(String s) {
-        this.startDateValue = s;
+        startDateValue = s;
     }
 
     public String getEndDateValue() {
@@ -34,7 +35,7 @@ public class Values {
     }
 
     public void setEndDateValue(String s) {
-        this.endDateValue = s;
+        endDateValue = s;
     }
 
     public String getDurationValue() {
@@ -42,6 +43,14 @@ public class Values {
     }
 
     public void setDurationValue(String s) {
-        this.durationValue = s;
+        durationValue = s;
+    }
+
+    public String getExamId() {
+        return examId;
+    }
+
+    public void setExamId(String s) {
+        examId = s;
     }
 }

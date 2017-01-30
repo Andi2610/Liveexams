@@ -4,7 +4,7 @@
     android:id="@+id/activity_terms_and_conditions"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.truskills.liveexams.MiscellaneousScreens.TermsAndConditions">
+    tools:context="in.truskills.liveexams.Miscellaneous.TermsAndConditions">
 
     <TextView
         android:layout_width="wrap_content"

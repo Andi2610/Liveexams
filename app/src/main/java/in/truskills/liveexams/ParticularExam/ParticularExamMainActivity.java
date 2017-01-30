@@ -6,14 +6,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
-import in.truskills.liveexams.MainScreens.Home;
 import in.truskills.liveexams.R;
 
 public class ParticularExamMainActivity extends AppCompatActivity implements StartPageInterface,JoinPageInterface{
 
-    boolean joined;
-    String name;
+    String name,enrolled;
+    Bundle b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,20 +22,26 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        name=getIntent().getStringExtra("name");
-        joined=getIntent().getBooleanExtra("joined",false);
+        b=getIntent().getBundleExtra("bundle");
+        name=b.getString("name");
+        Log.d("response",name+"");
+        enrolled=b.getString("enrolled");
 
         getSupportActionBar().setTitle(name);
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction trans = manager.beginTransaction();
 
-        if(joined){
+        if(enrolled.equals("true")){
+            Log.d("response","Start");
             StartPage fragment = new StartPage();
+            fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "StartPage");
             trans.commit();
         }else{
+            Log.d("response","Join");
             JoinPage fragment = new JoinPage();
+            fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "JoinPage");
             trans.commit();
         }
@@ -51,9 +57,16 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         }
         else{
             trans.replace(R.id.fragment,f,"RulesFromJoin");
+            trans.addToBackStack(null);
             getSupportActionBar().setTitle(title);
         }
         trans.commit();
+    }
+
+    @Override
+    public void changeTitleForJoinPage() {
+        getSupportActionBar().setTitle(name);
+
     }
 
     @Override
@@ -61,32 +74,18 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction trans=manager.beginTransaction();
         trans.replace(R.id.fragment,f,"Rules");
+        trans.addToBackStack(null);
         getSupportActionBar().setTitle(title);
         trans.commit();
     }
 
     @Override
+    public void changeTitleForStartPage() {
+            getSupportActionBar().setTitle(name);
+    }
+
+    @Override
     public void onBackPressed() {
-        FragmentManager manager=getSupportFragmentManager();
-        FragmentTransaction trans = manager.beginTransaction();
-        StartPage f=(StartPage) manager.findFragmentByTag("StartPage");
-        JoinPage ff=(JoinPage) manager.findFragmentByTag("JoinPage");
-        Rules fff=(Rules) manager.findFragmentByTag("RulesFromJoin");
-        if(f!=null && f.isVisible())
-            finish();
-        else if(ff!=null && ff.isVisible())
-            finish();
-        else if(fff!=null && fff.isVisible()){
-            JoinPage fragment = new JoinPage();
-            trans.replace(R.id.fragment, fragment, "JoinPage");
-            trans.commit();
-            getSupportActionBar().setTitle(name);
-        }
-        else {
-            StartPage fragment = new StartPage();
-            trans.replace(R.id.fragment, fragment, "StartPage");
-            trans.commit();
-            getSupportActionBar().setTitle(name);
-        }
+        super.onBackPressed();
     }
 }

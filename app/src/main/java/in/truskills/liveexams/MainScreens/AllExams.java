@@ -19,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -27,12 +26,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,13 +36,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import in.truskills.liveexams.MiscellaneousScreens.VariablesDefined;
+import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
-import in.truskills.liveexams.authentication.Signup_Login;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+
 public class AllExams extends Fragment {
 
 
@@ -57,6 +50,7 @@ public class AllExams extends Fragment {
     Values values;
     RequestQueue requestQueue;
     Handler h;
+    SearchView searchView;
 
     public AllExams() {
         // Required empty public constructor
@@ -76,7 +70,6 @@ public class AllExams extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d("here","inOnAcCr");
         allExamsList=(RecyclerView)getActivity().findViewById(R.id.allExamsList);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -85,7 +78,6 @@ public class AllExams extends Fragment {
 
         valuesList=new ArrayList<>();
 
-        Log.d("here","size"+valuesList.size());
         allExamsListAdapter=new AllExamsListAdapter(valuesList,getActivity());
 
         allExamsList.setLayoutManager(linearLayoutManager);
@@ -100,7 +92,7 @@ public class AllExams extends Fragment {
         inflater.inflate(R.menu.all_exams_menu, menu);
         SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
         MenuItem menuItem=menu.findItem(R.id.searchAllExams);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         if(searchView!=null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
             searchView.setQueryHint("Search here..");
@@ -113,41 +105,59 @@ public class AllExams extends Fragment {
 
                 @Override
                 public boolean onQueryTextChange(String s) {
+
                     s = s.toString().toLowerCase();
+
                     filteredList = new ArrayList<>();
-                    String url = VariablesDefined.api + "searchExams/" + s;
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                            url, new Response.Listener<JSONObject>() {
 
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d("response=", response.toString() + "");
-                            try {
-                                HashMap<String, ArrayList<String>> mapper = VariablesDefined.allExamsParser(response);
-                                int length = response.getJSONArray("response").length();
-                                for (int i = 0; i < length; ++i) {
-                                    values = new Values(mapper.get("ExamName").get(i), mapper.get("StartDate").get(i), mapper.get("EndDate").get(i), mapper.get("ExamDuration").get(i));
-                                    filteredList.add(values);
-                                    h.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            populateList(filteredList);
+                    if(s.equals("")){
+                        allExamsListAdapter=new AllExamsListAdapter(filteredList,getActivity());
+                        allExamsList.setAdapter(allExamsListAdapter);
+                        allExamsListAdapter.notifyDataSetChanged();
+                    }else{
+                        String url = VariablesDefined.api + "searchExams/" + s;
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                                url, new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    HashMap<String, ArrayList<String>> mapper = VariablesDefined.allExamsParser(response);
+                                    int length = response.getJSONArray("response").length();
+                                    if(length==0){
+                                        filteredList.clear();
+                                        h.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                populateList(filteredList);
+                                            }
+                                        });
+                                    }
+                                    else{
+                                        for (int i = 0; i < length; ++i) {
+                                            values = new Values(mapper.get("ExamName").get(i), mapper.get("StartDate").get(i), mapper.get("EndDate").get(i), mapper.get("ExamDuration").get(i),mapper.get("ExamId").get(i));
+                                            filteredList.add(values);
+                                            h.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    populateList(filteredList);
+                                                }
+                                            });
+
                                         }
-                                    });
-
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.d("response", error.getMessage() + "");
-                            Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    requestQueue.add(jsonObjectRequest);
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        requestQueue.add(jsonObjectRequest);
+                    }
                     return true;
                 }
             });
@@ -155,10 +165,64 @@ public class AllExams extends Fragment {
     }
 
     public void populateList(List<Values> list){
-        Log.d("response",list.size()+"=size");
         allExamsListAdapter=new AllExamsListAdapter(list,getActivity());
         allExamsList.setAdapter(allExamsListAdapter);
         allExamsListAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("response","inOnResAllExaFrag");
+        filteredList=new ArrayList<>();
+
+        if(searchView==null){
+            allExamsListAdapter=new AllExamsListAdapter(filteredList,getActivity());
+            allExamsList.setAdapter(allExamsListAdapter);
+            allExamsListAdapter.notifyDataSetChanged();
+        }else{
+            String url = VariablesDefined.api + "searchExams/" + searchView.getQuery();
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                    url, new Response.Listener<JSONObject>() {
+
+                @Override
+                public void onResponse(JSONObject response) {
+                    try {
+                        HashMap<String, ArrayList<String>> mapper = VariablesDefined.allExamsParser(response);
+                        int length = response.getJSONArray("response").length();
+                        if(length==0){
+                            filteredList.clear();
+                            h.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    populateList(filteredList);
+                                }
+                            });
+                        }
+                        else{
+                            for (int i = 0; i < length; ++i) {
+                                values = new Values(mapper.get("ExamName").get(i), mapper.get("StartDate").get(i), mapper.get("EndDate").get(i), mapper.get("ExamDuration").get(i),mapper.get("ExamId").get(i));
+                                filteredList.add(values);
+                                h.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        populateList(filteredList);
+                                    }
+                                });
+
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+        }
+    }
 }

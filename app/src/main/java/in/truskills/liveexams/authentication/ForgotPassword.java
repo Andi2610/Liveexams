@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import in.truskills.liveexams.R;
 
+//This Activity launches in case the user forgets his/her login password..
+
 public class ForgotPassword extends AppCompatActivity {
 
     @Override

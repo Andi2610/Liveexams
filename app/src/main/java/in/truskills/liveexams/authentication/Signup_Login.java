@@ -42,12 +42,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -58,9 +56,11 @@ import java.util.Locale;
 import java.util.Map;
 
 import in.truskills.liveexams.MainScreens.MainActivity;
-import in.truskills.liveexams.MiscellaneousScreens.VariablesDefined;
+import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
-import in.truskills.liveexams.MiscellaneousScreens.TermsAndConditions;
+import in.truskills.liveexams.Miscellaneous.TermsAndConditions;
+
+//This activity includes the code for Signup and Login
 
 public class Signup_Login extends AppCompatActivity implements View.OnClickListener {
 
@@ -79,6 +79,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     RequestQueue requestQueue;
     SharedPreferences prefs;
 
+    //Called when the activity is created..
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +151,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
+        //Handles the operation of changing the gender selection..
         signupGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -162,16 +165,27 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        //When the user opens the Signup drawer..
         signupDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
             @Override
             public void onDrawerOpened() {
+
+                //Hide the login drawer..
                 loginDrawer.setVisibility(View.GONE);
+
+                //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
                 signupHandleImage.setImageResource(R.drawable.down_arrow);
+
+                //Set the validation message for UserName i.e. Required
                 signupName.setError("Required");
+
+                //Set the validation message for rest of the fields as null..
                 signupEmail.setError(null);
                 signupMobile.setError(null);
                 signupPassword.setError(null);
                 signupConfirmPassword.setError(null);
+
+                //Clear the previous content of all the fields..
                 signupName.setText("");
                 signupEmail.setText("");
                 signupMobile.setText("");
@@ -180,6 +194,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 signupConfirmPassword.setText("");
                 signupGender.setSelection(0);
                 signupLanguage.setSelection(0);
+
+                //Add the text change listener on the required fields to show the validation error message to the user at appropriate times..
+                //signupName: userName field cannot be empty..
+                //signupEmail: email should be a valid one..
+                //signupMobile: number should be a valid 10 digit number..
+                //signupPassword: password should be of minimum 6 characters..
+                //signupConfirmPassword: confirm Password should be same as Password..
+
+                //These messages occur while the user is typing in the field..
 
                 signupName.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -292,20 +315,45 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
+
+        //When the user closes the signup drawer..
         signupDrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener() {
             @Override
             public void onDrawerClosed() {
+
+                //Show the login drawer..
                 loginDrawer.setVisibility(View.VISIBLE);
+
+                //Rechange the arrow button: from down to up again..
                 signupHandleImage.setImageResource(R.drawable.up_arrow);
             }
         });
+
+        //When the user opens the login drawer..
         loginDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
             @Override
             public void onDrawerOpened() {
+
+                //Hide the signup drawer..
                 signupDrawer.setVisibility(View.GONE);
                 signupLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+                //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
                 loginHandleImage.setImageResource(R.drawable.down_arrow);
+
+                //Set the validation message for UserName i.e. Required..
                 loginName.setError("Required");
+
+                //Clear the previous content of both the fields..
+                loginName.setText("");
+                loginPassword.setText("");
+
+                //Add text change listener on both the fields to show appropriate validation error messages..
+                //loginName: userName field cannot be empty..
+                //loginPassword: password cannot be empty..
+
+                //These messages occur while the user is typing in the field..
+
                 loginName.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -350,44 +398,63 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 });
             }
         });
+
+        //When the user closes the login drawer..
         loginDrawer.setOnDrawerCloseListener(new SlidingDrawer.OnDrawerCloseListener() {
             @Override
             public void onDrawerClosed() {
+
+                //Show the signup drawer..
                 signupDrawer.setVisibility(View.VISIBLE);
                 signupLayout.setBackgroundColor(Color.parseColor("#0C1D36"));
+
+                //Rechange the arrow button: from down to up again..
                 loginHandleImage.setImageResource(R.drawable.up_arrow);
-                loginName.setText("");
-                loginPassword.setText("");
             }
         });
     }
 
+    //Called when a button in the activity screen is pressed..
     @Override
     public void onClick(View view) {
         Intent i;
         switch (view.getId()) {
+
+            //If login button is pressed..Check for login validation..
             case R.id.loginPressed:
                 loginValidation();
                 break;
+
+            //If signup button is pressed..Check for signup validation..
             case R.id.signupPressed:
                 signupValidation();
                 break;
+
+            //If forgot password button is pressed..Launch the ForgotPassword activity..
             case R.id.forgotPasswordPressed:
                 i = new Intent(Signup_Login.this, ForgotPassword.class);
                 startActivity(i);
                 break;
+
+            //If terms and condition button is pressed..Launch the  TermsAndConditions activity..
             case R.id.termsAndConditionsPressed:
                 i = new Intent(Signup_Login.this, TermsAndConditions.class);
                 startActivity(i);
                 break;
+
+            //If location icon is pressed..Call the getCurrentLocation method..
             case R.id.locationIcon:
                 getCurrentLocation();
                 break;
         }
     }
 
+    //Called when the back button of the phone is pressed..
     @Override
     public void onBackPressed() {
+
+        //If any drawer whether signup or login is opened, then close it.. otherwise exit the application..
+
         if (signupDrawer.isOpened())
             signupDrawer.close();
         else if (loginDrawer.isOpened())
@@ -395,24 +462,39 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         else super.onBackPressed();
     }
 
+    //This method includes code for calculating user's current location based on GPS tracking..
     public void getCurrentLocation() {
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        //Check if the device's GPS is on or not..
         if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+            //If it is off, ask the user to enable it..
             AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
             builder.setTitle("NETWORK PROVIDER NOT ENABLED");  // GPS not found
             builder.setMessage("Want to enable?"); // Want to enable?
             builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    //Launch the gps settings screen of the phone..
                     Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    //Wait for the result to come in return..
+                    //After returning from the setting screen to our signup_login screen.. check for the activity result by calling onActivityResult method..
                     startActivityForResult(intent, code);
                 }
             });
             builder.setNegativeButton("NO", null);
             builder.create().show();
         } else {
+
+            //If it is on, check for explicit permissions in android versions starting from Marshmallow..
             if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                //If permission is not granted..Request for permission..and check for user's response in onRequestPermissionsResult method..
                 ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
             } else {
+
+                //If permissions are granted already, fetch the current location..
                 final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
                 progress.setMessage("Fetching your current location....");
                 progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -591,7 +673,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     if(mapper.get("success").equals("true")) {
                         Log.d("response","inIf");
                         SharedPreferences.Editor e=prefs.edit();
-                        e.putString("id",mapper.get("id"));
+                        e.putString("userId",mapper.get("id"));
                         e.putString("emailAddress",mapper.get("emailAddress"));
                         e.putString("language",mapper.get("language"));
                         e.putString("profileImageUrl",mapper.get("profileImageUrl"));
@@ -636,10 +718,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         return temp;
     }
 
+    //This method checks the user's response for explicit permission request for android versions higher than marshmallow..
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
+
+                //If permission is granted..
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
@@ -717,13 +802,24 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //This method is called after the return to this activity occurs from the device's gps settings screen..
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //If the request code is same..
         if (requestCode == code) {
+
+            //If gps is on..
             if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+
+                //Check for explicit permissions in android versions starting from Marshmallow..
                 if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    //If permission is not granted..Request for permission..and check for user's response in onRequestPermissions method..
                     ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
                 } else {
+
+                    //If permissions are granted already, fetch the current location..
                     final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
                     progress.setMessage("Fetching your current location....");
                     progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
