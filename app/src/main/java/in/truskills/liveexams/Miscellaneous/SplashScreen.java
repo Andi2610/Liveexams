@@ -1,9 +1,12 @@
 package in.truskills.liveexams.Miscellaneous;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
 
+import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
@@ -23,8 +26,15 @@ public class SplashScreen extends Activity {
                     e.printStackTrace();
                 }finally {
                     //Start MainActivity after 2 sec
-                    Intent i=new Intent(SplashScreen.this,Signup_Login.class);
-                    startActivity(i);
+                    SharedPreferences prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                    String state=prefs.getString("login","false");
+                    if(state.equals("true")){
+                        Intent i=new Intent(SplashScreen.this,MainActivity.class);
+                        startActivity(i);
+                    }else{
+                        Intent i=new Intent(SplashScreen.this,Signup_Login.class);
+                        startActivity(i);
+                    }
                 }
             }
         }).start();

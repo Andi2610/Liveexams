@@ -71,8 +71,6 @@ public class VariablesDefined {
         ArrayList<String> ExamNameList = new ArrayList<>();
         ArrayList<String> StartDateList = new ArrayList<>();
         ArrayList<String> EndDateList = new ArrayList<>();
-        ArrayList<String> EndTimeList = new ArrayList<>();
-        ArrayList<String> StartTimeList = new ArrayList<>();
         ArrayList<String> ExamDurationList = new ArrayList<>();
         ArrayList<String> ExamIdList = new ArrayList<>();
         ArrayList<String> leftExamList = new ArrayList<>();
@@ -85,8 +83,6 @@ public class VariablesDefined {
                 JSONObject jsonObject=jsonArray.getJSONObject(i).getJSONArray(key).getJSONObject(0);
                 ExamNameList.add(jsonObject.getString(ExamName));
                 ExamDurationList.add(jsonObject.getJSONArray(ExamDuration).get(0).toString());
-                StartTimeList.add(jsonObject.getString(StartTime));
-                EndTimeList.add(jsonObject.getString(EndTime));
                 StartDateList.add(jsonObject.getString(StartDate));
                 EndDateList.add(jsonObject.getString(EndDate));
                 ExamIdList.add(key);
@@ -97,8 +93,6 @@ public class VariablesDefined {
         mapper.put("ExamDuration",ExamDurationList);
         mapper.put("StartDate",StartDateList);
         mapper.put("EndDate",EndDateList);
-        mapper.put("StartTime",StartTimeList);
-        mapper.put("EndTime",EndTimeList);
         mapper.put("ExamId",ExamIdList);
         mapper.put("leftExam",leftExamList);
 

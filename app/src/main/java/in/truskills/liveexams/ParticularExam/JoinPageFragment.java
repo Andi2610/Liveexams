@@ -39,7 +39,7 @@ import in.truskills.liveexams.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class JoinPage extends Fragment {
+public class JoinPageFragment extends Fragment {
 
     JoinPageInterface ob;
     TextView startDetailsJoinPage,endDetailsJoinPage,descriptionJoinPage;
@@ -49,7 +49,7 @@ public class JoinPage extends Fragment {
     Button join_button;
     Bundle b;
 
-    public JoinPage() {
+    public JoinPageFragment() {
         // Required empty public constructor
     }
 
@@ -124,7 +124,7 @@ public class JoinPage extends Fragment {
                 };
                 requestQueue.add(stringRequest);
 
-                StartPage f=new StartPage();
+                StartPageFragment f=new StartPageFragment();
                 f.setArguments(b);
                 ob.changeFragmentFromJoinPage(f,"name");
             }
@@ -171,7 +171,7 @@ public class JoinPage extends Fragment {
         switch (item.getItemId()){
             case R.id.rulesIcon:
                 ob=(JoinPageInterface)getActivity();
-                Rules f=new Rules();
+                RulesFragment f=new RulesFragment();
                 ob.changeFragmentFromJoinPage(f,"RULES");
                 break;
         }

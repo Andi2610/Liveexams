@@ -32,15 +32,16 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Calendar;
 
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 
 
-public class AllExams extends Fragment {
+public class AllExamsFragment extends Fragment {
 
 
     RecyclerView allExamsList;
@@ -51,8 +52,14 @@ public class AllExams extends Fragment {
     RequestQueue requestQueue;
     Handler h;
     SearchView searchView;
+    String myStartDate,myEndDate,myDateOfStart,myDateOfEnd,myDuration,myDurationTime;
+    String [] parts;
+    SimpleDateFormat simpleDateFormat;
+    Calendar calendar;
+    Date date;
+    int hour,minute,day,month,year;
 
-    public AllExams() {
+    public AllExamsFragment() {
         // Required empty public constructor
     }
 
@@ -135,7 +142,41 @@ public class AllExams extends Fragment {
                                     }
                                     else{
                                         for (int i = 0; i < length; ++i) {
-                                            values = new Values(mapper.get("ExamName").get(i), mapper.get("StartDate").get(i), mapper.get("EndDate").get(i), mapper.get("ExamDuration").get(i),mapper.get("ExamId").get(i));
+                                            myStartDate=mapper.get("StartDate").get(i);
+                                            myEndDate=mapper.get("EndDate").get(i);
+
+                                            simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+
+                                            date=simpleDateFormat.parse(myStartDate);
+                                            calendar= java.util.Calendar.getInstance();
+                                            calendar.setTime(date);
+                                            day=calendar.get(java.util.Calendar.DAY_OF_MONTH);
+                                            year=calendar.get(java.util.Calendar.YEAR);
+                                            month=calendar.get(java.util.Calendar.MONTH);
+                                            month++;
+                                            myDateOfStart=day+"/"+month+"/"+year;
+
+                                            date=simpleDateFormat.parse(myEndDate);
+                                            calendar= java.util.Calendar.getInstance();
+                                            calendar.setTime(date);
+                                            day=calendar.get(java.util.Calendar.DAY_OF_MONTH);
+                                            year=calendar.get(java.util.Calendar.YEAR);
+                                            month=calendar.get(java.util.Calendar.MONTH);
+                                            month++;
+                                            myDateOfEnd=day+"/"+month+"/"+year;
+
+                                            myDuration=mapper.get("ExamDuration").get(i);
+                                            parts = myDuration.split("-");
+                                            hour=Integer.parseInt(parts[0]);
+                                            minute=Integer.parseInt(parts[1]);
+
+                                            if(minute==0){
+                                                myDurationTime=hour+" hours";
+                                            }else{
+                                                myDurationTime=hour+" hours "+minute+" minutes";
+                                            }
+
+                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                             filteredList.add(values);
                                             h.post(new Runnable() {
                                                 @Override
@@ -147,6 +188,8 @@ public class AllExams extends Fragment {
                                         }
                                     }
                                 } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -201,7 +244,41 @@ public class AllExams extends Fragment {
                         }
                         else{
                             for (int i = 0; i < length; ++i) {
-                                values = new Values(mapper.get("ExamName").get(i), mapper.get("StartDate").get(i), mapper.get("EndDate").get(i), mapper.get("ExamDuration").get(i),mapper.get("ExamId").get(i));
+                                myStartDate=mapper.get("StartDate").get(i);
+                                myEndDate=mapper.get("EndDate").get(i);
+
+                                simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+
+                                date=simpleDateFormat.parse(myStartDate);
+                                calendar= java.util.Calendar.getInstance();
+                                calendar.setTime(date);
+                                day=calendar.get(java.util.Calendar.DAY_OF_MONTH);
+                                year=calendar.get(java.util.Calendar.YEAR);
+                                month=calendar.get(java.util.Calendar.MONTH);
+                                month++;
+                                myDateOfStart=day+"/"+month+"/"+year;
+
+                                date=simpleDateFormat.parse(myEndDate);
+                                calendar= java.util.Calendar.getInstance();
+                                calendar.setTime(date);
+                                day=calendar.get(java.util.Calendar.DAY_OF_MONTH);
+                                year=calendar.get(java.util.Calendar.YEAR);
+                                month=calendar.get(java.util.Calendar.MONTH);
+                                month++;
+                                myDateOfEnd=day+"/"+month+"/"+year;
+
+                                myDuration=mapper.get("ExamDuration").get(i);
+                                parts = myDuration.split("-");
+                                hour=Integer.parseInt(parts[0]);
+                                minute=Integer.parseInt(parts[1]);
+
+                                if(minute==0){
+                                    myDurationTime=hour+" hours";
+                                }else{
+                                    myDurationTime=hour+" hours "+minute+" minutes";
+                                }
+
+                                values = new Values(mapper.get("ExamName").get(i),myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                 filteredList.add(values);
                                 h.post(new Runnable() {
                                     @Override
@@ -213,6 +290,8 @@ public class AllExams extends Fragment {
                             }
                         }
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }

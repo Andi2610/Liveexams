@@ -4,6 +4,7 @@ package in.truskills.liveexams.MainScreens;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,14 +25,15 @@ import android.widget.SearchView;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Calendar;
 
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 
-public class Home extends Fragment {
+public class HomeFragment extends Fragment {
 
     Button add;
     RecyclerView myExamsList;
@@ -40,10 +42,15 @@ public class Home extends Fragment {
     List<Values> valuesList,filteredList;
     Values values;
     HomeInterface ob;
-    Bundle bundle;
-    String joinedExams;
+    String joinedExams,myStartDate,myDateOfStart,myEndDate,myDateOfEnd,myDuration,myDurationTime;
+    String [] parts;
+    SimpleDateFormat simpleDateFormat;
+    Calendar calendar;
+    Date date;
+    int day,month,year,hour,minute;
+    SharedPreferences prefs;
 
-    public Home() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -60,12 +67,8 @@ public class Home extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        getActivity().getActionBar().setTitle("HOME");
-
-        bundle=getArguments();
-        joinedExams=bundle.getString("joinedExams");
-
-        Log.d("here","inOnAcCrOfHome");
+        prefs=getActivity().getSharedPreferences("prefs",Context.MODE_PRIVATE);
+        joinedExams=prefs.getString("joinedExams","noJoinedExams");
 
         add=(Button)getActivity().findViewById(R.id.add);
         myExamsList=(RecyclerView)getActivity().findViewById(R.id.myExamsList);
@@ -77,18 +80,52 @@ public class Home extends Fragment {
                 HashMap<String, ArrayList<String>> mapper=VariablesDefined.myExamsParser(joinedExams);
                 JSONArray arr=new JSONArray(joinedExams);
                 int length=arr.length();
-                Log.d("response","length="+length);
                 for(int i=0;i<length;++i){
-                    Log.d("response","mapper="+mapper.get("ExamId").get(i));
                     if(mapper.get("leftExam").get(i).equals("false")){
-                        values=new Values(mapper.get("ExamName").get(i),mapper.get("StartDate").get(i),mapper.get("EndDate").get(i),mapper.get("ExamDuration").get(i),mapper.get("ExamId").get(i));
+
+                        myStartDate=mapper.get("StartDate").get(i);
+                        myEndDate=mapper.get("EndDate").get(i);
+
+                        simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+
+                        date=simpleDateFormat.parse(myStartDate);
+                        calendar= Calendar.getInstance();
+                        calendar.setTime(date);
+                        day=calendar.get(Calendar.DAY_OF_MONTH);
+                        year=calendar.get(Calendar.YEAR);
+                        month=calendar.get(Calendar.MONTH);
+                        month++;
+                        myDateOfStart=day+"/"+month+"/"+year;
+
+                        date=simpleDateFormat.parse(myEndDate);
+                        calendar= Calendar.getInstance();
+                        calendar.setTime(date);
+                        day=calendar.get(Calendar.DAY_OF_MONTH);
+                        year=calendar.get(Calendar.YEAR);
+                        month=calendar.get(Calendar.MONTH);
+                        month++;
+                        myDateOfEnd=day+"/"+month+"/"+year;
+
+                        myDuration=mapper.get("ExamDuration").get(i);
+                        parts = myDuration.split("-");
+                        hour=Integer.parseInt(parts[0]);
+                        minute=Integer.parseInt(parts[1]);
+
+                        if(minute==0){
+                            myDurationTime=hour+" hours";
+                        }else{
+                            myDurationTime=hour+" hours "+minute+" minutes";
+                        }
+
+                        values=new Values(mapper.get("ExamName").get(i),myDateOfStart,myDateOfEnd,myDurationTime,mapper.get("ExamId").get(i));
                         valuesList.add(values);
                     }
                 }
-            } catch (JSONException e) {
+            } catch (JSONException | ParseException e) {
                 e.printStackTrace();
             }
         }
+
 
         myExamsListAdapter=new MyExamsListAdapter(valuesList,getActivity());
 
@@ -97,16 +134,19 @@ public class Home extends Fragment {
         myExamsList.setAdapter(myExamsListAdapter);
         myExamsListAdapter.notifyDataSetChanged();
 
-        if(valuesList.isEmpty())
+        if(valuesList.isEmpty()){
             add.setVisibility(View.VISIBLE);
-        else add.setVisibility(View.GONE);
+        }
+        else {
+            add.setVisibility(View.GONE);
+        }
 
         ob=(HomeInterface)getActivity();
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AllExams f = new AllExams();
+                AllExamsFragment f = new AllExamsFragment();
                 ob.changeFragmentFromHome(f);
             }
         });
@@ -155,7 +195,7 @@ public class Home extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.addIcon:
-                AllExams f = new AllExams();
+                AllExamsFragment f = new AllExamsFragment();
                 ob.changeFragmentFromHome(f);
                 break;
         }

@@ -677,10 +677,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         e.putString("emailAddress",mapper.get("emailAddress"));
                         e.putString("language",mapper.get("language"));
                         e.putString("profileImageUrl",mapper.get("profileImageUrl"));
+                        e.putString("joinedExams",mapper.get("joinedExams"));
+                        e.putString("login","true");
                         e.apply();
                         Toast.makeText(Signup_Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
                         i = new Intent(Signup_Login.this, MainActivity.class);
-                        i.putExtra("joinedExams",mapper.get("joinedExams"));
                         startActivity(i);
                         finish();
                     }else{

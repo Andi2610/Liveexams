@@ -39,7 +39,7 @@ import in.truskills.liveexams.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StartPage extends Fragment {
+public class StartPageFragment extends Fragment {
 
     StartPageInterface ob;
     TextView startDetails,endDetails,descriptionStartPage;
@@ -49,7 +49,7 @@ public class StartPage extends Fragment {
     Button start_leave_button;
     Bundle b;
 
-    public StartPage() {
+    public StartPageFragment() {
         // Required empty public constructor
     }
 
@@ -177,7 +177,7 @@ public class StartPage extends Fragment {
         switch (item.getItemId()){
             case R.id.rulesIcon:
                 ob=(StartPageInterface)getActivity();
-                Rules f=new Rules();
+                RulesFragment f=new RulesFragment();
                 ob.changeFragmentFromStartPage(f,"RULES");
                 break;
         }

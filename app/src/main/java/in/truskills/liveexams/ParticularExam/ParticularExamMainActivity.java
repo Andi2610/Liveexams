@@ -34,15 +34,15 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
 
         if(enrolled.equals("true")){
             Log.d("response","Start");
-            StartPage fragment = new StartPage();
+            StartPageFragment fragment = new StartPageFragment();
             fragment.setArguments(b);
-            trans.replace(R.id.fragment, fragment, "StartPage");
+            trans.replace(R.id.fragment, fragment, "StartPageFragment");
             trans.commit();
         }else{
             Log.d("response","Join");
-            JoinPage fragment = new JoinPage();
+            JoinPageFragment fragment = new JoinPageFragment();
             fragment.setArguments(b);
-            trans.replace(R.id.fragment, fragment, "JoinPage");
+            trans.replace(R.id.fragment, fragment, "JoinPageFragment");
             trans.commit();
         }
     }
@@ -52,7 +52,7 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction trans=manager.beginTransaction();
         if(title.equals("name")){
-            trans.replace(R.id.fragment,f,"StartPage");
+            trans.replace(R.id.fragment,f,"StartPageFragment");
             getSupportActionBar().setTitle(name);
         }
         else{
@@ -73,7 +73,7 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
     public void changeFragmentFromStartPage(Fragment f,String title) {
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction trans=manager.beginTransaction();
-        trans.replace(R.id.fragment,f,"Rules");
+        trans.replace(R.id.fragment,f,"RulesFragment");
         trans.addToBackStack(null);
         getSupportActionBar().setTitle(title);
         trans.commit();

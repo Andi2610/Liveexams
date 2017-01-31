@@ -36,6 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.authentication.Signup_Login;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, HomeInterface {
@@ -61,19 +62,13 @@ public class MainActivity extends AppCompatActivity
 
         prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-        joinedExams=getIntent().getStringExtra("joinedExams");
-
         bundle = new Bundle();
-        bundle.putString("joinedExams",joinedExams);
-
-        Log.d("here","inOnCreateMain");
 
 
-        Home fragment = new Home();
-        fragment.setArguments(bundle);
+        HomeFragment fragment = new HomeFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction trans = manager.beginTransaction();
-        trans.replace(R.id.fragment, fragment, "Home");
+        trans.replace(R.id.fragment, fragment, "HomeFragment");
         trans.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -247,7 +242,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         FragmentManager manager=getSupportFragmentManager();
-        Home f=(Home)manager.findFragmentByTag("Home");
+        HomeFragment f=(HomeFragment)manager.findFragmentByTag("HomeFragment");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -256,7 +251,13 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
         else{
-            super.onBackPressed();
+            HomeFragment fragment = new HomeFragment();
+            FragmentTransaction t = manager.beginTransaction();
+            t.replace(R.id.fragment, fragment, "HomeFragment");
+            t.commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+            getSupportActionBar().setTitle("HOME");
+
         }
     }
 
@@ -266,20 +267,41 @@ public class MainActivity extends AppCompatActivity
         FragmentManager manager=getSupportFragmentManager();
 
         if (id == R.id.nav_home) {
-            Home fragment = new Home();
-            fragment.setArguments(bundle);
-            FragmentTransaction t = manager.beginTransaction();
-            t.replace(R.id.fragment, fragment, "Home");
-            t.commit();
-            navigationView.setCheckedItem(R.id.nav_home);
+            HomeFragment f=(HomeFragment)manager.findFragmentByTag("HomeFragment");
+            if(!(f!=null&&f.isVisible())){
+                Log.d("messi", "homeFragLoaded");
+                HomeFragment fragment = new HomeFragment();
+                FragmentTransaction t = manager.beginTransaction();
+                t.replace(R.id.fragment, fragment, "HomeFragment");
+                t.commit();
+                navigationView.setCheckedItem(R.id.nav_home);
+                getSupportActionBar().setTitle("HOME");
+            }else{
+                Log.d("messi", "HomeFragNotLoaded");
+            }
 
         } else if (id == R.id.nav_calendar) {
-            Calendar fragment = new Calendar();
-            FragmentTransaction t = manager.beginTransaction();
-            t.replace(R.id.fragment, fragment, "Calendar");
-            t.addToBackStack("Home");
-            t.commit();
-            navigationView.setCheckedItem(R.id.nav_calendar);
+            CalendarFragment f=(CalendarFragment) manager.findFragmentByTag("CalendarFragment");
+            if(!(f!=null&&f.isVisible())){
+                Log.d("messi", "CalFragLoaded");
+
+                CalendarFragment fragment = new CalendarFragment();
+                FragmentTransaction t = manager.beginTransaction();
+                t.replace(R.id.fragment, fragment, "CalendarFragment");
+                t.commit();
+                navigationView.setCheckedItem(R.id.nav_calendar);
+                getSupportActionBar().setTitle("CALENDAR");
+            }else{
+                Log.d("messi", " CalFragNotLoaded");
+
+            }
+        } else if(id==R.id.nav_logout){
+            SharedPreferences.Editor e=prefs.edit();
+            e.clear();
+            e.apply();
+            Intent i = new Intent(MainActivity.this, Signup_Login.class);
+            startActivity(i);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -310,8 +332,7 @@ public class MainActivity extends AppCompatActivity
     public void changeFragmentFromHome(Fragment f) {
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
-        t.replace(R.id.fragment, f, "AllExams");
-        t.addToBackStack(null);
+        t.replace(R.id.fragment, f, "AllExamsFragment");
         t.commit();
         String title = "ADD NEW EXAMS";
         getSupportActionBar().setTitle(title);

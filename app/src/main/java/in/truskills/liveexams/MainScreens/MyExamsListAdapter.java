@@ -48,6 +48,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
     MyExamsListAdapter(List<Values> myList,Context c){
         this.myList=myList;
         this.c=c;
+        Log.d("messi", "MyExamsListAdapter: inConstructor");
     }
 
     @Override
@@ -60,6 +61,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+        Log.d("messi", "onBindViewHolder: MyExamLisAd");
         value=myList.get(position);
         holder.name.setText(value.getName());
         holder.startDatevalue.setText(value.getStartDateValue());

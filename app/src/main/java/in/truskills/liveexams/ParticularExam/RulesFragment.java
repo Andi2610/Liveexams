@@ -12,10 +12,10 @@ import in.truskills.liveexams.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Rules extends Fragment {
+public class RulesFragment extends Fragment {
 
 
-    public Rules() {
+    public RulesFragment() {
         // Required empty public constructor
     }
 

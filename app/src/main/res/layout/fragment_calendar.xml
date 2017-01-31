@@ -2,14 +2,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.truskills.liveexams.MainScreens.Calendar">
+    tools:context="in.truskills.liveexams.MainScreens.CalendarFragment">
 
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp" />
 
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/myExamsListForCalendar"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/calendarView">
+
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
