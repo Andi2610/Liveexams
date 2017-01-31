@@ -83,11 +83,14 @@ public class JoinPageFragment extends Fragment {
         examDetails=b.getString("examDetails");
         examId=b.getString("examId");
 
+
         try {
             HashMap<String,String> mapper= VariablesDefined.join_start_Parser(examDetails);
             descriptionJoinPage.setText(mapper.get("Description"));
             startDetailsJoinPage.setText(mapper.get("StartDate")+"\n"+mapper.get("StartTime"));
             endDetailsJoinPage.setText(mapper.get("EndDate")+"\n"+mapper.get("EndTime"));
+
+            Log.d("messi","timestamp="+timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }

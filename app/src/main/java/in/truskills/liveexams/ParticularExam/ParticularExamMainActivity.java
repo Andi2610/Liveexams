@@ -73,9 +73,14 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
     public void changeFragmentFromStartPage(Fragment f,String title) {
         FragmentManager manager=getSupportFragmentManager();
         FragmentTransaction trans=manager.beginTransaction();
-        trans.replace(R.id.fragment,f,"RulesFragment");
-        trans.addToBackStack(null);
-        getSupportActionBar().setTitle(title);
+        if(title.equals("name")){
+            trans.replace(R.id.fragment,f,"JoinPageFragment");
+            getSupportActionBar().setTitle(name);
+        }else{
+            trans.replace(R.id.fragment,f,"RulesFragment");
+            trans.addToBackStack(null);
+            getSupportActionBar().setTitle(title);
+        }
         trans.commit();
     }
 

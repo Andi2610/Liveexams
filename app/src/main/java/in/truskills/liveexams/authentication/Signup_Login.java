@@ -78,6 +78,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     ImageView signupHandleImage, loginHandleImage;
     RequestQueue requestQueue;
     SharedPreferences prefs;
+    ImageView app_logo;
 
     //Called when the activity is created..
     @Override
@@ -114,6 +115,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         loginHandleImage = (ImageView) findViewById(R.id.loginHandleImage);
         signupLanguage = (Spinner) findViewById(R.id.signupLanguage);
         signupGender = (Spinner) findViewById(R.id.signupGender);
+        app_logo=(ImageView)findViewById(R.id.app_logo);
 
         //Set OnClickListener on all buttons used
         loginPressed.setOnClickListener(this);
@@ -172,6 +174,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Hide the login drawer..
                 loginDrawer.setVisibility(View.GONE);
+                app_logo.setVisibility(View.GONE);
 
                 //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
                 signupHandleImage.setImageResource(R.drawable.down_arrow);
@@ -323,6 +326,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Show the login drawer..
                 loginDrawer.setVisibility(View.VISIBLE);
+                app_logo.setVisibility(View.VISIBLE);
+
 
                 //Rechange the arrow button: from down to up again..
                 signupHandleImage.setImageResource(R.drawable.up_arrow);
@@ -336,6 +341,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Hide the signup drawer..
                 signupDrawer.setVisibility(View.GONE);
+                app_logo.setVisibility(View.GONE);
                 signupLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
                 //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
@@ -406,6 +412,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Show the signup drawer..
                 signupDrawer.setVisibility(View.VISIBLE);
+                app_logo.setVisibility(View.VISIBLE);
                 signupLayout.setBackgroundColor(Color.parseColor("#0C1D36"));
 
                 //Rechange the arrow button: from down to up again..

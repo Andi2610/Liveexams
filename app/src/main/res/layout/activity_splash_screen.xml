@@ -10,10 +10,11 @@
     <!--Logo of the application-->
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/app_icon"/>
 
     <!--Name of the company: TruSkills-->
     <TextView
@@ -21,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="TruSkills"
         android:textColor="@color/white"
-        android:textSize="36dp"
+        android:textSize="26dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"/>

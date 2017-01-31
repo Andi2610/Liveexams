@@ -28,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,6 +98,7 @@ public class StartPageFragment extends Fragment {
             startDetails.setText(mapper.get("StartDate")+"\n"+mapper.get("StartTime"));
             endDetails.setText(mapper.get("EndDate")+"\n"+mapper.get("EndTime"));
 
+            Log.d("messi","timestamp="+timestamp);
             Log.d("response",timestamp+"**"+mapper.get("StartTime"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -142,7 +144,18 @@ public class StartPageFragment extends Fragment {
                         @Override
                         public void onResponse(String response) {
                             Log.d("response=",response.toString()+"");
-
+                            try {
+                                JSONObject jsonObject=new JSONObject(response);
+                                String success=jsonObject.getString("success");
+                                if(success.equals("true")){
+                                    ob=(StartPageInterface)getActivity();
+                                    JoinPageFragment f=new JoinPageFragment();
+                                    f.setArguments(b);
+                                    ob.changeFragmentFromStartPage(f,"name");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }, new Response.ErrorListener() {
                         @Override
