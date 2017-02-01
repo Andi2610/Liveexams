@@ -70,6 +70,8 @@ public class HomeFragment extends Fragment {
         prefs=getActivity().getSharedPreferences("prefs",Context.MODE_PRIVATE);
         joinedExams=prefs.getString("joinedExams","noJoinedExams");
 
+        Log.d("messi",joinedExams);
+
         add=(Button)getActivity().findViewById(R.id.add);
         myExamsList=(RecyclerView)getActivity().findViewById(R.id.myExamsList);
         linearLayoutManager = new LinearLayoutManager(getActivity());

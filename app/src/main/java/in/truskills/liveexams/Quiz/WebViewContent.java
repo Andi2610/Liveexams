@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class WebViewContent {
 
-    public String contentGenerator(final String question, final ArrayList<String> optionsList){
+    public static String contentGenerator(final String question, final ArrayList<String> optionsList){
 
         int optionsListSize=optionsList.size();
 
@@ -27,24 +27,23 @@ public class WebViewContent {
             x=x+"<input type=\"radio\" id=\""+i+"\" name=\"options\" value=\""+i+"\" onclick=\"ok.performClick(this.value);\" ><label for=\"value\">"+formattedOptions.get(i)+"</label></input><br>";
         }
 
-        String content="<html>\n" +
-                "                <body onload=\"addInput('options')\">\n" +
-                "                Question:\n" +
-                                formattedQuestion+
-                "                  <br>\n" +
-                "                Options:<br>\n" +
-                "                <form>\n" +
-                "                <div>"+x+"</div>\n" +
-                "                </form>\n" +
-                "                end\n" +
-                "                </body>\n" +
-                "                </html>;";
+        String content=
+                "<html>\n" +
+                "<body>\n" +
+                "Question:\n" +formattedQuestion+
+                "<br>\n" +
+                "Options:<br>\n" +
+                "<form>\n" +
+                "<div>"+x+"</div>\n" +
+                "</form>\n" +
+                "</body>\n" +
+                "</html>;";
 
         return content;
 
     }
 
-    public String format(String str){
+    public static String format(String str){
         ArrayList<String> jpgSubStr=new ArrayList<>();
         ArrayList<String> pngSubStr=new ArrayList<>();
         String searchableString = str;

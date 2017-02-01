@@ -4,10 +4,117 @@
     android:id="@+id/activity_quiz_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="in.truskills.liveexams.Quiz.QuizMainActivity">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/upper">
+
+        <include
+            layout="@layout/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></include>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:background="@color/lightest_blue"
+                android:weightSum="100">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sectionName"
+                    android:layout_weight="80"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="20">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/submittedQuestions"
+                        android:textColor="@color/green"
+                        android:layout_margin="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/reviewedQuestions"
+                        android:textColor="@color/orange"
+                        android:layout_margin="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/notAttemptedQuestions"
+                        android:layout_margin="10dp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fillViewport="true">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager"
+                    android:layout_width="fill_parent"
+                    android:layout_height="400dp"
+                    />
+
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:gravity="bottom">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SUBMIT"
+                    android:padding="10dp"
+                    android:textColor="@color/green"
+                    android:background="@color/black"
+                    android:id="@+id/submitButton"
+                    android:layout_weight="33"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="REVIEW"
+                    android:padding="10dp"
+                    android:textColor="@color/orange"
+                    android:background="@color/black"
+                    android:id="@+id/reviewButton"
+                    android:layout_weight="33"
+                    android:layout_marginLeft="2dp"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CLEAR"
+                    android:padding="10dp"
+                    android:textColor="@color/red"
+                    android:background="@color/black"
+                    android:id="@+id/clearButton"
+                    android:layout_weight="33"
+                    android:layout_marginLeft="2dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 </RelativeLayout>

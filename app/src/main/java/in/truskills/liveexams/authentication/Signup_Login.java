@@ -673,7 +673,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("response=",response.toString()+"");
+                Log.d("my_response=",response.toString()+"");
                 Intent i = null;
                 try {
                     HashMap<String ,String> mapper=VariablesDefined.loginParser(response);

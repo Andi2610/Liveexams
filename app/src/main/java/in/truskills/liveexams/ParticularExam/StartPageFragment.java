@@ -2,6 +2,7 @@ package in.truskills.liveexams.ParticularExam;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.Quiz.QuizMainActivity;
 import in.truskills.liveexams.R;
 
 /**
@@ -45,7 +47,7 @@ public class StartPageFragment extends Fragment {
     StartPageInterface ob;
     TextView startDetails,endDetails,descriptionStartPage;
     Spinner myLanguage;
-    String selectedLanguage,timestamp,examDetails,examId;
+    String selectedLanguage,timestamp,examDetails,examId,name;
     SharedPreferences prefs;
     Button start_leave_button;
     Bundle b;
@@ -90,14 +92,14 @@ public class StartPageFragment extends Fragment {
         examDetails=b.getString("examDetails");
         examId=b.getString("examId");
 
-        start_leave_button.setText("LEAVE");
+        start_leave_button.setText("START");
 
         try {
             HashMap<String,String> mapper= VariablesDefined.join_start_Parser(examDetails);
             descriptionStartPage.setText(mapper.get("Description"));
             startDetails.setText(mapper.get("StartDate")+"\n"+mapper.get("StartTime"));
             endDetails.setText(mapper.get("EndDate")+"\n"+mapper.get("EndTime"));
-
+            name=mapper.get("ExamName");
             Log.d("messi","timestamp="+timestamp);
             Log.d("response",timestamp+"**"+mapper.get("StartTime"));
         } catch (JSONException e) {
@@ -174,6 +176,11 @@ public class StartPageFragment extends Fragment {
                     requestQueue.add(stringRequest);
                 }else{
                     //Start Quiz
+
+                    Intent i =new Intent(getActivity(), QuizMainActivity.class);
+                    i.putExtra("examId",examId);
+                    i.putExtra("name",name);
+                    getActivity().startActivity(i);
                 }
             }
         });

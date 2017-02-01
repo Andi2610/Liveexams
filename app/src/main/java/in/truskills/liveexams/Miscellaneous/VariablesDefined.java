@@ -154,6 +154,8 @@ public class VariablesDefined {
         mapper.put("StartTime",jsonObject.getString(StartTime));
         mapper.put("EndTime",jsonObject.getString(EndTime));
         mapper.put("Description",jsonObject.getString(Description));
+        mapper.put("ExamName",jsonObject.getString(ExamName));
+
         return mapper;
     }
 
