@@ -24,15 +24,15 @@ public class QuestionPaperParser {
     private static String MaximumMarks="MaximumMarks";
     private static String EndDate="EndDate";
     private static String StartTime="StartTime";
-    private static String EndTime="Endtime";
+    private static String EndTime="EndTime";
     private static String ExamDuration="ExamDuration";
     private static String Instructions="Instructions";
     private static String Description="Description";
     private static String ExamImage="ExamImage";
     private static String AuthorDetails="AuthorDetails";
     private static String Paperset="Paperset";
-    private static String _v="_v";
-    private static String LanguagesAvailible="LanguagesAvailable";
+    private static String _v="__v";
+    private static String LanguagesAvailable="LanguagesAvailible";
     private static String StartDate="StartDate";
     private static String id="id";
     private static String Name="Name";
@@ -76,8 +76,7 @@ public class QuestionPaperParser {
 
     public static HashMap<String,String> responseParser(String myResponse) throws JSONException {
         HashMap<String,String> mapper=new HashMap<>();
-        JSONArray jsonArray=new JSONArray(myResponse);
-        JSONObject jsonObject=jsonArray.getJSONObject(0);
+        JSONObject jsonObject=new JSONObject(myResponse);
         mapper.put("_id",jsonObject.getString(_id));
         mapper.put("ExamName",jsonObject.getString(ExamName));
         mapper.put("ExamId",jsonObject.getString(ExamId));
@@ -92,7 +91,7 @@ public class QuestionPaperParser {
         mapper.put("AuthorDetails",jsonObject.getJSONArray(AuthorDetails).getJSONObject(0).toString());
         mapper.put("Paperset",jsonObject.getJSONArray(Paperset).getJSONObject(0).toString());
         mapper.put("_v",jsonObject.getString(_v));
-        mapper.put("LanguagesAvailable",jsonObject.getJSONArray(LanguagesAvailible).toString());
+        mapper.put("LanguagesAvailable",jsonObject.getJSONArray(LanguagesAvailable).toString());
         mapper.put("StartDate",jsonObject.getString(StartDate));
         return mapper;
     }
@@ -153,48 +152,37 @@ public class QuestionPaperParser {
         return mapper;
     }
 
-    public static HashMap<String,ArrayList<String>> SectionParser(String mySection) throws JSONException {
-        HashMap<String,ArrayList<String>> mapper=new HashMap<>();
+    public static HashMap<String,String> SectionParser(String mySection,int i) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
         JSONArray jsonArray=new JSONArray(mySection);
-        int length=jsonArray.length();
-        ArrayList<String> SectionMaxMarksList=new ArrayList<>();
-        ArrayList<String> SectionTimeList=new ArrayList<>();
-        ArrayList<String> SectionDescriptionList=new ArrayList<>();
-        ArrayList<String> SectionRulesList=new ArrayList<>();
-        ArrayList<String> SectionQuestionsList=new ArrayList<>();
-        ArrayList<String> AttributesList=new ArrayList<>();
+        String mySectionMaxMarks,mySectionTime,mySectionDescription,mySectionRules,mySectionQuestions,mySectionAttributes;
 
-        for(int i=0;i<length;++i){
-            JSONObject jsonObject=jsonArray.getJSONObject(i);
-            SectionMaxMarksList.add(jsonObject.getJSONArray(SectionMaxMarks).get(0).toString());
-            SectionTimeList.add(jsonObject.getJSONArray(SectionTime).get(0).toString());
-            SectionDescriptionList.add(jsonObject.getJSONArray(SectionDescription).get(0).toString());
-            SectionRulesList.add(jsonObject.getJSONArray(SectionRules).get(0).toString());
-            SectionQuestionsList.add(jsonObject.getJSONArray(SectionQuestions).getJSONObject(0).toString());
-            AttributesList.add(jsonObject.getJSONObject(Attributes).toString());
-        }
+        JSONObject jsonObject=jsonArray.getJSONObject(i);
 
-        mapper.put("SectionMaxMarks",SectionMaxMarksList);
-        mapper.put("SectionTime",SectionTimeList);
-        mapper.put("SectionDescription",SectionDescriptionList);
-        mapper.put("SectionRules",SectionRulesList);
-        mapper.put("SectionQuestions",SectionQuestionsList);
-        mapper.put("Attributes",AttributesList);
+        mySectionMaxMarks=jsonObject.getJSONArray(SectionMaxMarks).get(0).toString();
+        mySectionTime=jsonObject.getJSONArray(SectionTime).get(0).toString();
+        mySectionDescription=jsonObject.getJSONArray(SectionDescription).get(0).toString();
+        mySectionRules=jsonObject.getJSONArray(SectionRules).get(0).toString();
+        mySectionQuestions=jsonObject.getJSONArray(SectionQuestions).getJSONObject(0).toString();
+        mySectionAttributes=jsonObject.getJSONObject(Attributes).toString();
+
+        mapper.put("SectionMaxMarks",mySectionMaxMarks);
+        mapper.put("SectionTime",mySectionTime);
+        mapper.put("SectionDescription",mySectionDescription);
+        mapper.put("SectionRules",mySectionRules);
+        mapper.put("SectionQuestions",mySectionQuestions);
+        mapper.put("Attributes",mySectionAttributes);
         return mapper;
     }
 
-    public static HashMap<String,ArrayList<String>> getAttributesOfSection(ArrayList<String> myAttributesList) throws JSONException {
-        HashMap<String,ArrayList<String>> mapper=new HashMap<>();
-        int length=myAttributesList.size();
-        ArrayList<String> idList=new ArrayList<>();
-        ArrayList<String> NameList=new ArrayList<>();
-        for(int i=0;i<length;++i){
-            JSONObject jsonObject=new JSONObject(myAttributesList.get(i));
-            idList.add(jsonObject.getString(id));
-            NameList.add(jsonObject.getString(Name));
-        }
-        mapper.put("id",idList);
-        mapper.put("Name",NameList);
+    public static HashMap<String,String> getAttributesOfSection(String myAttributes) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
+        String myId,myName;
+        JSONObject jsonObject=new JSONObject(myAttributes);
+        myId=jsonObject.getString(id);
+        myName=jsonObject.getString(Name);
+        mapper.put("id",myId);
+        mapper.put("Name",myName);
         return mapper;
     }
 
@@ -211,23 +199,17 @@ public class QuestionPaperParser {
         return mapper;
     }
 
-    public static HashMap<String,ArrayList<String>> QuestionParser(String myQuestion) throws JSONException {
-        HashMap<String,ArrayList<String>> mapper=new HashMap<>();
+    public static HashMap<String,String> QuestionParser(String myQuestion,int i) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
         JSONArray jsonArray=new JSONArray(myQuestion);
-        int length=jsonArray.length();
-        ArrayList<String> AskedInList=new ArrayList<>();
-        ArrayList<String> LanguageList=new ArrayList<>();
-        ArrayList<String> AttributeList=new ArrayList<>();
-        for(int i=0;i<length;++i){
-            JSONObject jsonObject=jsonArray.getJSONObject(i);
-            AskedInList.add(jsonObject.getJSONArray(AskedIn).get(0).toString());
-            LanguageList.add(jsonObject.getJSONArray(Language).toString());
-            AttributeList.add(jsonObject.getJSONObject(Attributes).toString());
-        }
-
-        mapper.put("AskedIn",AskedInList);
-        mapper.put("Language",LanguageList);
-        mapper.put("Attributes",AttributeList);
+        String myAskedIn,myLanguage,myAttributes;
+        JSONObject jsonObject=jsonArray.getJSONObject(i);
+        myAskedIn=jsonObject.getJSONArray(AskedIn).get(0).toString();
+        myLanguage=jsonObject.getJSONArray(Language).toString();
+        myAttributes=jsonObject.getJSONObject(Attributes).toString();
+        mapper.put("AskedIn",myAskedIn);
+        mapper.put("Language",myLanguage);
+        mapper.put("Attributes",myAttributes);
         return mapper;
     }
 
@@ -265,58 +247,59 @@ public class QuestionPaperParser {
         return mapper;
     }
 
-    public static HashMap<String,ArrayList<String>>  AskedInParser(ArrayList<String> myAskedIn) throws JSONException {
-        HashMap<String,ArrayList<String>> mapper=new HashMap<>();
-        ArrayList<String> ExamNameList=new ArrayList<>();
-        ArrayList<String> YearList=new ArrayList<>();
-        int length=myAskedIn.size();
-        for(int i=0;i<length;++i){
-            JSONObject jsonObject=new JSONObject(myAskedIn.get(i));
-            ExamNameList.add(jsonObject.getJSONArray(ExamName).toString());
-            YearList.add(jsonObject.getJSONArray(Year).toString());
-        }
-        mapper.put("ExamName",ExamNameList);
-        mapper.put("Year",YearList);
+    public static HashMap<String,String>  AskedInParser(String myAskedIn) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
+        String myExamName,myYear;
+        JSONObject jsonObject=new JSONObject(myAskedIn);
+        myExamName=jsonObject.getJSONArray(ExamName).toString();
+        myYear=jsonObject.getJSONArray(Year).toString();
+        mapper.put("ExamName",myExamName);
+        mapper.put("Year",myYear);
         return mapper;
     }
 
-    public static ArrayList<String> getExamNamesOfOneQuestion(ArrayList<String> myExamName) throws JSONException {
-        int length=myExamName.size();
-        ArrayList<String> ExamNameList=new ArrayList<>();
-        for(int i=0;i<length;++i){
-            JSONArray jsonArray=new JSONArray(myExamName.get(i));
-            ExamNameList.add(jsonArray.get(i).toString());
-        }
-        return ExamNameList;
-    }
-
-    public static ArrayList<String> getYearsOfOneQuestion(ArrayList<String> myYear) throws JSONException {
-        int length=myYear.size();
-        ArrayList<String> YearList=new ArrayList<>();
-        for(int i=0;i<length;++i){
-            JSONArray jsonArray=new JSONArray(myYear.get(i));
-            YearList.add(jsonArray.get(i).toString());
-        }
-        return YearList;
-    }
-
-    public static HashMap<String,ArrayList<String>> LanguageParser(String myLanguage) throws JSONException {
-        HashMap<String,ArrayList<String>> mapper=new HashMap<>();
-        JSONArray jsonArray=new JSONArray(myLanguage);
-        ArrayList<String> QuestionTextList=new ArrayList<>();
-        ArrayList<String> OptionsList=new ArrayList<>();
-        ArrayList<String> AttributesList=new ArrayList<>();
+    public static int getLengthOfExamName(String myExamName) throws JSONException {
+        JSONArray jsonArray=new JSONArray(myExamName);
         int length=jsonArray.length();
-        for(int i=0;i<length;++i){
-            JSONObject jsonObject=new JSONObject(jsonArray.get(i).toString());
-            QuestionTextList.add(jsonObject.getJSONArray(QuestionText).get(0).toString());
-            AttributesList.add(jsonObject.getJSONObject(Attributes).toString());
-            OptionsList.add(jsonObject.getJSONArray(Options).get(0).toString());
-        }
-        mapper.put("QuestionText",QuestionTextList);
-        mapper.put("Attributes",AttributesList);
-        mapper.put("Options",OptionsList);
+        return length;
+    }
+
+    public static String getExamNamesOfOneQuestion(String myExamName,int i) throws JSONException {
+        JSONArray jsonArray=new JSONArray(myExamName);
+        String nm=jsonArray.get(i).toString();
+        return nm;
+    }
+
+    public static String getYearsOfOneQuestion(String myYear,int i) throws JSONException {
+        JSONArray jsonArray=new JSONArray(myYear);
+        String nm=jsonArray.get(i).toString();
+        return nm;
+    }
+
+    public static HashMap<String,String> LanguageParser(String myLanguage,int i) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
+        JSONArray jsonArray=new JSONArray(myLanguage);
+       String myQuestionText,myAttributes,myOptions;
+        JSONObject jsonObject=jsonArray.getJSONObject(i);
+        myQuestionText=jsonObject.getJSONArray(QuestionText).toString();
+        myAttributes=jsonObject.getJSONObject(Attributes).toString();
+        myOptions=jsonObject.getJSONArray(Options).get(0).toString();
+        mapper.put("QuestionText",myQuestionText);
+        mapper.put("Attributes",myAttributes);
+        mapper.put("Options",myOptions);
         return mapper;
+    }
+
+    public static String getQuestionText(String myQuestion) throws JSONException {
+        JSONArray jsonArray=new JSONArray(myQuestion);
+        String text=jsonArray.get(0).toString();
+        return text;
+    }
+
+    public static int getLengthOfLanguageOfOneQuestion(String myLanguage) throws JSONException {
+        JSONArray jsonArray=new JSONArray(myLanguage);
+        int length=jsonArray.length();
+        return length;
     }
 
     public static String getAttributesOfOneLanguageOfOneQuestion(String myAttribute) throws JSONException {
@@ -325,28 +308,23 @@ public class QuestionPaperParser {
         return myName;
     }
 
-    public static HashMap<String,ArrayList<String>> OptionsParser(ArrayList<String> myOption) throws JSONException {
-        HashMap<String,ArrayList<String >> mapper=new HashMap<>();
-        int length=myOption.size();
-        ArrayList<String> OptionList=new ArrayList<>();
-        for(int i=0;i<length;++i){
-            JSONObject jsonObject=new JSONObject(myOption.get(i));
-            OptionList.add(jsonObject.getJSONArray(Option).toString());
-        }
-        mapper.put("Option",OptionList);
-        return mapper;
+    public static String OptionsParser(String myOption) throws JSONException {
+        JSONObject jsonObject=new JSONObject(myOption);
+        String myOp=jsonObject.getJSONArray(Option).toString();
+        return myOp;
     }
 
-    public HashMap<String,ArrayList<String>> OptionParser(String myOption) throws JSONException {
-        HashMap<String,ArrayList<String>> mapper=new HashMap<>();
-        ArrayList<String> OptionList = new ArrayList<>();
+    public static int getLengthOfOptionArray(String myOption) throws JSONException {
         JSONArray jsonArray=new JSONArray(myOption);
-        int length=jsonArray.length();
-        for(int i=0;i<length;++i){
-            OptionList.add(jsonArray.getJSONObject(i).toString());
-        }
-        mapper.put("Option",OptionList);
-        return mapper;
+        int l=jsonArray.length();
+        return l;
+    }
+
+    public static String OptionParser(String myOption,int i) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
+        JSONArray jsonArray=new JSONArray(myOption);
+        String myOp=jsonArray.getJSONObject(i).toString();
+        return myOp;
     }
 
     public static HashMap<String,String> oneOptionParser(String myOption) throws JSONException {
@@ -355,6 +333,12 @@ public class QuestionPaperParser {
         mapper.put("_",jsonObject.getString(_));
         mapper.put("Attributes",jsonObject.getString(Attributes));
         return mapper;
+    }
+
+    public static String getAttributesOfOneOption(String myOption) throws JSONException {
+        JSONObject jsonObject=new JSONObject(myOption);
+        String str=jsonObject.getString(id);
+        return str;
     }
 
 
