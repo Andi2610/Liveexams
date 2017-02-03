@@ -648,7 +648,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 String defaultImage=BitmapToString(icon);
 
                 SharedPreferences prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
-                prefs.getString("navImage",defaultImage);
                 SharedPreferences.Editor e=prefs.edit();
                 e.putString("navImage",defaultImage);
                 e.apply();

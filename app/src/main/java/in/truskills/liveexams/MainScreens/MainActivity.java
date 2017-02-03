@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity
     CircularImageView navImage;
     TextView navName,navEmail;
     static final int REQUEST_CAMERA=1,SELECT_FILE=1;
-    private String userChoosenTask,defaultImage;
+    String userChoosenTask,defaultImage;
     String joinedExams;
     Bundle bundle;
     SharedPreferences prefs;
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         icon = BitmapFactory.decodeResource(getResources(),
                 R.drawable.camera);
 
-        String defaultImage=BitmapToString(icon);
+        defaultImage=BitmapToString(icon);
 
         Bitmap myImage=StringToBitmap(prefs.getString("navImage",defaultImage));
 
@@ -108,6 +108,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void selectImage() {
+
+        if(prefs==null){
+            Log.d("hi","null");
+        }else{
+            Log.d("hi","not null");
+        }
 
 
         if(prefs.getString("navImage",defaultImage).equals(defaultImage)){

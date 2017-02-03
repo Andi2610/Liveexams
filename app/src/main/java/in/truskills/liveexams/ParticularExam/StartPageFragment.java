@@ -122,9 +122,6 @@ public class StartPageFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedLanguage=adapterView.getItemAtPosition(i).toString();
-                SharedPreferences.Editor e=prefs.edit();
-                e.putString("language",selectedLanguage);
-                e.apply();
             }
 
             @Override
@@ -180,6 +177,7 @@ public class StartPageFragment extends Fragment {
                     Intent i =new Intent(getActivity(), QuizMainActivity.class);
                     i.putExtra("examId",examId);
                     i.putExtra("name",name);
+                    i.putExtra("language",selectedLanguage);
                     getActivity().startActivity(i);
                 }
             }

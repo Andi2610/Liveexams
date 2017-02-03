@@ -28,6 +28,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,35 +41,31 @@ import in.truskills.liveexams.authentication.Signup_Login;
 public class QuizMainActivity extends AppCompatActivity {
 
     MyPageAdapter pageAdapter;
-    ArrayList<String> options;
-    HashMap<Integer,Integer> noOfQuestionsList;
-    HashMap<Integer,HashMap<Integer,Integer>> noOfLanguageList;
-    HashMap<Integer,HashMap<Integer,HashMap<Integer,Integer>>> noOfOptionList;
-    HashMap<Integer,String> idOfSection,nameOfSection;
-    HashMap<Integer,HashMap<Integer,HashMap<Integer,String>>> ExamName,Year;
-    HashMap<Integer,HashMap<Integer,HashMap<Integer,String>>> AttributesOfLanguage,QuestionText;
-    HashMap<Integer,HashMap<Integer,HashMap<Integer,HashMap<Integer,String>>>> _OfOption,AttributesOfOneOption;
-    int noOfQuestions,noOfExamName,noOfLanguage,noOfOption,noOfSections;
+    int questionArray[], languageArray[][],myOptionsArray[][];
+    String textArray[][], optionArray[][][];
+    HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11;
+    int noOfQuestions, noOfExamName, noOfLanguage, noOfOption, noOfSections;
     RequestQueue requestQueue;
-    String url;
-    String examId,name;
+    String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
+    String myQuestionText, myAttributesOfLanguage, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri, nameOfLanguage;
+    String examId, name, selectedLanguage;
     List<Fragment> fList;
-    TextView sectionName,submittedQuestions,reviewedQuestions,notAttemptedQuestions;
+    TextView sectionName, submittedQuestions, reviewedQuestions, notAttemptedQuestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_main);
-        Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        examId=getIntent().getStringExtra("examId");
-        name=getIntent().getStringExtra("name");
-        fList = new ArrayList<Fragment>();
-
-        sectionName=(TextView)findViewById(R.id.sectionName);
-        submittedQuestions=(TextView)findViewById(R.id.submittedQuestions);
-        reviewedQuestions=(TextView)findViewById(R.id.reviewedQuestions);
-        notAttemptedQuestions=(TextView)findViewById(R.id.notAttemptedQuestions);
+        examId = getIntent().getStringExtra("examId");
+        name = getIntent().getStringExtra("name");
+        selectedLanguage = getIntent().getStringExtra("language");
+        fList = new ArrayList<>();
+        sectionName = (TextView) findViewById(R.id.sectionName);
+        submittedQuestions = (TextView) findViewById(R.id.submittedQuestions);
+        reviewedQuestions = (TextView) findViewById(R.id.reviewedQuestions);
+        notAttemptedQuestions = (TextView) findViewById(R.id.notAttemptedQuestions);
 
 //        sectionName.setText("PHYSICS");
         submittedQuestions.setText("0");
@@ -77,200 +74,170 @@ public class QuizMainActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(name);
 
-        url=VariablesDefined.api+"questionPaper/"+examId;
+        url = VariablesDefined.api + "questionPaper/" + examId;
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
             @Override
             public void onResponse(String result) {
-                Log.d("myQuestionPaper","result="+result.toString()+"");
+                Log.d("myQuestionPaper", "result=" + result.toString() + "");
                 try {
-                    HashMap<String,String> map1= QuestionPaperParser.resultParser(result);
-                    String success=map1.get("success");
-                    if(success.equals("true")){
+                    map1 = QuestionPaperParser.resultParser(result);
+                    success = map1.get("success");
+                    if (success.equals("true")) {
+                        //Get response..
+                        response = map1.get("response");
+                        //Parse response..
+                        map2 = QuestionPaperParser.responseParser(response);
+                        //Get Paperset..
+                        Paperset = map2.get("Paperset");
+                        //Parse Paperset..
+                        map3 = QuestionPaperParser.PapersetParser(Paperset);
+                        //Get Sections..
+                        Sections = map3.get("Sections");
+                        //Parse Sections..
+                        map4 = QuestionPaperParser.SectionsParser(Sections);
+                        //Get Section..
+                        Section = map4.get("Section");
+                        //Get no. of sections..
+                        noOfSections = QuestionPaperParser.getNoOfSections(Section);
 
-                        String response=map1.get("response");
-
-                        HashMap<String,String> map2=QuestionPaperParser.responseParser(response);
-                        String Paperset=map2.get("Paperset");
-
-                        HashMap<String,String> map3=QuestionPaperParser.PapersetParser(Paperset);
-                        String Sections=map3.get("Sections");
-                        HashMap<String,String> map4=QuestionPaperParser.SectionsParser(Sections);
-                        String Section=map4.get("Section");
-                        noOfSections=QuestionPaperParser.getNoOfSections(Section);
-
-                        idOfSection=new HashMap<>();
-                        nameOfSection=new HashMap<>();
-                        noOfQuestionsList=new HashMap<>();
-                        noOfLanguageList=new HashMap<>();
-                        noOfOptionList=new HashMap<>();
-
-                        HashMap<Integer,Integer> noOfLanguageListTemp=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,Integer>> noOfOptionListTemp=new HashMap<>();
-                        HashMap<Integer,Integer> noOfOptionListTemp2=new HashMap<>();
-
-
-                        ExamName=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,String>> tempExamName=new HashMap<>();
-                        HashMap<Integer,String> tempExamName2=new HashMap<>();
-
-                        Year=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,String>> tempYear=new HashMap<>();
-                        HashMap<Integer,String> tempYear2=new HashMap<>();
-
-                        AttributesOfLanguage=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,String>> tempAttributesOfLanguage=new HashMap<>();
-                        HashMap<Integer,String> tempAttributesOfLanguage2=new HashMap<>();
-
-                        QuestionText=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,String>> tempQuestionText=new HashMap<>();
-                        HashMap<Integer,String> tempQuestionText2=new HashMap<>();
-
-                        _OfOption=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,HashMap<Integer,String>>> _OfOptionTemp1=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,String>> _OfOptionTemp2=new HashMap<>();
-                        HashMap<Integer,String> _OfOptionTemp3=new HashMap<>();
-
-                        AttributesOfOneOption=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,HashMap<Integer,String>>> AttributesOfOneOptionTemp1=new HashMap<>();
-                        HashMap<Integer,HashMap<Integer,String>> AttributesOfOneOptionTemp2=new HashMap<>();
-                        HashMap<Integer,String> AttributesOfOneOptionTemp3=new HashMap<>();
-
-                        HashMap<Integer,String> Language=new HashMap<>();
-                        HashMap<Integer,String> AttributesOfQuestion=new HashMap<>();
+                        //Initialize arrays..
+                        questionArray = new int[noOfSections];
+                        languageArray = new int[noOfSections][];
+                        optionArray = new String[noOfSections][][];
+                        textArray = new String[noOfSections][];
+                        myOptionsArray = new int[noOfSections][];
 
                         //Loop through all the sections..
-                        for(int i=0;i<noOfSections;++i){
+                        for (int i = 0; i < noOfSections; ++i) {
 
                             //Parse one section..
-                            HashMap<String,String> map5=QuestionPaperParser.SectionParser(Section,i);
-                            String SectionQuestions=map5.get("SectionQuestions");
-                            String AttributesOfSection=map5.get("Attributes");
-
+                            map5 = QuestionPaperParser.SectionParser(Section, i);
+                            //Get SectionQuestions..
+                            SectionQuestions = map5.get("SectionQuestions");
+                            //Get AttributesOfSection..
+                            AttributesOfSection = map5.get("Attributes");
                             //Parse one section attributes..
-                            HashMap<String,String> map6=QuestionPaperParser.getAttributesOfSection(AttributesOfSection);
-                            idOfSection.put(i,map6.get("id"));
-                            nameOfSection.put(i,map6.get("Name"));
-
-                            sectionName.setText(nameOfSection.get(i));
-
+                            map6 = QuestionPaperParser.getAttributesOfSection(AttributesOfSection);
                             //Parse one section SectionQuestions..
-                            HashMap<String,String> map7=QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
-                            String Question=map7.get("Question");
-
+                            map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
+                            //Get one section Question..
+                            Question = map7.get("Question");
                             //Get no. of questions in one section..
-                            noOfQuestions=QuestionPaperParser.getNoOfQuestionInOneSection(Question);
+                            noOfQuestions = QuestionPaperParser.getNoOfQuestionInOneSection(Question);
+                            //Set value questionArray[i]=noOfQuestions in section i.
+                            questionArray[i] = noOfQuestions;
 
-                            noOfQuestionsList.put(i,noOfQuestions);
+                            //Initialise the textArray[i] as textArray[noOfSections][noOfQuestions]..
+                            textArray[i] = new String[noOfQuestions];
+                            myOptionsArray[i] = new int[noOfQuestions];
+
+                            //Initialise the optionArray[i] as optionArray[noOfSections][noOfQuestions]..
+                            optionArray[i] = new String[noOfQuestions][];
 
                             //Loop through all the questions of one section..
-                            for(int j=0;j<noOfQuestions;++j){
+                            for (int j = 0; j < noOfQuestions; ++j) {
+
+                                //Initialise languageArray[i][] as noOfQuestions in section i.
+                                languageArray[i] = new int[noOfQuestions];
 
                                 //Parse one section one Question..
-                                HashMap<String,String> map8=QuestionPaperParser.QuestionParser(Question,j);
-
-                                String myAskedIn=map8.get("AskedIn");
+                                map8 = QuestionPaperParser.QuestionParser(Question, j);
+                                //Get AskedIn..
+                                myAskedIn = map8.get("AskedIn");
                                 //Parse one section one question askedIn..
-                                HashMap<String,String> map9=QuestionPaperParser.AskedInParser(myAskedIn);
-                                String myExamName=map9.get("ExamName");
-                                String myYear=map9.get("Year");
-
-                                noOfExamName=QuestionPaperParser.getLengthOfExamName(myExamName);
+                                map9 = QuestionPaperParser.AskedInParser(myAskedIn);
+                                //Get ExamName..
+                                myExamName = map9.get("ExamName");
+                                //Get Year..
+                                myYear = map9.get("Year");
+                                //Get no. of Exam names in which the question has been asked..
+                                noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
 
                                 //Loop through the entire exam and year array..
-                                for(int k=0;k<noOfExamName;++k){
-
+                                for (int k = 0; k < noOfExamName; ++k) {
                                     //Get exam name one by one..
-                                    String nm=QuestionPaperParser.getExamNamesOfOneQuestion(myExamName,k);
-                                    tempExamName2.put(k,nm);
-                                    tempExamName.put(j,tempExamName2);
-                                    ExamName.put(i,tempExamName);
-
+                                    nm = QuestionPaperParser.getExamNamesOfOneQuestion(myExamName, k);
                                     //Get Year one by one..
-                                    String nmm=QuestionPaperParser.getYearsOfOneQuestion(myYear,k);
-                                    tempYear2.put(k,nmm);
-                                    tempYear.put(j,tempYear2);
-                                    Year.put(i,tempYear);
+                                    nmm = QuestionPaperParser.getYearsOfOneQuestion(myYear, k);
                                 }
 
-                                String myLanguage=map8.get("Language");
+                                //Get Language..
+                                myLanguage = map8.get("Language");
 
                                 //Get length of language array of one question of one section..
-                                noOfLanguage=QuestionPaperParser.getLengthOfLanguageOfOneQuestion(myLanguage);
+                                noOfLanguage = QuestionPaperParser.getLengthOfLanguageOfOneQuestion(myLanguage);
 
-                                noOfLanguageListTemp.put(j,noOfLanguage);
-                                noOfLanguageList.put(i,noOfLanguageListTemp);
+                                //Get index of the language array which has to get parsed..
+                                int index = QuestionPaperParser.getIndex(selectedLanguage, myLanguage);
 
-                                //Loop through the entire language array..
-                                for(int k=0;k<noOfLanguage;++k){
+                                if (index == -1) {
+                                    Log.d("debug", "notFound");
+                                } else {
+                                    //Parse the desired index jsonObject og the language array..
+                                    map10 = QuestionPaperParser.LanguageParser(myLanguage, index);
+                                }
 
+                                //Get QuestionText array of that question in that language..
+                                myQuestionText = map10.get("QuestionText");
+                                //Get Options of the question..
+                                myOptions = map10.get("Options");
+                                //Get question text to be displayed..
+                                text = QuestionPaperParser.getQuestionText(myQuestionText);
+                                //Set value of textArray[i][j] as text of question j of section i.
+                                textArray[i][j] = text;
+                                //Parse Options to get Option array..
+                                myOption = QuestionPaperParser.OptionsParser(myOptions);
+                                //Get length of option array..
+                                noOfOption = QuestionPaperParser.getLengthOfOptionArray(myOption);
+                                //Loop through entire option array..
 
-                                    HashMap<String,String> map10=QuestionPaperParser.LanguageParser(myLanguage,k);
-                                    String myQuestionText=map10.get("QuestionText");
-                                    String myAttributesOfLanguage=map10.get("Attributes");
-                                    String myOptions=map10.get("Options");
+                                //Initialise the optionArray[i][j] as optionArray[noOfSections][noOfQuestions][noOfOptions]..
+                                myOptionsArray[i][j]=noOfOption;
 
-                                    String text=QuestionPaperParser.getQuestionText(myQuestionText);
+                                //Initialise optionArray[i] as optionArray of particular option of a particular question of a particular section..
+                                optionArray[i][j] = new String[noOfOption];
 
-                                    tempQuestionText2.put(k,text);
-                                    tempQuestionText.put(j,tempQuestionText2);
-                                    QuestionText.put(i,tempQuestionText);
+                                for (int p = 0; p < noOfOption; ++p) {
 
-                                    String nameOfLanguage=QuestionPaperParser.getAttributesOfOneLanguageOfOneQuestion(myAttributesOfLanguage);
-
-                                    tempAttributesOfLanguage2.put(k,nameOfLanguage);
-                                    tempAttributesOfLanguage.put(j,tempAttributesOfLanguage2);
-                                    AttributesOfLanguage.put(i,tempAttributesOfLanguage);
-
-                                    String myOption=QuestionPaperParser.OptionsParser(myOptions);
-                                    //Get length of option array..
-                                    noOfOption=QuestionPaperParser.getLengthOfOptionArray(myOption);
-                                    noOfOptionListTemp2.put(k,noOfOption);
-                                    noOfOptionListTemp.put(j,noOfOptionListTemp2);
-                                    noOfOptionList.put(i,noOfOptionListTemp);
-
-
-                                    ArrayList<String> opt=new ArrayList<>();
-
-                                    //Loop through entire option array..
-                                    for(int p=0;p<noOfOption;++p){
-
-                                        String myOp=QuestionPaperParser.OptionParser(myOption,p);
-
-                                        HashMap<String,String> map11=QuestionPaperParser.oneOptionParser(myOp);
-                                        String myAt=map11.get("Attributes");
-                                        String myAttri=QuestionPaperParser.getAttributesOfOneOption(myAt);
-                                        _OfOptionTemp3.put(p,map11.get("_"));
-                                        AttributesOfOneOptionTemp3.put(p,myAttri);
-                                        _OfOptionTemp2.put(k,_OfOptionTemp3);
-                                        AttributesOfOneOptionTemp2.put(k,AttributesOfOneOptionTemp3);
-                                        _OfOptionTemp1.put(j,_OfOptionTemp2);
-                                        AttributesOfOneOptionTemp1.put(j,AttributesOfOneOptionTemp2);
-                                        _OfOption.put(i,_OfOptionTemp1);
-                                        AttributesOfOneOption.put(i,AttributesOfOneOptionTemp1);
-
-                                        opt.add(map11.get("_"));
-
-                                    }
-                                    fList.add(MyFragment.newInstance(text,opt));
-                                    Log.d("check","text="+text);
-                                    setPager(fList);
-
+                                    //Parse Option Array at the desirex index to get one option..
+                                    myOp = QuestionPaperParser.OptionParser(myOption, p);
+                                    //Parse one option..
+                                    map11 = QuestionPaperParser.oneOptionParser(myOp);
+                                    //Get Attributes of one option..
+                                    myAt = map11.get("Attributes");
+                                    //Parse Attributes of one option..
+                                    myAttri = QuestionPaperParser.getAttributesOfOneOption(myAt);
+                                    //Assign value to optionArray as option value of a particular option of a question of a section..
+                                    optionArray[i][j][p] = map11.get("_");
+                                    Log.d("super",optionArray[i][j][p]+" "+i+" "+j+" "+p);
                                 }
                             }
                         }
 
-
-                        //After entire question paper has been loaded..
-                        Handler handler=new Handler();
+                        Handler handler = new Handler();
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                Log.d("check","flistSize="+fList.size());
+
+                                ArrayList<String> options;
+                                for (int i = 0; i < noOfSections; ++i) {
+                                    Log.d("super","noOfQuestionsinSection"+i+"="+ questionArray[i]);
+                                    for (int j = 0; j < questionArray[i]; ++j) {
+                                        Log.d("super", i+"-"+j+"-"+textArray[i][j] );
+                                        Log.d("super","noOfOptions"+i+"-"+j+"-"+ myOptionsArray[i][j]);
+                                        options=new ArrayList<String>();
+                                        for (int p = 0; p <myOptionsArray[i][j] ; ++p) {
+                                            Log.d("super", optionArray[i][j][p]+"");
+                                            options.add(optionArray[i][j][p]);
+                                        }
+                                        fList.add(MyFragment.newInstance(textArray[i][j],options));
+                                    }
+                                }
                                 pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
                                 ViewPager pager =
-                                        (ViewPager)findViewById(R.id.viewpager);
+                                        (ViewPager) findViewById(R.id.viewpager);
                                 pager.setAdapter(pageAdapter);
                             }
                         });
@@ -292,21 +259,19 @@ public class QuizMainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-
-    public void setPager(List<Fragment> fList){
-
-        Log.d("check","inFunc"+fList.size());
-    }
-    class MyPageAdapter extends FragmentPagerAdapter{
+    class MyPageAdapter extends FragmentPagerAdapter {
         private List<Fragment> fragments;
+
         public MyPageAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
             this.fragments = fragments;
         }
+
         @Override
         public Fragment getItem(int position) {
             return this.fragments.get(position);
         }
+
         @Override
         public int getCount() {
             return this.fragments.size();

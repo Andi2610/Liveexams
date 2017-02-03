@@ -302,6 +302,21 @@ public class QuestionPaperParser {
         return length;
     }
 
+    public static int getIndex(String selectedLanguage,String myLanguage) throws JSONException {
+        JSONArray jsonArray=new JSONArray(myLanguage);
+        int length=jsonArray.length();
+        String myAttributes;
+        for(int i=0;i<length;++i){
+            JSONObject jsonObject=jsonArray.getJSONObject(i);
+            myAttributes=jsonObject.getJSONObject(Attributes).toString();
+            String name=getAttributesOfOneLanguageOfOneQuestion(myAttributes);
+            if(name.equals(selectedLanguage)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public static String getAttributesOfOneLanguageOfOneQuestion(String myAttribute) throws JSONException {
         JSONObject jsonObject=new JSONObject(myAttribute);
         String myName=jsonObject.getString(Name);
