@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,13 +46,15 @@ public class QuizMainActivity extends AppCompatActivity {
     int questionArray[], languageArray[][],myOptionsArray[][];
     String textArray[][], optionArray[][][];
     HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11;
-    int noOfQuestions, noOfExamName, noOfLanguage, noOfOption, noOfSections;
+    int noOfQuestions, noOfExamName, noOfLanguage, noOfOption, noOfSections,num;
     RequestQueue requestQueue;
     String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
-    String myQuestionText, myAttributesOfLanguage, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri, nameOfLanguage;
+    String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri;
     String examId, name, selectedLanguage;
     List<Fragment> fList;
     TextView sectionName, submittedQuestions, reviewedQuestions, notAttemptedQuestions;
+    Button submitButton,reviewButton,clearButton;
+    ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,9 @@ public class QuizMainActivity extends AppCompatActivity {
         submittedQuestions = (TextView) findViewById(R.id.submittedQuestions);
         reviewedQuestions = (TextView) findViewById(R.id.reviewedQuestions);
         notAttemptedQuestions = (TextView) findViewById(R.id.notAttemptedQuestions);
+        submitButton=(Button) findViewById(R.id.submitButton);
+        reviewButton=(Button) findViewById(R.id.reviewButton);
+        clearButton=(Button) findViewById(R.id.clearButton);
 
 //        sectionName.setText("PHYSICS");
         submittedQuestions.setText("0");
@@ -236,9 +243,18 @@ public class QuizMainActivity extends AppCompatActivity {
                                     }
                                 }
                                 pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
-                                ViewPager pager =
+                                pager =
                                         (ViewPager) findViewById(R.id.viewpager);
                                 pager.setAdapter(pageAdapter);
+
+                                submitButton.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        num=pager.getCurrentItem();
+                                        Log.d("super","previous position="+num+"");
+                                        pager.setCurrentItem(7);
+                                    }
+                                });
                             }
                         });
 
@@ -259,6 +275,11 @@ public class QuizMainActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    @Override
+    public void onBackPressed() {
+        pager.setCurrentItem(num);
+    }
+
     class MyPageAdapter extends FragmentPagerAdapter {
         private List<Fragment> fragments;
 
@@ -269,6 +290,7 @@ public class QuizMainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
+            Log.d("super","position="+position);
             return this.fragments.get(position);
         }
 
