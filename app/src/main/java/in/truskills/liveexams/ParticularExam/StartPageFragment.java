@@ -39,15 +39,15 @@ import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.Quiz.QuizMainActivity;
 import in.truskills.liveexams.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+//This is Start Fragment where a user can unenroll from an exam or start the quiz of the exam..
+
 public class StartPageFragment extends Fragment {
 
+    //Declare variables..
     StartPageInterface ob;
-    TextView startDetails,endDetails,descriptionStartPage;
+    TextView startDetails, endDetails, descriptionStartPage;
     Spinner myLanguage;
-    String selectedLanguage,timestamp,examDetails,examId,name;
+    String selectedLanguage, timestamp, examDetails, examId, name;
     SharedPreferences prefs;
     Button start_leave_button;
     Bundle b;
@@ -55,7 +55,6 @@ public class StartPageFragment extends Fragment {
     public StartPageFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,17 +67,18 @@ public class StartPageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        prefs=getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        Log.d("response","inOnAcCrStart");
 
-        ob=(StartPageInterface) getActivity();
+        //Get shared preferences..
+        prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+
+        ob = (StartPageInterface) getActivity();
         ob.changeTitleForStartPage();
 
-        startDetails=(TextView)getActivity().findViewById(R.id.startDetails);
-        endDetails=(TextView)getActivity().findViewById(R.id.endDetails);
-        descriptionStartPage=(TextView)getActivity().findViewById(R.id.descriptionStartPage);
-        myLanguage=(Spinner)getActivity().findViewById(R.id.myLanguage);
-        start_leave_button=(Button)getActivity().findViewById(R.id.start_leave_button);
+        startDetails = (TextView) getActivity().findViewById(R.id.startDetails);
+        endDetails = (TextView) getActivity().findViewById(R.id.endDetails);
+        descriptionStartPage = (TextView) getActivity().findViewById(R.id.descriptionStartPage);
+        myLanguage = (Spinner) getActivity().findViewById(R.id.myLanguage);
+        start_leave_button = (Button) getActivity().findViewById(R.id.start_leave_button);
 
 //        startDetails.setText("Thursday\n12th January 2017\n8:00 AM");
 //        endDetails.setText("Saturday\n14th January 2017\n7:00 PM");
@@ -86,42 +86,42 @@ public class StartPageFragment extends Fragment {
 //        start_leave_button.setText("START");
 //        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
 
-        b=getArguments();
-
-        timestamp=b.getString("timestamp");
-        examDetails=b.getString("examDetails");
-        examId=b.getString("examId");
+        //Get arguments..
+        b = getArguments();
+        timestamp = b.getString("timestamp");
+        examDetails = b.getString("examDetails");
+        examId = b.getString("examId");
 
         start_leave_button.setText("START");
 
+        //Parse the exam details..
         try {
-            HashMap<String,String> mapper= VariablesDefined.join_start_Parser(examDetails);
+            HashMap<String, String> mapper = VariablesDefined.join_start_Parser(examDetails);
             descriptionStartPage.setText(mapper.get("Description"));
-            startDetails.setText(mapper.get("StartDate")+"\n"+mapper.get("StartTime"));
-            endDetails.setText(mapper.get("EndDate")+"\n"+mapper.get("EndTime"));
-            name=mapper.get("ExamName");
-            Log.d("messi","timestamp="+timestamp);
-            Log.d("response",timestamp+"**"+mapper.get("StartTime"));
+            startDetails.setText(mapper.get("StartDate") + "\n" + mapper.get("StartTime"));
+            endDetails.setText(mapper.get("EndDate") + "\n" + mapper.get("EndTime"));
+            name = mapper.get("ExamName");
+            Log.d("messi", "timestamp=" + timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ArrayList<String> listOfLanguages=new ArrayList<>();
+        ArrayList<String> listOfLanguages = new ArrayList<>();
         listOfLanguages.add("LANGUAGE");
         listOfLanguages.add("Hindi");
         listOfLanguages.add("Gujarati");
         listOfLanguages.add("English");
 
-        ArrayAdapter<String> adapterLanguage=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,listOfLanguages);
+        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
         myLanguage.setAdapter(adapterLanguage);
 
-        int index=adapterLanguage.getPosition(prefs.getString("language","English"));
+        int index = adapterLanguage.getPosition(prefs.getString("language", "English"));
         myLanguage.setSelection(index);
 
         myLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedLanguage=adapterView.getItemAtPosition(i).toString();
+                selectedLanguage = adapterView.getItemAtPosition(i).toString();
             }
 
             @Override
@@ -133,25 +133,27 @@ public class StartPageFragment extends Fragment {
         start_leave_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(start_leave_button.getText().equals("LEAVE")){
-                    //Unenroll user
 
-                    final RequestQueue requestQueue= Volley.newRequestQueue(getActivity());
-                    String url=VariablesDefined.api+"unenrollUser/"+prefs.getString("userId","abc");
+                //If start time of quiz hasn't reached..
+                if (start_leave_button.getText().equals("LEAVE")) {
+                    //Unenroll user
+                    final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                    String url = VariablesDefined.api + "unenrollUser/" + prefs.getString("userId", "abc");
                     StringRequest stringRequest = new StringRequest(Request.Method.PUT,
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d("response=",response.toString()+"");
+                            Log.d("response=", response.toString() + "");
                             try {
-                                JSONObject jsonObject=new JSONObject(response);
-                                String success=jsonObject.getString("success");
-                                if(success.equals("true")){
-                                    ob=(StartPageInterface)getActivity();
-                                    JoinPageFragment f=new JoinPageFragment();
-                                    f.setArguments(b);
-                                    ob.changeFragmentFromStartPage(f,"name");
-                                }
+                                    HashMap<String, String> mapper = VariablesDefined.unenrollUserParser(response);
+                                    String success = mapper.get("success");
+                                    if (success.equals("true")) {
+                                        //Get Joined Exams Result
+                                        ob = (StartPageInterface) getActivity();
+                                        JoinPageFragment f = new JoinPageFragment();
+                                        f.setArguments(b);
+                                        ob.changeFragmentFromStartPage(f, "name");
+                                    }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -160,25 +162,33 @@ public class StartPageFragment extends Fragment {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.d("response", error.getMessage());
+                            //If the connection couldn't be made..
                             Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
-                    }){
+                    }) {
                         @Override
-                        protected Map<String,String> getParams(){
-                            Map<String,String> params = new HashMap<String, String>();
-                            params.put("examId",examId);
+                        protected Map<String, String> getParams() {
+                            //Set required parameters..
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("examId", examId);
                             return params;
                         }
                     };
                     requestQueue.add(stringRequest);
-                }else{
-                    //Start Quiz
-
-                    Intent i =new Intent(getActivity(), QuizMainActivity.class);
-                    i.putExtra("examId",examId);
-                    i.putExtra("name",name);
-                    i.putExtra("language",selectedLanguage);
-                    getActivity().startActivity(i);
+                } else {
+                    //Check if a valid language has been chosen from the list..
+                    if(selectedLanguage.equals("LANGUAGE"))
+                        //If not chosen..
+                        Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
+                    else{
+                        //Else if chosen..
+                        //Start Quiz
+                        Intent i = new Intent(getActivity(), QuizMainActivity.class);
+                        i.putExtra("examId", examId);
+                        i.putExtra("name", name);
+                        i.putExtra("language", selectedLanguage);
+                        getActivity().startActivity(i);
+                    }
                 }
             }
         });
@@ -192,25 +202,20 @@ public class StartPageFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.rulesIcon:
-                ob=(StartPageInterface)getActivity();
-                RulesFragment f=new RulesFragment();
-                ob.changeFragmentFromStartPage(f,"RULES");
+                //When Rules icon is clicked.. load Rules fragment through interface..
+                ob = (StartPageInterface) getActivity();
+                RulesFragment f = new RulesFragment();
+                ob.changeFragmentFromStartPage(f, "RULES");
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d("response","inResStart");
-
-    }
 }
 
-interface StartPageInterface{
-    public void changeFragmentFromStartPage(Fragment f,String title);
+interface StartPageInterface {
+    public void changeFragmentFromStartPage(Fragment f, String title);
+
     public void changeTitleForStartPage();
 }

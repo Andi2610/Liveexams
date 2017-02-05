@@ -38,33 +38,34 @@ import java.io.IOException;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, HomeInterface {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface {
 
+    //Declare variables..
     NavigationView navigationView;
     CircularImageView navImage;
-    TextView navName,navEmail;
-    static final int REQUEST_CAMERA=1,SELECT_FILE=1;
-    String userChoosenTask,defaultImage;
-    String joinedExams;
+    TextView navName, navEmail;
+    static final int REQUEST_CAMERA = 1, SELECT_FILE = 1;
+    String userChoosenTask, defaultImage;
     Bundle bundle;
     SharedPreferences prefs;
     Bitmap icon;
     CharSequence[] items;
-
+    FragmentManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Set toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        //Get shared preferences..
+        prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
         bundle = new Bundle();
 
-
+        //Initially load Home fragment..
         HomeFragment fragment = new HomeFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction trans = manager.beginTransaction();
@@ -82,26 +83,27 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setCheckedItem(R.id.nav_home);
 
-        View view=navigationView.getHeaderView(0);
-        navImage = (CircularImageView)view.findViewById(R.id.navImage);
-        navName=(TextView)view.findViewById(R.id.navName);
-        navEmail=(TextView)view.findViewById(R.id.navEmail);
+        View view = navigationView.getHeaderView(0);
+        navImage = (CircularImageView) view.findViewById(R.id.navImage);
+        navName = (TextView) view.findViewById(R.id.navName);
+        navEmail = (TextView) view.findViewById(R.id.navEmail);
 
         icon = BitmapFactory.decodeResource(getResources(),
                 R.drawable.camera);
 
-        defaultImage=BitmapToString(icon);
+        defaultImage = BitmapToString(icon);
 
-        Bitmap myImage=StringToBitmap(prefs.getString("navImage",defaultImage));
+        Bitmap myImage = StringToBitmap(prefs.getString("navImage", defaultImage));
 
         navImage.setImageBitmap(myImage);
 
-        navName.setText("Shivangi Gupta");
-        navEmail.setText("shivangilm10@gmail.com");
+        navName.setText(prefs.getString("userId", ""));
+        navEmail.setText(prefs.getString("emailAddress", ""));
 
         navImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Display image chooser..
                 selectImage();
             }
         });
@@ -109,24 +111,19 @@ public class MainActivity extends AppCompatActivity
 
     private void selectImage() {
 
-        if(prefs==null){
-            Log.d("hi","null");
-        }else{
-            Log.d("hi","not null");
-        }
-
-
-        if(prefs.getString("navImage",defaultImage).equals(defaultImage)){
-            items=new CharSequence[3];
-            items[0]="Take Photo";
-            items[1]="Choose from Library";
-            items[2]="Cancel";
-        }else{
-            items=new CharSequence[4];
-            items[0]="Take Photo";
-            items[1]="Choose from Library";
-            items[2]="Remove Photo";
-            items[3]="Cancel";
+        //If no image set.. do not include "Remove Photo" option
+        //Else include "Remove Photo" option..
+        if (prefs.getString("navImage", defaultImage).equals(defaultImage)) {
+            items = new CharSequence[3];
+            items[0] = "Take Photo";
+            items[1] = "Choose from Library";
+            items[2] = "Cancel";
+        } else {
+            items = new CharSequence[4];
+            items[0] = "Take Photo";
+            items[1] = "Choose from Library";
+            items[2] = "Remove Photo";
+            items[3] = "Cancel";
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -134,24 +131,24 @@ public class MainActivity extends AppCompatActivity
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                boolean result=Utility.checkPermission(MainActivity.this);
+                boolean result = Utility.checkPermission(MainActivity.this);
 
                 if (items[item].equals("Take Photo")) {
-                    userChoosenTask="Take Photo";
-                    if(result)
+                    userChoosenTask = "Take Photo";
+                    if (result)
                         cameraIntent();
 
                 } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask="Choose from Library";
-                    if(result)
+                    userChoosenTask = "Choose from Library";
+                    if (result)
                         galleryIntent();
 
-                } else if(items[item].equals("Remove Photo")){
+                } else if (items[item].equals("Remove Photo")) {
                     SharedPreferences.Editor e = prefs.edit();
-                    e.putString("navImage",defaultImage);
+                    e.putString("navImage", defaultImage);
                     e.apply();
                     navImage.setImageBitmap(icon);
-                }else if (items[item].equals("Cancel")) {
+                } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -159,18 +156,18 @@ public class MainActivity extends AppCompatActivity
         builder.show();
     }
 
-    private void cameraIntent()
-    {
+    //If capture an image from camera is requested..
+    private void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
-    private void galleryIntent()
-    {
+    //If choose an image from gallery is requested..
+    private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
-        startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
+        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
 
     @Override
@@ -178,9 +175,9 @@ public class MainActivity extends AppCompatActivity
         switch (requestCode) {
             case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(userChoosenTask.equals("Take Photo"))
+                    if (userChoosenTask.equals("Take Photo"))
                         cameraIntent();
-                    else if(userChoosenTask.equals("Choose from Library"))
+                    else if (userChoosenTask.equals("Choose from Library"))
                         galleryIntent();
                 } else {
                     //code for deny
@@ -204,7 +201,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
-        Bitmap bm=null;
+        Bitmap bm = null;
         if (data != null) {
             try {
                 bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
@@ -213,8 +210,9 @@ public class MainActivity extends AppCompatActivity
             }
         }
         String tempString = BitmapToString(bm);
+        //Edit shared preference of navImage to currently obtained image..
         SharedPreferences.Editor e = prefs.edit();
-        e.putString("navImage",tempString);
+        e.putString("navImage", tempString);
         e.apply();
         navImage.setImageBitmap(bm);
     }
@@ -239,24 +237,28 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         String tempString = BitmapToString(thumbnail);
+        //Edit shared preference of navImage to currently obtained image..
         SharedPreferences.Editor e = prefs.edit();
-        e.putString("navImage",tempString);
+        e.putString("navImage", tempString);
         e.apply();
         navImage.setImageBitmap(thumbnail);
     }
 
     @Override
     public void onBackPressed() {
-        FragmentManager manager=getSupportFragmentManager();
-        HomeFragment f=(HomeFragment)manager.findFragmentByTag("HomeFragment");
+
+        //If drawer is open, close it..
+        //Else If home fragment is loaded, then exit from the app..
+        //Else If any fragment other than home fragment is visible, then load home fragment..
+
+        manager = getSupportFragmentManager();
+        HomeFragment f = (HomeFragment) manager.findFragmentByTag("HomeFragment");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else if(f!=null&&f.isVisible()){
+        } else if (f != null && f.isVisible()) {
             finish();
-        }
-        else{
+        } else {
             HomeFragment fragment = new HomeFragment();
             FragmentTransaction t = manager.beginTransaction();
             t.replace(R.id.fragment, fragment, "HomeFragment");
@@ -269,12 +271,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         int id = item.getItemId();
-        FragmentManager manager=getSupportFragmentManager();
+
+        //Load the desired fragment only when they are not initially visible..
+
+        manager = getSupportFragmentManager();
 
         if (id == R.id.nav_home) {
-            HomeFragment f=(HomeFragment)manager.findFragmentByTag("HomeFragment");
-            if(!(f!=null&&f.isVisible())){
+            HomeFragment f = (HomeFragment) manager.findFragmentByTag("HomeFragment");
+            if (!(f != null && f.isVisible())) {
                 Log.d("messi", "homeFragLoaded");
                 HomeFragment fragment = new HomeFragment();
                 FragmentTransaction t = manager.beginTransaction();
@@ -282,13 +288,10 @@ public class MainActivity extends AppCompatActivity
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_home);
                 getSupportActionBar().setTitle("HOME");
-            }else{
-                Log.d("messi", "HomeFragNotLoaded");
             }
-
         } else if (id == R.id.nav_calendar) {
-            CalendarFragment f=(CalendarFragment) manager.findFragmentByTag("CalendarFragment");
-            if(!(f!=null&&f.isVisible())){
+            CalendarFragment f = (CalendarFragment) manager.findFragmentByTag("CalendarFragment");
+            if (!(f != null && f.isVisible())) {
                 Log.d("messi", "CalFragLoaded");
 
                 CalendarFragment fragment = new CalendarFragment();
@@ -297,12 +300,9 @@ public class MainActivity extends AppCompatActivity
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_calendar);
                 getSupportActionBar().setTitle("CALENDAR");
-            }else{
-                Log.d("messi", " CalFragNotLoaded");
-
             }
-        } else if(id==R.id.nav_logout){
-            SharedPreferences.Editor e=prefs.edit();
+        } else if (id == R.id.nav_logout) {
+            SharedPreferences.Editor e = prefs.edit();
             e.clear();
             e.apply();
             Intent i = new Intent(MainActivity.this, Signup_Login.class);
@@ -315,28 +315,31 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public Bitmap StringToBitmap(String string){
-        try{
-            byte[] encodeByte= Base64.decode(string,Base64.DEFAULT);
-            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte,0,encodeByte.length);
+    //A method to convert bitmap to string..
+    public Bitmap StringToBitmap(String string) {
+        try {
+            byte[] encodeByte = Base64.decode(string, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public String BitmapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
-        byte[] b=baos.toByteArray();
-        String temp=Base64.encodeToString(b,Base64.DEFAULT);
+    //A method to convert string to bitmap..
+    public String BitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
 
+    //Whenever a new fragment is loaded, when home fragment is initially visible..
     @Override
     public void changeFragmentFromHome(Fragment f) {
-        FragmentManager manager=getSupportFragmentManager();
+        FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
         t.replace(R.id.fragment, f, "AllExamsFragment");
         t.commit();

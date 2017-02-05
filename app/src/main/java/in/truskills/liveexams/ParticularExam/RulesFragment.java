@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 
 import in.truskills.liveexams.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+//Fragment for the rules of a particular exam..
 public class RulesFragment extends Fragment {
 
 

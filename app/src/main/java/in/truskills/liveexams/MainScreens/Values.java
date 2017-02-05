@@ -1,8 +1,6 @@
 package in.truskills.liveexams.MainScreens;
 
-/**
- * Created by 6155dx on 22-01-2017.
- */
+//This is the wrapper class for list adapters used in main screens..
 
 public class Values {
     String name,startDateValue,endDateValue,durationValue,examId;

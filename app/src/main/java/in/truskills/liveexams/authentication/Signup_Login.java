@@ -570,7 +570,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //This method is for validating the user's entered signup info before it is given for registering..
     public void signupValidation() {
+
+        //Get the value of all the fields..
         name = signupName.getText().toString();
         gender = selectedGender;
         email = signupEmail.getText().toString();
@@ -580,9 +583,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         location = signupLocation.getText().toString();
         language = selectedLanguage;
 
+        //If all valid.. signup..
         if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && !language.equals("LANGUAGE") && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             signupFunction();
         } else {
+            //Else display desired error messages..
             if (name.equals(""))
                 signupName.setError("Required");
             if (!(!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()))
@@ -602,6 +607,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //This method is for validating the user's entered login info before it is given for logging in..
     public void loginValidation() {
         login_name = loginName.getText().toString();
         login_password=loginPassword.getText().toString();
@@ -615,14 +621,20 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //This method is for signing up i.e calling signup api..
     public void signupFunction() {
+
+        //Api to be connected to..
         String url = VariablesDefined.api+"signup";
+
+        //Make a request..
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("response=",response.toString()+"");
                 try {
+                    //Parse the signup response..
                     HashMap<String ,String> mapper=VariablesDefined.signupParser(response);
                     Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                     if(mapper.get("success").equals("true"))
@@ -634,12 +646,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                //If connection could not be made..
                 Log.d("response", error.getMessage());
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
             protected Map<String,String> getParams(){
+
+                //Attach parameters required..
                 Map<String,String> params = new HashMap<String, String>();
 
                 Bitmap icon = BitmapFactory.decodeResource(getResources(),
@@ -666,18 +681,25 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         requestQueue.add(stringRequest);
     }
 
+    //This method is for logging up i.e calling login api..
     public void loginFunction() {
+
+        //Api to be connected to..
         String url = VariablesDefined.api+"login";
+
+        //Make a request..
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                //On getting the response..
                 Log.d("my_response=",response.toString()+"");
                 Intent i = null;
                 try {
+                    //Parse the login response..
                     HashMap<String ,String> mapper=VariablesDefined.loginParser(response);
+                    //If successfull signup.. save the desired info in shared preferences..
                     if(mapper.get("success").equals("true")) {
-                        Log.d("response","inIf");
                         SharedPreferences.Editor e=prefs.edit();
                         e.putString("userId",mapper.get("id"));
                         e.putString("emailAddress",mapper.get("emailAddress"));
@@ -691,6 +713,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         startActivity(i);
                         finish();
                     }else{
+                        //Display error message..
                         Log.d("response","inElse");
                         Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                     }
@@ -702,12 +725,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                //In case the connection to the Api couldn't be established..
                 Log.d("response", error.getMessage()+"");
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+
+                //Put all the required parameters for the post request..
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("userName",loginName.getText().toString());
                 params.put("password",loginPassword.getText().toString());
@@ -717,6 +743,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         requestQueue.add(stringRequest);
     }
 
+    //This method is use whenever a bitmap is to be converted into string..
     public String BitmapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
@@ -733,9 +760,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //If permission is granted..
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //If permission not present, ask for it..
                     if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
                     } else {
+                        //Fetch current loaction..
                         final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
                         progress.setMessage("Fetching your current location....");
                         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);

@@ -25,9 +25,10 @@ public class SplashScreen extends Activity {
                 }catch (Exception e){
                     e.printStackTrace();
                 }finally {
-                    //Start MainActivity after 2 sec
                     SharedPreferences prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
                     String state=prefs.getString("login","false");
+                    //If login=true, start MainActivity.java
+                    //Else start Signup_Login.java
                     if(state.equals("true")){
                         Intent i=new Intent(SplashScreen.this,MainActivity.class);
                         startActivity(i);

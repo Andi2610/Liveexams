@@ -10,36 +10,44 @@ import android.util.Log;
 
 import in.truskills.liveexams.R;
 
-public class ParticularExamMainActivity extends AppCompatActivity implements StartPageInterface,JoinPageInterface{
+//This is the main activity for a particular exam in which start and join fragment are loaded..
 
-    String name,enrolled;
+public class ParticularExamMainActivity extends AppCompatActivity implements StartPageInterface, JoinPageInterface {
+
+    //Declare variables..
+    String name, enrolled;
     Bundle b;
+    FragmentManager manager;
+    FragmentTransaction trans;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_particular_exam_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        b=getIntent().getBundleExtra("bundle");
-        name=b.getString("name");
-        Log.d("response",name+"");
-        enrolled=b.getString("enrolled");
+        //Get intent variables..
+        b = getIntent().getBundleExtra("bundle");
+        name = b.getString("name");
+        enrolled = b.getString("enrolled");
 
         getSupportActionBar().setTitle(name);
 
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction trans = manager.beginTransaction();
+        manager = getSupportFragmentManager();
+        trans = manager.beginTransaction();
 
-        if(enrolled.equals("true")){
-            Log.d("response","Start");
+        //Check if the user is enrolled is in the exam or not..
+        if (enrolled.equals("true")) {
+            //If enrolled.. directly load Start fragment..
             StartPageFragment fragment = new StartPageFragment();
             fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "StartPageFragment");
             trans.commit();
-        }else{
-            Log.d("response","Join");
+        } else {
+            //Else if unenrolled.. load Join fragment..
+            Log.d("response", "Join");
             JoinPageFragment fragment = new JoinPageFragment();
             fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "JoinPageFragment");
@@ -47,50 +55,54 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         }
     }
 
+    //This funnction is executed whenever a new fragment is loaded when join fragment is present initially..
     @Override
-    public void changeFragmentFromJoinPage(Fragment f,String title) {
-        FragmentManager manager=getSupportFragmentManager();
-        FragmentTransaction trans=manager.beginTransaction();
-        if(title.equals("name")){
-            trans.replace(R.id.fragment,f,"StartPageFragment");
+    public void changeFragmentFromJoinPage(Fragment f, String title) {
+        manager = getSupportFragmentManager();
+        trans = manager.beginTransaction();
+        //Check for the title which is to be set on the loading of the new fragment..
+        if (title.equals("name")) {
+            //Load Start fragment..
+            trans.replace(R.id.fragment, f, "StartPageFragment");
             getSupportActionBar().setTitle(name);
-        }
-        else{
-            trans.replace(R.id.fragment,f,"RulesFromJoin");
+        } else {
+            //Load Rules fragment..
+            trans.replace(R.id.fragment, f, "RulesFromJoin");
             trans.addToBackStack(null);
             getSupportActionBar().setTitle(title);
         }
         trans.commit();
     }
 
+    //This funnction is executed whenever a new fragment is loaded when start fragment is present initially..
+    @Override
+    public void changeFragmentFromStartPage(Fragment f, String title) {
+        manager = getSupportFragmentManager();
+        trans = manager.beginTransaction();
+        //Check for the title which is to be set on the loading of the new fragment..
+        if (title.equals("name")) {
+            //Load Join fragment..
+            trans.replace(R.id.fragment, f, "JoinPageFragment");
+            getSupportActionBar().setTitle(name);
+        } else {
+            //Load Rules fragment..
+            trans.replace(R.id.fragment, f, "RulesFragment");
+            trans.addToBackStack(null);
+            getSupportActionBar().setTitle(title);
+        }
+        trans.commit();
+    }
+
+    //When start fragment is loaded.. change the title of the app bar to the particular exam name..
+    @Override
+    public void changeTitleForStartPage() {
+        getSupportActionBar().setTitle(name);
+    }
+
+    //When join fragment is loaded.. change the title of the app bar to the particular exam name..
     @Override
     public void changeTitleForJoinPage() {
         getSupportActionBar().setTitle(name);
 
-    }
-
-    @Override
-    public void changeFragmentFromStartPage(Fragment f,String title) {
-        FragmentManager manager=getSupportFragmentManager();
-        FragmentTransaction trans=manager.beginTransaction();
-        if(title.equals("name")){
-            trans.replace(R.id.fragment,f,"JoinPageFragment");
-            getSupportActionBar().setTitle(name);
-        }else{
-            trans.replace(R.id.fragment,f,"RulesFragment");
-            trans.addToBackStack(null);
-            getSupportActionBar().setTitle(title);
-        }
-        trans.commit();
-    }
-
-    @Override
-    public void changeTitleForStartPage() {
-            getSupportActionBar().setTitle(name);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
     }
 }

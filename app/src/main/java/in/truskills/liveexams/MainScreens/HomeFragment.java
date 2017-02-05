@@ -33,27 +33,29 @@ import java.util.Calendar;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 
+//This is the home fragment in which myExams list is loaded..
+
 public class HomeFragment extends Fragment {
 
+    //Declare variables..
     Button add;
     RecyclerView myExamsList;
     LinearLayoutManager linearLayoutManager;
     MyExamsListAdapter myExamsListAdapter;
-    List<Values> valuesList,filteredList;
+    List<Values> valuesList, filteredList;
     Values values;
     HomeInterface ob;
-    String joinedExams,myStartDate,myDateOfStart,myEndDate,myDateOfEnd,myDuration,myDurationTime;
-    String [] parts;
+    String joinedExams, myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime;
+    String[] parts;
     SimpleDateFormat simpleDateFormat;
     Calendar calendar;
     Date date;
-    int day,month,year,hour,minute;
+    int day, month, year, hour, minute;
     SharedPreferences prefs;
 
     public HomeFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,83 +69,60 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        prefs=getActivity().getSharedPreferences("prefs",Context.MODE_PRIVATE);
-        joinedExams=prefs.getString("joinedExams","noJoinedExams");
+        //Get shared preferences..
+        prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        joinedExams = prefs.getString("joinedExams", "noJoinedExams");
 
-        Log.d("messi",joinedExams);
-
-        add=(Button)getActivity().findViewById(R.id.add);
-        myExamsList=(RecyclerView)getActivity().findViewById(R.id.myExamsList);
+        //Initialise the variables..
+        add = (Button) getActivity().findViewById(R.id.add);
+        myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsList);
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        valuesList=new ArrayList<>();
+        valuesList = new ArrayList<>();
 
-        if(!joinedExams.equals("noJoinedExams")){
+        //If user has joined to some exams..
+        if (!joinedExams.equals("noJoinedExams")) {
             try {
-                HashMap<String, ArrayList<String>> mapper=VariablesDefined.myExamsParser(joinedExams);
-                JSONArray arr=new JSONArray(joinedExams);
-                int length=arr.length();
-                for(int i=0;i<length;++i){
-                    if(mapper.get("leftExam").get(i).equals("false")){
+                    //Parse myExams Result..
+                    HashMap<String, ArrayList<String>> mapper = VariablesDefined.myExamsParser(joinedExams);
+                    JSONArray arr = new JSONArray(joinedExams);
+                    int length = arr.length();
+                    for (int i = 0; i < length; ++i) {
 
-                        myStartDate=mapper.get("StartDate").get(i);
-                        myEndDate=mapper.get("EndDate").get(i);
+                        //If user is still enrolled to this exam..
+                        if (mapper.get("leftExam").get(i).equals("false")) {
 
-                        simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                            myStartDate = mapper.get("StartDate").get(i);
+                            myEndDate = mapper.get("EndDate").get(i);
+                            myDuration = mapper.get("ExamDuration").get(i);
 
-                        date=simpleDateFormat.parse(myStartDate);
-                        calendar= Calendar.getInstance();
-                        calendar.setTime(date);
-                        day=calendar.get(Calendar.DAY_OF_MONTH);
-                        year=calendar.get(Calendar.YEAR);
-                        month=calendar.get(Calendar.MONTH);
-                        month++;
-                        myDateOfStart=day+"/"+month+"/"+year;
+                            myDateOfStart = VariablesDefined.parseDate(myStartDate);
+                            myDateOfEnd = VariablesDefined.parseDate(myEndDate);
+                            myDurationTime=VariablesDefined.parseDuration(myDuration);
 
-                        date=simpleDateFormat.parse(myEndDate);
-                        calendar= Calendar.getInstance();
-                        calendar.setTime(date);
-                        day=calendar.get(Calendar.DAY_OF_MONTH);
-                        year=calendar.get(Calendar.YEAR);
-                        month=calendar.get(Calendar.MONTH);
-                        month++;
-                        myDateOfEnd=day+"/"+month+"/"+year;
-
-                        myDuration=mapper.get("ExamDuration").get(i);
-                        parts = myDuration.split("-");
-                        hour=Integer.parseInt(parts[0]);
-                        minute=Integer.parseInt(parts[1]);
-
-                        if(minute==0){
-                            myDurationTime=hour+" hours";
-                        }else{
-                            myDurationTime=hour+" hours "+minute+" minutes";
+                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                            valuesList.add(values);
                         }
-
-                        values=new Values(mapper.get("ExamName").get(i),myDateOfStart,myDateOfEnd,myDurationTime,mapper.get("ExamId").get(i));
-                        valuesList.add(values);
-                    }
-                }
+                  }
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
             }
         }
 
 
-        myExamsListAdapter=new MyExamsListAdapter(valuesList,getActivity());
+        myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
 
         myExamsList.setLayoutManager(linearLayoutManager);
         myExamsList.setItemAnimator(new DefaultItemAnimator());
         myExamsList.setAdapter(myExamsListAdapter);
         myExamsListAdapter.notifyDataSetChanged();
 
-        if(valuesList.isEmpty()){
+        if (valuesList.isEmpty()) {
             add.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             add.setVisibility(View.GONE);
         }
 
-        ob=(HomeInterface)getActivity();
+        ob = (HomeInterface) getActivity();
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,10 +137,10 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.main, menu);
-        SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem=menu.findItem(R.id.search);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        MenuItem menuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        if(searchView!=null) {
+        if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
             searchView.setQueryHint("Search here..");
             searchView.setIconified(true);
@@ -181,10 +160,10 @@ public class HomeFragment extends Fragment {
                         final String text = valuesList.get(i).name.toLowerCase();
                         if (text.contains(s)) {
 
-                            filteredList.add(new Values(valuesList.get(i).name,valuesList.get(i).startDateValue,valuesList.get(i).endDateValue,valuesList.get(i).durationValue,valuesList.get(i).examId));
+                            filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
                         }
                     }
-                    myExamsListAdapter=new MyExamsListAdapter(filteredList,getActivity());
+                    myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
                     myExamsList.setAdapter(myExamsListAdapter);
                     myExamsListAdapter.notifyDataSetChanged();
                     return true;
@@ -195,7 +174,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.addIcon:
                 AllExamsFragment f = new AllExamsFragment();
                 ob.changeFragmentFromHome(f);
@@ -205,6 +184,7 @@ public class HomeFragment extends Fragment {
 
     }
 }
-interface HomeInterface{
+
+interface HomeInterface {
     public void changeFragmentFromHome(Fragment f);
 }

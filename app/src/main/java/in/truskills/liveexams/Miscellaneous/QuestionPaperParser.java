@@ -1,21 +1,23 @@
 package in.truskills.liveexams.Miscellaneous;
 
 import android.graphics.Path;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by Shivansh Gupta on 30-01-2017.
- */
+
+//This class is used for json parsing the entire question paper obtained for the quiz..
 
 public class QuestionPaperParser {
 
+    //All the fields present in the json response..
     private static String response="response";
     private static String success="success";
     private static String _id="_id";
@@ -356,5 +358,24 @@ public class QuestionPaperParser {
         return str;
     }
 
+    public static HashMap<String,Integer> getSectionAndQuestion(int num, int [][] f){
+        HashMap<String,Integer> mapper=new HashMap<>();
+
+        for(int i=0;i<f.length;++i){
+            for(int j=0;j<f[i].length;++j){
+                if(f[i][j]==num){
+                    mapper.put("SectionIndex",i);
+                    mapper.put("QuestionIndex",j);
+                    Log.d("index","sectionIndex="+i+" questionIndex="+j);
+                }
+            }
+        }
+        return mapper;
+    }
+
+    public static int getFragmentIndex(int sectionIndex,int questionIndex,int [][]f){
+        int num=f[sectionIndex][questionIndex];
+        return num;
+    }
 
 }

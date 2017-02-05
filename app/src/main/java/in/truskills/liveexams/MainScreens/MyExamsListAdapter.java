@@ -31,38 +31,35 @@ import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.ParticularExam.ParticularExamMainActivity;
 import in.truskills.liveexams.R;
 
-/**
- * Created by 6155dx on 22-01-2017.
- */
+//This is the list adapter for my enrolled exams which will direct to start page whenever an item in the list is clicked..
 
-public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.MyViewHolder>{
+public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.MyViewHolder> {
 
+    //Declare variables..
     List<Values> myList;
     Context c;
     Values value;
     SharedPreferences prefs;
     Handler h;
     RequestQueue requestQueue;
-    String enrolled,timestamp,examDetails,examId;
+    String enrolled, timestamp, examDetails, examId;
 
-    MyExamsListAdapter(List<Values> myList,Context c){
-        this.myList=myList;
-        this.c=c;
-        Log.d("messi", "MyExamsListAdapter: inConstructor");
+    MyExamsListAdapter(List<Values> myList, Context c) {
+        this.myList = myList;
+        this.c = c;
     }
 
     @Override
     public MyExamsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_row_layout_my_exams, parent, false);
-
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Log.d("messi", "onBindViewHolder: MyExamLisAd");
-        value=myList.get(position);
+
+        value = myList.get(position);
         holder.name.setText(value.getName());
         holder.startDatevalue.setText(value.getStartDateValue());
         holder.endDateValue.setText(value.getEndDateValue());
@@ -71,36 +68,42 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
             @Override
             public void onClick(View view) {
 
-                value=myList.get(holder.getAdapterPosition());
-                requestQueue= Volley.newRequestQueue(c);
-                prefs=c.getSharedPreferences("prefs",Context.MODE_PRIVATE);
+                value = myList.get(holder.getAdapterPosition());
+                requestQueue = Volley.newRequestQueue(c);
+                prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-                String url= VariablesDefined.api+"examDetails";
+                //Get exam details of the exam on which the user has clicked..
+                String url = VariablesDefined.api + "examDetails";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST,
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("response=",response.toString()+"");
+                        Log.d("response=", response.toString() + "");
                         try {
-                            HashMap<String,String> mapper=VariablesDefined.examDetailsParser(response);
-                            enrolled=mapper.get("enrolled");
-                            timestamp=mapper.get("timestamp");
-                            examDetails=mapper.get("examDetails");
-                            Log.d("response","examId="+value.getExamId());
-                            examId=value.getExamId();
-                            h=new Handler();
+                            //Parse Exam details..
+                            HashMap<String, String> mapper = VariablesDefined.examDetailsParser(response);
+
+                            //Get it's variables..
+                            enrolled = mapper.get("enrolled");
+                            timestamp = mapper.get("timestamp");
+                            examDetails = mapper.get("examDetails");
+
+                            examId = value.getExamId();
+
+                            h = new Handler();
                             h.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Bundle b=new Bundle();
-                                    b.putString("enrolled",enrolled);
-                                    b.putString("timestamp",timestamp);
-                                    b.putString("examDetails",examDetails);
-                                    b.putString("name",value.getName());
-                                    Log.d("response",value.getName()+"");
-                                    b.putString("examId",examId);
-                                    Intent i=new Intent(c,ParticularExamMainActivity.class);
-                                    i.putExtra("bundle",b);
+                                    //Create a bundle to be passed to particular main activity..
+                                    Bundle b = new Bundle();
+                                    b.putString("enrolled", enrolled);
+                                    b.putString("timestamp", timestamp);
+                                    b.putString("examDetails", examDetails);
+                                    b.putString("name", value.getName());
+                                    Log.d("response", value.getName() + "");
+                                    b.putString("examId", examId);
+                                    Intent i = new Intent(c, ParticularExamMainActivity.class);
+                                    i.putExtra("bundle", b);
                                     c.startActivity(i);
                                 }
                             });
@@ -112,15 +115,17 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("response", error.getMessage());
+                        //If connection couldn't be made..
                         Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
-                }){
+                }) {
                     @Override
-                    protected Map<String,String> getParams(){
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put("userId",prefs.getString("userId","abc"));
-                        Log.d("response","idGiven="+value.getExamId());
-                        params.put("examId",value.getExamId());
+                    protected Map<String, String> getParams() {
+                        //Set required parameters..
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("userId", prefs.getString("userId", "abc"));
+                        Log.d("response", "idGiven=" + value.getExamId());
+                        params.put("examId", value.getExamId());
                         return params;
                     }
                 };
@@ -134,18 +139,18 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
         return myList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name,startDatevalue,endDateValue,durationValue;
+        public TextView name, startDatevalue, endDateValue, durationValue;
         LinearLayout container;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            name=(TextView)itemView.findViewById(R.id.name);
-            startDatevalue=(TextView)itemView.findViewById(R.id.startDateValue);
-            endDateValue=(TextView)itemView.findViewById(R.id.endDateValue);
-            durationValue=(TextView)itemView.findViewById(R.id.durationValue);
-            container=(LinearLayout)itemView.findViewById(R.id.container);
+            name = (TextView) itemView.findViewById(R.id.name);
+            startDatevalue = (TextView) itemView.findViewById(R.id.startDateValue);
+            endDateValue = (TextView) itemView.findViewById(R.id.endDateValue);
+            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
+            container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }
 }
