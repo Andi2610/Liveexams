@@ -52,7 +52,7 @@ import static java.lang.Character.FORMAT;
 
 //This is the quiz main activity in which my fragment is loaded..
 
-public class QuizMainActivity extends AppCompatActivity implements setValueOfPager{
+public class QuizMainActivity extends AppCompatActivity implements setValueOfPager,View.OnClickListener,MyFragmentInterface{
 
     //Declare the variables..
     MyPageAdapter pageAdapter;
@@ -78,8 +78,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     AllQuestionsInOneSectionAdapter allQuestionsInOneSectionAdapter;
     LinearLayoutManager linearLayoutManager;
     private static final String FORMAT = "%02d:%02d:%02d";
-
-    int seconds , minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -361,7 +359,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     options.add(optionArray[i][j][p]);
                 }
                 //Add new instance of the fragment for every question..
-                fList.add(MyFragment.newInstance(textArray[i][j], options, examId));
+                fList.add(MyFragment.newInstance(textArray[i][j], options, examId,i,j));
             }
         }
 
@@ -373,8 +371,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         HashMap<String, String> map = ob.getValuesPerSection(0);
         sectionTitle = map.get("SectionName");
         sectionName.setText(sectionTitle);
-
-        HashMap<String,String> temp=ob.getValuesPerQuestionPerSection(2,0);
 
         ArrayList<Integer> qq=new ArrayList<>();
         int cnt=1;
@@ -415,6 +411,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(qq,QuizMainActivity.this,questionIndex);
                 questionsList.setAdapter(allQuestionsInOneSectionAdapter);
                 allQuestionsInOneSectionAdapter.notifyDataSetChanged();
+                HashMap<String,String> mapp=ob.getValuesPerQuestionPerSection(sectionIndex,questionIndex);
             }
 
             @Override
@@ -440,6 +437,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 startActivityForResult(i,REQUEST_CODE);
             }
         });
+
+        submitButton.setEnabled(false);
+        clearButton.setEnabled(false);
+        submitButton.setOnClickListener(this);
+        reviewButton.setOnClickListener(this);
+        clearButton.setOnClickListener(this);
     }
 
     @Override
@@ -540,13 +543,56 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         int num=pager.getCurrentItem();
         HashMap<String,Integer> map = QuestionPaperParser.getSectionAndQuestion(num, fragmentIndex);
         int sI = map.get("SectionIndex");
-        int qI = map.get("QuestionIndex");
-        SharedPreferences.Editor e=quizPrefs.edit();
-        e.putInt("mySectionIndex",sI);
-        e.putInt("myQuestionIndex",qI);
-        e.apply();
         int item=QuestionPaperParser.getFragmentIndex(sI,pos,fragmentIndex);
         pager.setCurrentItem(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        HashMap<String,Integer> m;
+        int ss,qq,val,n;
+        switch (v.getId()){
+
+            case R.id.submitButton:
+                n=pager.getCurrentItem();
+                Log.d("here","inSubmit"+n);
+                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
+                ss = m.get("SectionIndex");
+                qq = m.get("QuestionIndex");
+                val=ob.getValuesPerQuestionForQuiz(ss,qq,"SubmitButtonClicks");
+                ++val;
+                ob.updateValuesPerQuestionPerSection(ss,qq,val,"SubmitButtonClicks");
+                break;
+
+            case R.id.reviewButton:
+                n=pager.getCurrentItem();
+                Log.d("here","inReview"+n);
+                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
+                ss = m.get("SectionIndex");
+                qq = m.get("QuestionIndex");
+                val=ob.getValuesPerQuestionForQuiz(ss,qq,"ReviewButtonClicks");
+                ++val;
+                ob.updateValuesPerQuestionPerSection(ss,qq,val,"ReviewButtonClicks");
+                break;
+
+            case R.id.clearButton:
+                n=pager.getCurrentItem();
+                Log.d("here","inClear"+n);
+                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
+                ss = m.get("SectionIndex");
+                qq = m.get("QuestionIndex");
+                val=ob.getValuesPerQuestionForQuiz(ss,qq,"ClearButtonClicks");
+                ++val;
+                ob.updateValuesPerQuestionPerSection(ss,qq,val,"ClearButtonClicks");
+                break;
+
+        }
+    }
+
+    @Override
+    public void enableButtons() {
+        submitButton.setEnabled(true);
+        clearButton.setEnabled(true);
     }
 
     //Adapter for view pager..

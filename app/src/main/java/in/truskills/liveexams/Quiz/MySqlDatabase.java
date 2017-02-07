@@ -122,12 +122,25 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public void updateValuesPerQuestionPerSection(int si,int qi,String value,String columnName){
+    public void updateValuesPerQuestionPerSection(int si,int qi,int value,String columnName){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
         db.update(TABLE_PER_QUESTION,contentValues,SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi,null);
         db.close();
+    }
+
+    public int getValuesPerQuestionForQuiz(int si,int qi,String columnName){
+        SQLiteDatabase db=this.getReadableDatabase();
+        int value=0;
+        String selectQuery = "SELECT "+columnName+" FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                value=cursor.getInt(cursor.getColumnIndex(columnName));
+            } while (cursor.moveToNext());
+        }
+        return value;
     }
 
     public HashMap<String, String> getValuesPerSection(int si) {
@@ -154,6 +167,13 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
+//                Log.d("here","si="+si+" qi="+qi);
+//                Log.d("here","noOfToggles="+cursor.getInt(cursor.getColumnIndex(NumberOfToggles)));
+//                Log.d("here","submit="+cursor.getInt(cursor.getColumnIndex(SubmitButtonClicks)));
+//                Log.d("here","review="+cursor.getInt(cursor.getColumnIndex(ReviewButtonClicks)));
+//                Log.d("here","clear="+cursor.getInt(cursor.getColumnIndex(ClearButtonClicks)));
+//                Log.d("here","read="+cursor.getInt(cursor.getColumnIndex(ReadStatus)));
+//                Log.d("here","final="+cursor.getInt(cursor.getColumnIndex(FinalAnswer)));
 
             } while (cursor.moveToNext());
         }

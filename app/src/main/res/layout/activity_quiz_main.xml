@@ -104,7 +104,6 @@
                         android:text="SUBMIT"
                         android:padding="10dp"
                         android:textColor="@color/green"
-                        android:background="@color/black"
                         android:id="@+id/submitButton"
                         android:layout_weight="33"/>
                     <Button
@@ -123,7 +122,6 @@
                         android:text="CLEAR"
                         android:padding="10dp"
                         android:textColor="@color/red"
-                        android:background="@color/black"
                         android:id="@+id/clearButton"
                         android:layout_weight="33"
                         android:layout_marginLeft="2dp"/>
