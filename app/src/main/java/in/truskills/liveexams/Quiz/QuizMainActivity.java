@@ -1,10 +1,12 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +15,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -36,20 +41,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-import in.truskills.liveexams.Miscellaneous.MySql;
 import in.truskills.liveexams.Miscellaneous.QuestionPaperParser;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
+import static java.lang.Character.FORMAT;
+
 //This is the quiz main activity in which my fragment is loaded..
 
-public class QuizMainActivity extends AppCompatActivity {
+public class QuizMainActivity extends AppCompatActivity implements setValueOfPager{
 
     //Declare the variables..
     MyPageAdapter pageAdapter;
-    private static final int REQUEST_CODE=1;
+    private static final int REQUEST_CODE=1,REQUEST_CODE_FOR_ALL_SUMMARY=2;
     SharedPreferences quizPrefs;
     int s,q;
     int questionArray[], languageArray[][], myOptionsArray[][], fragmentIndex[][], sectionIndex, questionIndex;
@@ -62,17 +69,23 @@ public class QuizMainActivity extends AppCompatActivity {
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri;
     String examId, name, selectedLanguage;
     List<Fragment> fList;
-    TextView sectionName, submittedQuestions, reviewedQuestions, notAttemptedQuestions;
+    TextView sectionName, submittedQuestions, reviewedQuestions, notAttemptedQuestions,timer;
     Button submitButton, reviewButton, clearButton;
     ViewPager pager;
-    MySql ob;
+    MySqlDatabase ob;
+    ProgressDialog dialog;
+    RecyclerView questionsList;
+    AllQuestionsInOneSectionAdapter allQuestionsInOneSectionAdapter;
+    LinearLayoutManager linearLayoutManager;
+    private static final String FORMAT = "%02d:%02d:%02d";
+
+    int seconds , minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_main);
 
-        Log.d("here", "in onCreate");
         quizPrefs=getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,6 +99,7 @@ public class QuizMainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(name);
 
         fList = new ArrayList<>();
+        timer = (TextView) findViewById(R.id.timer);
         sectionName = (TextView) findViewById(R.id.sectionName);
         submittedQuestions = (TextView) findViewById(R.id.submittedQuestions);
         reviewedQuestions = (TextView) findViewById(R.id.reviewedQuestions);
@@ -93,14 +107,22 @@ public class QuizMainActivity extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.submitButton);
         reviewButton = (Button) findViewById(R.id.reviewButton);
         clearButton = (Button) findViewById(R.id.clearButton);
+        questionsList=(RecyclerView)findViewById(R.id.questionsList);
 
         submittedQuestions.setText("0");
         reviewedQuestions.setText("0");
         notAttemptedQuestions.setText("30");
 
-        ob = new MySql(QuizMainActivity.this);
+        ob = new MySqlDatabase(QuizMainActivity.this);
 
         //CONNECT TO SOCKET..
+        mySocketConnection();
+
+        dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.show();
 
         //Api to be connected to get the question paper..
         url = VariablesDefined.api + "questionPaper/" + examId;
@@ -110,16 +132,15 @@ public class QuizMainActivity extends AppCompatActivity {
                 url, new Response.Listener<String>() {
             @Override
             public void onResponse(String result) {
-
-                Log.d("here", "in response");
-
-                Log.d("myQuestionPaper", "result=" + result.toString() + "");
                 try {
                     //Parse the result..
                     map1 = QuestionPaperParser.resultParser(result);
                     //Get success..
                     success = map1.get("success");
                     if (success.equals("true")) {
+
+                        dialog.dismiss();
+
                         //Get response..
                         response = map1.get("response");
 
@@ -199,6 +220,8 @@ public class QuizMainActivity extends AppCompatActivity {
                                 //Assign it's value to the array..
                                 fragmentIndex[i][j] = fi;
 
+                                ob.setValuesPerQuestionPerSection(i,j);
+
                                 //Initialise languageArray[i][] as noOfQuestions in section i.
                                 languageArray[i] = new int[noOfQuestions];
 
@@ -234,7 +257,6 @@ public class QuizMainActivity extends AppCompatActivity {
                                 int index = QuestionPaperParser.getIndex(selectedLanguage, myLanguage);
                                 if (index == -1) {
                                     //Language not found..
-                                    Log.d("debug", "notFound");
                                 } else {
                                     //Parse the desired index jsonObject og the language array..
                                     map10 = QuestionPaperParser.LanguageParser(myLanguage, index);
@@ -280,7 +302,6 @@ public class QuizMainActivity extends AppCompatActivity {
                                     //Assign value to optionArray as option value of a particular option of a question of a section..
                                     optionArray[i][j][p] = map11.get("_");
 
-                                    Log.d("debug", "option " + i + " " + j + " " + p + " = " + optionArray[i][j][p]);
                                 }
                             }
                         }
@@ -302,8 +323,10 @@ public class QuizMainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                dialog.dismiss();
+
                 //If connection couldn't be made..
-                Log.d("response", error.getMessage());
                 Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -312,7 +335,23 @@ public class QuizMainActivity extends AppCompatActivity {
 
     public void afterResponse(){
 
-        Log.d("here","inAfterResponse");
+
+        new CountDownTimer(10800000, 1000) { // adjust the milli seconds here
+
+            public void onTick(long millisUntilFinished) {
+
+                timer.setText(""+String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+            }
+
+            public void onFinish() {
+                timer.setText("done!");
+            }
+        }.start();
 
         ArrayList<String> options;
         for (int i = 0; i < noOfSections; ++i) {
@@ -334,6 +373,24 @@ public class QuizMainActivity extends AppCompatActivity {
         HashMap<String, String> map = ob.getValuesPerSection(0);
         sectionTitle = map.get("SectionName");
         sectionName.setText(sectionTitle);
+
+        HashMap<String,String> temp=ob.getValuesPerQuestionPerSection(2,0);
+
+        ArrayList<Integer> qq=new ArrayList<>();
+        int cnt=1;
+        for(int i=0;i<questionArray[0];++i){
+            qq.add(cnt);
+            ++cnt;
+        }
+
+        allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(qq,QuizMainActivity.this,0);
+
+        linearLayoutManager=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        questionsList.setLayoutManager(linearLayoutManager);
+        questionsList.setItemAnimator(new DefaultItemAnimator());
+        questionsList.setAdapter(allQuestionsInOneSectionAdapter);
+        allQuestionsInOneSectionAdapter.notifyDataSetChanged();
+
         //Whenever user swipes a screen..
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -343,13 +400,21 @@ public class QuizMainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Log.d("position", position + "");
                 mapper = QuestionPaperParser.getSectionAndQuestion(position, fragmentIndex);
                 sectionIndex = mapper.get("SectionIndex");
                 questionIndex = mapper.get("QuestionIndex");
                 HashMap<String, String> map = ob.getValuesPerSection(sectionIndex);
                 sectionTitle = map.get("SectionName");
                 sectionName.setText(sectionTitle);
+                ArrayList<Integer> qq=new ArrayList<>();
+                int cnt=1;
+                for(int i=0;i<questionArray[sectionIndex];++i){
+                    qq.add(cnt);
+                    ++cnt;
+                }
+                allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(qq,QuizMainActivity.this,questionIndex);
+                questionsList.setAdapter(allQuestionsInOneSectionAdapter);
+                allQuestionsInOneSectionAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -365,10 +430,10 @@ public class QuizMainActivity extends AppCompatActivity {
                 HashMap<String,Integer> map=QuestionPaperParser.getSectionAndQuestion(num,fragmentIndex);
                 s=map.get("SectionIndex");
                 q=map.get("QuestionIndex");
-                SharedPreferences.Editor e=quizPrefs.edit();
-                e.putInt("mySectionIndex",s);
-                e.putInt("myQuestionIndex",q);
-                e.apply();
+//                SharedPreferences.Editor e=quizPrefs.edit();
+//                e.putInt("mySectionIndex",s);
+//                e.putInt("myQuestionIndex",q);
+//                e.apply();
                 Intent i =new Intent(QuizMainActivity.this,SectionNamesDisplay.class);
                 i.putExtra("noOfSections",noOfSections);
                 i.putExtra("currentSection",s);
@@ -382,21 +447,44 @@ public class QuizMainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==REQUEST_CODE){
             if(data!=null){
-                int myS=data.getIntExtra("message",quizPrefs.getInt("mySectionIndex",0));
+                int myS=data.getIntExtra("message",0);
                 int n=QuestionPaperParser.getFragmentIndex(myS,0,fragmentIndex);
-                if(myS==quizPrefs.getInt("mySectionIndex",0)){
-                    SharedPreferences.Editor e=quizPrefs.edit();
-                    e.clear();
-                    e.apply();
-                }else{
+//                if(myS==quizPrefs.getInt("mySectionIndex",-1)){
+//                    SharedPreferences.Editor e=quizPrefs.edit();
+//                    e.clear();
+//                    e.apply();
+//                }else{
                     pager.setCurrentItem(n);
-                }
+//                }
             }
-            else{
-                SharedPreferences.Editor e=quizPrefs.edit();
-                e.clear();
-                e.apply();
+//            else{
+//                SharedPreferences.Editor e=quizPrefs.edit();
+//                e.clear();
+//                e.apply();
+//            }
+        }else if(requestCode==REQUEST_CODE_FOR_ALL_SUMMARY){
+            if(data!=null){
+                int myS=data.getIntExtra("section",0);
+                int myQ=data.getIntExtra("question",0);
+
+
+                int n=QuestionPaperParser.getFragmentIndex(myS,myQ,fragmentIndex);
+//                if(myS==quizPrefs.getInt("mySectionIndex",-1)&&myQ==quizPrefs.getInt("myQuestionIndex",-1)){
+//                    SharedPreferences.Editor e=quizPrefs.edit();
+//                    e.clear();
+//                    e.apply();
+//                }else{
+                    pager.setCurrentItem(n);
+                    HashMap<String, String> map = ob.getValuesPerSection(myS);
+                    sectionTitle = map.get("SectionName");
+                    sectionName.setText(sectionTitle);
+//                }
             }
+//            else{
+//                SharedPreferences.Editor e=quizPrefs.edit();
+//                e.clear();
+//                e.apply();
+//            }
         }
     }
 
@@ -410,8 +498,20 @@ public class QuizMainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.rulesIcon:
+//                int num=pager.getCurrentItem();
+//                HashMap<String,Integer> map=QuestionPaperParser.getSectionAndQuestion(num,fragmentIndex);
+//                s=map.get("SectionIndex");
+//                q=map.get("QuestionIndex");
+//                SharedPreferences.Editor e=quizPrefs.edit();
+//                e.putInt("mySectionIndex",s);
+//                e.putInt("myQuestionIndex",q);
+//                e.apply();
+                Bundle b=new Bundle();
+                b.putInt("noOfSections",noOfSections);
+                b.putIntArray("questionArray",questionArray);
                 Intent i=new Intent(QuizMainActivity.this,AllSectionsSummary.class);
-                startActivity(i);
+                i.putExtra("bundle",b);
+                startActivityForResult(i,REQUEST_CODE_FOR_ALL_SUMMARY);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -420,18 +520,33 @@ public class QuizMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        int ss=quizPrefs.getInt("mySectionIndex",-1);
-        int qq=quizPrefs.getInt("myQuestionIndex",-1);
-        if(ss==-1&&qq==-1)
-            super.onBackPressed();
-        else{
-            int n=QuestionPaperParser.getFragmentIndex(ss,qq,fragmentIndex);
-            pager.setCurrentItem(n);
-            SharedPreferences.Editor e=quizPrefs.edit();
-            e.putInt("mySectionIndex",-1);
-            e.putInt("myQuestionIndex",-1);
-            e.apply();
-        }
+//        int ss=quizPrefs.getInt("mySectionIndex",-1);
+//        int qq=quizPrefs.getInt("myQuestionIndex",-1);
+//        if(ss==-1&&qq==-1){
+//            Toast.makeText(this, "Further back navigation not allowed..", Toast.LENGTH_SHORT).show();
+//        }
+//        else{
+//            int n=QuestionPaperParser.getFragmentIndex(ss,qq,fragmentIndex);
+//            pager.setCurrentItem(n);
+//            SharedPreferences.Editor e=quizPrefs.edit();
+//            e.putInt("mySectionIndex",-1);
+//            e.putInt("myQuestionIndex",-1);
+//            e.apply();
+//        }
+    }
+
+    @Override
+    public void SetValue(int pos) {
+        int num=pager.getCurrentItem();
+        HashMap<String,Integer> map = QuestionPaperParser.getSectionAndQuestion(num, fragmentIndex);
+        int sI = map.get("SectionIndex");
+        int qI = map.get("QuestionIndex");
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("mySectionIndex",sI);
+        e.putInt("myQuestionIndex",qI);
+        e.apply();
+        int item=QuestionPaperParser.getFragmentIndex(sI,pos,fragmentIndex);
+        pager.setCurrentItem(item);
     }
 
     //Adapter for view pager..
@@ -458,8 +573,12 @@ public class QuizMainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         ob.deleteMyTable();
-        SharedPreferences.Editor e=quizPrefs.edit();
-        e.clear();
-        e.apply();
+//        SharedPreferences.Editor e=quizPrefs.edit();
+//        e.clear();
+//        e.apply();
+    }
+
+    public void mySocketConnection(){
+
     }
 }

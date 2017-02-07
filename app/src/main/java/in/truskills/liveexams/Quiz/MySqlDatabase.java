@@ -1,9 +1,8 @@
-package in.truskills.liveexams.Miscellaneous;
+package in.truskills.liveexams.Quiz;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -11,15 +10,15 @@ import android.util.Log;
 import java.util.HashMap;
 
 /**
- * Created by Shivansh Gupta on 04-02-2017.
+ * Created by Shivansh Gupta on 07-02-2017.
  */
 
-public class MySql extends SQLiteOpenHelper {
+public class MySqlDatabase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "LiveExams";
+    private static final String DATABASE_NAME = "LiveExamsApplication";
 
     // Table name
     private static final String TABLE_PER_SECTION = "PerSectionDetails";
@@ -44,6 +43,13 @@ public class MySql extends SQLiteOpenHelper {
     private static final String QuestionTime = "QuestionTime";
     private static final String QuestionDifficultyLevel = "QuestionDifficultyLevel";
     private static final String QuestionRelativeTopic = "QuestionRelativeTopic";
+    private static final String TimeSpent = "TimeSpent";
+    private static final String NumberOfToggles = "NumberOfToggles";
+    private static final String FinalAnswer = "FinalAnswer";
+    private static final String ReadStatus = "ReadStatus";
+    private static final String ReviewButtonClicks = "ReviewButtonClicks";
+    private static final String SubmitButtonClicks = "SubmitButtonClicks";
+    private static final String ClearButtonClicks = "ClearButtonClicks";
 
     String CREATE_MY_TABLE_PER_SECTION =
             "CREATE TABLE " + TABLE_PER_SECTION + "("
@@ -59,8 +65,8 @@ public class MySql extends SQLiteOpenHelper {
 
     String CREATE_MY_TABLE_PER_QUESTION =
             "CREATE TABLE " + TABLE_PER_QUESTION + "("
-                    + SectionIndex + " INTEGER,"
-                    + QuestionIndex + " INTEGER,"
+                    + SectionIndex + " INTEGER DEFAULT 0,"
+                    + QuestionIndex + " INTEGER DEFAULT 0,"
                     + QuestionId + " TEXT,"
                     + CorrectAnswer + " TEXT,"
                     + QuestionCorrectMarks + " TEXT,"
@@ -69,11 +75,17 @@ public class MySql extends SQLiteOpenHelper {
                     + QuestionType + " TEXT,"
                     + QuestionTime + " TEXT,"
                     + QuestionDifficultyLevel + " TEXT,"
-                    + QuestionRelativeTopic + " TEXT"
+                    + QuestionRelativeTopic + " TEXT,"
+                    + NumberOfToggles + " INTEGER DEFAULT 0,"
+                    + FinalAnswer + " INTEGER DEFAULT 0,"
+                    + ReadStatus + " INTEGER DEFAULT 0,"
+                    + TimeSpent + " INTEGER DEFAULT 0,"
+                    + ReviewButtonClicks + " INTEGER DEFAULT 0,"
+                    + SubmitButtonClicks + " INTEGER DEFAULT 0,"
+                    + ClearButtonClicks + " INTEGER DEFAULT 0"
                     + ")";
 
-
-    public MySql(Context context) {
+    public MySqlDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -81,6 +93,15 @@ public class MySql extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_MY_TABLE_PER_QUESTION);
         db.execSQL(CREATE_MY_TABLE_PER_SECTION);
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PER_QUESTION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PER_SECTION);
+        // Create tables again
+        onCreate(db);
     }
 
     public void setValuesPerSection(int si, String name) {
@@ -92,13 +113,21 @@ public class MySql extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public void setValuesPerQuestionPerSection(int si, int qi, String name) {
+    public void setValuesPerQuestionPerSection(int si, int qi) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SectionIndex, si);
         values.put(QuestionIndex, qi);
         db.insert(TABLE_PER_QUESTION, null, values);
         db.close(); // Closing database connection
+    }
+
+    public void updateValuesPerQuestionPerSection(int si,int qi,String value,String columnName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(columnName,value);
+        db.update(TABLE_PER_QUESTION,contentValues,SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi,null);
+        db.close();
     }
 
     public HashMap<String, String> getValuesPerSection(int si) {
@@ -112,7 +141,6 @@ public class MySql extends SQLiteOpenHelper {
                 map.put("SectionName", cursor.getString(cursor.getColumnIndex(SectionName)));
             } while (cursor.moveToNext());
         }
-
         cursor.close();
         db.close();
         return map;
@@ -122,7 +150,7 @@ public class MySql extends SQLiteOpenHelper {
         HashMap<String, String> map = new HashMap<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
+        String selectQuery = "SELECT * FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
@@ -136,24 +164,9 @@ public class MySql extends SQLiteOpenHelper {
         return map;
     }
 
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PER_QUESTION);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PER_SECTION);
-
-        // Create tables again
-        onCreate(db);
-    }
-
-    public void deleteMyTable() {
-        Log.d("here","in delete table");
-
-        //Delete all the entries in the table..
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_PER_QUESTION);
+    public void deleteMyTable(){
+        SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DELETE FROM " + TABLE_PER_SECTION);
+        db.execSQL("DELETE FROM " + TABLE_PER_QUESTION);
     }
 }

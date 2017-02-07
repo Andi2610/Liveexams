@@ -25,6 +25,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.pkmmte.view.CircularImageView;
@@ -195,6 +196,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
                 onCaptureImageResult(data);
+        }else if(requestCode==10){
+            FrameLayout frameLayout=(FrameLayout) findViewById(R.id.fragment);
+            frameLayout.removeAllViewsInLayout();
+            HomeFragment f=new HomeFragment();
+            FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+            fragTransaction.replace(R.id.fragment,f,"HomeFragment");
+            fragTransaction.commit();
         }
     }
 
@@ -281,7 +289,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_home) {
             HomeFragment f = (HomeFragment) manager.findFragmentByTag("HomeFragment");
             if (!(f != null && f.isVisible())) {
-                Log.d("messi", "homeFragLoaded");
                 HomeFragment fragment = new HomeFragment();
                 FragmentTransaction t = manager.beginTransaction();
                 t.replace(R.id.fragment, fragment, "HomeFragment");
@@ -292,7 +299,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_calendar) {
             CalendarFragment f = (CalendarFragment) manager.findFragmentByTag("CalendarFragment");
             if (!(f != null && f.isVisible())) {
-                Log.d("messi", "CalFragLoaded");
 
                 CalendarFragment fragment = new CalendarFragment();
                 FragmentTransaction t = manager.beginTransaction();
@@ -346,4 +352,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String title = "ADD NEW EXAMS";
         getSupportActionBar().setTitle(title);
     }
+
 }

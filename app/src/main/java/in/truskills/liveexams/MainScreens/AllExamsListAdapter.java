@@ -68,7 +68,6 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
             public void onClick(View view) {
 
                 value=myList.get(holder.getAdapterPosition());
-                Log.d("response", "onClick: "+value.getExamId());
 
                 final RequestQueue requestQueue= Volley.newRequestQueue(c);
                 prefs=c.getSharedPreferences("prefs",Context.MODE_PRIVATE);
@@ -78,7 +77,6 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("response=",response.toString()+"");
                         try {
                             HashMap<String,String> mapper=VariablesDefined.examDetailsParser(response);
                             final String enrolled=mapper.get("enrolled");
@@ -99,7 +97,6 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("response", error.getMessage());
                         Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
                 }){
@@ -146,6 +143,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
         b.putString("examId",examId);
         Intent i=new Intent(c,ParticularExamMainActivity.class);
         i.putExtra("bundle",b);
+        i.putExtra("from","allExams");
         c.startActivity(i);
     }
 }

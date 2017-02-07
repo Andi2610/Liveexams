@@ -104,9 +104,6 @@ public class VariablesDefined {
         mapper.put("ExamId", ExamIdList);
         mapper.put("leftExam", leftExamList);
 
-        for (int i = 0; i < ExamIdList.size(); ++i)
-            Log.d("response", ExamIdList.get(i));
-
         return mapper;
     }
 
@@ -123,7 +120,6 @@ public class VariablesDefined {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             ExamNameList.add(jsonObject.getString(ExamName));
-            Log.d("response", jsonObject.getString(ExamName));
             ExamDurationList.add(jsonObject.getJSONArray(ExamDuration).get(0).toString());
             StartTimeList.add(jsonObject.getString(StartTime));
             EndTimeList.add(jsonObject.getString(EndTime));
@@ -177,10 +173,20 @@ public class VariablesDefined {
     public static HashMap<String, String> unenrollUserParser(String myResponse) throws JSONException {
         HashMap<String, String> mapper = new HashMap<>();
         JSONObject jsonObject = new JSONObject(myResponse);
-        String success = jsonObject.getString("success");
         mapper.put("success", jsonObject.getString(success));
         mapper.put("response", jsonObject.getString(response));
         return mapper;
+    }
+
+    public static String getJoinedExams(String myResponse) throws JSONException {
+        String myJoinedExams="";
+        JSONObject jsonObject=new JSONObject(myResponse);
+        if (jsonObject.getJSONArray(joinedExams) != null) {
+            myJoinedExams = jsonObject.getJSONArray(joinedExams).toString();
+        } else {
+            myJoinedExams="noJoinedExams";
+        }
+        return myJoinedExams;
     }
 
     public static String parseDate(String myDate) throws ParseException {

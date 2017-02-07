@@ -78,7 +78,6 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("response=", response.toString() + "");
                         try {
                             //Parse Exam details..
                             HashMap<String, String> mapper = VariablesDefined.examDetailsParser(response);
@@ -100,11 +99,11 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                                     b.putString("timestamp", timestamp);
                                     b.putString("examDetails", examDetails);
                                     b.putString("name", value.getName());
-                                    Log.d("response", value.getName() + "");
                                     b.putString("examId", examId);
                                     Intent i = new Intent(c, ParticularExamMainActivity.class);
                                     i.putExtra("bundle", b);
-                                    c.startActivity(i);
+                                    i.putExtra("from","home");
+                                    ((MainActivity)c).startActivityForResult(i,10);
                                 }
                             });
                         } catch (JSONException e) {
@@ -114,7 +113,6 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("response", error.getMessage());
                         //If connection couldn't be made..
                         Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
@@ -124,7 +122,6 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                         //Set required parameters..
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("userId", prefs.getString("userId", "abc"));
-                        Log.d("response", "idGiven=" + value.getExamId());
                         params.put("examId", value.getExamId());
                         return params;
                     }

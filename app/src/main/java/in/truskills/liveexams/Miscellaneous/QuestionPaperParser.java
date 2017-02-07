@@ -366,7 +366,6 @@ public class QuestionPaperParser {
                 if(f[i][j]==num){
                     mapper.put("SectionIndex",i);
                     mapper.put("QuestionIndex",j);
-                    Log.d("index","sectionIndex="+i+" questionIndex="+j);
                 }
             }
         }

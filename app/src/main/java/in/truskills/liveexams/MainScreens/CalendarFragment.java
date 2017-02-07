@@ -68,7 +68,6 @@ public class CalendarFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 //        getActivity().getActionBar().setTitle("CALENDAR");
-        Log.d("here", "inOnAcCrOfCalendar");
 
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         joinedExams = prefs.getString("joinedExams", "noJoinedExams");
@@ -128,10 +127,6 @@ public class CalendarFragment extends Fragment {
                             if (start_year <= year && year <= end_year) {
                                 if (start_month <= month && month <= end_month) {
                                     if (start_day <= dayOfMonth && dayOfMonth <= end_day) {
-                                        Log.d("messi","selDate"+dayOfMonth+"/"+month+"/"+year);
-                                        Log.d("messi","startDate"+myDateOfStart);
-                                        Log.d("messi","endDate"+myDateOfEnd);
-                                        Log.d("messi","populating");
                                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                         valuesList.add(values);
                                         myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());

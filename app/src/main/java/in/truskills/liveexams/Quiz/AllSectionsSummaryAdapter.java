@@ -2,88 +2,76 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import in.truskills.liveexams.R;
 
 /**
- * Created by Shivansh Gupta on 05-02-2017.
+ * Created by Shivansh Gupta on 06-02-2017.
  */
 
-public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsSummaryAdapter.MyViewHolder> {
+public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsSummaryAdapter.MyViewHolder>{
 
-
-   ArrayList<String> myList;
+    ArrayList<String> sectionName;
+    int questionArray[];
     Context c;
-    int pos;
 
-    AllSectionsSummaryAdapter(ArrayList<String> myList,Context c,int pos){
-        this.myList = myList;
-        this.c = c;
-        this.pos=pos;
+    AllSectionsSummaryAdapter(ArrayList<String> sectionName,int [] questionArray,Context c){
+        this.sectionName=sectionName;
+        this.questionArray=questionArray;
+        this.c=c;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_layout_for_section_names_display, parent, false);
+                .inflate(R.layout.list_row_layout_for_all_sections_summary, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
-        Log.d("here",myList.get(position)+"");
-        holder.textView.setText(myList.get(position));
-        if(position==pos){
-            holder.textView.setTextColor(c.getResources().getColor(R.color.red));
-        }else{
-            holder.textView.setTextColor(c.getResources().getColor(R.color.black));
-            holder.leftArrow.setVisibility(View.INVISIBLE);
-            holder.rightArrow.setVisibility(View.INVISIBLE);
-        }
-        holder.containerLayout.setOnClickListener(new View.OnClickListener() {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+        holder.mySectionName.setText(sectionName.get(position));
+        GridViewAdapter adapter=new GridViewAdapter(questionArray[position],c);
+        holder.gridView.setAdapter(adapter);
+        holder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemClick(AdapterView<?> parent, View view, int post, long id) {
+
                 Intent intentMessage=new Intent();
                 // put the message in Intent
-                intentMessage.putExtra("message",position);
-                ((SectionNamesDisplay)c).setResult(1,intentMessage);
-                ((SectionNamesDisplay)c).finish();
+                intentMessage.putExtra("section",holder.getAdapterPosition());
+                intentMessage.putExtra("question",post);
+                ((AllSectionsSummary)c).setResult(2,intentMessage);
+                ((AllSectionsSummary)c).finish();
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        Log.d("here",myList.size()+"");
-        return myList.size();
+        return sectionName.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView textView;
-        LinearLayout containerLayout;
-        ImageView leftArrow,rightArrow;
+        TextView mySectionName;
+        GridView gridView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.textView);
-            containerLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
-            rightArrow=(ImageView) itemView.findViewById(R.id.rightArrow);
-            leftArrow=(ImageView) itemView.findViewById(R.id.leftArrow);
+            mySectionName = (TextView) itemView.findViewById(R.id.mySectionName);
+            gridView = (GridView) itemView.findViewById(R.id.gridView);
         }
     }
 }

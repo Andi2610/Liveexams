@@ -215,7 +215,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int l = signupName.getText().toString().length();
-                        Log.d("here", "length=" + l);
                         if (l < 1) {
                             signupName.setError("Required");
                         } else {
@@ -368,7 +367,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int l = loginName.getText().toString().length();
-                        Log.d("here", "length=" + l);
                         if (l < 1) {
                             loginName.setError("Required");
                         } else {
@@ -389,7 +387,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int l = loginPassword.getText().toString().length();
-                        Log.d("here", "length=" + l);
                         if (l < 1) {
                             loginPassword.setError("Required");
                         } else {
@@ -632,7 +629,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("response=",response.toString()+"");
                 try {
                     //Parse the signup response..
                     HashMap<String ,String> mapper=VariablesDefined.signupParser(response);
@@ -647,7 +643,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 //If connection could not be made..
-                Log.d("response", error.getMessage());
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         }){
@@ -693,7 +688,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 //On getting the response..
-                Log.d("my_response=",response.toString()+"");
                 Intent i = null;
                 try {
                     //Parse the login response..
@@ -714,7 +708,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         finish();
                     }else{
                         //Display error message..
-                        Log.d("response","inElse");
                         Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -726,7 +719,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
-                Log.d("response", error.getMessage()+"");
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         }){

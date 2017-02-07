@@ -1,5 +1,6 @@
 package in.truskills.liveexams.ParticularExam;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +20,7 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
     Bundle b;
     FragmentManager manager;
     FragmentTransaction trans;
+    String from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         b = getIntent().getBundleExtra("bundle");
         name = b.getString("name");
         enrolled = b.getString("enrolled");
+        from=getIntent().getStringExtra("from");
 
         getSupportActionBar().setTitle(name);
 
@@ -47,7 +50,6 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
             trans.commit();
         } else {
             //Else if unenrolled.. load Join fragment..
-            Log.d("response", "Join");
             JoinPageFragment fragment = new JoinPageFragment();
             fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "JoinPageFragment");
@@ -104,5 +106,13 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
     public void changeTitleForJoinPage() {
         getSupportActionBar().setTitle(name);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(from.equals("home")){
+            setResult(10,null);
+        }
+        super.onBackPressed();
     }
 }

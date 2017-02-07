@@ -73,6 +73,7 @@ public class HomeFragment extends Fragment {
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         joinedExams = prefs.getString("joinedExams", "noJoinedExams");
 
+
         //Initialise the variables..
         add = (Button) getActivity().findViewById(R.id.add);
         myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsList);
@@ -107,7 +108,6 @@ public class HomeFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-
 
         myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
 

@@ -3,6 +3,9 @@ package in.truskills.liveexams.Quiz;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -16,7 +19,10 @@ import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 
 public class WebViewContent {
 
+
     public static String contentGenerator(final String question, final ArrayList<String> optionsList, final String examId) {
+
+
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
@@ -28,7 +34,6 @@ public class WebViewContent {
         for (int i = 0; i < optionsListSize; ++i) {
             //Design proper format of the options..
             String formattedOption = format(optionsList.get(i), examId);
-            Log.d("debug",formattedOption);
             formattedOptions.add(formattedOption);
         }
 
@@ -36,7 +41,7 @@ public class WebViewContent {
 
         //Dynamic radio buttons added depending upon the options list size..
         for (int i = 0; i < optionsListSize; ++i) {
-            x = x + "<input type=\"radio\" id=\"" + i + "\" name=\"options\" value=\"" + i + "\" onclick=\"ok.performClick(this.value);\" ><label for=\"value\">" + formattedOptions.get(i) + "</label></input><br>";
+            x = x + "<input type=\"radio\" id=\"" + i + "\" name=\"options\" value=\"" + i + "\" onclick=\"ok.performClick(this.value);\" ><label for=\""+i+"\">" + formattedOptions.get(i) + "</label></input><br>";
         }
 
         //Generate the html content..
@@ -52,7 +57,7 @@ public class WebViewContent {
                         "</body>\n" +
                         "</html>;";
 
-        return content;
+       return content;
     }
 
     //This function is used to format the content i.e. add <img> tag wherever required..
@@ -78,9 +83,8 @@ public class WebViewContent {
             int jpgStart = jpgStartMatcher.start();
             int jpgEnd = jpgStartMatcher.end();
             s = searchableString.substring(jpgStart, jpgEnd);
-            Log.d("debug","s="+s);
             ss = VariablesDefined.imageUrl + examId + "/" + "Images/" + s;
-            jpgStartSubStr = "<img src='" + ss + "'>";
+            jpgStartSubStr = "<img src='" + ss + "'/>";
             myStr = myStr.replaceFirst("[a-zA-Z0-9_-]*.jpg", jpgStartSubStr);
         }
         //Get png image..
@@ -90,9 +94,8 @@ public class WebViewContent {
             int pngStart = pngStartMatcher.start();
             int pngEnd = pngStartMatcher.end();
             s = searchableString.substring(pngStart, pngEnd);
-            Log.d("debug","s="+s);
             ss = VariablesDefined.imageUrl + examId + "/" + "Images/" + s;
-            pngStartSubStr = "<img src='" + ss + "'>";
+            pngStartSubStr = "<img src='" + ss + "'/>";
             myStr = myStr.replaceFirst("[a-zA-Z0-9_-]*.png", pngStartSubStr);
         }
 
@@ -105,9 +108,8 @@ public class WebViewContent {
             start++;
             int end = jpgMatcher.end();
             s = searchableString.substring(start, end);
-            Log.d("debug","s="+s);
             ss = VariablesDefined.imageUrl + examId + "/" + "Images/" + s;
-            jpgSubStr.add("<img src='" + ss + "'>");
+            jpgSubStr.add("<img src='" + ss + "'/>");
         }
         //Get png image..
         Pattern pngPattern = Pattern.compile("[ ][a-zA-Z0-9_-]*.png");
@@ -117,9 +119,8 @@ public class WebViewContent {
             start++;
             int end = pngMatcher.end();
             s = searchableString.substring(start, end);
-            Log.d("debug","s="+s);
             ss = VariablesDefined.imageUrl + examId + "/" + s;
-            pngSubStr.add("<img src='" + ss + "'>");
+            pngSubStr.add("<img src='" + ss + "'/>");
         }
 
         //Add image tag to jpg images..

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,6 +53,8 @@ public class StartPageFragment extends Fragment {
     SharedPreferences prefs;
     Button start_leave_button;
     Bundle b;
+    Handler h;
+    HashMap<String,String> mapper;
 
     public StartPageFragment() {
         // Required empty public constructor
@@ -73,6 +77,8 @@ public class StartPageFragment extends Fragment {
 
         ob = (StartPageInterface) getActivity();
         ob.changeTitleForStartPage();
+
+        h=new Handler();
 
         startDetails = (TextView) getActivity().findViewById(R.id.startDetails);
         endDetails = (TextView) getActivity().findViewById(R.id.endDetails);
@@ -101,7 +107,6 @@ public class StartPageFragment extends Fragment {
             startDetails.setText(mapper.get("StartDate") + "\n" + mapper.get("StartTime"));
             endDetails.setText(mapper.get("EndDate") + "\n" + mapper.get("EndTime"));
             name = mapper.get("ExamName");
-            Log.d("messi", "timestamp=" + timestamp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -143,16 +148,29 @@ public class StartPageFragment extends Fragment {
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d("response=", response.toString() + "");
                             try {
-                                    HashMap<String, String> mapper = VariablesDefined.unenrollUserParser(response);
+                                    mapper = VariablesDefined.unenrollUserParser(response);
                                     String success = mapper.get("success");
                                     if (success.equals("true")) {
                                         //Get Joined Exams Result
-                                        ob = (StartPageInterface) getActivity();
-                                        JoinPageFragment f = new JoinPageFragment();
-                                        f.setArguments(b);
-                                        ob.changeFragmentFromStartPage(f, "name");
+                                        h.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                String myJoinedExams= null;
+                                                try {
+                                                    myJoinedExams = VariablesDefined.getJoinedExams(mapper.get("response"));
+                                                    SharedPreferences.Editor e=prefs.edit();
+                                                    e.putString("joinedExams",myJoinedExams);
+                                                    e.apply();
+                                                    ob = (StartPageInterface) getActivity();
+                                                    JoinPageFragment f = new JoinPageFragment();
+                                                    f.setArguments(b);
+                                                    ob.changeFragmentFromStartPage(f, "name");
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
                                     }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -161,7 +179,6 @@ public class StartPageFragment extends Fragment {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d("response", error.getMessage());
                             //If the connection couldn't be made..
                             Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }

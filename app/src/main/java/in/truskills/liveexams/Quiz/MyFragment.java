@@ -25,6 +25,7 @@ public class MyFragment extends Fragment {
     String stringVariable;
     String myQuestion, myExamId;
     ArrayList<String> myOptions;
+    MyFragmentInterface ob;
 
 
     public static final MyFragment newInstance(String question, ArrayList<String> options, String examId) {
@@ -51,20 +52,29 @@ public class MyFragment extends Fragment {
 
         //Initialise web view variable..
         webView = (WebView) v.findViewById(R.id.webView);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setJavaScriptEnabled(true);
 
         //Design the html content to be loaded in the web view..
-        String string = WebViewContent.contentGenerator(myQuestion, myOptions, myExamId);
+        String string=WebViewContent.contentGenerator(myQuestion, myOptions, myExamId);
 
-        //Load the content in the web view..
+//        Load the content in the web view..
         webView.loadDataWithBaseURL(null, string, "text/HTML", "UTF-8", null);
         webView.addJavascriptInterface(new Object() {
             @JavascriptInterface           // For API 17+
             public void performClick(String strl) {
+                ob=(MyFragmentInterface) getActivity();
                 stringVariable = strl;
-                Toast.makeText(getActivity(), stringVariable, Toast.LENGTH_SHORT).show();
+                ob.setValuesInDB(stringVariable);
             }
         }, "ok");
 
         return v;
     }
+}
+
+interface MyFragmentInterface{
+    public void setValuesInDB(String i);
 }

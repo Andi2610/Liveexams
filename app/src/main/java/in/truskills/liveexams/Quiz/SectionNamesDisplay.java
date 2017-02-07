@@ -11,7 +11,6 @@ import android.view.Window;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import in.truskills.liveexams.Miscellaneous.MySql;
 import in.truskills.liveexams.R;
 
 public class SectionNamesDisplay extends Activity {
@@ -22,8 +21,8 @@ public class SectionNamesDisplay extends Activity {
     String myName="";
     HashMap<String,String> map;
     LinearLayoutManager linearLayoutManager;
-    AllSectionsSummaryAdapter allSectionsSummaryAdapter;
-    MySql ob;
+    SectionNamesDisplayAdapter sectionNamesDisplayAdapter;
+    MySqlDatabase ob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +33,13 @@ public class SectionNamesDisplay extends Activity {
         noOfSections=getIntent().getIntExtra("noOfSections",0);
         currentSection=getIntent().getIntExtra("currentSection",0);
 
-        Log.d("here",noOfSections+" "+currentSection);
 
         mySectionsList=(RecyclerView) findViewById(R.id.mySectionsList);
 
         name=new ArrayList<>();
         map=new HashMap<>();
 
-        ob=new MySql(SectionNamesDisplay.this);
+        ob=new MySqlDatabase(SectionNamesDisplay.this);
 
         for(int i=0;i<noOfSections;++i){
             map=ob.getValuesPerSection(i);
@@ -49,13 +47,13 @@ public class SectionNamesDisplay extends Activity {
             name.add(myName);
         }
 
-        allSectionsSummaryAdapter=new AllSectionsSummaryAdapter(name,SectionNamesDisplay.this,currentSection);
+        sectionNamesDisplayAdapter =new SectionNamesDisplayAdapter(name,SectionNamesDisplay.this,currentSection);
 
         linearLayoutManager=new LinearLayoutManager(this);
         mySectionsList.setLayoutManager(linearLayoutManager);
         mySectionsList.setItemAnimator(new DefaultItemAnimator());
-        mySectionsList.setAdapter(allSectionsSummaryAdapter);
-        allSectionsSummaryAdapter.notifyDataSetChanged();
+        mySectionsList.setAdapter(sectionNamesDisplayAdapter);
+        sectionNamesDisplayAdapter.notifyDataSetChanged();
 
 
     }

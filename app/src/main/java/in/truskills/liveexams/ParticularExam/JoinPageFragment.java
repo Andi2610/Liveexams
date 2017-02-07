@@ -1,9 +1,11 @@
 package in.truskills.liveexams.ParticularExam;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.QuestionPaperParser;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
@@ -48,6 +51,8 @@ public class JoinPageFragment extends Fragment {
     String selectedLanguage, timestamp, examDetails, examId;
     SharedPreferences prefs;
     Button join_button;
+    Handler h;
+    HashMap<String,String> mapper;
     Bundle b;
 
     public JoinPageFragment() {
@@ -84,13 +89,14 @@ public class JoinPageFragment extends Fragment {
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
 
+        h=new Handler();
+
         //Parse the exam details..
         try {
                 HashMap<String, String> mapper = VariablesDefined.join_start_Parser(examDetails);
                 descriptionJoinPage.setText(mapper.get("Description"));
                 startDetailsJoinPage.setText(mapper.get("StartDate") + "\n" + mapper.get("StartTime"));
                 endDetailsJoinPage.setText(mapper.get("EndDate") + "\n" + mapper.get("EndTime"));
-                Log.d("messi", "timestamp=" + timestamp);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -109,12 +115,27 @@ public class JoinPageFragment extends Fragment {
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("response=", response.toString() + "");
                         try {
-                            HashMap<String, String> mapper = VariablesDefined.enrollUserParser(response);
+                            mapper = VariablesDefined.enrollUserParser(response);
                             String success = mapper.get("success");
                             if (success.equals("true")) {
+                                Log.e("messi", "onResponse: "+getActivity() );
 
+                                h.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String myJoinedExams= null;
+                                        try {
+                                            myJoinedExams = VariablesDefined.getJoinedExams(mapper.get("response"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        SharedPreferences.Editor e=prefs.edit();
+                                        e.putString("joinedExams",myJoinedExams);
+                                        e.apply();
+                                    }
+                                });
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -124,7 +145,6 @@ public class JoinPageFragment extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connnection couldn't be made..
-                        Log.d("response", error.getMessage());
                         Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -194,6 +214,7 @@ public class JoinPageFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
 
 //Interface used for interaction with JoinFragment..

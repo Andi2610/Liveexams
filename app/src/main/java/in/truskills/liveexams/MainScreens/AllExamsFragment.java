@@ -216,7 +216,6 @@ public class AllExamsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("response","inOnResAllExaFrag");
         filteredList=new ArrayList<>();
 
         if(searchView==null){
