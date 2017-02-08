@@ -53,8 +53,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
     String CREATE_MY_TABLE_PER_SECTION =
             "CREATE TABLE " + TABLE_PER_SECTION + "("
-                    + SectionIndex + " INTEGER,"
-                    + QuestionIndex + " INTEGER,"
+                    + SectionIndex + " INTEGER PRIMARY KEY,"
                     + SectionMaxMarks + " INTEGER,"
                     + SectionTime + " TEXT,"
                     + SectionDescription + " TEXT,"
@@ -82,7 +81,8 @@ public class MySqlDatabase extends SQLiteOpenHelper {
                     + TimeSpent + " INTEGER DEFAULT 0,"
                     + ReviewButtonClicks + " INTEGER DEFAULT 0,"
                     + SubmitButtonClicks + " INTEGER DEFAULT 0,"
-                    + ClearButtonClicks + " INTEGER DEFAULT 0"
+                    + ClearButtonClicks + " INTEGER DEFAULT 0,"
+                    + " PRIMARY KEY ("+ SectionIndex+","+ QuestionIndex+")"
                     + ")";
 
     public MySqlDatabase(Context context) {
@@ -165,6 +165,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT * FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
         Cursor cursor = db.rawQuery(selectQuery, null);
+        Log.d("messi","noOfRows="+cursor.getCount());
         if (cursor.moveToFirst()) {
             do {
 //                Log.d("here","si="+si+" qi="+qi);

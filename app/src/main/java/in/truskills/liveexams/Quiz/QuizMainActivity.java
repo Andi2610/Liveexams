@@ -1,5 +1,6 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -41,8 +42,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.QuestionPaperParser;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
@@ -326,6 +329,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
                 //If connection couldn't be made..
                 Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+
+                finish();
             }
         });
         requestQueue.add(stringRequest);
@@ -348,6 +353,25 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
             public void onFinish() {
                 timer.setText("done!");
+                AlertDialog.Builder builder = new AlertDialog.Builder(QuizMainActivity.this);
+                builder.setMessage("Quiz is over!! Re-directing to Home page");
+                Thread t=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try{
+                            Thread.sleep(3000);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }finally {
+                            Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                            startActivity(intent);
+                        }
+                    }
+                });
+                t.start();
+                AlertDialog alert = builder.create();
+                alert.show();
             }
         }.start();
 
@@ -618,6 +642,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("messi","inOnDestroy");
         ob.deleteMyTable();
 //        SharedPreferences.Editor e=quizPrefs.edit();
 //        e.clear();
