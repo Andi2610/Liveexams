@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,10 +24,10 @@ import in.truskills.liveexams.R;
 public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsSummaryAdapter.MyViewHolder>{
 
     ArrayList<String> sectionName;
-    int questionArray[];
+    ArrayList<ArrayList<Integer>> questionArray;
     Context c;
 
-    AllSectionsSummaryAdapter(ArrayList<String> sectionName,int [] questionArray,Context c){
+    AllSectionsSummaryAdapter(ArrayList<String> sectionName,ArrayList<ArrayList<Integer>> questionArray,Context c){
         this.sectionName=sectionName;
         this.questionArray=questionArray;
         this.c=c;
@@ -40,9 +41,9 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        holder.mySectionName.setText(sectionName.get(position));
-        GridViewAdapter adapter=new GridViewAdapter(questionArray[position],c);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        holder.mySectionName.setText(sectionName.get(holder.getAdapterPosition()));
+        GridViewAdapter adapter=new GridViewAdapter(questionArray.get(holder.getAdapterPosition()),c);
         holder.gridView.setAdapter(adapter);
         holder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -50,8 +51,8 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
 
                 Intent intentMessage=new Intent();
                 // put the message in Intent
-                intentMessage.putExtra("section",holder.getAdapterPosition());
-                intentMessage.putExtra("question",post);
+                ArrayList<Integer> myFi=questionArray.get(holder.getAdapterPosition());
+                intentMessage.putExtra("jumpTo",myFi.get(post));
                 ((AllSectionsSummary)c).setResult(2,intentMessage);
                 ((AllSectionsSummary)c).finish();
             }

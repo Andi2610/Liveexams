@@ -17,13 +17,15 @@ public class GridViewAdapter extends BaseAdapter {
     int count,n=1;
     Context c;
     ArrayList<Integer> num=new ArrayList<>();
+    ArrayList<Integer> myList=new ArrayList<>();
 
-    GridViewAdapter(int count,Context c){
-        this.count=count;
+    GridViewAdapter(ArrayList<Integer> num,Context c){
+        this.num=num;
         this.c=c;
-        for(int i=0;i<count;++i){
-            num.add(n);
+        int n=0;
+        for(int i=0;i<num.size();++i){
             ++n;
+            myList.add(n);
         }
     }
     @Override
@@ -44,7 +46,7 @@ public class GridViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView tv=new TextView(c);
-        tv.setText(num.get(position)+"");
+        tv.setText(myList.get(position)+"");
         return tv;
     }
 }

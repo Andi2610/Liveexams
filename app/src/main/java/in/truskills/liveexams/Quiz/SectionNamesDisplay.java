@@ -17,7 +17,8 @@ public class SectionNamesDisplay extends Activity {
 
     ArrayList<String> name;
     RecyclerView mySectionsList;
-    int noOfSections,currentSection;
+    int mySrno;
+    String srNo;
     String myName="";
     HashMap<String,String> map;
     LinearLayoutManager linearLayoutManager;
@@ -30,8 +31,8 @@ public class SectionNamesDisplay extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_section_names_display);
 
-        noOfSections=getIntent().getIntExtra("noOfSections",0);
-        currentSection=getIntent().getIntExtra("currentSection",0);
+        srNo=getIntent().getStringExtra("serialNumber");
+        mySrno=Integer.parseInt(srNo);
 
 
         mySectionsList=(RecyclerView) findViewById(R.id.mySectionsList);
@@ -41,13 +42,10 @@ public class SectionNamesDisplay extends Activity {
 
         ob=new MySqlDatabase(SectionNamesDisplay.this);
 
-        for(int i=0;i<noOfSections;++i){
-            map=ob.getValuesPerSection(i);
-            myName=map.get("SectionName");
-            name.add(myName);
-        }
+        HashMap<String,ArrayList<String>> map=ob.getAllStringValuesPerSection();
+        name=map.get("SectionNameList");
 
-        sectionNamesDisplayAdapter =new SectionNamesDisplayAdapter(name,SectionNamesDisplay.this,currentSection);
+        sectionNamesDisplayAdapter =new SectionNamesDisplayAdapter(name,SectionNamesDisplay.this,mySrno);
 
         linearLayoutManager=new LinearLayoutManager(this);
         mySectionsList.setLayoutManager(linearLayoutManager);

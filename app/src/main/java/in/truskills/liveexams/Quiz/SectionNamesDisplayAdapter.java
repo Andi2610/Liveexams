@@ -40,9 +40,9 @@ public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionName
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.textView.setText(myList.get(position));
-        if(position==pos){
+        if(holder.getAdapterPosition()==pos){
             holder.textView.setTextColor(c.getResources().getColor(R.color.red));
         }else{
             holder.textView.setTextColor(c.getResources().getColor(R.color.black));
@@ -54,7 +54,8 @@ public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionName
             public void onClick(View v) {
                 Intent intentMessage=new Intent();
                 // put the message in Intent
-                intentMessage.putExtra("message",position);
+                //message=serial number of a section..
+                intentMessage.putExtra("message",holder.getAdapterPosition());
                 ((SectionNamesDisplay)c).setResult(1,intentMessage);
                 ((SectionNamesDisplay)c).finish();
             }

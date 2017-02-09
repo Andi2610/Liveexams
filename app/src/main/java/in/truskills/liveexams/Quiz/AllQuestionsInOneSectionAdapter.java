@@ -21,13 +21,13 @@ import in.truskills.liveexams.R;
 
 public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQuestionsInOneSectionAdapter.MyViewHolder> {
 
-    ArrayList<Integer> myListOfQuestion;
+    ArrayList<Integer> myListOfFragmentIndex;
     Context c;
     int pos;
     setValueOfPager ob;
 
-    AllQuestionsInOneSectionAdapter(ArrayList<Integer> myListOfQuestion,Context c,int pos){
-        this.myListOfQuestion = myListOfQuestion;
+    AllQuestionsInOneSectionAdapter(ArrayList<Integer> myListOfFragmentIndex,Context c,int pos){
+        this.myListOfFragmentIndex = myListOfFragmentIndex;
         this.c = c;
         this.pos=pos;
     }
@@ -40,9 +40,11 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
-            holder.questionNumber.setText(myListOfQuestion.get(position)+"");
-            if(position==pos){
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+            int cn=holder.getAdapterPosition();
+            cn++;
+            holder.questionNumber.setText(cn+"");
+            if(holder.getAdapterPosition()==pos){
                 holder.downArrow.setVisibility(View.VISIBLE);
             }else{
                 holder.downArrow.setVisibility(View.INVISIBLE);
@@ -51,14 +53,15 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
                 @Override
                 public void onClick(View v) {
                     ob=(setValueOfPager)c;
-                    ob.SetValue(position);
+                    int jumpPosition=myListOfFragmentIndex.get(holder.getAdapterPosition());
+                    ob.SetValue(jumpPosition);
                 }
             });
     }
 
     @Override
     public int getItemCount() {
-        return myListOfQuestion.size();
+        return myListOfFragmentIndex.size();
     }
 
 

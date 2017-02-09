@@ -24,8 +24,9 @@ public class AllSectionsSummary extends AppCompatActivity {
     AllSectionsSummaryAdapter allSectionsSummaryAdapter;
     RecyclerView allSectionsList;
     Bundle b;
-    int noOfSections,questionArray[];
+    int noOfSections;
     ArrayList<String> sectionName;
+    ArrayList<ArrayList<Integer>> questionArray;
     MySqlDatabase ob;
     Button finishButton;
 
@@ -34,21 +35,22 @@ public class AllSectionsSummary extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_sections_summary);
 
-        b=getIntent().getBundleExtra("bundle");
-        noOfSections=b.getInt("noOfSections");
-        questionArray=b.getIntArray("questionArray");
-
         allSectionsList=(RecyclerView)findViewById(R.id.allSectionsList);
         finishButton=(Button)findViewById(R.id.finishButton);
 
         ob=new MySqlDatabase(AllSectionsSummary.this);
         sectionName=new ArrayList<>();
+        questionArray=new ArrayList<>();
 
+        HashMap<String,ArrayList<String>> map=ob.getAllStringValuesPerSection();
+        sectionName=map.get("SectionNameList");
 
-        for(int i=0;i<noOfSections;++i){
-            HashMap<String,String> map=ob.getValuesPerSection(i);
-            String name=map.get("SectionName");
-            sectionName.add(name);
+        for(int i=0;i<sectionName.size();++i){
+            int sI=ob.getIntValuesPerSectionBySerialNumber(i,"SectionIndex");
+            HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(sI);
+            ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
+            my_fragment_index_list=my_map.get("FragmentIndexList");
+            questionArray.add(my_fragment_index_list);
         }
 
         allSectionsSummaryAdapter =new AllSectionsSummaryAdapter(sectionName,questionArray,AllSectionsSummary.this);
@@ -64,6 +66,7 @@ public class AllSectionsSummary extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AllSectionsSummary.this);
                 builder.setMessage("Are you sure you want to exit the quiz?")
+                        .setTitle("ALERT")
                         .setIcon(R.drawable.alert_icon)
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {

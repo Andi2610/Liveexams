@@ -73,6 +73,9 @@ public class StartPageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        MySqlDatabase o=new MySqlDatabase(getActivity());
+        o.getAllValues();
+
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 

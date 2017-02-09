@@ -86,12 +86,12 @@ public class MyFragment extends Fragment {
                 int myStr=Integer.parseInt(stringVariable);
                 myStr++;
                 Log.d("here","mySi="+mySi+" myQi="+myQi);
-                int val=ob.getValuesPerQuestionForQuiz(mySi,myQi,"NumberOfToggles");
-                Log.d("here","initial="+val);
-                ++val;
-                Log.d("here","after="+val);
-                ob.updateValuesPerQuestionPerSection(mySi,myQi,val,"NumberOfToggles");
-                ob.updateValuesPerQuestionPerSection(mySi,myQi,myStr,"FinalAnswer");
+//                int val=ob.getValuesPerQuestionForQuiz(mySi,myQi,"NumberOfToggles");
+//                Log.d("here","initial="+val);
+//                ++val;
+//                Log.d("here","after="+val);
+//                ob.updateValuesPerQuestionPerSection(mySi,myQi,val,"NumberOfToggles");
+//                ob.updateValuesPerQuestionPerSection(mySi,myQi,myStr,"FinalAnswer");
             }
         }, "ok");
 

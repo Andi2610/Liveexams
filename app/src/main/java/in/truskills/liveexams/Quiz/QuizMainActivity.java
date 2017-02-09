@@ -39,6 +39,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     AllQuestionsInOneSectionAdapter allQuestionsInOneSectionAdapter;
     LinearLayoutManager linearLayoutManager;
     private static final String FORMAT = "%02d:%02d:%02d";
+    ArrayList<Integer> arrayForNoOfSections,arrayForQuestions,arrayForOptions;
+    ArrayList<String> options;
+    int mySectionCount=-1,my_section,my_question,myFragmentCount=-1,my_option;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +196,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                             String name = map6.get("Name");
 
                             //Set in database..
-                            ob.setValuesPerSection(i, name);
+                            ob.setValuesPerSection(i);
+
+                            ob.updateValuesPerSection(i,"SectionName",name);
 
                             //Parse one section SectionQuestions..
                             map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
@@ -221,7 +228,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                                 //Assign it's value to the array..
                                 fragmentIndex[i][j] = fi;
 
-                                ob.setValuesPerQuestionPerSection(i,j);
+                                //Set in database..
+                                ob.setValuesPerQuestion(i,j);
 
                                 //Initialise languageArray[i][] as noOfQuestions in section i.
                                 languageArray[i] = new int[noOfQuestions];
@@ -273,13 +281,15 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                                 //Set value of textArray[i][j] as text of question j of section i.
                                 textArray[i][j] = text;
 
+                                ob.updateValuesPerQuestion(i,j,"QuestionText",text);
+
                                 //Parse Options to get Option array..
                                 myOption = QuestionPaperParser.OptionsParser(myOptions);
 
                                 //Get length of option array..
                                 noOfOption = QuestionPaperParser.getLengthOfOptionArray(myOption);
 
-                                //Initialise the optionArray[i][j] as optionArray[noOfSections][noOfQuestions][noOfOptions]..
+                                //Initialise the myPptionsArray[i][j] as noOfOptions in section i question j..
                                 myOptionsArray[i][j] = noOfOption;
 
                                 //Initialise optionArray[i] as optionArray of particular option of a particular question of a particular section..
@@ -287,6 +297,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
                                 //Loop through entire option array..
                                 for (int p = 0; p < noOfOption; ++p) {
+
+                                    //Set in database..
+                                    ob.setValuesPerOption(i,j,p);
 
                                     //Parse Option Array at the desirex index to get one option..
                                     myOp = QuestionPaperParser.OptionParser(myOption, p);
@@ -302,6 +315,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
                                     //Assign value to optionArray as option value of a particular option of a question of a section..
                                     optionArray[i][j][p] = map11.get("_");
+
+                                    ob.updateValuesPerOption(i,j,p,"OptionText",map11.get("_"));
 
                                 }
                             }
@@ -375,35 +390,113 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             }
         }.start();
 
-        ArrayList<String> options;
-        for (int i = 0; i < noOfSections; ++i) {
-            for (int j = 0; j < questionArray[i]; ++j) {
-                options = new ArrayList<String>();
-                for (int p = 0; p < myOptionsArray[i][j]; ++p) {
-                    options.add(optionArray[i][j][p]);
+        arrayForNoOfSections=new ArrayList<>();
+
+        for(int i=0;i<noOfSections;++i){
+            arrayForNoOfSections.add(i);
+        }
+        //If shuffling required, then do so..
+        Collections.shuffle(arrayForNoOfSections);
+
+        for(int i=0;i<noOfSections;++i){
+            //Increase the section serial number..
+            mySectionCount++;
+            //Getting a section randomly..
+            my_section=arrayForNoOfSections.get(i);
+            //Set the serial number of this section..
+            ob.updateValuesPerSection(my_section,"SerialNumber",mySectionCount+"");
+
+
+            //Getting total no.of questions in that section randomly..
+            num=questionArray[arrayForNoOfSections.get(i)];
+            arrayForQuestions=new ArrayList<>();
+            for(int j=0;j<num;++j){
+                arrayForQuestions.add(j);
+            }
+
+            //If shuffling required, then do so..
+            Collections.shuffle(arrayForQuestions);
+
+            int myQuestionCount=-1;
+
+            for (int k=0;k<num;++k){
+                //Increase question serial number..
+                myQuestionCount++;
+                //Increase fragment serial number..
+                myFragmentCount++;
+                //Getting a question randomly..
+                my_question=arrayForQuestions.get(k);
+                //Set the serial number of this question..
+                ob.updateValuesPerQuestion(my_section,my_question,"SerialNumber",myQuestionCount+"");
+                ob.updateValuesPerQuestion(my_section,my_question,"FragmentIndex",myFragmentCount+"");
+
+                String my_text=textArray[my_section][my_question];
+
+                int numOp=myOptionsArray[my_section][my_question];
+
+                arrayForOptions=new ArrayList<>();
+                for(int p=0;p<numOp;++p){
+                    arrayForOptions.add(p);
                 }
-                //Add new instance of the fragment for every question..
-                fList.add(MyFragment.newInstance(textArray[i][j], options, examId,i,j));
+                //Shuffle if required..
+                Collections.shuffle(arrayForOptions);
+
+                options=new ArrayList<>();
+
+                int myOptionCount=-1;
+
+                for (int s=0;s<numOp;++s){
+                    //Increase option serial number..
+                    myOptionCount++;
+                    //Getting an option randomly..
+                    my_option=arrayForOptions.get(s);
+                    //Set the serial number of this option..
+                    ob.updateValuesPerOption(my_section,my_question,my_option,"SerialNumber",myOptionCount+"");
+
+                    String my_option_text=optionArray[my_section][my_question][my_option];
+                    options.add(my_option_text);
+                }
+                fList.add(MyFragment.newInstance(my_text, options,examId,my_section,my_question));
             }
         }
+
+
+        ob.getAllValues();
 
         //Set the view pager adapter..
         pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
         pager = (ViewPager) findViewById(R.id.viewpager);
         pager.setAdapter(pageAdapter);
         //Initially when first page is displayed..
-        HashMap<String, String> map = ob.getValuesPerSection(0);
+        //Get values of the section displayed at first number..
+
+//        ArrayList<Integer> qq=new ArrayList<>();
+//        int cnt=1;
+//        for(int i=0;i<questionArray[0];++i){
+//            qq.add(cnt);
+//            ++cnt;
+//        }
+
+        //Initially.. fragmentIndex=0;
+        //Getting SectionIndex, QuestionIndex and SerialNumber of fragmentIndex=0;
+        int sI=ob.getIntValuesPerQuestionByFragmentIndex(0,"SectionIndex");
+        String srNo=ob.getStringValuesPerQuestionByFragmentIndex(0,"SerialNumber");
+        int sn=Integer.parseInt(srNo);
+
+        HashMap<String, String> map = ob.getValuesPerSection(sI);
         sectionTitle = map.get("SectionName");
         sectionName.setText(sectionTitle);
 
-        ArrayList<Integer> qq=new ArrayList<>();
-        int cnt=1;
-        for(int i=0;i<questionArray[0];++i){
-            qq.add(cnt);
-            ++cnt;
+        HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(sI);
+        ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
+        my_fragment_index_list=my_map.get("FragmentIndexList");
+
+        Log.d("initially",sI+" "+sn+" "+sectionTitle);
+        for(int l=0;l<my_fragment_index_list.size();++l){
+            Log.d("initially",my_fragment_index_list.get(l)+"");
         }
 
-        allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(qq,QuizMainActivity.this,0);
+        allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn);
 
         linearLayoutManager=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         questionsList.setLayoutManager(linearLayoutManager);
@@ -420,22 +513,26 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
             @Override
             public void onPageSelected(int position) {
-                mapper = QuestionPaperParser.getSectionAndQuestion(position, fragmentIndex);
-                sectionIndex = mapper.get("SectionIndex");
-                questionIndex = mapper.get("QuestionIndex");
-                HashMap<String, String> map = ob.getValuesPerSection(sectionIndex);
+                Log.d("finally","here");
+                int sI=ob.getIntValuesPerQuestionByFragmentIndex(position,"SectionIndex");
+                String srNo=ob.getStringValuesPerQuestionByFragmentIndex(position,"SerialNumber");
+                int sn=Integer.parseInt(srNo);
+
+                HashMap<String, String> map = ob.getValuesPerSection(sI);
                 sectionTitle = map.get("SectionName");
                 sectionName.setText(sectionTitle);
-                ArrayList<Integer> qq=new ArrayList<>();
-                int cnt=1;
-                for(int i=0;i<questionArray[sectionIndex];++i){
-                    qq.add(cnt);
-                    ++cnt;
-                }
-                allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(qq,QuizMainActivity.this,questionIndex);
+
+                HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(sI);
+                ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
+                my_fragment_index_list=my_map.get("FragmentIndexList");
+                allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn);
                 questionsList.setAdapter(allQuestionsInOneSectionAdapter);
                 allQuestionsInOneSectionAdapter.notifyDataSetChanged();
-                HashMap<String,String> mapp=ob.getValuesPerQuestionPerSection(sectionIndex,questionIndex);
+
+                Log.d("finally",sI+" "+sn+" "+sectionTitle);
+                for(int l=0;l<my_fragment_index_list.size();++l){
+                    Log.d("finally",my_fragment_index_list.get(l)+"");
+                }
             }
 
             @Override
@@ -448,16 +545,15 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             @Override
             public void onClick(View v) {
                 int num=pager.getCurrentItem();
-                HashMap<String,Integer> map=QuestionPaperParser.getSectionAndQuestion(num,fragmentIndex);
-                s=map.get("SectionIndex");
-                q=map.get("QuestionIndex");
+                int sI=ob.getIntValuesPerQuestionByFragmentIndex(num,"SectionIndex");
+                //Get serial number of this section from PerSectionDetails..
+                String srNo=ob.getStringValuesPerSectionBySectionIndex(sI,"SerialNumber");
 //                SharedPreferences.Editor e=quizPrefs.edit();
 //                e.putInt("mySectionIndex",s);
 //                e.putInt("myQuestionIndex",q);
 //                e.apply();
                 Intent i =new Intent(QuizMainActivity.this,SectionNamesDisplay.class);
-                i.putExtra("noOfSections",noOfSections);
-                i.putExtra("currentSection",s);
+                i.putExtra("serialNumber",srNo);
                 startActivityForResult(i,REQUEST_CODE);
             }
         });
@@ -474,37 +570,33 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==REQUEST_CODE){
             if(data!=null){
-                int myS=data.getIntExtra("message",0);
-                int n=QuestionPaperParser.getFragmentIndex(myS,0,fragmentIndex);
-//                if(myS==quizPrefs.getInt("mySectionIndex",-1)){
-//                    SharedPreferences.Editor e=quizPrefs.edit();
-//                    e.clear();
-//                    e.apply();
-//                }else{
-                    pager.setCurrentItem(n);
-//                }
+                int mySrNo=data.getIntExtra("message",0);
+                //Get SectionIndex by srNo..
+                int sI=ob.getIntValuesPerSectionBySerialNumber(mySrNo,"SectionIndex");
+
+                //Get fragment index with section index= sI and serial number=0 from PerQuestionDetails..
+                int my_fi=ob.getIntValuesPerQuestionBySiAndSrno(sI,0,"FragmentIndex");
+
+                pager.setCurrentItem(my_fi);
+
+                HashMap<String, String> map = ob.getValuesPerSection(sI);
+                sectionTitle = map.get("SectionName");
+                sectionName.setText(sectionTitle);
+
             }
-//            else{
-//                SharedPreferences.Editor e=quizPrefs.edit();
-//                e.clear();
-//                e.apply();
-//            }
         }else if(requestCode==REQUEST_CODE_FOR_ALL_SUMMARY){
             if(data!=null){
-                int myS=data.getIntExtra("section",0);
-                int myQ=data.getIntExtra("question",0);
-
-
-                int n=QuestionPaperParser.getFragmentIndex(myS,myQ,fragmentIndex);
+                int jumpTo=data.getIntExtra("jumpTo",0);
+                pager.setCurrentItem(jumpTo);
 //                if(myS==quizPrefs.getInt("mySectionIndex",-1)&&myQ==quizPrefs.getInt("myQuestionIndex",-1)){
 //                    SharedPreferences.Editor e=quizPrefs.edit();
 //                    e.clear();
 //                    e.apply();
 //                }else{
-                    pager.setCurrentItem(n);
-                    HashMap<String, String> map = ob.getValuesPerSection(myS);
-                    sectionTitle = map.get("SectionName");
-                    sectionName.setText(sectionTitle);
+//                    pager.setCurrentItem(n);
+//                    HashMap<String, String> map = ob.getValuesPerSection(myS);
+//                    sectionTitle = map.get("SectionName");
+//                    sectionName.setText(sectionTitle);
 //                }
             }
 //            else{
@@ -513,6 +605,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //                e.apply();
 //            }
         }
+    }
+
+    @Override
+    public void SetValue(int pos) {
+        pager.setCurrentItem(pos);
     }
 
     @Override
@@ -525,19 +622,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.rulesIcon:
-//                int num=pager.getCurrentItem();
-//                HashMap<String,Integer> map=QuestionPaperParser.getSectionAndQuestion(num,fragmentIndex);
-//                s=map.get("SectionIndex");
-//                q=map.get("QuestionIndex");
-//                SharedPreferences.Editor e=quizPrefs.edit();
-//                e.putInt("mySectionIndex",s);
-//                e.putInt("myQuestionIndex",q);
-//                e.apply();
-                Bundle b=new Bundle();
-                b.putInt("noOfSections",noOfSections);
-                b.putIntArray("questionArray",questionArray);
                 Intent i=new Intent(QuizMainActivity.this,AllSectionsSummary.class);
-                i.putExtra("bundle",b);
                 startActivityForResult(i,REQUEST_CODE_FOR_ALL_SUMMARY);
                 break;
         }
@@ -547,28 +632,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     public void onBackPressed() {
 
-//        int ss=quizPrefs.getInt("mySectionIndex",-1);
-//        int qq=quizPrefs.getInt("myQuestionIndex",-1);
-//        if(ss==-1&&qq==-1){
-//            Toast.makeText(this, "Further back navigation not allowed..", Toast.LENGTH_SHORT).show();
-//        }
-//        else{
-//            int n=QuestionPaperParser.getFragmentIndex(ss,qq,fragmentIndex);
-//            pager.setCurrentItem(n);
-//            SharedPreferences.Editor e=quizPrefs.edit();
-//            e.putInt("mySectionIndex",-1);
-//            e.putInt("myQuestionIndex",-1);
-//            e.apply();
-//        }
-    }
-
-    @Override
-    public void SetValue(int pos) {
-        int num=pager.getCurrentItem();
-        HashMap<String,Integer> map = QuestionPaperParser.getSectionAndQuestion(num, fragmentIndex);
-        int sI = map.get("SectionIndex");
-        int item=QuestionPaperParser.getFragmentIndex(sI,pos,fragmentIndex);
-        pager.setCurrentItem(item);
     }
 
     @Override
@@ -577,38 +640,38 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         int ss,qq,val,n;
         switch (v.getId()){
 
-            case R.id.submitButton:
-                n=pager.getCurrentItem();
-                Log.d("here","inSubmit"+n);
-                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
-                ss = m.get("SectionIndex");
-                qq = m.get("QuestionIndex");
-                val=ob.getValuesPerQuestionForQuiz(ss,qq,"SubmitButtonClicks");
-                ++val;
-                ob.updateValuesPerQuestionPerSection(ss,qq,val,"SubmitButtonClicks");
-                break;
-
-            case R.id.reviewButton:
-                n=pager.getCurrentItem();
-                Log.d("here","inReview"+n);
-                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
-                ss = m.get("SectionIndex");
-                qq = m.get("QuestionIndex");
-                val=ob.getValuesPerQuestionForQuiz(ss,qq,"ReviewButtonClicks");
-                ++val;
-                ob.updateValuesPerQuestionPerSection(ss,qq,val,"ReviewButtonClicks");
-                break;
-
-            case R.id.clearButton:
-                n=pager.getCurrentItem();
-                Log.d("here","inClear"+n);
-                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
-                ss = m.get("SectionIndex");
-                qq = m.get("QuestionIndex");
-                val=ob.getValuesPerQuestionForQuiz(ss,qq,"ClearButtonClicks");
-                ++val;
-                ob.updateValuesPerQuestionPerSection(ss,qq,val,"ClearButtonClicks");
-                break;
+//            case R.id.submitButton:
+//                n=pager.getCurrentItem();
+//                Log.d("here","inSubmit"+n);
+//                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
+//                ss = m.get("SectionIndex");
+//                qq = m.get("QuestionIndex");
+//                val=ob.getValuesPerQuestionForQuiz(ss,qq,"SubmitButtonClicks");
+//                ++val;
+//                ob.updateValuesPerQuestionPerSection(ss,qq,val,"SubmitButtonClicks");
+//                break;
+//
+//            case R.id.reviewButton:
+//                n=pager.getCurrentItem();
+//                Log.d("here","inReview"+n);
+//                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
+//                ss = m.get("SectionIndex");
+//                qq = m.get("QuestionIndex");
+//                val=ob.getValuesPerQuestionForQuiz(ss,qq,"ReviewButtonClicks");
+//                ++val;
+//                ob.updateValuesPerQuestionPerSection(ss,qq,val,"ReviewButtonClicks");
+//                break;
+//
+//            case R.id.clearButton:
+//                n=pager.getCurrentItem();
+//                Log.d("here","inClear"+n);
+//                m = QuestionPaperParser.getSectionAndQuestion(n, fragmentIndex);
+//                ss = m.get("SectionIndex");
+//                qq = m.get("QuestionIndex");
+//                val=ob.getValuesPerQuestionForQuiz(ss,qq,"ClearButtonClicks");
+//                ++val;
+//                ob.updateValuesPerQuestionPerSection(ss,qq,val,"ClearButtonClicks");
+//                break;
 
         }
     }
@@ -644,9 +707,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         super.onDestroy();
         Log.d("messi","inOnDestroy");
         ob.deleteMyTable();
-//        SharedPreferences.Editor e=quizPrefs.edit();
-//        e.clear();
-//        e.apply();
     }
 
     public void mySocketConnection(){
