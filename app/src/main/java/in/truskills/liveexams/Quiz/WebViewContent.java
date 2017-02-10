@@ -20,9 +20,7 @@ import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 public class WebViewContent {
 
 
-    public static String contentGenerator(final String question, final ArrayList<String> optionsList, final String examId) {
-
-
+    public static void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
@@ -56,8 +54,33 @@ public class WebViewContent {
                         "</form>\n" +
                         "</body>\n" +
                         "</html>;";
+        webView.loadDataWithBaseURL(null, content, "text/HTML", "UTF-8", null);
 
-       return content;
+        webView.addJavascriptInterface(new Object() {
+            @JavascriptInterface           // For API 17+
+            public void performClick(String strl) {
+
+                //Enable submit and clear button..
+//                o.enableButtons();
+
+                MySqlDatabase ob=new MySqlDatabase(c);
+
+                Log.d("clicked","here");
+
+                //Get options ticked.. update it in final answer..
+                //Also increment no. of toggles for the question by one..
+                String stringVariable = strl;
+                int myStr=Integer.parseInt(stringVariable);
+                Log.d("here","mySi="+mySi+" myQi="+myQi);
+                ob.updateValuesForResult(mySi,myQi,"FinalAnswerSerialNumber",myStr+"");
+
+                String not=ob.getValuesForResult(mySi,myQi,"NumberOfToggles");
+                int numOfTog=Integer.parseInt(not);
+                numOfTog++;
+                ob.updateValuesForResult(mySi,myQi,"NumberOfToggles",numOfTog+"");
+                ob.getAllValues();
+            }
+        }, "ok");
     }
 
     //This function is used to format the content i.e. add <img> tag wherever required..

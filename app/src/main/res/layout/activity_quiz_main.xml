@@ -48,18 +48,26 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/submittedQuestions"
                         android:textColor="@color/green"
-                        android:layout_margin="10dp"/>
+                        android:layout_margin="5dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/reviewedQuestions"
                         android:textColor="@color/orange"
-                        android:layout_margin="10dp"/>
+                        android:layout_margin="5dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/clearedQuestions"
+                        android:textColor="@color/red"
+                        android:layout_margin="5dp"/>
+
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/notAttemptedQuestions"
-                        android:layout_margin="10dp"/>
+                        android:layout_margin="5dp"/>
                 </LinearLayout>
 
             </LinearLayout>

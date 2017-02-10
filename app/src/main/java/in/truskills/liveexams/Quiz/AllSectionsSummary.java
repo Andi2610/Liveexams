@@ -23,8 +23,6 @@ public class AllSectionsSummary extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     AllSectionsSummaryAdapter allSectionsSummaryAdapter;
     RecyclerView allSectionsList;
-    Bundle b;
-    int noOfSections;
     ArrayList<String> sectionName;
     ArrayList<ArrayList<Integer>> questionArray;
     MySqlDatabase ob;
