@@ -43,6 +43,19 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.mySectionName.setText(sectionName.get(holder.getAdapterPosition()));
+
+        ArrayList<Integer> types=new ArrayList<>();
+        MySqlDatabase ob=new MySqlDatabase(c);
+
+        int sI=ob.getIntValuesPerSectionBySerialNumber(holder.getAdapterPosition(),"SectionIndex");
+
+        types=ob.getTypes(sI);
+
+        holder.submittedQuestionsAllSummary.setText(types.get(1)+"");
+        holder.reviewedQuestionsAllSummary.setText(types.get(2)+"");
+        holder.clearedQuestionsAllSummary.setText(types.get(3)+"");
+        holder.notAttemptedQuestionsAllSummary.setText(types.get(0)+"");
+
         GridViewAdapter adapter=new GridViewAdapter(questionArray.get(holder.getAdapterPosition()),c);
         holder.gridView.setAdapter(adapter);
         holder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -66,12 +79,17 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mySectionName;
+        TextView mySectionName,submittedQuestionsAllSummary,reviewedQuestionsAllSummary,clearedQuestionsAllSummary,notAttemptedQuestionsAllSummary;
         GridView gridView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             mySectionName = (TextView) itemView.findViewById(R.id.mySectionName);
+            submittedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.submittedQuestionsAllSummary);
+            reviewedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.reviewedQuestionsAllSummary);
+            clearedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.clearedQuestionsAllSummary);
+            notAttemptedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.notAttemptedQuestionsAllSummary);
+
             gridView = (GridView) itemView.findViewById(R.id.gridView);
         }
     }

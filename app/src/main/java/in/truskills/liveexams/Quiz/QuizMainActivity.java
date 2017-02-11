@@ -461,9 +461,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             }
         }
 
-
-        ob.getAllValues();
-
         //Set the view pager adapter..
         pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
         pager = (ViewPager) findViewById(R.id.viewpager);
@@ -488,14 +485,19 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         String srNo=ob.getStringValuesPerQuestionByFragmentIndex(0,"SerialNumber");
         int sn=Integer.parseInt(srNo);
 
-        ob.getAllValues();
-
-        types=ob.getTypes();
+        types=ob.getTypes(sI);
 
         submittedQuestions.setText(types.get(1)+"");
         reviewedQuestions.setText(types.get(2)+"");
         clearedQuestions.setText(types.get(3)+"");
         notAttemptedQuestions.setText(types.get(0)+"");
+
+        //Disable buttons..
+        submitButton.setEnabled(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
+        clearButton.setEnabled(false);
+        clearButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
+
 
         HashMap<String, String> map = ob.getValuesPerSection(sI);
         sectionTitle = map.get("SectionName");
@@ -535,24 +537,34 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 ob.updateValuesForResult(SI,QI,"ReadStatus",1+"");
                 String srNo=ob.getStringValuesPerQuestionByFragmentIndex(position,"SerialNumber");
                 int sn=Integer.parseInt(srNo);
-                ob.getAllValues();
-
-//                MyFragment fragment =(MyFragment) pageAdapter.getRegisteredFragment(position);
-//                Bundle newBundle=new Bundle();
-//                newBundle.putString("here","new");
-//                if (fragment.getArguments() == null) {
-//                    fragment.setArguments(newBundle);
-//                    Log.d("here","inIf");
-//
-//                } else {
-//                    //Consider explicitly clearing arguments here
-//                    Log.d("here","inElse");
-//                    fragment.getArguments().putAll(newBundle);
-//                }
 
                 HashMap<String, String> map = ob.getValuesPerSection(SI);
                 sectionTitle = map.get("SectionName");
                 sectionName.setText(sectionTitle);
+
+                types=ob.getTypes(SI);
+
+                submittedQuestions.setText(types.get(1)+"");
+                reviewedQuestions.setText(types.get(2)+"");
+                clearedQuestions.setText(types.get(3)+"");
+                notAttemptedQuestions.setText(types.get(0)+"");
+
+                int qType=ob.getTypeOfAQuestion(SI,QI);
+                if(qType==-1){
+                    //Disable buttons..
+                    submitButton.setEnabled(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                    clearButton.setEnabled(false);
+                    clearButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
+
+                }else{
+                    //Enable buttons..
+                    submitButton.setEnabled(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.black));
+                    clearButton.setEnabled(true);
+                    clearButton.setBackgroundColor(getResources().getColor(R.color.black));
+                }
+
 
                 HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(SI);
                 ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
@@ -659,8 +671,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 qq=ob.getIntValuesPerQuestionByFragmentIndex(n,"QuestionIndex");
                 Log.d("here",ss+" "+qq);
                 ob.updateValuesForResult(ss,qq,"QuestionStatus",1+"");
-                ob.getAllValues();
-                types=ob.getTypes();
+                types=ob.getTypes(ss);
                 submittedQuestions.setText(types.get(1)+"");
                 reviewedQuestions.setText(types.get(2)+"");
                 clearedQuestions.setText(types.get(3)+"");
@@ -672,8 +683,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 qq=ob.getIntValuesPerQuestionByFragmentIndex(n,"QuestionIndex");
                 Log.d("here",ss+" "+qq);
                 ob.updateValuesForResult(ss,qq,"QuestionStatus",2+"");
-                ob.getAllValues();
-                types=ob.getTypes();
+                types=ob.getTypes(ss);
                 submittedQuestions.setText(types.get(1)+"");
                 reviewedQuestions.setText(types.get(2)+"");
                 clearedQuestions.setText(types.get(3)+"");
@@ -688,20 +698,39 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 ob.updateValuesForResult(ss,qq,"FinalAnswerSerialNumber",-1+"");
                 //Clear webview content..
                 //.......................................................................
-                ob.getAllValues();
-                types=ob.getTypes();
+                types=ob.getTypes(ss);
                 submittedQuestions.setText(types.get(1)+"");
                 reviewedQuestions.setText(types.get(2)+"");
                 clearedQuestions.setText(types.get(3)+"");
                 notAttemptedQuestions.setText(types.get(0)+"");
+
+                //Disable buttons..
+                submitButton.setEnabled(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                clearButton.setEnabled(false);
+                clearButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
                 break;
         }
     }
 
     @Override
     public void enableButtons() {
+
+        Log.d("enable","here");
+
         submitButton.setEnabled(true);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.black));
         clearButton.setEnabled(true);
+        clearButton.setBackgroundColor(getResources().getColor(R.color.black));
+    }
+
+    public void setButtons() {
+        Log.d("set","here");
+
+        submitButton.setEnabled(true);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.black));
+        clearButton.setEnabled(true);
+        clearButton.setBackgroundColor(getResources().getColor(R.color.black));
     }
 
     //Adapter for view pager..

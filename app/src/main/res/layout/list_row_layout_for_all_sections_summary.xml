@@ -27,20 +27,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/mySubmittedQuestions"
+                android:id="@+id/submittedQuestionsAllSummary"
                 android:textColor="@color/green"
-                android:layout_margin="10dp"/>
+                android:layout_margin="5dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/myReviewedQuestions"
+                android:id="@+id/reviewedQuestionsAllSummary"
                 android:textColor="@color/orange"
-                android:layout_margin="10dp"/>
+                android:layout_margin="5dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/myNotAttemptedQuestions"
-                android:layout_margin="10dp"/>
+                android:id="@+id/clearedQuestionsAllSummary"
+                android:textColor="@color/red"
+                android:layout_margin="5dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/notAttemptedQuestionsAllSummary"
+                android:layout_margin="5dp"/>
         </LinearLayout>
 
     </LinearLayout>

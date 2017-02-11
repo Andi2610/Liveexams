@@ -112,7 +112,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
                     + SectionId + " TEXT,"
                     + QuestionId + " TEXT,"
                     + FinalAnswerId + " TEXT,"
-                    + NumberOfToggles + " TEXT DEFAULT '0',"
+                    + NumberOfToggles + " TEXT DEFAULT '-1',"
                     + ReadStatus + " TEXT DEFAULT '0',"
                     + TimeSpent + " TEXT DEFAULT '0',"
                     + " PRIMARY KEY (" + SectionIndex + "," + QuestionIndex + ")"
@@ -235,25 +235,26 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         return ans;
     }
 
-    public ArrayList<Integer> getTypes(){
+    public ArrayList<Integer> getTypes(int si){
         ArrayList<Integer> types=new ArrayList<>();
         SQLiteDatabase db=this.getReadableDatabase();
-        String query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=0";
+        String query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=0 AND "+SectionIndex+"="+si;
+
         Cursor cursor=db.rawQuery(query,null);
         Log.d("hiiii","0="+cursor.getCount());
         types.add(cursor.getCount());
 
-        query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=1";
+        query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=1 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         Log.d("hiiii","0="+cursor.getCount());
         types.add(cursor.getCount());
 
-        query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=2";
+        query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=2 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         Log.d("hiiii","0="+cursor.getCount());
         types.add(cursor.getCount());
 
-        query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=3";
+        query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=3 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         Log.d("hiiii","0="+cursor.getCount());
         types.add(cursor.getCount());
@@ -263,6 +264,26 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         db.close();
 
         return types;
+
+    }
+
+    public int getTypeOfAQuestion(int si,int qi){
+        String ans="";
+        int type=-1;
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT "+FinalAnswerSerialNumber+" FROM "+RESULT_TABLE+" WHERE "+SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi;
+
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                ans=cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber));
+                type=Integer.parseInt(ans);
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return type;
 
     }
 

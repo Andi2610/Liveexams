@@ -75,7 +75,8 @@ public class MyFragment extends Fragment {
         ob=new MySqlDatabase(getActivity());
 
         o=(MyFragmentInterface) getActivity();
-        WebViewContent.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity());
+        WebViewContent obj=new WebViewContent();
+        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity());
 
         return v;
     }

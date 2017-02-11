@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.R;
 
 /**
  * Created by Shivansh Gupta on 27-01-2017.
@@ -19,8 +21,9 @@ import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 
 public class WebViewContent {
 
+    MainActivity obj=new MainActivity();
 
-    public static void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
@@ -79,6 +82,11 @@ public class WebViewContent {
                 numOfTog++;
                 ob.updateValuesForResult(mySi,myQi,"NumberOfToggles",numOfTog+"");
                 ob.getAllValues();
+
+                //Enable buttons..
+                
+
+
             }
         }, "ok");
     }
@@ -159,3 +167,4 @@ public class WebViewContent {
     }
 
 }
+
