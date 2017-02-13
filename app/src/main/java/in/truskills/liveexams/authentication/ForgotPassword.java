@@ -140,7 +140,8 @@ public class ForgotPassword extends AppCompatActivity {
 
                                     //Put all the required parameters for the post request..
                                     Map<String,String> params = new HashMap<String, String>();
-                                    params.put("mobileNumber",phoneNumber);
+                                    Log.d("phone",phoneNumber+"");
+                                    params.put("mobileNumber",phoneNumber.substring(3));
                                     params.put("newPassword",text);
                                     return params;
                                 }

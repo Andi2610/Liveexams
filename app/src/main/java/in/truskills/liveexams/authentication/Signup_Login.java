@@ -660,7 +660,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                             Log.d("myResponse=",response);
 
                             HashMap<String ,String> mapper=VariablesDefined.signupParser(response);
-                            Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                             Log.d("response",mapper.get("response"));
                             if(mapper.get("success").equals("true")){
                                 Toast.makeText(Signup_Login.this, "Signup Successfull", Toast.LENGTH_SHORT).show();
