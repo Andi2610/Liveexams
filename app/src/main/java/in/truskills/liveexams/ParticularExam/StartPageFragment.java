@@ -33,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -108,10 +109,21 @@ public class StartPageFragment extends Fragment {
         try {
             HashMap<String, String> mapper = VariablesDefined.join_start_Parser(examDetails);
             descriptionStartPage.setText(mapper.get("Description"));
-            startDetails.setText(mapper.get("StartDate") + "\n" + mapper.get("StartTime"));
-            endDetails.setText(mapper.get("EndDate") + "\n" + mapper.get("EndTime"));
+            String startDate=mapper.get("StartDate");
+            String myStartDate=VariablesDefined.parseDate(startDate);
+            String endDate=mapper.get("EndDate");
+            String myEndDate=VariablesDefined.parseDate(endDate);
+            String startTime=mapper.get("StartTime");
+            String myStartTime=VariablesDefined.parseDuration(startTime);
+            String endTime=mapper.get("EndTime");
+            String myEndTime=VariablesDefined.parseDuration(endTime);
+
+            startDetails.setText(myStartDate + "\n" + myStartTime);
+            endDetails.setText(myEndDate + "\n" + myEndTime);
             name = mapper.get("ExamName");
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 

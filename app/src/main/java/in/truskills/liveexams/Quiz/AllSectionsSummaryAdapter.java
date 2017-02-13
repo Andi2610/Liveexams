@@ -47,7 +47,7 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
         ArrayList<Integer> types=new ArrayList<>();
         MySqlDatabase ob=new MySqlDatabase(c);
 
-        int sI=ob.getIntValuesPerSectionBySerialNumber(holder.getAdapterPosition(),"SectionIndex");
+        int sI=ob.getIntValuesPerSectionBySerialNumber(holder.getAdapterPosition(),MySqlDatabase.SectionIndex);
 
         types=ob.getTypes(sI);
 
@@ -56,7 +56,9 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
         holder.clearedQuestionsAllSummary.setText(types.get(3)+"");
         holder.notAttemptedQuestionsAllSummary.setText(types.get(0)+"");
 
-        GridViewAdapter adapter=new GridViewAdapter(questionArray.get(holder.getAdapterPosition()),c);
+        ArrayList<Integer> myType=ob.getTypesOfEachSection(sI);
+
+        GridViewAdapter adapter=new GridViewAdapter(questionArray.get(holder.getAdapterPosition()),myType,c);
         holder.gridView.setAdapter(adapter);
         holder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

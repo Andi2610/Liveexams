@@ -44,8 +44,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.digits.sdk.android.AuthCallback;
+import com.digits.sdk.android.AuthConfig;
+import com.digits.sdk.android.Digits;
+import com.digits.sdk.android.DigitsAuthButton;
+import com.digits.sdk.android.DigitsException;
+import com.digits.sdk.android.DigitsSession;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -59,13 +68,21 @@ import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.Miscellaneous.TermsAndConditions;
+import io.fabric.sdk.android.Fabric;
 
 //This activity includes the code for Signup and Login
 
 public class Signup_Login extends AppCompatActivity implements View.OnClickListener {
 
+
+    private static final String TWITTER_KEY = "fIx7W5i8xo9stQ8jhOHVLNdFB";
+    private static final String TWITTER_SECRET = "JQ9IuPXWecyeMFK8VujoYePRHHfQllXNRvRYC6QatmCNt8l5FH";
+
     //Public declaration of variables
-    Button loginPressed, signupPressed, locationIcon;
+
+    AuthCallback authCallback;
+    Button loginPressed, locationIcon;
+    Button signupPressed;
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
     EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile;
@@ -582,7 +599,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //If all valid.. signup..
         if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && !language.equals("LANGUAGE") && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
-            signupFunction();
+            signupFunction(mobile);
         } else {
             //Else display desired error messages..
             if (name.equals(""))
@@ -619,61 +636,98 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     }
 
     //This method is for signing up i.e calling signup api..
-    public void signupFunction() {
+    public void signupFunction(String myMobile) {
 
-        //Api to be connected to..
-        String url = VariablesDefined.api+"signup";
-
-        //Make a request..
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                url, new Response.Listener<String>() {
+        TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new TwitterCore(authConfig), new Digits.Builder().build());
+        authCallback = new AuthCallback() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    //Parse the signup response..
-                    HashMap<String ,String> mapper=VariablesDefined.signupParser(response);
-                    Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
-                    if(mapper.get("success").equals("true"))
-                        signupDrawer.close();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //If connection could not be made..
-                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String,String> getParams(){
+            public void success(DigitsSession session, String phoneNumber) {
+                // Do something with the session
+                Toast.makeText(Signup_Login.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
 
-                //Attach parameters required..
-                Map<String,String> params = new HashMap<String, String>();
+                //Api to be connected to..
+                String url = VariablesDefined.api+"signup";
 
-                Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.camera);
+                //Make a request..
+                StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                        url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //Parse the signup response..
 
-                String defaultImage=BitmapToString(icon);
+                            Log.d("myResponse=",response);
 
-                SharedPreferences prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
-                SharedPreferences.Editor e=prefs.edit();
-                e.putString("navImage",defaultImage);
-                e.apply();
-                params.put("userName",name);
-                params.put("gender",gender);
-                params.put("password",password);
-                params.put("emailAddress",email);
-                params.put("mobileNumber",mobile);
-                params.put("language",language);
-                params.put("latitude",lat);
-                params.put("longitude",lon);
+                            HashMap<String ,String> mapper=VariablesDefined.signupParser(response);
+                            Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
+                            Log.d("response",mapper.get("response"));
+                            if(mapper.get("success").equals("true")){
+                                Toast.makeText(Signup_Login.this, "Signup Successfull", Toast.LENGTH_SHORT).show();
+                                signupDrawer.close();
+                            }else{
+                                JSONObject jo=new JSONObject(mapper.get("response"));
+                                String errmsg=jo.getString("errmsg");
+                                Toast.makeText(Signup_Login.this, "Couldn't Signup: "+errmsg, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //If connection could not be made..
+                        Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                    }
+                }){
+                    @Override
+                    protected Map<String,String> getParams(){
+
+                        //Attach parameters required..
+                        Map<String,String> params = new HashMap<String, String>();
+
+                        Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                                R.drawable.camera);
+
+                        String defaultImage=BitmapToString(icon);
+
+                        SharedPreferences prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor e=prefs.edit();
+                        e.putString("navImage",defaultImage);
+                        e.apply();
+                        params.put("userName",name);
+                        params.put("gender",gender);
+                        params.put("password",password);
+                        params.put("emailAddress",email);
+                        params.put("mobileNumber",mobile);
+                        params.put("language",language);
+                        params.put("latitude",lat);
+                        params.put("longitude",lon);
 //                params.put("profileImageUrl",defaultImage);
-                return params;
+                        return params;
+                    }
+                };
+                requestQueue.add(stringRequest);
+
+            }
+
+            @Override
+            public void failure(DigitsException exception) {
+                // Do something on failure
+                Toast.makeText(Signup_Login.this, "failure", Toast.LENGTH_SHORT).show();
+
             }
         };
-        requestQueue.add(stringRequest);
+
+        getAuthCallback();
+
+        AuthConfig.Builder authConfigBuilder = new AuthConfig.Builder()
+                .withAuthCallBack(authCallback)
+                .withPhoneNumber("+91"+myMobile);
+
+        Digits.authenticate(authConfigBuilder.build());
+
     }
 
     //This method is for logging up i.e calling login api..
@@ -896,5 +950,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+    }
+
+    public AuthCallback getAuthCallback(){
+        return authCallback;
     }
 }

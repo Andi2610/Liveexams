@@ -21,13 +21,14 @@ import in.truskills.liveexams.R;
 
 public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQuestionsInOneSectionAdapter.MyViewHolder> {
 
-    ArrayList<Integer> myListOfFragmentIndex;
+    ArrayList<Integer> myListOfFragmentIndex,myType;
     Context c;
     int pos;
     setValueOfPager ob;
 
-    AllQuestionsInOneSectionAdapter(ArrayList<Integer> myListOfFragmentIndex,Context c,int pos){
+    AllQuestionsInOneSectionAdapter(ArrayList<Integer> myListOfFragmentIndex,Context c,int pos,ArrayList<Integer> myType){
         this.myListOfFragmentIndex = myListOfFragmentIndex;
+        this.myType=myType;
         this.c = c;
         this.pos=pos;
     }
@@ -44,6 +45,16 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
             int cn=holder.getAdapterPosition();
             cn++;
             holder.questionNumber.setText(cn+"");
+            switch (myType.get(holder.getAdapterPosition())){
+                case 0:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.black));
+                    break;
+                case 1:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.green));
+                    break;
+                case 2:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.orange));
+                    break;
+                case 3:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.red));
+                    break;
+            }
             if(holder.getAdapterPosition()==pos){
                 holder.downArrow.setVisibility(View.VISIBLE);
             }else{

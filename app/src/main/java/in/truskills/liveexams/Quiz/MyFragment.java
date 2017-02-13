@@ -1,9 +1,14 @@
 package in.truskills.liveexams.Quiz;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,13 +77,42 @@ public class MyFragment extends Fragment {
         webView.getSettings().setDisplayZoomControls(false);
         webView.getSettings().setJavaScriptEnabled(true);
 
-        ob=new MySqlDatabase(getActivity());
+        MyFragmentInterface obb=(MyFragmentInterface)getActivity();
 
         o=(MyFragmentInterface) getActivity();
         WebViewContent obj=new WebViewContent();
-        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity());
+        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb);
 
         return v;
+    }
+
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            MyFragment.this.refresh();
+        }
+    }
+
+    MyReceiver r;
+    public void refresh() {
+        //your code in refresh.
+        Log.d("Refresh", "YES");
+        MyFragmentInterface obb=(MyFragmentInterface)getActivity();
+        o=(MyFragmentInterface) getActivity();
+        WebViewContent obj=new WebViewContent();
+        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb);
+    }
+
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(r);
+    }
+
+    public void onResume() {
+        super.onResume();
+        r = new MyReceiver();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(r,
+                new IntentFilter("TAG_REFRESH"));
     }
 }
 

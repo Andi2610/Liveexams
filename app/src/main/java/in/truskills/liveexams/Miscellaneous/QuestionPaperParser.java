@@ -221,31 +221,28 @@ public class QuestionPaperParser {
         return length;
     }
 
-    public static HashMap<String,ArrayList<String>> getAttributesOfQuestion(ArrayList<String> myAttributesOfQuestion) throws JSONException {
-        HashMap<String,ArrayList<String>> mapper=new HashMap<>();
-        int length=myAttributesOfQuestion.size();
-        ArrayList<String> idList=new ArrayList<>();
-        ArrayList<String> CorrectAnswerList=new ArrayList<>();
-        ArrayList<String> QuestionCorrectMarksList=new ArrayList<>();
-        ArrayList<String> QuestionIncorrectMarksList=new ArrayList<>();
-        ArrayList<String> PassageIDList=new ArrayList<>();
-        ArrayList<String> QuestionTypeList=new ArrayList<>();
-        ArrayList<String> QuestionTimeList=new ArrayList<>();
-        ArrayList<String> QuestionDifficultyLevelList=new ArrayList<>();
-        ArrayList<String> QuestionRelativeTopicList=new ArrayList<>();
+    public static HashMap<String,String> getAttributesOfQuestion(String myAttributesOfQuestion) throws JSONException {
+        HashMap<String,String> mapper=new HashMap<>();
+        JSONObject jsonObject=new JSONObject(myAttributesOfQuestion);
+        String myid=jsonObject.getString(id);
+        String correct_answer=jsonObject.getString(CorrectAnswer);
+        String question_correct_marks=jsonObject.getString(QuestionCorrectMarks);
+        String question_incorrect_marks=jsonObject.getString(QuestionIncorrectMarks);
+        String passage_id=jsonObject.getString(PassageID);
+        String question_type=jsonObject.getString(QuestionType);
+        String question_time=jsonObject.getString(QuestionTime);
+        String difficulty_level=jsonObject.getString(QuestionDifficultyLevel);
+        String relative_topic=jsonObject.getString(QuestionRelativeTopic);
+        mapper.put("id",myid);
+        mapper.put("CorrectAnswer",correct_answer);
+        mapper.put("QuestionCorrectMarks",question_correct_marks);
+        mapper.put("QuestionIncorrectMarks",question_incorrect_marks);
+        mapper.put("PassageID",passage_id);
+        mapper.put("QuestionType",question_type);
+        mapper.put("QuestionTime",question_time);
+        mapper.put("QuestionDifficultyLevel",difficulty_level);
+        mapper.put("QuestionRelativeTopic",relative_topic);
 
-        for(int i=0;i<length;++i){
-            JSONObject jsonObject=new JSONObject(myAttributesOfQuestion.get(i));
-            idList.add(jsonObject.getString(id));
-            CorrectAnswerList.add(jsonObject.getString(CorrectAnswer));
-            QuestionCorrectMarksList.add(jsonObject.getString(QuestionCorrectMarks));
-            QuestionIncorrectMarksList.add(jsonObject.getString(QuestionIncorrectMarks));
-            PassageIDList.add(jsonObject.getString(PassageID));
-            QuestionTypeList.add(jsonObject.getString(QuestionType));
-            QuestionTimeList.add(jsonObject.getString(QuestionTime));
-            QuestionDifficultyLevelList.add(jsonObject.getString(QuestionDifficultyLevel));
-            QuestionRelativeTopicList.add(jsonObject.getString(QuestionRelativeTopic));
-        }
         return mapper;
     }
 
@@ -356,25 +353,6 @@ public class QuestionPaperParser {
         JSONObject jsonObject=new JSONObject(myOption);
         String str=jsonObject.getString(id);
         return str;
-    }
-
-    public static HashMap<String,Integer> getSectionAndQuestion(int num, int [][] f){
-        HashMap<String,Integer> mapper=new HashMap<>();
-
-        for(int i=0;i<f.length;++i){
-            for(int j=0;j<f[i].length;++j){
-                if(f[i][j]==num){
-                    mapper.put("SectionIndex",i);
-                    mapper.put("QuestionIndex",j);
-                }
-            }
-        }
-        return mapper;
-    }
-
-    public static int getFragmentIndex(int sectionIndex,int questionIndex,int [][]f){
-        int num=f[sectionIndex][questionIndex];
-        return num;
     }
 
 }
