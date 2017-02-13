@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +47,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         sectionName=map.get("SectionNameList");
 
         for(int i=0;i<sectionName.size();++i){
-            int sI=ob.getIntValuesPerSectionBySerialNumber(i,"SectionIndex");
+            int sI=ob.getIntValuesPerSectionBySerialNumber(i,MySqlDatabase.SectionIndex);
             HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(sI);
             ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
             my_fragment_index_list=my_map.get("FragmentIndexList");
@@ -69,6 +72,10 @@ public class AllSectionsSummary extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+
+                                JSONArray jsonArray=ob.getResults();
+                                Log.d("database",jsonArray.toString());
+
                                 Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                                 startActivity(intent);

@@ -7,8 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import in.truskills.liveexams.MainScreens.MainActivity;
 
 /**
  * Created by Shivansh Gupta on 07-02-2017.
@@ -27,37 +33,36 @@ public class MySqlDatabase extends SQLiteOpenHelper {
     private static final String TABLE_PER_OPTION = "PerOptionDetails";
     private static final String RESULT_TABLE = "ResultTable";
 
-
     // Table Columns names
-    private static final String SectionIndex = "SectionIndex";
-    private static final String QuestionIndex = "QuestionIndex";
-    private static final String SectionMaxMarks = "SectionMaxMarks";
-    private static final String SectionTime = "SectionTime";
-    private static final String SectionDescription = "SectionDescription";
-    private static final String SectionRules = "SectionRules";
-    private static final String SectionName = "SectionName";
-    private static final String SectionId = "SectionId";
-    private static final String QuestionId = "QuestionId";
-    private static final String CorrectAnswer = "CorrectAnswer";
-    private static final String QuestionCorrectMarks = "QuestionCorrectMarks";
-    private static final String QuestionIncorrectMarks = "QuestionIncorrectMarks";
-    private static final String PassageID = "PassageID";
-    private static final String QuestionType = "QuestionType";
-    private static final String QuestionTime = "QuestionTime";
-    private static final String QuestionDifficultyLevel = "QuestionDifficultyLevel";
-    private static final String QuestionRelativeTopic = "QuestionRelativeTopic";
-    private static final String TimeSpent = "TimeSpent";
-    private static final String NumberOfToggles = "NumberOfToggles";
-    private static final String FinalAnswerSerialNumber = "FinalAnswerSerialNumber";
-    private static final String FinalAnswerId = "FinalAnswerId";
-    private static final String ReadStatus = "ReadStatus";
-    private static final String SerialNumber = "SerialNumber";
-    private static final String OptionIndex = "OptionIndex";
-    private static final String OptionId = "OptionId";
-    private static final String OptionText = "OptionText";
-    private static final String QuestionText = "QuestionText";
-    private static final String FragmentIndex = "FragmentIndex";
-    private static final String QuestionStatus = "QuestionStatus";
+    public static final String SectionIndex = "SectionIndex";
+    public static final String QuestionIndex = "QuestionIndex";
+    public static final String SectionMaxMarks = "SectionMaxMarks";
+    public static final String SectionTime = "SectionTime";
+    public static final String SectionDescription = "SectionDescription";
+    public static final String SectionRules = "SectionRules";
+    public static final String SectionName = "SectionName";
+    public static final String SectionId = "SectionId";
+    public static final String QuestionId = "QuestionId";
+    public static final String CorrectAnswer = "CorrectAnswer";
+    public static final String QuestionCorrectMarks = "QuestionCorrectMarks";
+    public static final String QuestionIncorrectMarks = "QuestionIncorrectMarks";
+    public static final String PassageID = "PassageID";
+    public static final String QuestionType = "QuestionType";
+    public static final String QuestionTime = "QuestionTime";
+    public static final String QuestionDifficultyLevel = "QuestionDifficultyLevel";
+    public static final String QuestionRelativeTopic = "QuestionRelativeTopic";
+    public static final String TimeSpent = "TimeSpent";
+    public static final String NumberOfToggles = "NumberOfToggles";
+    public static final String FinalAnswerSerialNumber = "FinalAnswerSerialNumber";
+    public static final String FinalAnswerId = "FinalAnswerId";
+    public static final String ReadStatus = "ReadStatus";
+    public static final String SerialNumber = "SerialNumber";
+    public static final String OptionIndex = "OptionIndex";
+    public static final String OptionId = "OptionId";
+    public static final String OptionText = "OptionText";
+    public static final String QuestionText = "QuestionText";
+    public static final String FragmentIndex = "FragmentIndex";
+    public static final String QuestionStatus = "QuestionStatus";
 
 
 
@@ -105,21 +110,26 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
     String CREATE_MY_RESULT_TABLE =
             "CREATE TABLE " + RESULT_TABLE + "("
-                    + SectionIndex + " INTEGER,"
-                    + QuestionIndex + " INTEGER,"
+                    + SectionIndex + " INTEGER DEFAULT 0,"
+                    + QuestionIndex + " INTEGER DEFAULT 0,"
+                    + SerialNumber + " TEXT DEFAULT '0',"
                     + FinalAnswerSerialNumber + " TEXT DEFAULT '-1',"
                     + QuestionStatus + " TEXT DEFAULT '0',"
-                    + SectionId + " TEXT,"
-                    + QuestionId + " TEXT,"
-                    + FinalAnswerId + " TEXT,"
+                    + SectionId + " TEXT DEFAULT 'SectionId',"
+                    + QuestionId + " TEXT DEFAULT 'QuestionId',"
+                    + FinalAnswerId + " TEXT DEFAULT 'FinalAnswerId',"
                     + NumberOfToggles + " TEXT DEFAULT '-1',"
                     + ReadStatus + " TEXT DEFAULT '0',"
                     + TimeSpent + " TEXT DEFAULT '0',"
+                    + OptionId + " TEXT DEFAULT 'OptionId',"
                     + " PRIMARY KEY (" + SectionIndex + "," + QuestionIndex + ")"
                     + ")";
 
+    Context c;
+
     public MySqlDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        c=context;
     }
 
     @Override
@@ -267,7 +277,25 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<Integer> getTypesOfEachSection(int si){
+        ArrayList<Integer> types=new ArrayList<>();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT "+QuestionStatus+" FROM "+RESULT_TABLE+" WHERE "+SectionIndex+"="+si+" ORDER BY "+SerialNumber;
+
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                String s=cursor.getString(cursor.getColumnIndex(QuestionStatus));
+                int n=Integer.parseInt(s);
+                types.add(n);
+            }while (cursor.moveToNext());
+        }
+
+        return types;
+    }
+
     public int getTypeOfAQuestion(int si,int qi){
+
         String ans="";
         int type=-1;
         SQLiteDatabase db=this.getReadableDatabase();
@@ -339,7 +367,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         Log.d("before",cursor.getCount()+"");
         if(cursor.moveToFirst()){
             do{
-                Log.d("here",cursor.getInt(cursor.getColumnIndex(SectionIndex))+" "+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+" "+cursor.getString(cursor.getColumnIndex(QuestionStatus)));
+                Log.d("ResultDetails",cursor.getInt(cursor.getColumnIndex(SectionIndex))+" "+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+" "+cursor.getString(cursor.getColumnIndex(TimeSpent)));
             }while(cursor.moveToNext());
         }
 
@@ -465,6 +493,24 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         return ans;
     }
 
+    public int getOptionIdBySerialNumber(String srno){
+        int sr=0;
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT "+OptionId+" FROM "+TABLE_PER_OPTION+" WHERE "+SerialNumber+"="+srno;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                sr=cursor.getInt(cursor.getColumnIndex(OptionId));
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return sr;
+
+    }
+
 //    public int getValuesPerQuestionForQuiz(int si,int qi,String columnName){
 //        SQLiteDatabase db=this.getReadableDatabase();
 //        int value=0;
@@ -504,5 +550,64 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 //
 //        return map;
 //    }
+
+    public JSONArray getResults()
+    {
+
+//        String myPath = DATABASE_NAME;// Set path to your database
+        File path=c.getDatabasePath(DATABASE_NAME);
+        String db_path=path.getAbsolutePath();
+        Log.d("result","path="+db_path);
+
+        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(db_path, null, SQLiteDatabase.OPEN_READONLY);
+
+
+        String searchQuery = "SELECT  * FROM "+RESULT_TABLE;
+        Cursor cursor = myDataBase.rawQuery(searchQuery, null );
+
+        JSONArray resultSet 	= new JSONArray();
+        JSONObject returnObj 	= new JSONObject();
+
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
+
+            for( int i=0 ;  i< totalColumn ; i++ )
+            {
+                if( cursor.getColumnName(i) != null )
+                {
+
+                    try
+                    {
+
+                        if( cursor.getString(i) != null )
+                        {
+                            Log.d("TAG_NAME", cursor.getString(i) );
+                            rowObject.put(cursor.getColumnName(i) ,  cursor.getString(i) );
+                        }
+                        else
+                        {
+                            rowObject.put( cursor.getColumnName(i) ,  "" );
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        Log.d("TAG_NAME", e.getMessage()  );
+                    }
+                }
+
+            }
+
+            resultSet.put(rowObject);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        Log.d("TAG_NAME", resultSet.toString() );
+        return resultSet;
+
+    }
 
 }

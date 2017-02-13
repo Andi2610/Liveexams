@@ -43,6 +43,8 @@ public class VariablesDefined {
     private static String exam = "exam";
     private static String Description = "Description";
     private static String leftExam = "leftExam";
+    private static String message = "message";
+
 
 
     public static HashMap signupParser(String result) throws JSONException {
@@ -213,6 +215,15 @@ public class VariablesDefined {
             myDurationTime = hour + " hours " + minute + " minutes";
         }
         return myDurationTime;
+    }
+
+    public static HashMap changePasswordParser(String result) throws JSONException {
+        JSONObject jsonObject = new JSONObject(result);
+        HashMap<String, String> mapper = new HashMap<>();
+        mapper.put("response", jsonObject.getString(response));
+        mapper.put("success", jsonObject.getString(success));
+        mapper.put("message",jsonObject.getString(message));
+        return mapper;
     }
 
 }

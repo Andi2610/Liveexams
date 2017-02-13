@@ -21,9 +21,7 @@ import in.truskills.liveexams.R;
 
 public class WebViewContent {
 
-    MainActivity obj=new MainActivity();
-
-    public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
@@ -75,16 +73,19 @@ public class WebViewContent {
                 String stringVariable = strl;
                 int myStr=Integer.parseInt(stringVariable);
                 Log.d("here","mySi="+mySi+" myQi="+myQi);
-                ob.updateValuesForResult(mySi,myQi,"FinalAnswerSerialNumber",myStr+"");
+                ob.updateValuesForResult(mySi,myQi,MySqlDatabase.FinalAnswerSerialNumber,myStr+"");
+                int oi=ob.getOptionIdBySerialNumber(myStr+"");
+                ob.updateValuesForResult(mySi,myQi,MySqlDatabase.OptionId,oi+"");
 
-                String not=ob.getValuesForResult(mySi,myQi,"NumberOfToggles");
+                String not=ob.getValuesForResult(mySi,myQi,MySqlDatabase.NumberOfToggles);
                 int numOfTog=Integer.parseInt(not);
                 numOfTog++;
-                ob.updateValuesForResult(mySi,myQi,"NumberOfToggles",numOfTog+"");
+                ob.updateValuesForResult(mySi,myQi,MySqlDatabase.NumberOfToggles,numOfTog+"");
                 ob.getAllValues();
 
                 //Enable buttons..
-                
+
+                obb.enableButtons();
 
 
             }
