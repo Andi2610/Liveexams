@@ -525,21 +525,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         pager = (ViewPager) findViewById(R.id.viewpager);
         pager.setAdapter(pageAdapter);
         pager.setOffscreenPageLimit(++myFragmentCount);
-        //Initially when first page is displayed..
-        //Get values of the section displayed at first number..
-
-//        ArrayList<Integer> qq=new ArrayList<>();
-//        int cnt=1;
-//        for(int i=0;i<questionArray[0];++i){
-//            qq.add(cnt);
-//            ++cnt;
-//        }
 
         //Initially.. fragmentIndex=0;
         //Getting SectionIndex, QuestionIndex and SerialNumber of fragmentIndex=0;
         int sI=ob.getIntValuesPerQuestionByFragmentIndex(0,MySqlDatabase.SectionIndex);
         int qI=ob.getIntValuesPerQuestionByFragmentIndex(0,MySqlDatabase.QuestionIndex);
-        Log.d("ResultDetails=",sI+" "+qI);
         ob.updateValuesForResult(sI,qI,MySqlDatabase.ReadStatus,1+"");
         String srNo=ob.getStringValuesPerQuestionByFragmentIndex(0,MySqlDatabase.SerialNumber);
         int sn=Integer.parseInt(srNo);
@@ -548,43 +538,25 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         e.putInt("previousIndex",0);
         e.apply();
 
-        Log.d("Index=",quizPrefs.getInt("previousIndex",0)+"=previous");
-
         start=System.currentTimeMillis();
 
-        Log.d("time=",start+"=start in"+quizPrefs.getInt("previousIndex",0));
-
         ArrayList<Integer> myType=ob.getTypesOfEachSection(sI);
-
         types=ob.getTypes(sI);
-
         submittedQuestions.setText(types.get(1)+"");
         reviewedQuestions.setText(types.get(2)+"");
         clearedQuestions.setText(types.get(3)+"");
         notAttemptedQuestions.setText(types.get(0)+"");
-
-        //Disable buttons..
-        submitButton.setEnabled(false);
-        submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
-        clearButton.setEnabled(false);
-        clearButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
-
-
         HashMap<String, String> map = ob.getValuesPerSection(sI);
         sectionTitle = map.get("SectionName");
         sectionName.setText(sectionTitle);
 
+        //Disable buttons..
+        changeButtonStatus(false);
+
         HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(sI);
         ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
         my_fragment_index_list=my_map.get("FragmentIndexList");
-
-        Log.d("initially",sI+" "+sn+" "+sectionTitle);
-        for(int l=0;l<my_fragment_index_list.size();++l){
-            Log.d("initially",my_fragment_index_list.get(l)+"");
-        }
-
         allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
-
         linearLayoutManager=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         questionsList.setLayoutManager(linearLayoutManager);
         questionsList.setItemAnimator(new DefaultItemAnimator());
@@ -604,90 +576,53 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 int SI=ob.getIntValuesPerQuestionByFragmentIndex(position,MySqlDatabase.SectionIndex);
                 int QI=ob.getIntValuesPerQuestionByFragmentIndex(position,MySqlDatabase.QuestionIndex);
 
-                Log.d("Index=",quizPrefs.getInt("previousIndex",0)+"=previous");
-
                 end=System.currentTimeMillis();
-
-                Log.d("time=",end+"=end in"+quizPrefs.getInt("previousIndex",0));
-
                 diff=end-start;
                 diff=diff/1000;
-
                 String myTime=ob.getValuesForResult(SI,QI,MySqlDatabase.TimeSpent);
                 long time=Long.parseLong(myTime);
                 time=time+diff;
-
                 ob.updateValuesForResult(SI,QI,MySqlDatabase.TimeSpent,time+"");
-
-                ob.getAllValues();
-
-                Log.d("time=",diff+"=diff in"+quizPrefs.getInt("previousIndex",0));
 
                 SharedPreferences.Editor e=quizPrefs.edit();
                 e.putInt("previousIndex",position);
                 e.apply();
 
                 start=System.currentTimeMillis();
-
-                Log.d("time=",start+"=start in"+quizPrefs.getInt("previousIndex",0));
-
-
-                Log.d("Index=",quizPrefs.getInt("previousIndex",0)+"=new");
-
-                Log.d("state","here "+position);
-
-                Log.d("ResultDetails=",SI+" "+QI);
                 ob.updateValuesForResult(SI,QI,MySqlDatabase.ReadStatus,1+"");
                 String srNo=ob.getStringValuesPerQuestionByFragmentIndex(position,MySqlDatabase.SerialNumber);
                 int sn=Integer.parseInt(srNo);
+
+                int qType=ob.getTypeOfAQuestion(SI,QI);
+                if(qType==-1){
+                    //Disable buttons..
+                    changeButtonStatus(false);
+                }else{
+                    //Enable buttons..
+                    changeButtonStatus(true);
+                }
 
                 HashMap<String, String> map = ob.getValuesPerSection(SI);
                 sectionTitle = map.get("SectionName");
                 sectionName.setText(sectionTitle);
 
                 types=ob.getTypes(SI);
-
                 submittedQuestions.setText(types.get(1)+"");
                 reviewedQuestions.setText(types.get(2)+"");
                 clearedQuestions.setText(types.get(3)+"");
                 notAttemptedQuestions.setText(types.get(0)+"");
 
-                int qType=ob.getTypeOfAQuestion(SI,QI);
-                if(qType==-1){
-                    //Disable buttons..
-                    submitButton.setEnabled(false);
-                    submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
-                    clearButton.setEnabled(false);
-                    clearButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
-
-                }else{
-                    //Enable buttons..
-                    submitButton.setEnabled(true);
-                    submitButton.setBackgroundColor(getResources().getColor(R.color.black));
-                    clearButton.setEnabled(true);
-                    clearButton.setBackgroundColor(getResources().getColor(R.color.black));
-                }
-
-
                 HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(SI);
                 ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
                 my_fragment_index_list=my_map.get("FragmentIndexList");
-
                 ArrayList<Integer> myType=ob.getTypesOfEachSection(SI);
-
                 allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
                 questionsList.setAdapter(allQuestionsInOneSectionAdapter);
                 allQuestionsInOneSectionAdapter.notifyDataSetChanged();
-
-                Log.d("finally",SI+" "+sn+" "+sectionTitle);
-                for(int l=0;l<my_fragment_index_list.size();++l){
-                    Log.d("finally",my_fragment_index_list.get(l)+"");
-                }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Log.d("state",state+" "+pager.getCurrentItem());
             }
         });
 
@@ -768,89 +703,66 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     @Override
     public void onClick(View v) {
-        int ss,qq,n,sn;
-        HashMap<String,ArrayList<Integer>> my_map;
-        ArrayList<Integer> my_fragment_index_list;
-        ArrayList<Integer> myType;
-        String srNo;
+        int ss,qq,n;
         switch (v.getId()){
 
             case R.id.submitButton:
                 n=pager.getCurrentItem();
-                ss=ob.getIntValuesPerQuestionByFragmentIndex(n,MySqlDatabase.SectionIndex);
-                qq=ob.getIntValuesPerQuestionByFragmentIndex(n,MySqlDatabase.QuestionIndex);
-                Log.d("here",ss+" "+qq);
-                ob.updateValuesForResult(ss,qq,MySqlDatabase.QuestionStatus,1+"");
-                types=ob.getTypes(ss);
-                submittedQuestions.setText(types.get(1)+"");
-                reviewedQuestions.setText(types.get(2)+"");
-                clearedQuestions.setText(types.get(3)+"");
-                notAttemptedQuestions.setText(types.get(0)+"");
-
-                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n,MySqlDatabase.SerialNumber);
-                sn=Integer.parseInt(srNo);
-                my_map=ob.getAllIntValuesPerQuestionBySectionIndex(ss);
-                my_fragment_index_list=my_map.get("FragmentIndexList");
-                myType=ob.getTypesOfEachSection(ss);
-                allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
-                questionsList.setAdapter(allQuestionsInOneSectionAdapter);
-                allQuestionsInOneSectionAdapter.notifyDataSetChanged();
-
-
+                clickMethods(n,1);
                 break;
             case R.id.reviewButton:
                 n=pager.getCurrentItem();
-                ss=ob.getIntValuesPerQuestionByFragmentIndex(n,MySqlDatabase.SectionIndex);
-                qq=ob.getIntValuesPerQuestionByFragmentIndex(n,MySqlDatabase.QuestionIndex);
-                Log.d("here",ss+" "+qq);
-                ob.updateValuesForResult(ss,qq,MySqlDatabase.QuestionStatus,2+"");
-                types=ob.getTypes(ss);
-                submittedQuestions.setText(types.get(1)+"");
-                reviewedQuestions.setText(types.get(2)+"");
-                clearedQuestions.setText(types.get(3)+"");
-                notAttemptedQuestions.setText(types.get(0)+"");
-
-                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n,MySqlDatabase.SerialNumber);
-                sn=Integer.parseInt(srNo);
-                my_map=ob.getAllIntValuesPerQuestionBySectionIndex(ss);
-                my_fragment_index_list=my_map.get("FragmentIndexList");
-                myType=ob.getTypesOfEachSection(ss);
-                allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
-                questionsList.setAdapter(allQuestionsInOneSectionAdapter);
-                allQuestionsInOneSectionAdapter.notifyDataSetChanged();
+                clickMethods(n,2);
                 break;
             case R.id.clearButton:
                 n=pager.getCurrentItem();
                 ss=ob.getIntValuesPerQuestionByFragmentIndex(n,MySqlDatabase.SectionIndex);
                 qq=ob.getIntValuesPerQuestionByFragmentIndex(n,MySqlDatabase.QuestionIndex);
-                Log.d("here",ss+" "+qq);
-                ob.updateValuesForResult(ss,qq,MySqlDatabase.QuestionStatus,3+"");
                 ob.updateValuesForResult(ss,qq,MySqlDatabase.FinalAnswerSerialNumber,-1+"");
                 ob.updateValuesForResult(ss,qq,MySqlDatabase.FinalAnswerId,-1+"");
-                types=ob.getTypes(ss);
-                submittedQuestions.setText(types.get(1)+"");
-                reviewedQuestions.setText(types.get(2)+"");
-                clearedQuestions.setText(types.get(3)+"");
-                notAttemptedQuestions.setText(types.get(0)+"");
-
-                //Disable buttons..
-                submitButton.setEnabled(false);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
-                clearButton.setEnabled(false);
-                clearButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
-
-                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n,MySqlDatabase.SerialNumber);
-                sn=Integer.parseInt(srNo);
-                my_map=ob.getAllIntValuesPerQuestionBySectionIndex(ss);
-                my_fragment_index_list=my_map.get("FragmentIndexList");
-                myType=ob.getTypesOfEachSection(ss);
-                allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
-                questionsList.setAdapter(allQuestionsInOneSectionAdapter);
-                allQuestionsInOneSectionAdapter.notifyDataSetChanged();
+                changeButtonStatus(false);
+                clickMethods(n,3);
                 MyFragment fragment= (MyFragment) pageAdapter.getItem(n);
                 fragment.update();
-
                 break;
+        }
+    }
+
+    public void clickMethods(int n,int status){
+        int ss,qq,sn;
+        HashMap<String,ArrayList<Integer>> my_map;
+        ArrayList<Integer> my_fragment_index_list;
+        ArrayList<Integer> myType;
+        String srNo;
+        ss=ob.getIntValuesPerQuestionByFragmentIndex(n,MySqlDatabase.SectionIndex);
+        qq=ob.getIntValuesPerQuestionByFragmentIndex(n,MySqlDatabase.QuestionIndex);
+        ob.updateValuesForResult(ss,qq,MySqlDatabase.QuestionStatus,status+"");
+        types=ob.getTypes(ss);
+        submittedQuestions.setText(types.get(1)+"");
+        reviewedQuestions.setText(types.get(2)+"");
+        clearedQuestions.setText(types.get(3)+"");
+        notAttemptedQuestions.setText(types.get(0)+"");
+        srNo=ob.getStringValuesPerQuestionByFragmentIndex(n,MySqlDatabase.SerialNumber);
+        sn=Integer.parseInt(srNo);
+        my_map=ob.getAllIntValuesPerQuestionBySectionIndex(ss);
+        my_fragment_index_list=my_map.get("FragmentIndexList");
+        myType=ob.getTypesOfEachSection(ss);
+        allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
+        questionsList.setAdapter(allQuestionsInOneSectionAdapter);
+        allQuestionsInOneSectionAdapter.notifyDataSetChanged();
+    }
+
+    public void changeButtonStatus(boolean status){
+        if(status){
+            submitButton.setEnabled(true);
+            submitButton.setBackgroundColor(getResources().getColor(R.color.black));
+            clearButton.setEnabled(true);
+            clearButton.setBackgroundColor(getResources().getColor(R.color.black));
+        }else{
+            submitButton.setEnabled(false);
+            submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
+            clearButton.setEnabled(false);
+            clearButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
         }
     }
 
@@ -860,11 +772,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("enable","here");
-                submitButton.setEnabled(true);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.black));
-                clearButton.setEnabled(true);
-                clearButton.setBackgroundColor(getResources().getColor(R.color.black));
+                changeButtonStatus(true);
             }
         });
     }
@@ -928,7 +836,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("messi","inOnDestroy");
         ob.deleteMyTable();
         SharedPreferences.Editor e=quizPrefs.edit();
         e.clear();

@@ -81,7 +81,6 @@ public class AllSectionsSummary extends AppCompatActivity {
 
 
                                 MySqlDatabase ob=new MySqlDatabase(AllSectionsSummary.this);
-                                ob.getAllValues();
 
 //                                JSONArray jsonArray1=ob.getResults(MySqlDatabase.TABLE_PER_SECTION);
 //                                JSONArray jsonArray2=ob.getResults(MySqlDatabase.TABLE_PER_QUESTION);

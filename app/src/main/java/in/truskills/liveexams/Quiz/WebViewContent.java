@@ -61,28 +61,21 @@ public class WebViewContent {
             @JavascriptInterface           // For API 17+
             public void performClick(String strl) {
 
-                //Enable submit and clear button..
-//                o.enableButtons();
-
                 MySqlDatabase ob=new MySqlDatabase(c);
 
-                Log.d("clicked","here");
 
                 //Get options ticked.. update it in final answer..
                 //Also increment no. of toggles for the question by one..
                 String stringVariable = strl;
                 int myStr=Integer.parseInt(stringVariable);
-                Log.d("here","mySi="+mySi+" myQi="+myQi);
                 ob.updateValuesForResult(mySi,myQi,MySqlDatabase.FinalAnswerSerialNumber,myStr+"");
                 int oi=ob.getOptionIdBySerialNumber(myStr+"");
-                Log.d("optionId=",oi+"");
                 ob.updateValuesForResult(mySi,myQi,MySqlDatabase.FinalAnswerId,oi+"");
 
                 String not=ob.getValuesForResult(mySi,myQi,MySqlDatabase.NumberOfToggles);
                 int numOfTog=Integer.parseInt(not);
                 numOfTog++;
                 ob.updateValuesForResult(mySi,myQi,MySqlDatabase.NumberOfToggles,numOfTog+"");
-                ob.getAllValues();
 
                 //Enable buttons..
 

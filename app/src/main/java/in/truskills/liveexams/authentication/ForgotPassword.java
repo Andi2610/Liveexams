@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.crashlytics.android.Crashlytics;
 import com.digits.sdk.android.AuthCallback;
 import com.digits.sdk.android.AuthConfig;
 import com.digits.sdk.android.Digits;
@@ -60,6 +62,7 @@ public class ForgotPassword extends AppCompatActivity {
 
     //Public declaration of variables
 
+    Handler h;
     AuthCallback authCallback;
 
     @Override
@@ -68,97 +71,30 @@ public class ForgotPassword extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         reset=(Button)findViewById(R.id.reset);
         newPassword=(EditText)findViewById(R.id.newPassword);
+        h=new Handler();
 
         TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new TwitterCore(authConfig), new Digits.Builder().build());
+        Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
+//        Fabric.with(this, new TwitterCore(authConfig), new Digits.Builder().build());
         authCallback = new AuthCallback() {
             @Override
             public void success(DigitsSession session, final String phoneNumber) {
                 // Do something with the session
-                Toast.makeText(ForgotPassword.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
-                newPassword.addTextChangedListener(new TextWatcher() {
+
+                if(session==null){
+                    Log.d("heyaaaa", "success:  null ");
+
+                }else{
+                    Log.d("heyaaaa", "success: no null ");
+                }
+                h.post(new Runnable() {
                     @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    public void run() {
 
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        int length = newPassword.getText().toString().length();
-                        if (length < 6) {
-                            newPassword.setError("Minimum 6 characters required");
-                        } else {
-                            newPassword.setError(null);
-                        }
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-
+                        successMethod(phoneNumber);
                     }
                 });
-                reset.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        text=newPassword.getText().toString();
-                        if(text.length()<6){
-                            newPassword.setError("Minimum 6 characters required");
-                        }else{
-                            requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-                            //Call change password api..
-                            //Api to be connected to..
-                            String url = VariablesDefined.api+"changePassword";
-
-                            dialog = new ProgressDialog(ForgotPassword.this);
-                            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                            dialog.setMessage("Changing your password. Please wait...");
-                            dialog.setIndeterminate(true);
-                            dialog.show();
-
-                            //Make a request..
-                            StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                                    url, new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    //On getting the response..
-                                    try {
-                                        //Parse the login response..
-                                        HashMap<String ,String> mapper=VariablesDefined.changePasswordParser(response);
-                                        dialog.dismiss();
-                                        //If successfull signup.. save the desired info in shared preferences..
-                                        if(mapper.get("success").equals("true")) {
-                                            Toast.makeText(ForgotPassword.this, mapper.get("message"), Toast.LENGTH_SHORT).show();
-                                            finish();
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    //In case the connection to the Api couldn't be established..
-                                    dialog.dismiss();
-                                    Toast.makeText(ForgotPassword.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-                                }
-                            }){
-                                @Override
-                                protected Map<String, String> getParams() throws AuthFailureError {
-
-                                    //Put all the required parameters for the post request..
-                                    Map<String,String> params = new HashMap<String, String>();
-                                    Log.d("phone",phoneNumber+"");
-                                    params.put("mobileNumber",phoneNumber.substring(3));
-                                    params.put("newPassword",text);
-                                    return params;
-                                }
-                            };
-                            requestQueue.add(stringRequest);
-                        }
-                    }
-                });
             }
 
             @Override
@@ -169,6 +105,9 @@ public class ForgotPassword extends AppCompatActivity {
 
             }
         };
+
+        Digits.clearActiveSession();
+
         getAuthCallback();
 
         AuthConfig.Builder authConfigBuilder = new AuthConfig.Builder()
@@ -180,5 +119,93 @@ public class ForgotPassword extends AppCompatActivity {
 
     public AuthCallback getAuthCallback(){
         return authCallback;
+    }
+
+    public void successMethod(final String phoneNumber){
+
+        Toast.makeText(ForgotPassword.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
+        newPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                int length = newPassword.getText().toString().length();
+                if (length < 6) {
+                    newPassword.setError("Minimum 6 characters required");
+                } else {
+                    newPassword.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                text=newPassword.getText().toString();
+                if(text.length()<6){
+                    newPassword.setError("Minimum 6 characters required");
+                }else{
+                    requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+                    //Call change password api..
+                    //Api to be connected to..
+                    String url = VariablesDefined.api+"changePassword";
+
+                    dialog = new ProgressDialog(ForgotPassword.this);
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setMessage("Changing your password. Please wait...");
+                    dialog.setIndeterminate(true);
+                    dialog.show();
+
+                    //Make a request..
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                            url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            //On getting the response..
+                            try {
+                                //Parse the login response..
+                                HashMap<String ,String> mapper=VariablesDefined.changePasswordParser(response);
+                                dialog.dismiss();
+                                //If successfull signup.. save the desired info in shared preferences..
+                                if(mapper.get("success").equals("true")) {
+                                    Toast.makeText(ForgotPassword.this, mapper.get("message"), Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //In case the connection to the Api couldn't be established..
+                            dialog.dismiss();
+                            Toast.makeText(ForgotPassword.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        }
+                    }){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+
+                            //Put all the required parameters for the post request..
+                            Map<String,String> params = new HashMap<String, String>();
+                            Log.d("phone",phoneNumber+"");
+                            params.put("mobileNumber",phoneNumber.substring(3));
+                            params.put("newPassword",text);
+                            return params;
+                        }
+                    };
+                    requestQueue.add(stringRequest);
+                }
+            }
+        });
     }
 }

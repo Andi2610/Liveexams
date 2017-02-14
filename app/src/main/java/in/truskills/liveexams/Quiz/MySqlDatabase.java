@@ -220,8 +220,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
     public void updateValuesForResult(int si,int qi,String columnName,String value){
 
-        Log.d("ResultDetails=","inUpdate");
-
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
@@ -250,24 +248,19 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         String query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=0 AND "+SectionIndex+"="+si;
 
         Cursor cursor=db.rawQuery(query,null);
-        Log.d("hiiii","0="+cursor.getCount());
         types.add(cursor.getCount());
 
         query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=1 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
-        Log.d("hiiii","0="+cursor.getCount());
         types.add(cursor.getCount());
 
         query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=2 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
-        Log.d("hiiii","0="+cursor.getCount());
         types.add(cursor.getCount());
 
         query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=3 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
-        Log.d("hiiii","0="+cursor.getCount());
         types.add(cursor.getCount());
-
 
         cursor.close();
         db.close();
@@ -328,51 +321,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return map;
-    }
-
-    public void getAllValues(){
-        SQLiteDatabase db=this.getReadableDatabase();
-        String query="";
-        Cursor cursor;
-        query="SELECT * FROM "+TABLE_PER_SECTION;
-        cursor=db.rawQuery(query,null);
-        Log.d("before",cursor.getCount()+"");
-        if(cursor.moveToFirst()){
-            do{
-                Log.d("SectionDetails=",cursor.getInt(cursor.getColumnIndex(SectionIndex))+cursor.getString(cursor.getColumnIndex(SectionId))+cursor.getString(cursor.getColumnIndex(SectionName)));
-            }while(cursor.moveToNext());
-        }
-
-        query="SELECT * FROM "+TABLE_PER_QUESTION;
-        cursor=db.rawQuery(query,null);
-        Log.d("before",cursor.getCount()+"");
-        if(cursor.moveToFirst()){
-            do{
-                Log.d("QuestionDetails=",cursor.getInt(cursor.getColumnIndex(SectionIndex))+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+cursor.getString(cursor.getColumnIndex(QuestionId))+cursor.getString(cursor.getColumnIndex(QuestionText)));
-            }while(cursor.moveToNext());
-        }
-
-        query="SELECT * FROM "+TABLE_PER_OPTION;
-        cursor=db.rawQuery(query,null);
-        Log.d("before",cursor.getCount()+"");
-        if(cursor.moveToFirst()){
-            do{
-                Log.d("OptionDetails=",cursor.getInt(cursor.getColumnIndex(SectionIndex))+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+cursor.getInt(cursor.getColumnIndex(OptionIndex))+cursor.getString(cursor.getColumnIndex(OptionId))+" "+cursor.getString(cursor.getColumnIndex(OptionText)));
-            }while(cursor.moveToNext());
-        }
-
-        query="SELECT * FROM "+RESULT_TABLE;
-        cursor=db.rawQuery(query,null);
-        Log.d("before",cursor.getCount()+"");
-        if(cursor.moveToFirst()){
-            do{
-                Log.d("ResultDetails",cursor.getInt(cursor.getColumnIndex(SectionIndex))+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+cursor.getString(cursor.getColumnIndex(SectionId))+cursor.getString(cursor.getColumnIndex(QuestionId))+cursor.getString(cursor.getColumnIndex(FinalAnswerId))+" "+cursor.getString(cursor.getColumnIndex(NumberOfToggles))+cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber)));
-            }while(cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-
     }
 
     public String getStringValuesPerQuestionByFragmentIndex(int fI,String columnName){
@@ -510,46 +458,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
     }
 
-//    public int getValuesPerQuestionForQuiz(int si,int qi,String columnName){
-//        SQLiteDatabase db=this.getReadableDatabase();
-//        int value=0;
-//        String selectQuery = "SELECT "+columnName+" FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
-//        Cursor cursor = db.rawQuery(selectQuery, null);
-//        if (cursor.moveToFirst()) {
-//            do {
-//                value=cursor.getInt(cursor.getColumnIndex(columnName));
-//            } while (cursor.moveToNext());
-//        }
-//        return value;
-//    }
-//
-//
-//    public HashMap<String, String> getValuesPerQuestionPerSection(int si, int qi) {
-//        HashMap<String, String> map = new HashMap<>();
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        String selectQuery = "SELECT * FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
-//        Cursor cursor = db.rawQuery(selectQuery, null);
-//        Log.d("messi","noOfRows="+cursor.getCount());
-//        if (cursor.moveToFirst()) {
-//            do {
-////                Log.d("here","si="+si+" qi="+qi);
-////                Log.d("here","noOfToggles="+cursor.getInt(cursor.getColumnIndex(NumberOfToggles)));
-////                Log.d("here","submit="+cursor.getInt(cursor.getColumnIndex(SubmitButtonClicks)));
-////                Log.d("here","review="+cursor.getInt(cursor.getColumnIndex(ReviewButtonClicks)));
-////                Log.d("here","clear="+cursor.getInt(cursor.getColumnIndex(ClearButtonClicks)));
-////                Log.d("here","read="+cursor.getInt(cursor.getColumnIndex(ReadStatus)));
-////                Log.d("here","final="+cursor.getInt(cursor.getColumnIndex(FinalAnswer)));
-//
-//            } while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-//        db.close();
-//
-//        return map;
-//    }
-
     public JSONArray getResults(String table_name)
     {
 
@@ -582,7 +490,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
                         if( cursor.getString(i) != null )
                         {
-                            Log.d("TAG_NAME", cursor.getString(i) );
                             rowObject.put(cursor.getColumnName(i) ,  cursor.getString(i) );
                         }
                         else
@@ -592,7 +499,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
                     }
                     catch( Exception e )
                     {
-                        Log.d("TAG_NAME", e.getMessage()  );
                     }
                 }
 
@@ -603,7 +509,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        Log.d("TAG_NAME", resultSet.toString() );
         return resultSet;
 
     }
@@ -636,7 +541,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
                         if( cursor.getString(i) != null )
                         {
-                            Log.d("TAG_NAME", cursor.getString(i) );
                             rowObject.put(cursor.getColumnName(i) ,  cursor.getString(i) );
                         }
                         else
@@ -646,7 +550,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
                     }
                     catch( Exception e )
                     {
-                        Log.d("TAG_NAME", e.getMessage()  );
                     }
                 }
 
@@ -657,7 +560,6 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        Log.d("TAG_NAME", resultSet.toString() );
         return resultSet;
     }
 

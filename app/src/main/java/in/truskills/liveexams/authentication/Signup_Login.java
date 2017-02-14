@@ -223,9 +223,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
                 signupHandleImage.setImageResource(R.drawable.down_arrow);
 
-                //Set the validation message for UserName i.e. Required
-                signupName.setError("Required");
-
                 //Set the validation message for rest of the fields as null..
                 signupEmail.setError(null);
                 signupMobile.setError(null);
@@ -389,9 +386,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
                 loginHandleImage.setImageResource(R.drawable.down_arrow);
-
-                //Set the validation message for UserName i.e. Required..
-                loginName.setError("Required");
 
                 //Clear the previous content of both the fields..
                 loginName.setText("");
@@ -755,6 +749,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
             }
         };
+
+        Digits.clearActiveSession();
 
         getAuthCallback();
 
