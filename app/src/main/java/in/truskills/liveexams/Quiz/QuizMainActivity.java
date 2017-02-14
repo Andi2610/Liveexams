@@ -138,7 +138,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         * hidden element where student video will be loaded
         * layout/activity_quiz_main.xml:156
         * */
-        extraRender = (SurfaceViewRenderer) findViewById(R.id.studentVideo);
+        extraRender = (SurfaceViewRenderer) findViewById(R.id.studentView);
         //to access all methods related to Streaming
         flashphoner = new FlashphonerEvents(this, extraRender);
         //Interface to communicate with Flashphoner class
