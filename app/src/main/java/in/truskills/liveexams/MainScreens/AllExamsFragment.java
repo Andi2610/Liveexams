@@ -101,12 +101,18 @@ public class AllExamsFragment extends Fragment {
         SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
         MenuItem menuItem=menu.findItem(R.id.searchAllExams);
         searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setIconifiedByDefault(true);
         if(searchView!=null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
             searchView.setQueryHint("Search here..");
-            searchView.setIconified(true);
-            searchView.setFocusableInTouchMode(true);
-
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    if (hasFocus) {
+                        showInputMethod(view.findFocus());
+                    }
+                }
+            });
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -207,6 +213,13 @@ public class AllExamsFragment extends Fragment {
                     return true;
                 }
             });
+        }
+    }
+
+    private void showInputMethod(View view) {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.showSoftInput(view, 0);
         }
     }
 

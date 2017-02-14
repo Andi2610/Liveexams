@@ -60,4 +60,8 @@ public class SplashScreen extends Activity {
         //Splash screen will not be added to backstack.
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

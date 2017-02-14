@@ -54,7 +54,7 @@ public class WebViewContent {
                         "<div>" + x + "</div>\n" +
                         "</form>\n" +
                         "</body>\n" +
-                        "</html>;";
+                        "</html>";
         webView.loadDataWithBaseURL(null, content, "text/HTML", "UTF-8", null);
 
         webView.addJavascriptInterface(new Object() {

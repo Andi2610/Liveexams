@@ -1,5 +1,6 @@
 package in.truskills.liveexams.authentication;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -54,6 +55,7 @@ public class ForgotPassword extends AppCompatActivity {
     Button reset;
     String text;
     EditText newPassword;
+    ProgressDialog dialog;
     RequestQueue requestQueue;
 
     //Public declaration of variables
@@ -108,16 +110,22 @@ public class ForgotPassword extends AppCompatActivity {
                             //Api to be connected to..
                             String url = VariablesDefined.api+"changePassword";
 
+                            dialog = new ProgressDialog(ForgotPassword.this);
+                            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            dialog.setMessage("Changing your password. Please wait...");
+                            dialog.setIndeterminate(true);
+                            dialog.show();
+
                             //Make a request..
                             StringRequest stringRequest = new StringRequest(Request.Method.POST,
                                     url, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
                                     //On getting the response..
-                                    Intent i = null;
                                     try {
                                         //Parse the login response..
                                         HashMap<String ,String> mapper=VariablesDefined.changePasswordParser(response);
+                                        dialog.dismiss();
                                         //If successfull signup.. save the desired info in shared preferences..
                                         if(mapper.get("success").equals("true")) {
                                             Toast.makeText(ForgotPassword.this, mapper.get("message"), Toast.LENGTH_SHORT).show();
@@ -132,6 +140,7 @@ public class ForgotPassword extends AppCompatActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     //In case the connection to the Api couldn't be established..
+                                    dialog.dismiss();
                                     Toast.makeText(ForgotPassword.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                                 }
                             }){

@@ -160,6 +160,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Loading. Please wait...");
         dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
         dialog.show();
 
         //Api to be connected to get the question paper..
@@ -177,7 +178,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     success = map1.get("success");
                     if (success.equals("true")) {
 
-                        dialog.dismiss();
 
                         //Get response..
                         response = map1.get("response");
@@ -411,6 +411,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     public void afterResponse(){
 
+        dialog.dismiss();
 
         new CountDownTimer(10800000, 1000) { // adjust the milli seconds here
 
@@ -825,7 +826,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 Log.d("here",ss+" "+qq);
                 ob.updateValuesForResult(ss,qq,MySqlDatabase.QuestionStatus,3+"");
                 ob.updateValuesForResult(ss,qq,MySqlDatabase.FinalAnswerSerialNumber,-1+"");
-                ob.updateValuesForResult(ss,qq,MySqlDatabase.OptionId,-1+"");
+                ob.updateValuesForResult(ss,qq,MySqlDatabase.FinalAnswerId,-1+"");
                 types=ob.getTypes(ss);
                 submittedQuestions.setText(types.get(1)+"");
                 reviewedQuestions.setText(types.get(2)+"");

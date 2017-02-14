@@ -80,6 +80,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     //Public declaration of variables
 
+    ProgressDialog dialog;
     AuthCallback authCallback;
     Button loginPressed, locationIcon;
     Button signupPressed;
@@ -110,6 +111,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //Initialise the request for Volley connection
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+
 
         //Attach all the variables used in layout
         loginPressed = (Button) findViewById(R.id.loginPressed);
@@ -649,6 +652,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //Api to be connected to..
                 String url = VariablesDefined.api+"signup";
 
+                dialog = new ProgressDialog(Signup_Login.this);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("Signing up. Please wait...");
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                dialog.show();
+
                 //Make a request..
                 StringRequest stringRequest = new StringRequest(Request.Method.POST,
                         url, new Response.Listener<String>() {
@@ -658,6 +668,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                             //Parse the signup response..
 
                             Log.d("myResponse=",response);
+                            dialog.dismiss();
 
                             HashMap<String ,String> mapper=VariablesDefined.signupParser(response);
 //                            Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
@@ -678,6 +689,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection could not be made..
+                        dialog.dismiss();
                         Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
                 }){
@@ -736,6 +748,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         //Api to be connected to..
         String url = VariablesDefined.api+"login";
 
+        dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Logging in. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
         //Make a request..
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
                 url, new Response.Listener<String>() {
@@ -746,6 +765,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 try {
                     //Parse the login response..
                     HashMap<String ,String> mapper=VariablesDefined.loginParser(response);
+                    dialog.dismiss();
                     //If successfull signup.. save the desired info in shared preferences..
                     if(mapper.get("success").equals("true")) {
                         SharedPreferences.Editor e=prefs.edit();
@@ -762,6 +782,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         finish();
                     }else{
                         //Display error message..
+                        dialog.dismiss();
                         Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {

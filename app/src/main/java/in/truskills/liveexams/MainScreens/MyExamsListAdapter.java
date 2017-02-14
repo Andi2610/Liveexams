@@ -1,5 +1,6 @@
 package in.truskills.liveexams.MainScreens;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,6 +41,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
     Context c;
     Values value;
     SharedPreferences prefs;
+    ProgressDialog dialog;
     Handler h;
     RequestQueue requestQueue;
     String enrolled, timestamp, examDetails, examId;
@@ -72,6 +74,13 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                 requestQueue = Volley.newRequestQueue(c);
                 prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
+                dialog = new ProgressDialog(c);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("Signing up. Please wait...");
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                dialog.show();
+
                 //Get exam details of the exam on which the user has clicked..
                 String url = VariablesDefined.api + "examDetails";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST,
@@ -88,6 +97,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                             examDetails = mapper.get("examDetails");
 
                             examId = value.getExamId();
+                            dialog.dismiss();
 
                             h = new Handler();
                             h.post(new Runnable() {
@@ -114,6 +124,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection couldn't be made..
+                        dialog.dismiss();
                         Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
                 }) {

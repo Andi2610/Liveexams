@@ -1,5 +1,6 @@
 package in.truskills.liveexams.MainScreens;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +42,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
     Context c;
     SharedPreferences prefs;
     Handler h;
+    ProgressDialog dialog;
     Values value;
 
     AllExamsListAdapter(List<Values> myList,Context c){
@@ -72,6 +74,13 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                 final RequestQueue requestQueue= Volley.newRequestQueue(c);
                 prefs=c.getSharedPreferences("prefs",Context.MODE_PRIVATE);
 
+                dialog = new ProgressDialog(c);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("Signing up. Please wait...");
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                dialog.show();
+
                 String url=VariablesDefined.api+"examDetails";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST,
                         url, new Response.Listener<String>() {
@@ -82,6 +91,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                             final String enrolled=mapper.get("enrolled");
                             final String timestamp=mapper.get("timestamp");
                             final String examDetails=mapper.get("examDetails");
+                            dialog.dismiss();
                             final String examId=value.getExamId();
                             h=new Handler();
                             h.post(new Runnable() {
@@ -97,6 +107,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
                         Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
                 }){

@@ -83,20 +83,28 @@ public class AllSectionsSummary extends AppCompatActivity {
                                 MySqlDatabase ob=new MySqlDatabase(AllSectionsSummary.this);
                                 ob.getAllValues();
 
-                                JSONArray jsonArray1=ob.getResults(MySqlDatabase.TABLE_PER_SECTION);
-                                JSONArray jsonArray2=ob.getResults(MySqlDatabase.TABLE_PER_QUESTION);
-                                JSONArray jsonArray3=ob.getResults(MySqlDatabase.TABLE_PER_OPTION);
-                                JSONArray jsonArray4=ob.getResults(MySqlDatabase.RESULT_TABLE);
+//                                JSONArray jsonArray1=ob.getResults(MySqlDatabase.TABLE_PER_SECTION);
+//                                JSONArray jsonArray2=ob.getResults(MySqlDatabase.TABLE_PER_QUESTION);
+//                                JSONArray jsonArray3=ob.getResults(MySqlDatabase.TABLE_PER_OPTION);
+//                                JSONArray jsonArray4=ob.getResults(MySqlDatabase.RESULT_TABLE);
 
+                                JSONArray jsonArray=ob.getQuizResult();
                                 JSONObject jsonObject=new JSONObject();
                                 try {
-                                    jsonObject.put("sectionDetails",jsonArray1);
-                                    jsonObject.put("questionDetails",jsonArray2);
-                                    jsonObject.put("optionDetails",jsonArray3);
-                                    jsonObject.put("resultDetails",jsonArray4);
+                                    jsonObject.put("result",jsonArray);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
+
+//                                JSONObject jsonObject=new JSONObject();
+//                                try {
+//                                    jsonObject.put("sectionDetails",jsonArray1);
+//                                    jsonObject.put("questionDetails",jsonArray2);
+//                                    jsonObject.put("optionDetails",jsonArray3);
+//                                    jsonObject.put("resultDetails",jsonArray4);
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
 
                                 try {
                                     File root = new File(Environment.getExternalStorageDirectory(), "Notes");
