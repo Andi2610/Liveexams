@@ -23,6 +23,7 @@
         android:text="TruSkills"
         android:textColor="@color/white"
         android:textSize="26dp"
+        android:id="@+id/companyName"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"/>

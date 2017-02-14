@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -82,12 +83,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     ProgressDialog dialog;
     AuthCallback authCallback;
-    Button loginPressed, locationIcon;
+    Button loginPressed, locationIcon,registerHandleButton,loginHandleButton;
     Button signupPressed;
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
     EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile;
-    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation;
+    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation,sentence;
     Spinner signupLanguage, signupGender;
     LocationManager locationManager;
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -117,10 +118,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         //Attach all the variables used in layout
         loginPressed = (Button) findViewById(R.id.loginPressed);
         signupPressed = (Button) findViewById(R.id.signupPressed);
+        registerHandleButton = (Button) findViewById(R.id.registerHandleButton);
+        loginHandleButton = (Button) findViewById(R.id.loginHandleButton);
         locationIcon = (Button) findViewById(R.id.locationIcon);
         forgotPasswordPressed = (TextView) findViewById(R.id.forgotPasswordPressed);
         termsAndConditionsPressed = (TextView) findViewById(R.id.termsAndConditionsPressed);
         signupLocation = (TextView) findViewById(R.id.signupLocation);
+        sentence = (TextView) findViewById(R.id.sentence);
         signupDrawer = (SlidingDrawer) findViewById(R.id.signupDrawer);
         loginDrawer = (SlidingDrawer) findViewById(R.id.loginDrawer);
         signupLayout = (RelativeLayout) findViewById(R.id.signupLayout);
@@ -136,6 +140,26 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupLanguage = (Spinner) findViewById(R.id.signupLanguage);
         signupGender = (Spinner) findViewById(R.id.signupGender);
         app_logo=(ImageView)findViewById(R.id.app_logo);
+
+        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        registerHandleButton.setTypeface(tff1);
+        loginHandleButton.setTypeface(tff1);
+
+        Typeface tff2=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+        loginName.setTypeface(tff2);
+        loginPassword.setTypeface(tff2);
+        forgotPasswordPressed.setTypeface(tff2);
+        loginPressed.setTypeface(tff2);
+        signupPressed.setTypeface(tff2);
+        signupName.setTypeface(tff2);
+        signupMobile.setTypeface(tff2);
+        signupEmail.setTypeface(tff2);
+        signupPassword.setTypeface(tff2);
+        signupConfirmPassword.setTypeface(tff2);
+        signupLocation.setTypeface(tff2);
+        termsAndConditionsPressed.setTypeface(tff2);
+        sentence.setTypeface(tff2);
+
 
         //Set OnClickListener on all buttons used
         loginPressed.setOnClickListener(this);

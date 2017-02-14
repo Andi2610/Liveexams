@@ -3,8 +3,10 @@ package in.truskills.liveexams.Miscellaneous;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.app.Activity;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.digits.sdk.android.Digits;
@@ -29,6 +31,9 @@ public class SplashScreen extends Activity {
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Digits.Builder().build(), new Crashlytics(), new Twitter(authConfig));
         setContentView(R.layout.activity_splash_screen);
+        TextView companyName=(TextView)findViewById(R.id.companyName);
+        Typeface tff=Typeface.createFromAsset(getAssets(), "fonts/SF-Compact-Display-Light.otf");
+        companyName.setTypeface(tff);
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -27,7 +27,7 @@ import in.truskills.liveexams.R;
 
 //This fragment is used for quiz question and options display..
 
-public class MyFragment extends Fragment {
+public class MyFragment extends Fragment implements Updateable{
 
     WebView webView;
     String stringVariable;
@@ -98,37 +98,21 @@ public class MyFragment extends Fragment {
         return v;
     }
 
-    private class MyReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            MyFragment.this.refresh();
-        }
-    }
-
-    MyReceiver r;
-    public void refresh() {
-        //your code in refresh.
-        Log.d("Refresh", "YES");
+    @Override
+    public void update() {
         MyFragmentInterface obb=(MyFragmentInterface)getActivity();
         o=(MyFragmentInterface) getActivity();
         WebViewContent obj=new WebViewContent();
         obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb);
     }
 
-    public void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(r);
-    }
-
-    public void onResume() {
-        super.onResume();
-        r = new MyReceiver();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(r,
-                new IntentFilter("TAG_REFRESH"));
-    }
 }
 
 interface MyFragmentInterface{
     public void enableButtons();
+}
+
+interface Updateable {
+    public void update();
 }
 

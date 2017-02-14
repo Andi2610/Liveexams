@@ -30,6 +30,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="REGISTER"
+                    android:textSize="20dp"
+                    android:id="@+id/registerHandleButton"
                     android:background="@color/green"
                     android:layout_weight="90"/>
 
@@ -184,13 +186,16 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="By signing up you agree to our " />
+                            android:text="By signing up you agree to our "
+                            android:id="@+id/sentence"
+                            android:textSize="10dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Terms and Conditions."
                             android:textColor="@color/light_blue"
-                            android:id="@+id/termsAndConditionsPressed"/>
+                            android:id="@+id/termsAndConditionsPressed"
+                            android:textSize="10dp"/>
                     </LinearLayout>
 
                     <Button
@@ -198,6 +203,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:id="@+id/signupPressed"
+                        android:textSize="20dp"
                         android:text="REGISTER"
                         android:textColor="@color/colorPrimary"
                         android:background="@color/light_grey"
@@ -231,6 +237,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Login"
+                    android:textSize="20dp"
+                    android:id="@+id/loginHandleButton"
                     android:layout_weight="90"
                     android:background="@color/orange" />
                 <ImageView
@@ -297,6 +305,7 @@
                         android:layout_margin="10dp"
                         android:id="@+id/loginPressed"
                         android:text="Login"
+                        android:textSize="20dp"
                         android:textColor="@color/colorPrimary"
                         android:background="@color/light_grey"
                         android:padding="10dp"/>

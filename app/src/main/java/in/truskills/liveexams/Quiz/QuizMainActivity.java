@@ -847,14 +847,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
                 questionsList.setAdapter(allQuestionsInOneSectionAdapter);
                 allQuestionsInOneSectionAdapter.notifyDataSetChanged();
-
-//                Fragment myFragment=pageAdapter.getItem(n);
-//                myFragment.onResume();
-                //Clear webview content..
-                //.......................................................................
-                LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
-                Intent i = new Intent("TAG_REFRESH");
-                lbm.sendBroadcast(i);
+                MyFragment fragment= (MyFragment) pageAdapter.getItem(n);
+                fragment.update();
 
                 break;
         }
