@@ -28,41 +28,41 @@ public class MySqlDatabase extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "LiveExamsApplication";
 
     // Table name
-    private static final String TABLE_PER_SECTION = "PerSectionDetails";
-    private static final String TABLE_PER_QUESTION = "PerQuestionDetails";
-    private static final String TABLE_PER_OPTION = "PerOptionDetails";
-    private static final String RESULT_TABLE = "ResultTable";
+    public static final String TABLE_PER_SECTION = "PerSectionDetails";
+    public static final String TABLE_PER_QUESTION = "PerQuestionDetails";
+    public static final String TABLE_PER_OPTION = "PerOptionDetails";
+    public static final String RESULT_TABLE = "ResultTable";
 
     // Table Columns names
-    public static final String SectionIndex = "SectionIndex";
-    public static final String QuestionIndex = "QuestionIndex";
-    public static final String SectionMaxMarks = "SectionMaxMarks";
-    public static final String SectionTime = "SectionTime";
-    public static final String SectionDescription = "SectionDescription";
-    public static final String SectionRules = "SectionRules";
-    public static final String SectionName = "SectionName";
-    public static final String SectionId = "SectionId";
-    public static final String QuestionId = "QuestionId";
-    public static final String CorrectAnswer = "CorrectAnswer";
-    public static final String QuestionCorrectMarks = "QuestionCorrectMarks";
-    public static final String QuestionIncorrectMarks = "QuestionIncorrectMarks";
-    public static final String PassageID = "PassageID";
-    public static final String QuestionType = "QuestionType";
-    public static final String QuestionTime = "QuestionTime";
-    public static final String QuestionDifficultyLevel = "QuestionDifficultyLevel";
-    public static final String QuestionRelativeTopic = "QuestionRelativeTopic";
-    public static final String TimeSpent = "TimeSpent";
-    public static final String NumberOfToggles = "NumberOfToggles";
-    public static final String FinalAnswerSerialNumber = "FinalAnswerSerialNumber";
-    public static final String FinalAnswerId = "FinalAnswerId";
-    public static final String ReadStatus = "ReadStatus";
-    public static final String SerialNumber = "SerialNumber";
-    public static final String OptionIndex = "OptionIndex";
-    public static final String OptionId = "OptionId";
-    public static final String OptionText = "OptionText";
-    public static final String QuestionText = "QuestionText";
-    public static final String FragmentIndex = "FragmentIndex";
-    public static final String QuestionStatus = "QuestionStatus";
+    public static final String SectionIndex = "sectionIndex";
+    public static final String QuestionIndex = "questionIndex";
+    public static final String SectionMaxMarks = "sectionMaxMarks";
+    public static final String SectionTime = "sectionTime";
+    public static final String SectionDescription = "sectionDescription";
+    public static final String SectionRules = "sectionRules";
+    public static final String SectionName = "sectionName";
+    public static final String SectionId = "sectionId";
+    public static final String QuestionId = "questionId";
+    public static final String CorrectAnswer = "correctAnswer";
+    public static final String QuestionCorrectMarks = "questionCorrectMarks";
+    public static final String QuestionIncorrectMarks = "questionIncorrectMarks";
+    public static final String PassageID = "passageID";
+    public static final String QuestionType = "questionType";
+    public static final String QuestionTime = "questionTime";
+    public static final String QuestionDifficultyLevel = "questionDifficultyLevel";
+    public static final String QuestionRelativeTopic = "questionRelativeTopic";
+    public static final String TimeSpent = "timeSpent";
+    public static final String NumberOfToggles = "numberOfToggles";
+    public static final String FinalAnswerSerialNumber = "finalAnswerSerialNumber";
+    public static final String FinalAnswerId = "finalAnswerId";
+    public static final String ReadStatus = "readStatus";
+    public static final String SerialNumber = "serialNumber";
+    public static final String OptionIndex = "optionIndex";
+    public static final String OptionId = "optionId";
+    public static final String OptionText = "optionText";
+    public static final String QuestionText = "questionText";
+    public static final String FragmentIndex = "fragmentIndex";
+    public static final String QuestionStatus = "questionStatus";
 
 
 
@@ -340,7 +340,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         Log.d("before",cursor.getCount()+"");
         if(cursor.moveToFirst()){
             do{
-                Log.d("SectionDetails=",cursor.getString(cursor.getColumnIndex(SerialNumber))+" "+cursor.getInt(cursor.getColumnIndex(SectionIndex))+" "+cursor.getString(cursor.getColumnIndex(SectionName)));
+                Log.d("SectionDetails=",cursor.getInt(cursor.getColumnIndex(SectionIndex))+cursor.getString(cursor.getColumnIndex(SectionId))+cursor.getString(cursor.getColumnIndex(SectionName)));
             }while(cursor.moveToNext());
         }
 
@@ -349,7 +349,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         Log.d("before",cursor.getCount()+"");
         if(cursor.moveToFirst()){
             do{
-                Log.d("QuestionDetails=",cursor.getString(cursor.getColumnIndex(SerialNumber))+" "+cursor.getInt(cursor.getColumnIndex(SectionIndex))+" "+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+" "+cursor.getInt(cursor.getColumnIndex(FragmentIndex)));
+                Log.d("QuestionDetails=",cursor.getInt(cursor.getColumnIndex(SectionIndex))+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+cursor.getString(cursor.getColumnIndex(QuestionId))+cursor.getString(cursor.getColumnIndex(QuestionText)));
             }while(cursor.moveToNext());
         }
 
@@ -358,7 +358,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         Log.d("before",cursor.getCount()+"");
         if(cursor.moveToFirst()){
             do{
-                Log.d("OptionDetails=",cursor.getString(cursor.getColumnIndex(SerialNumber))+" "+cursor.getInt(cursor.getColumnIndex(SectionIndex))+" "+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+" "+cursor.getInt(cursor.getColumnIndex(OptionIndex)));
+                Log.d("OptionDetails=",cursor.getInt(cursor.getColumnIndex(SectionIndex))+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+cursor.getInt(cursor.getColumnIndex(OptionIndex))+cursor.getString(cursor.getColumnIndex(OptionId))+" "+cursor.getString(cursor.getColumnIndex(OptionText)));
             }while(cursor.moveToNext());
         }
 
@@ -367,7 +367,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         Log.d("before",cursor.getCount()+"");
         if(cursor.moveToFirst()){
             do{
-                Log.d("ResultDetails",cursor.getInt(cursor.getColumnIndex(SectionIndex))+" "+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+" "+cursor.getString(cursor.getColumnIndex(TimeSpent)));
+                Log.d("ResultDetails",cursor.getInt(cursor.getColumnIndex(SectionIndex))+cursor.getInt(cursor.getColumnIndex(QuestionIndex))+cursor.getString(cursor.getColumnIndex(SectionId))+cursor.getString(cursor.getColumnIndex(QuestionId))+cursor.getString(cursor.getColumnIndex(FinalAnswerId))+" "+cursor.getString(cursor.getColumnIndex(NumberOfToggles))+cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber)));
             }while(cursor.moveToNext());
         }
 
@@ -551,7 +551,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 //        return map;
 //    }
 
-    public JSONArray getResults()
+    public JSONArray getResults(String table_name)
     {
 
 //        String myPath = DATABASE_NAME;// Set path to your database
@@ -562,7 +562,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(db_path, null, SQLiteDatabase.OPEN_READONLY);
 
 
-        String searchQuery = "SELECT  * FROM "+RESULT_TABLE;
+        String searchQuery = "SELECT  * FROM "+table_name;
         Cursor cursor = myDataBase.rawQuery(searchQuery, null );
 
         JSONArray resultSet 	= new JSONArray();

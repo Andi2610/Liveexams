@@ -381,6 +381,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public void afterResponse(){
 
 
+        ob.getAllValues();
+
         new CountDownTimer(10800000, 1000) { // adjust the milli seconds here
 
             public void onTick(long millisUntilFinished) {
@@ -569,8 +571,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             @Override
             public void onPageSelected(int position) {
 
-                int SI=ob.getIntValuesPerQuestionByFragmentIndex(position,"SectionIndex");
-                int QI=ob.getIntValuesPerQuestionByFragmentIndex(position,"QuestionIndex");
+                int SI=ob.getIntValuesPerQuestionByFragmentIndex(position,MySqlDatabase.SectionIndex);
+                int QI=ob.getIntValuesPerQuestionByFragmentIndex(position,MySqlDatabase.QuestionIndex);
 
                 Log.d("Index=",quizPrefs.getInt("previousIndex",0)+"=previous");
 
@@ -581,11 +583,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 diff=end-start;
                 diff=diff/1000;
 
-                String myTime=ob.getValuesForResult(SI,QI,"TimeSpent");
+                String myTime=ob.getValuesForResult(SI,QI,MySqlDatabase.TimeSpent);
                 long time=Long.parseLong(myTime);
                 time=time+diff;
 
-                ob.updateValuesForResult(SI,QI,"TimeSpent",time+"");
+                ob.updateValuesForResult(SI,QI,MySqlDatabase.TimeSpent,time+"");
 
                 ob.getAllValues();
 
@@ -605,8 +607,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 Log.d("state","here "+position);
 
                 Log.d("ResultDetails=",SI+" "+QI);
-                ob.updateValuesForResult(SI,QI,"ReadStatus",1+"");
-                String srNo=ob.getStringValuesPerQuestionByFragmentIndex(position,"SerialNumber");
+                ob.updateValuesForResult(SI,QI,MySqlDatabase.ReadStatus,1+"");
+                String srNo=ob.getStringValuesPerQuestionByFragmentIndex(position,MySqlDatabase.SerialNumber);
                 int sn=Integer.parseInt(srNo);
 
                 HashMap<String, String> map = ob.getValuesPerSection(SI);

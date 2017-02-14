@@ -3,6 +3,7 @@ package in.truskills.liveexams.Quiz;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,7 +15,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,8 +79,39 @@ public class AllSectionsSummary extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                JSONArray jsonArray=ob.getResults();
-                                Log.d("database",jsonArray.toString());
+
+                                MySqlDatabase ob=new MySqlDatabase(AllSectionsSummary.this);
+                                ob.getAllValues();
+
+                                JSONArray jsonArray1=ob.getResults(MySqlDatabase.TABLE_PER_SECTION);
+                                JSONArray jsonArray2=ob.getResults(MySqlDatabase.TABLE_PER_QUESTION);
+                                JSONArray jsonArray3=ob.getResults(MySqlDatabase.TABLE_PER_OPTION);
+                                JSONArray jsonArray4=ob.getResults(MySqlDatabase.RESULT_TABLE);
+
+                                JSONObject jsonObject=new JSONObject();
+                                try {
+                                    jsonObject.put("sectionDetails",jsonArray1);
+                                    jsonObject.put("questionDetails",jsonArray2);
+                                    jsonObject.put("optionDetails",jsonArray3);
+                                    jsonObject.put("resultDetails",jsonArray4);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                try {
+                                    File root = new File(Environment.getExternalStorageDirectory(), "Notes");
+                                    if (!root.exists()) {
+                                        root.mkdirs();
+                                    }
+                                    File gpxfile = new File(root, "databaseFile");
+                                    FileWriter writer = new FileWriter(gpxfile);
+                                    writer.append(jsonObject.toString());
+                                    writer.flush();
+                                    writer.close();
+                                    Toast.makeText(AllSectionsSummary.this, "Saved", Toast.LENGTH_SHORT).show();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
 
                                 Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
