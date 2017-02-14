@@ -140,4 +140,18 @@
         </RelativeLayout>
 
     </LinearLayout>
+    <com.flashphoner.fpwcsapi.layout.PercentFrameLayout
+        android:id="@+id/studentVideo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginStart="2dp"
+        android:visibility="gone">
+
+        <org.webrtc.SurfaceViewRenderer
+            android:id="@+id/studentView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.flashphoner.fpwcsapi.layout.PercentFrameLayout>
 </RelativeLayout>
