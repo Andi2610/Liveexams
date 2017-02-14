@@ -75,7 +75,8 @@ public class WebViewContent {
                 Log.d("here","mySi="+mySi+" myQi="+myQi);
                 ob.updateValuesForResult(mySi,myQi,MySqlDatabase.FinalAnswerSerialNumber,myStr+"");
                 int oi=ob.getOptionIdBySerialNumber(myStr+"");
-                ob.updateValuesForResult(mySi,myQi,MySqlDatabase.OptionId,oi+"");
+                Log.d("optionId=",oi+"");
+                ob.updateValuesForResult(mySi,myQi,MySqlDatabase.FinalAnswerId,oi+"");
 
                 String not=ob.getValuesForResult(mySi,myQi,MySqlDatabase.NumberOfToggles);
                 int numOfTog=Integer.parseInt(not);
