@@ -37,9 +37,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.webrtc.SurfaceViewRenderer;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,8 +65,20 @@ import static java.lang.Character.FORMAT;
 
 //This is the quiz main activity in which my fragment is loaded..
 
-public class QuizMainActivity extends AppCompatActivity implements setValueOfPager,View.OnClickListener,MyFragmentInterface{
+/*
+* this interface is to call methods of FlashphonerEvents from QuizMainActivity
+* */
+interface socketFromTeacher {
+    void startStreaming(String studentId, String teacherId);
 
+    void stopStreaming();
+
+    void disconnectSession();
+}
+
+public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent {
+
+    private static final String SOCKET = "socket";
     //Declare the variables..
     MyPageAdapter pageAdapter;
     private static final int REQUEST_CODE=1,REQUEST_CODE_FOR_ALL_SUMMARY=2;
@@ -88,8 +106,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     private static final String FORMAT = "%02d:%02d:%02d";
     ArrayList<Integer> arrayForNoOfSections,arrayForQuestions,arrayForOptions;
     ArrayList<String> options;
-    int mySectionCount=-1,my_section,my_question,myFragmentCount=-1,my_option;
+    int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option;
+    Socket socket;
+    socketFromTeacher socketfromteacher;
 
+    FlashphonerEvents flashphoner;
+    SurfaceViewRenderer extraRender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +144,17 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         ob = new MySqlDatabase(QuizMainActivity.this);
 
+        /*
+        * hidden element where student video will be loaded
+        * layout/activity_quiz_main.xml:156
+        * */
+        extraRender = (SurfaceViewRenderer) findViewById(R.id.studentVideo);
+        //to access all methods related to Streaming
+        flashphoner = new FlashphonerEvents(this, extraRender);
+        //Interface to communicate with Flashphoner class
+        socketfromteacher = (socketFromTeacher) flashphoner;
         //CONNECT TO SOCKET..
-        mySocketConnection();
+        initSocketConnection();
 
         dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -380,8 +411,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     public void afterResponse(){
 
-
-        ob.getAllValues();
 
         new CountDownTimer(10800000, 1000) { // adjust the milli seconds here
 
@@ -845,6 +874,23 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         });
     }
 
+    @Override
+    public void startedStreaming(String teacherId, String studentId) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("teacherId", teacherId);
+            data.put("studentId", studentId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        socket.emit(Constants.STARTEDSTREAMING, data);
+    }
+
+    @Override
+    public void stoppedStreaming() {
+        socket.emit(Constants.STOPPEDSTREAMING, "");
+    }
+
     //Adapter for view pager..
     class MyPageAdapter extends FragmentPagerAdapter {
         private List<Fragment> fragments;
@@ -892,9 +938,52 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         SharedPreferences.Editor e=quizPrefs.edit();
         e.clear();
         e.apply();
+        //when activity will distroy student will be disconnected from session
+        socketfromteacher.disconnectSession();
     }
 
-    public void mySocketConnection(){
+    // in/truskills/liveexams/Quiz/QuizMainActivity.java:137
+    public void initSocketConnection() {
+        try {
+            socket = IO.socket("http://35.154.110.122:3001/");
+        } catch (URISyntaxException e) {
+            Log.d("url", "http://35.154.110.122:3001/ not found");
+        }
+        //connect to server
+        socket.connect();
 
+        //teacher will emit STARTSTREAMING socket to request student for streaming
+        socket.on(Constants.STARTSTREAMING, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.d(SOCKET, "got startStreaming from teacher");
+                final JSONObject json = (JSONObject) args[0];
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            //in/truskills/liveexams/Quiz/FlashphonerEvents.java:71
+                            socketfromteacher.startStreaming(json.getString("studentID"), json.getString("teacherID"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+
+        //teacher will emit STOPSTREAMING socket to inform student to stop Streaming
+        socket.on(Constants.STOPSTREAMING, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.d(SOCKET, "got stopStreaming from teacher");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        socketfromteacher.stopStreaming();
+                    }
+                });
+            }
+        });
     }
 }
