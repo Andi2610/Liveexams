@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
     AllExamsListAdapter(List<Values> myList,Context c){
         this.myList=myList;
         this.c=c;
+        setHasStableIds(true);
     }
 
     @Override
@@ -61,10 +63,16 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         value=myList.get(position);
+        Typeface tff=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.name.setText(value.getName());
+        holder.name.setTypeface(tff2);
         holder.startDatevalue.setText(value.getStartDateValue());
+        holder.startDatevalue.setTypeface(tff);
         holder.endDateValue.setText(value.getEndDateValue());
+        holder.endDateValue.setTypeface(tff);
         holder.durationValue.setText(value.getDurationValue());
+        holder.durationValue.setTypeface(tff);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +84,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
 
                 dialog = new ProgressDialog(c);
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                dialog.setMessage("Signing up. Please wait...");
+                dialog.setMessage("Loading. Please wait...");
                 dialog.setIndeterminate(true);
                 dialog.setCancelable(false);
                 dialog.show();
@@ -127,6 +135,16 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
     @Override
     public int getItemCount() {
         return myList.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

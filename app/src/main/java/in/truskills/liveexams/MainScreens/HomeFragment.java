@@ -19,8 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,58 +73,14 @@ public class HomeFragment extends Fragment {
 
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        joinedExams = prefs.getString("joinedExams", "noJoinedExams");
-
 
         //Initialise the variables..
         add = (Button) getActivity().findViewById(R.id.add);
         myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsList);
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        valuesList = new ArrayList<>();
-
-        //If user has joined to some exams..
-        if (!joinedExams.equals("noJoinedExams")) {
-            try {
-                    //Parse myExams Result..
-                    HashMap<String, ArrayList<String>> mapper = VariablesDefined.myExamsParser(joinedExams);
-                    JSONArray arr = new JSONArray(joinedExams);
-                    int length = arr.length();
-                    for (int i = 0; i < length; ++i) {
-
-                        //If user is still enrolled to this exam..
-                        if (mapper.get("leftExam").get(i).equals("false")) {
-
-                            myStartDate = mapper.get("StartDate").get(i);
-                            myEndDate = mapper.get("EndDate").get(i);
-                            myDuration = mapper.get("ExamDuration").get(i);
-
-                            myDateOfStart = VariablesDefined.parseDate(myStartDate);
-                            myDateOfEnd = VariablesDefined.parseDate(myEndDate);
-                            myDurationTime=VariablesDefined.parseDuration(myDuration);
-
-                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                            valuesList.add(values);
-                        }
-                  }
-            } catch (JSONException | ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-
-        myExamsList.setLayoutManager(linearLayoutManager);
-        myExamsList.setItemAnimator(new DefaultItemAnimator());
-        myExamsList.setAdapter(myExamsListAdapter);
-        myExamsListAdapter.notifyDataSetChanged();
-
-        if (valuesList.isEmpty()) {
-            add.setVisibility(View.VISIBLE);
-        } else {
-            add.setVisibility(View.GONE);
-        }
-
         ob = (HomeInterface) getActivity();
+
+        setList();
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,11 +97,29 @@ public class HomeFragment extends Fragment {
         inflater.inflate(R.menu.main, menu);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         MenuItem menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        MenuItemCompat.setOnActionExpandListener(menuItem,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                        // Return true to allow the action view to expand
+                        searchView.setQuery("",true);
+                        searchView.requestFocus();
+                        return true;
+                    }
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                        // When the action view is collapsed, reset the query
+                        setList();
+                        searchView.clearFocus();
+                        // Return true to allow the action view to collapse
+                        return true;
+                    }
+                });
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
-            searchView.setQueryHint("Search here..");
-            searchView.setIconified(true);
+            searchView.setQueryHint("Type here..");
+
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -182,6 +158,52 @@ public class HomeFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    public void setList(){
+        joinedExams = prefs.getString("joinedExams", "noJoinedExams");
+        valuesList = new ArrayList<>();
+
+        //If user has joined to some exams..
+        if (!joinedExams.equals("noJoinedExams")) {
+            try {
+                //Parse myExams Result..
+                HashMap<String, ArrayList<String>> mapper = VariablesDefined.myExamsParser(joinedExams);
+                JSONArray arr = new JSONArray(joinedExams);
+                int length = arr.length();
+                for (int i = 0; i < length; ++i) {
+
+                    //If user is still enrolled to this exam..
+                    if (mapper.get("leftExam").get(i).equals("false")) {
+
+                        myStartDate = mapper.get("StartDate").get(i);
+                        myEndDate = mapper.get("EndDate").get(i);
+                        myDuration = mapper.get("ExamDuration").get(i);
+
+                        myDateOfStart = VariablesDefined.parseDate(myStartDate);
+                        myDateOfEnd = VariablesDefined.parseDate(myEndDate);
+                        myDurationTime=VariablesDefined.parseDuration(myDuration);
+
+                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                        valuesList.add(values);
+                    }
+                }
+            } catch (JSONException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
+        myExamsList.setLayoutManager(linearLayoutManager);
+        myExamsList.setItemAnimator(new DefaultItemAnimator());
+        myExamsList.setAdapter(myExamsListAdapter);
+        myExamsListAdapter.notifyDataSetChanged();
+
+        if (valuesList.isEmpty()) {
+            add.setVisibility(View.VISIBLE);
+        } else {
+            add.setVisibility(View.GONE);
+        }
     }
 }
 

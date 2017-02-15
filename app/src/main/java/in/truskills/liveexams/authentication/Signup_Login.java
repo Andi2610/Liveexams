@@ -790,6 +790,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     if(mapper.get("success").equals("true")) {
                         SharedPreferences.Editor e=prefs.edit();
                         e.putString("userId",mapper.get("id"));
+                        e.putString("userName",mapper.get("userName"));
                         e.putString("emailAddress",mapper.get("emailAddress"));
                         e.putString("language",mapper.get("language"));
                         e.putString("profileImageUrl",mapper.get("profileImageUrl"));
@@ -802,7 +803,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         finish();
                     }else{
                         //Display error message..
-                        dialog.dismiss();
                         Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -814,6 +814,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
+                dialog.dismiss();
+                Log.d("error",error.toString()+"");
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         }){

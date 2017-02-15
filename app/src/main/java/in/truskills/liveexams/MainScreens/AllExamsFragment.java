@@ -4,6 +4,7 @@ package in.truskills.liveexams.MainScreens;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -58,6 +60,7 @@ public class AllExamsFragment extends Fragment {
     SimpleDateFormat simpleDateFormat;
     Calendar calendar;
     Date date;
+    TextView searchExams;
     int hour,minute,day,month,year;
 
     public AllExamsFragment() {
@@ -84,14 +87,15 @@ public class AllExamsFragment extends Fragment {
         requestQueue = Volley.newRequestQueue(getActivity());
         h=new Handler();
 
-        valuesList=new ArrayList<>();
-
-        allExamsListAdapter=new AllExamsListAdapter(valuesList,getActivity());
+        searchExams=(TextView)getActivity().findViewById(R.id.searchExams);
+        Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        searchExams.setTypeface(tff);
+        searchExams.setVisibility(View.VISIBLE);
 
         allExamsList.setLayoutManager(linearLayoutManager);
         allExamsList.setItemAnimator(new DefaultItemAnimator());
-        allExamsList.setAdapter(allExamsListAdapter);
-        allExamsListAdapter.notifyDataSetChanged();
+
+        setList();
     }
 
     @Override
@@ -100,19 +104,31 @@ public class AllExamsFragment extends Fragment {
         inflater.inflate(R.menu.all_exams_menu, menu);
         SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
         MenuItem menuItem=menu.findItem(R.id.searchAllExams);
+        menuItem.expandActionView();
         searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        MenuItemCompat.setOnActionExpandListener(menuItem,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                        // Return true to allow the action view to expand
+                        searchView.requestFocus();
+                        searchView.setQuery("",true);
+                        return true;
+                    }
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                        // When the action view is collapsed, reset the query
+                        setList();
+                        searchView.clearFocus();
+                        // Return true to allow the action view to collapse
+                        return true;
+                    }
+                });
         searchView.setIconifiedByDefault(true);
         if(searchView!=null) {
+            searchView.onActionViewExpanded();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
-            searchView.setQueryHint("Search here..");
-            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean hasFocus) {
-                    if (hasFocus) {
-                        showInputMethod(view.findFocus());
-                    }
-                }
-            });
+            searchView.setQueryHint("Type here..");
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -130,6 +146,7 @@ public class AllExamsFragment extends Fragment {
                         allExamsListAdapter=new AllExamsListAdapter(filteredList,getActivity());
                         allExamsList.setAdapter(allExamsListAdapter);
                         allExamsListAdapter.notifyDataSetChanged();
+                        searchExams.setVisibility(View.VISIBLE);
                     }else{
                         String url = VariablesDefined.api + "searchExams/" + s;
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -145,11 +162,13 @@ public class AllExamsFragment extends Fragment {
                                         h.post(new Runnable() {
                                             @Override
                                             public void run() {
+                                                searchExams.setVisibility(View.VISIBLE);
                                                 populateList(filteredList);
                                             }
                                         });
                                     }
                                     else{
+                                        searchExams.setVisibility(View.GONE);
                                         for (int i = 0; i < length; ++i) {
                                             myStartDate=mapper.get("StartDate").get(i);
                                             myEndDate=mapper.get("EndDate").get(i);
@@ -216,11 +235,12 @@ public class AllExamsFragment extends Fragment {
         }
     }
 
-    private void showInputMethod(View view) {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.showSoftInput(view, 0);
-        }
+    public void setList(){
+        valuesList=new ArrayList<>();
+        allExamsListAdapter=new AllExamsListAdapter(valuesList,getActivity());
+        allExamsList.setAdapter(allExamsListAdapter);
+        allExamsListAdapter.notifyDataSetChanged();
+        searchExams.setVisibility(View.VISIBLE);
     }
 
     public void populateList(List<Values> list){

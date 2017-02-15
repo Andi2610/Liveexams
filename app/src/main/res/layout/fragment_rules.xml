@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Answers Submitted"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv1"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -35,7 +36,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Questions marked for review"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv2"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -51,7 +53,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Questions not attempted"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv3"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -67,7 +70,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Overall exam summary"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv4"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -83,7 +87,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Swipe right to go to next question"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv5"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -99,6 +104,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Touch to section name to switch sections"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv6"/>
     </LinearLayout>
 </LinearLayout>

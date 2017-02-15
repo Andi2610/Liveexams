@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,6 +19,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -100,8 +103,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navImage.setImageBitmap(myImage);
 
-        navName.setText(prefs.getString("userId", ""));
+        navName.setText(prefs.getString("userName", ""));
         navEmail.setText(prefs.getString("emailAddress", ""));
+
+        Typeface tff=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+
+        navName.setTypeface(tff);
+        navEmail.setTypeface(tff);
 
         navImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +181,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
 
+    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException
+    {
+        BitmapFactory.Options o = new BitmapFactory.Options();
+
+        o.inJustDecodeBounds = true;
+
+        BitmapFactory.decodeStream(getContentResolver()
+                .openInputStream(selectedImage), null, o);
+
+        final int REQUIRED_SIZE = 72;
+
+        int width_tmp = o.outWidth, height_tmp = o.outHeight;
+
+        int scale = 1;
+
+        while (true)
+        {
+            if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
+            {
+                break;
+            }
+            width_tmp /= 2;
+
+            height_tmp /= 2;
+
+            scale *= 2;
+        }
+
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+
+        o2.inSampleSize = scale;
+
+        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
+                .openInputStream(selectedImage), null, o2);
+
+        return bitmap;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -197,7 +243,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (requestCode == SELECT_FILE)
                 onSelectFromGalleryResult(data);
             else if (requestCode == REQUEST_CAMERA)
-                onCaptureImageResult(data);
+                try {
+                    onCaptureImageResult(data);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
         }else if(requestCode==10){
             FrameLayout frameLayout=(FrameLayout) findViewById(R.id.fragment);
             frameLayout.removeAllViewsInLayout();
@@ -214,7 +264,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bitmap bm = null;
         if (data != null) {
             try {
-                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+//                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                Uri fileUri = data.getData();
+                bm = decodeUri(fileUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -227,8 +279,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navImage.setImageBitmap(bm);
     }
 
-    private void onCaptureImageResult(Intent data) {
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+    private void onCaptureImageResult(Intent data) throws FileNotFoundException {
+
+        Uri fileUri = data.getData();
+        Bitmap thumbnail = decodeUri(fileUri);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
 

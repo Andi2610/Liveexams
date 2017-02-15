@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +72,12 @@ public class ForgotPassword extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         reset=(Button)findViewById(R.id.reset);
         newPassword=(EditText)findViewById(R.id.newPassword);
+
+        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+        newPassword.setTypeface(tff1);
+        Typeface tff2=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        reset.setTypeface(tff2);
+
         h=new Handler();
 
         TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
@@ -80,13 +87,6 @@ public class ForgotPassword extends AppCompatActivity {
             @Override
             public void success(DigitsSession session, final String phoneNumber) {
                 // Do something with the session
-
-                if(session==null){
-                    Log.d("heyaaaa", "success:  null ");
-
-                }else{
-                    Log.d("heyaaaa", "success: no null ");
-                }
                 h.post(new Runnable() {
                     @Override
                     public void run() {

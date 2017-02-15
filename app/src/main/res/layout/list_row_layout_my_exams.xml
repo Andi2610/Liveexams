@@ -28,101 +28,109 @@
                 android:padding="10dp"
                 android:textSize="20dp"
                 android:background="@color/sea_blue"
-                android:id="@+id/name"/>
+                android:id="@+id/name"
+                android:textStyle="bold"/>
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="100">
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:layout_gravity="left"
-                    android:text="START DATE"
-                    android:layout_weight="40"/>
+                <TableLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:shrinkColumns="*"
+                    android:stretchColumns="*"
+                    android:background="#ffffff">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:text=":"
-                    android:layout_gravity="center"
-                    android:layout_weight="20"/>
+                    <TableRow
+                        android:id="@+id/tableRow1"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:layout_gravity="right"
-                    android:id="@+id/startDateValue"
-                    android:layout_weight="40"/>
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:layout_gravity="left"
+                            android:text="START DATE"
+                            android:layout_weight="1"/>
 
-            </LinearLayout>
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:layout_gravity="right"
+                            android:id="@+id/startDateValue"
+                            android:layout_weight="1" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:layout_gravity="left"
-                    android:text="END DATE"/>
+                    </TableRow>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:text=":"
-                    android:layout_gravity="center" />
+                    <TableRow
+                        android:id="@+id/tableRow2"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:layout_gravity="right"
-                    android:id="@+id/endDateValue"/>
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:layout_gravity="left"
+                            android:text="END DATE"
+                            android:layout_weight="1"/>
 
-            </LinearLayout>
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:layout_gravity="right"
+                            android:id="@+id/endDateValue"
+                            android:layout_weight="1"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:layout_gravity="left"
-                    android:text="DURATION"/>
+                    </TableRow>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:text=":"
-                    android:layout_gravity="center" />
+                    <TableRow
+                        android:id="@+id/tableRow3"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:textSize="10dp"
-                    android:layout_gravity="right"
-                    android:id="@+id/durationValue"/>
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:layout_gravity="left"
+                            android:text="DURATION"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:padding="10dp"
+                            android:textSize="15dp"
+                            android:layout_gravity="right"
+                            android:id="@+id/durationValue"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                </TableLayout>
 
             </LinearLayout>
 

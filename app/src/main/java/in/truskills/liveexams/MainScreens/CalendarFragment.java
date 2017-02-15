@@ -67,14 +67,16 @@ public class CalendarFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        getActivity().getActionBar().setTitle("CALENDAR");
-
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         joinedExams = prefs.getString("joinedExams", "noJoinedExams");
+
+        Log.d("joinedExams",joinedExams);
 
         myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsListForCalendar);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         valuesList = new ArrayList<>();
+        myExamsList.setLayoutManager(linearLayoutManager);
+        myExamsList.setItemAnimator(new DefaultItemAnimator());
         calendarView = (CalendarView) getActivity().findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -131,31 +133,24 @@ public class CalendarFragment extends Fragment {
                                         valuesList.add(values);
                                         myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
                                         myExamsList.setAdapter(myExamsListAdapter);
-                                        myExamsList.setLayoutManager(linearLayoutManager);
-                                        myExamsList.setItemAnimator(new DefaultItemAnimator());
                                         myExamsListAdapter.notifyDataSetChanged();
+                                        Log.d("joinedExams",mapper.get("ExamName").get(i)+" "+valuesList.size());
                                     }else{
                                         valuesList.clear();
                                         myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
                                         myExamsList.setAdapter(myExamsListAdapter);
-                                        myExamsList.setLayoutManager(linearLayoutManager);
-                                        myExamsList.setItemAnimator(new DefaultItemAnimator());
                                         myExamsListAdapter.notifyDataSetChanged();
                                     }
                                 }else{
                                     valuesList.clear();
                                     myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
                                     myExamsList.setAdapter(myExamsListAdapter);
-                                    myExamsList.setLayoutManager(linearLayoutManager);
-                                    myExamsList.setItemAnimator(new DefaultItemAnimator());
                                     myExamsListAdapter.notifyDataSetChanged();
                                 }
                             }else{
                                 valuesList.clear();
                                 myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
                                 myExamsList.setAdapter(myExamsListAdapter);
-                                myExamsList.setLayoutManager(linearLayoutManager);
-                                myExamsList.setItemAnimator(new DefaultItemAnimator());
                                 myExamsListAdapter.notifyDataSetChanged();
                             }
                         }
@@ -169,4 +164,5 @@ public class CalendarFragment extends Fragment {
         });
 
         }
+
     }

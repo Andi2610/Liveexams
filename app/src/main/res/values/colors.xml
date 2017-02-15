@@ -10,6 +10,7 @@
     <color name="light_blue">#2196F3</color>
     <color name="black">#000000</color>
     <color name="sea_blue">#00B4A8</color>
+    <color name="light_sea_blue">#80CBC4</color>
     <color name="lightest_blue">#B2DFDB</color>
     <color name="red">#f44336</color>
 </resources>

@@ -4,6 +4,7 @@ package in.truskills.liveexams.ParticularExam;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -84,6 +85,13 @@ public class JoinPageFragment extends Fragment {
         myLanguageJoinPage = (Spinner) getActivity().findViewById(R.id.myLanguageJoinPage);
         join_button = (Button) getActivity().findViewById(R.id.join_button);
 
+        Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        startDetailsJoinPage.setTypeface(tff);
+        endDetailsJoinPage.setTypeface(tff);
+        descriptionJoinPage.setTypeface(tff);
+        Typeface tff2=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
+        join_button.setTypeface(tff2);
+
         //Get arguments..
         b = getArguments();
         timestamp = b.getString("timestamp");
@@ -102,12 +110,12 @@ public class JoinPageFragment extends Fragment {
             String endDate=mapper.get("EndDate");
             String myEndDate=VariablesDefined.parseDate(endDate);
             String startTime=mapper.get("StartTime");
-            String myStartTime=VariablesDefined.parseDuration(startTime);
+            String myStartTime=VariablesDefined.parseTimeForDetails(startTime);
             String endTime=mapper.get("EndTime");
-            String myEndTime=VariablesDefined.parseDuration(endTime);
+            String myEndTime=VariablesDefined.parseTimeForDetails(endTime);
 
-            startDetailsJoinPage.setText(myStartDate + "\n" + myStartTime);
-            endDetailsJoinPage.setText(myEndDate + "\n" + myEndTime);
+            startDetailsJoinPage.setText(myStartDate + "\n\n" + myStartTime);
+            endDetailsJoinPage.setText(myEndDate + "\n\n" + myEndTime);
 
 
 

@@ -90,75 +90,17 @@ public class WebViewContent {
     public static String format(String str, String examId) {
 
         examId="changeThisToExamId";
-        ArrayList<String> jpgSubStr = new ArrayList<>();
-        ArrayList<String> pngSubStr = new ArrayList<>();
-        String jpgStartSubStr, pngStartSubStr, s, ss,myS;
 
-        if(str.contains("\\Images\\"))
-            myS=str.replace("\\Images\\","");
-        else myS=str;
-        String myStr = myS;
-        String searchableString = myS;
+        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
+        final String string = "\\Images\\q1.png mystring is this \\Images\\q1.jpg and new string is \\Images\\q2.jpg we also have \\Images\\q1.png and new string is \\Images\\q2.png";
+        final String subst = "<img src=\"https://s3.ap-south-1.amazonaws.com/live-exams/"+examId+"/Images/$2\"/>";
 
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(str);
 
-        //Get the image if present at the starting of the sentence..
-        //Get jpg image..
-        Pattern jpgStartPattern = Pattern.compile("[a-zA-Z0-9_-]*.jpg");
-        Matcher jpgStartMatcher = jpgStartPattern.matcher(searchableString);
-        if (jpgStartMatcher.find()) {
-            int jpgStart = jpgStartMatcher.start();
-            int jpgEnd = jpgStartMatcher.end();
-            s = searchableString.substring(jpgStart, jpgEnd);
-            ss = VariablesDefined.imageUrl + examId + "/" + "Images/" + s;
-            jpgStartSubStr = "<img src='" + ss + "'/>";
-            myStr = myStr.replaceFirst("[a-zA-Z0-9_-]*.jpg", jpgStartSubStr);
-        }
-        //Get png image..
-        Pattern pngStartPattern = Pattern.compile("[a-zA-Z0-9_-]*.png");
-        Matcher pngStartMatcher = pngStartPattern.matcher(searchableString);
-        if (pngStartMatcher.find()) {
-            int pngStart = pngStartMatcher.start();
-            int pngEnd = pngStartMatcher.end();
-            s = searchableString.substring(pngStart, pngEnd);
-            ss = VariablesDefined.imageUrl + examId + "/" + "Images/" + s;
-            pngStartSubStr = "<img src='" + ss + "'/>";
-            myStr = myStr.replaceFirst("[a-zA-Z0-9_-]*.png", pngStartSubStr);
-        }
-
-        //Get the images if present in the middle of the sentence..
-        //Get jpg image..
-        Pattern jpgPattern = Pattern.compile("[ ][a-zA-Z0-9_-]*.jpg");
-        Matcher jpgMatcher = jpgPattern.matcher(searchableString);
-        while (jpgMatcher.find()) {
-            int start = jpgMatcher.start();
-            start++;
-            int end = jpgMatcher.end();
-            s = searchableString.substring(start, end);
-            ss = VariablesDefined.imageUrl + examId + "/" + "Images/" + s;
-            jpgSubStr.add("<img src='" + ss + "'/>");
-        }
-        //Get png image..
-        Pattern pngPattern = Pattern.compile("[ ][a-zA-Z0-9_-]*.png");
-        Matcher pngMatcher = pngPattern.matcher(searchableString);
-        while (pngMatcher.find()) {
-            int start = pngMatcher.start();
-            start++;
-            int end = pngMatcher.end();
-            s = searchableString.substring(start, end);
-            ss = VariablesDefined.imageUrl + examId + "/" + s;
-            pngSubStr.add("<img src='" + ss + "'/>");
-        }
-
-        //Add image tag to jpg images..
-        for (int i = 0; i < jpgSubStr.size(); ++i) {
-            myStr = myStr.replaceFirst("[ ][a-zA-Z0-9_-]*.jpg", jpgSubStr.get(i));
-        }
-        //Add image tag to png images..
-        for (int i = 0; i < pngSubStr.size(); ++i) {
-            myStr = myStr.replaceFirst("[ ][a-zA-Z0-9_-]*.png", pngSubStr.get(i));
-        }
-
-        return myStr;
+// The substituted value will be contained in the result variable
+        final String result = matcher.replaceAll(subst);
+        return result;
     }
 
 }

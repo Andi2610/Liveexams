@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class VariablesDefined {
     private static String response = "response";
     private static String success = "success";
     private static String id = "_id";
+    private static String userName = "userName";
     private static String emailAddress = "emailAddress";
     private static String language = "language";
     private static String profileImageUrl = "profileImageUrl";
@@ -62,6 +64,7 @@ public class VariablesDefined {
         mapper.put("success", jsonOb.getString(success));
         if (jsonOb.getString(success).equals("true")) {
             mapper.put("id", jsonObject.getString(id));
+            mapper.put("userName",jsonObject.getString(userName));
             mapper.put("emailAddress", jsonObject.getString(emailAddress));
             mapper.put("language", jsonObject.getString(language));
             mapper.put("profileImageUrl", jsonObject.getString(profileImageUrl));
@@ -225,5 +228,14 @@ public class VariablesDefined {
         mapper.put("message",jsonObject.getString(message));
         return mapper;
     }
+
+    public static String parseTimeForDetails(String myTime) throws ParseException {
+        DateFormat f1 = new SimpleDateFormat("HH-mm");
+        Date d = f1.parse(myTime);
+        DateFormat f2 = new SimpleDateFormat("h-mm a");
+        String ans=f2.format(d).toLowerCase();
+        return ans;
+    }
+
 
 }

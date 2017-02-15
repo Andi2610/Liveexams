@@ -4,6 +4,8 @@ package in.truskills.liveexams.ParticularExam;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -33,8 +35,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,8 +95,13 @@ public class StartPageFragment extends Fragment {
         myLanguage = (Spinner) getActivity().findViewById(R.id.myLanguage);
         start_leave_button = (Button) getActivity().findViewById(R.id.start_leave_button);
 
-//        startDetails.setText("Thursday\n12th January 2017\n8:00 AM");
-//        endDetails.setText("Saturday\n14th January 2017\n7:00 PM");
+        Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        startDetails.setTypeface(tff);
+        endDetails.setTypeface(tff);
+        descriptionStartPage.setTypeface(tff);
+        Typeface tff2=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
+        start_leave_button.setTypeface(tff2);
+
 //
 //        start_leave_button.setText("START");
 //        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
@@ -99,10 +109,13 @@ public class StartPageFragment extends Fragment {
         //Get arguments..
         b = getArguments();
         timestamp = b.getString("timestamp");
+
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
 
         start_leave_button.setText("START");
+        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+
 
         //Parse the exam details..
         try {
@@ -113,13 +126,18 @@ public class StartPageFragment extends Fragment {
             String endDate=mapper.get("EndDate");
             String myEndDate=VariablesDefined.parseDate(endDate);
             String startTime=mapper.get("StartTime");
-            String myStartTime=VariablesDefined.parseDuration(startTime);
-            String endTime=mapper.get("EndTime");
-            String myEndTime=VariablesDefined.parseDuration(endTime);
 
-            startDetails.setText(myStartDate + "\n" + myStartTime);
-            endDetails.setText(myEndDate + "\n" + myEndTime);
+            String myStartTime=VariablesDefined.parseTimeForDetails(startTime);
+            String endTime=mapper.get("EndTime");
+            String myEndTime=VariablesDefined.parseTimeForDetails(endTime);
+
+            Log.d("time",timestamp+" **** "+startTime+" **** "+endTime);
+
+            startDetails.setText(myStartDate + "\n\n" + myStartTime);
+            endDetails.setText(myEndDate + "\n\n" + myEndTime);
             name = mapper.get("ExamName");
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {
