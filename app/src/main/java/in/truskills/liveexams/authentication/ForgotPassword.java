@@ -1,25 +1,18 @@
 package in.truskills.liveexams.authentication;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Handler;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ButtonBarLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -43,6 +36,7 @@ import org.json.JSONException;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 import io.fabric.sdk.android.Fabric;
@@ -65,6 +59,7 @@ public class ForgotPassword extends AppCompatActivity {
 
     Handler h;
     AuthCallback authCallback;
+    RelativeLayout containerForgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +67,8 @@ public class ForgotPassword extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         reset=(Button)findViewById(R.id.reset);
         newPassword=(EditText)findViewById(R.id.newPassword);
+        containerForgotPassword=(RelativeLayout)findViewById(R.id.containerForgotPassword);
+        containerForgotPassword.setVisibility(View.INVISIBLE);
 
         Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         newPassword.setTypeface(tff1);
@@ -80,41 +77,11 @@ public class ForgotPassword extends AppCompatActivity {
 
         h=new Handler();
 
-        TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
-//        Fabric.with(this, new TwitterCore(authConfig), new Digits.Builder().build());
-        authCallback = new AuthCallback() {
-            @Override
-            public void success(DigitsSession session, final String phoneNumber) {
-                // Do something with the session
-                h.post(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        successMethod(phoneNumber);
-                    }
-                });
-
-            }
-
-            @Override
-            public void failure(DigitsException exception) {
-                // Do something on failure
-                Toast.makeText(ForgotPassword.this, "Couldn't verify phone number", Toast.LENGTH_SHORT).show();
-                finish();
-
-            }
-        };
-
-        Digits.clearActiveSession();
-
-        getAuthCallback();
-
-        AuthConfig.Builder authConfigBuilder = new AuthConfig.Builder()
-                .withAuthCallBack(authCallback)
-                .withPhoneNumber("+91");
-
-        Digits.authenticate(authConfigBuilder.build());
+        boolean result= CheckForPermissions.checkForSms(ForgotPassword.this);
+        if(result){
+            Toast.makeText(this, "OTP pin will be read automatically..", Toast.LENGTH_SHORT).show();
+            getVerified();
+        }
     }
 
     public AuthCallback getAuthCallback(){
@@ -207,5 +174,59 @@ public class ForgotPassword extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case CheckForPermissions.SMS_PERMISSION_CODE:
+                //If permission is granted
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(this, "Now OTP pin will be read automatically..", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(this,"Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
+                }
+                getVerified();
+                break;
+        }
+    }
+
+    public void getVerified(){
+        TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
+        authCallback = new AuthCallback() {
+            @Override
+            public void success(DigitsSession session, final String phoneNumber) {
+                // Do something with the session
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        successMethod(phoneNumber);
+                        containerForgotPassword.setVisibility(View.VISIBLE);
+                    }
+                });
+
+            }
+
+            @Override
+            public void failure(DigitsException exception) {
+                // Do something on failure
+                Toast.makeText(ForgotPassword.this, "Couldn't verify phone number", Toast.LENGTH_SHORT).show();
+                finish();
+
+            }
+        };
+
+        Digits.clearActiveSession();
+
+        getAuthCallback();
+
+        AuthConfig.Builder authConfigBuilder = new AuthConfig.Builder()
+                .withAuthCallBack(authCallback)
+                .withPhoneNumber("+91");
+
+        Digits.authenticate(authConfigBuilder.build());
     }
 }

@@ -1,5 +1,6 @@
 package in.truskills.liveexams.MainScreens;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.app.Activity;
@@ -30,6 +31,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pkmmte.view.CircularImageView;
 
@@ -39,6 +41,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
@@ -115,7 +118,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 //Display image chooser..
-                selectImage();
+//                selectImage();
+                boolean statusForGallery=CheckForPermissions.checkForGallery(MainActivity.this);
+                if(statusForGallery){
+                    boolean statusForCamera=CheckForPermissions.checkForCamera(MainActivity.this);
+                    if(statusForCamera){
+                        //Show options..
+                        selectImage();
+                    }
+
+                }
             }
         });
     }
@@ -124,47 +136,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //If no image set.. do not include "Remove Photo" option
         //Else include "Remove Photo" option..
-        if (prefs.getString("navImage", defaultImage).equals(defaultImage)) {
-            items = new CharSequence[3];
-            items[0] = "Take Photo";
-            items[1] = "Choose from Library";
-            items[2] = "Cancel";
-        } else {
-            items = new CharSequence[4];
-            items[0] = "Take Photo";
-            items[1] = "Choose from Library";
-            items[2] = "Remove Photo";
-            items[3] = "Cancel";
-        }
+            if (prefs.getString("navImage", defaultImage).equals(defaultImage)) {
+                items = new CharSequence[3];
+                items[0] = "Take Photo";
+                items[1] = "Choose from Library";
+                items[2] = "Cancel";
+            } else {
+                items = new CharSequence[4];
+                items[0] = "Take Photo";
+                items[1] = "Choose from Library";
+                items[2] = "Remove Photo";
+                items[3] = "Cancel";
+            }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Add Photo!");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                boolean result = Utility.checkPermission(MainActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Add Photo!");
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
 
-                if (items[item].equals("Take Photo")) {
-                    userChoosenTask = "Take Photo";
-                    if (result)
+                    if (items[item].equals("Take Photo")) {
                         cameraIntent();
 
-                } else if (items[item].equals("Choose from Library")) {
-                    userChoosenTask = "Choose from Library";
-                    if (result)
+                    } else if (items[item].equals("Choose from Library")) {
                         galleryIntent();
 
-                } else if (items[item].equals("Remove Photo")) {
-                    SharedPreferences.Editor e = prefs.edit();
-                    e.putString("navImage", defaultImage);
-                    e.apply();
-                    navImage.setImageBitmap(icon);
-                } else if (items[item].equals("Cancel")) {
-                    dialog.dismiss();
+                    } else if (items[item].equals("Remove Photo")) {
+                        SharedPreferences.Editor e = prefs.edit();
+                        e.putString("navImage", defaultImage);
+                        e.apply();
+                        navImage.setImageBitmap(icon);
+                    } else if (items[item].equals("Cancel")) {
+                        dialog.dismiss();
+                    }
                 }
-            }
-        });
-        builder.show();
+            });
+            builder.show();
     }
 
     //If capture an image from camera is requested..
@@ -187,8 +194,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         o.inJustDecodeBounds = true;
 
-        BitmapFactory.decodeStream(getContentResolver()
-                .openInputStream(selectedImage), null, o);
+        ContentResolver cr = this.getContentResolver();
+
+        BitmapFactory.decodeStream(cr.openInputStream(selectedImage) ,null, o);
+
+//        BitmapFactory.decodeStream(getContentResolver()
+//                .openInputStream(selectedImage), null, o);
 
         final int REQUIRED_SIZE = 72;
 
@@ -213,8 +224,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         o2.inSampleSize = scale;
 
-        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
-                .openInputStream(selectedImage), null, o2);
+//        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
+//                .openInputStream(selectedImage), null, o2);
+        ContentResolver cr2 = this.getContentResolver();
+
+        Bitmap bitmap=BitmapFactory.decodeStream(cr2.openInputStream(selectedImage) ,null, o2);
 
         return bitmap;
     }
@@ -222,14 +236,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case Utility.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (userChoosenTask.equals("Take Photo"))
-                        cameraIntent();
-                    else if (userChoosenTask.equals("Choose from Library"))
-                        galleryIntent();
-                } else {
-                    //code for deny
+            case CheckForPermissions.STORAGE_PERMISSION_CODE:
+                //If permission is granted
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //Displaying a toast
+                    boolean statusForCamera=CheckForPermissions.checkForCamera(MainActivity.this);
+                    if(statusForCamera){
+                        //Show options..
+                        selectImage();
+                    }
+                }else{
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(this,"Oops you have denied the permission for storage access\nGo to settings and grant them", Toast.LENGTH_LONG).show();
+                }
+                break;
+
+            case CheckForPermissions.CAMERA_PERMISSION_CODE:
+                //If permission is granted
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //Displaying a toast
+                    Toast.makeText(this,"Permission granted now you can capture images and access phone's storage",Toast.LENGTH_LONG).show();
+                    //Show options..
+                    selectImage();
+                }else{
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(this,"Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
                 break;
         }

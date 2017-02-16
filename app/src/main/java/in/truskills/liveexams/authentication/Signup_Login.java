@@ -66,6 +66,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import in.truskills.liveexams.MainScreens.MainActivity;
+import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.Miscellaneous.TermsAndConditions;
@@ -83,16 +84,16 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     ProgressDialog dialog;
     AuthCallback authCallback;
-    Button loginPressed, locationIcon,registerHandleButton,loginHandleButton;
+    Button loginPressed, locationIcon, registerHandleButton, loginHandleButton;
     Button signupPressed;
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
     EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile;
-    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation,sentence;
+    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence;
     Spinner signupLanguage, signupGender;
     LocationManager locationManager;
     private static final int PERMISSION_REQUEST_CODE = 1;
-    String lat, lon, selectedLanguage, selectedGender,name,gender,email,password,confirmPassword,location,mobile,language,login_name,login_password;
+    String lat, lon, selectedLanguage, selectedGender, name, gender, email, password, confirmPassword, location, mobile, language, login_name, login_password;
     int code = 123;
     ImageView signupHandleImage, loginHandleImage;
     RequestQueue requestQueue;
@@ -112,7 +113,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //Initialise the request for Volley connection
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-
 
 
         //Attach all the variables used in layout
@@ -139,13 +139,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         loginHandleImage = (ImageView) findViewById(R.id.loginHandleImage);
         signupLanguage = (Spinner) findViewById(R.id.signupLanguage);
         signupGender = (Spinner) findViewById(R.id.signupGender);
-        app_logo=(ImageView)findViewById(R.id.app_logo);
+        app_logo = (ImageView) findViewById(R.id.app_logo);
 
-        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         registerHandleButton.setTypeface(tff1);
         loginHandleButton.setTypeface(tff1);
 
-        Typeface tff2=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         loginName.setTypeface(tff2);
         loginPassword.setTypeface(tff2);
         forgotPasswordPressed.setTypeface(tff2);
@@ -509,100 +509,86 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        //Check if the device's GPS is on or not..
-        if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        boolean result = CheckForPermissions.checkForLocation(Signup_Login.this);
+        if (result) {
+            //Check if the device's GPS is on or not..
+            if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
-            //If it is off, ask the user to enable it..
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-            builder.setTitle("NETWORK PROVIDER NOT ENABLED");  // GPS not found
-            builder.setMessage("Want to enable?"); // Want to enable?
-            builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    //Launch the gps settings screen of the phone..
-                    Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    //Wait for the result to come in return..
-                    //After returning from the setting screen to our signup_login screen.. check for the activity result by calling onActivityResult method..
-                    startActivityForResult(intent, code);
-                }
-            });
-            builder.setNegativeButton("NO", null);
-            builder.create().show();
-        } else {
-
-            //If it is on, check for explicit permissions in android versions starting from Marshmallow..
-            if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                //If permission is not granted..Request for permission..and check for user's response in onRequestPermissionsResult method..
-                ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+                //If it is off, ask the user to enable it..
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("NETWORK PROVIDER NOT ENABLED");  // GPS not found
+                builder.setMessage("Want to enable?"); // Want to enable?
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Launch the gps settings screen of the phone..
+                        Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        //Wait for the result to come in return..
+                        //After returning from the setting screen to our signup_login screen.. check for the activity result by calling onActivityResult method..
+                        startActivityForResult(intent, code);
+                    }
+                });
+                builder.setNegativeButton("NO", null);
+                builder.create().show();
             } else {
-
-                //If permissions are granted already, fetch the current location..
-                final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
-                progress.setMessage("Fetching your current location....");
-                progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progress.setIndeterminate(true);
-                progress.setCancelable(false);
-                progress.show();
-                LocationListener locationListener = new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-
-                        lat = location.getLatitude() + "";
-                        lon = location.getLongitude() + "";
-                        Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
-                        List<Address> addresses = null;
-                        try {
-                            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            if (!((Activity) Signup_Login.this).isFinishing()) {
-                                if (progress.isShowing())
-                                    progress.dismiss();
-                                AlertDialog.Builder builder =
-                                        new AlertDialog.Builder(Signup_Login.this, R.style.AppCompatAlertDialogStyle);
-                                builder.setMessage("Sorry no internet connection..");
-                                builder
-                                        .setTitle("ERROR")
-                                        .setPositiveButton("OK", null)
-                                        .setNegativeButton("CANCEL", null);
-                                builder.show();
-                            }
-                        }
-                        if (addresses != null) {
-                            if (progress.isShowing())
-                                progress.dismiss();
-                            String ans = addresses.get(0).getAddressLine(0);
-                            signupLocation.setText(addresses.get(0).getAddressLine(2));
-                        } else {
-                            AlertDialog.Builder builder =
-                                    new AlertDialog.Builder(Signup_Login.this, R.style.AppCompatAlertDialogStyle);
-                            builder.setMessage("Sorry no internet connection..");
-                            builder
-                                    .setTitle("ERROR")
-                                    .setPositiveButton("OK", null)
-                                    .setNegativeButton("CANCEL", null);
-                            builder.show();
-                        }
-                    }
-
-                    @Override
-                    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String s) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String s) {
-
-                    }
-                };
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+                fetchLocation();
             }
         }
+    }
+
+    public void fetchLocation() {
+        final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
+        progress.setMessage("Fetching your current location....");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setCancelable(false);
+        progress.show();
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+                lat = location.getLatitude() + "";
+                lon = location.getLongitude() + "";
+                Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
+                List<Address> addresses = null;
+                try {
+                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    if (!((Activity) Signup_Login.this).isFinishing()) {
+                        if (progress.isShowing())
+                            progress.dismiss();
+                        Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                if (addresses != null) {
+                    if (progress.isShowing())
+                        progress.dismiss();
+                    String ans = addresses.get(0).getAddressLine(0);
+                    signupLocation.setText(addresses.get(0).getAddressLine(2));
+                } else {
+                    Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        }
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
     }
 
     //This method is for validating the user's entered signup info before it is given for registering..
@@ -620,7 +606,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //If all valid.. signup..
         if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && !language.equals("LANGUAGE") && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
-            signupFunction(mobile);
+            signupFunction();
         } else {
             //Else display desired error messages..
             if (name.equals(""))
@@ -657,8 +643,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     }
 
     //This method is for signing up i.e calling signup api..
-    public void signupFunction(String myMobile) {
+    public void signupFunction() {
 
+        boolean result=CheckForPermissions.checkForSms(Signup_Login.this);
+        if(result){
+            Toast.makeText(this, "OTP pin will be read automatically..", Toast.LENGTH_SHORT).show();
+            getVerified();
+        }
+    }
+    public void getVerified(){
         TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new TwitterCore(authConfig), new Digits.Builder().build());
         authCallback = new AuthCallback() {
@@ -750,16 +743,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        Digits.clearActiveSession();
-
         getAuthCallback();
+
+        Digits.clearActiveSession();
 
         AuthConfig.Builder authConfigBuilder = new AuthConfig.Builder()
                 .withAuthCallBack(authCallback)
-                .withPhoneNumber("+91"+myMobile);
+                .withPhoneNumber("+91"+mobile);
 
         Digits.authenticate(authConfigBuilder.build());
-
     }
 
     //This method is for logging up i.e calling login api..
@@ -841,88 +833,47 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         return temp;
     }
 
-    //This method checks the user's response for explicit permission request for android versions higher than marshmallow..
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
+            case CheckForPermissions.LOCATION_PERMISSION_CODE:
+                //If permission is granted
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //Check if the device's GPS is on or not..
+                    if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
-                //If permission is granted..
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //If permission not present, ask for it..
-                    if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+                        //If it is off, ask the user to enable it..
+                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+                        builder.setTitle("NETWORK PROVIDER NOT ENABLED");  // GPS not found
+                        builder.setMessage("Want to enable?"); // Want to enable?
+                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Launch the gps settings screen of the phone..
+                                Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                //Wait for the result to come in return..
+                                //After returning from the setting screen to our signup_login screen.. check for the activity result by calling onActivityResult method..
+                                startActivityForResult(intent, code);
+                            }
+                        });
+                        builder.setNegativeButton("NO", null);
+                        builder.create().show();
                     } else {
-                        //Fetch current loaction..
-                        final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
-                        progress.setMessage("Fetching your current location....");
-                        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        progress.setIndeterminate(true);
-                        progress.setCancelable(false);
-                        progress.show();
-                        LocationListener locationListener = new LocationListener() {
-                            @Override
-                            public void onLocationChanged(Location location) {
-
-                                lat = location.getLatitude() + "";
-                                lon = location.getLongitude() + "";
-                                Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
-                                List<Address> addresses = null;
-                                try {
-                                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                    if (!((Activity) Signup_Login.this).isFinishing()) {
-                                        if (progress.isShowing())
-                                            progress.dismiss();
-                                        AlertDialog.Builder builder =
-                                                new AlertDialog.Builder(Signup_Login.this, R.style.AppCompatAlertDialogStyle);
-                                        builder.setMessage("Sorry no internet connection..");
-                                        builder
-                                                .setTitle("ERROR")
-                                                .setPositiveButton("OK", null)
-                                                .setNegativeButton("CANCEL", null);
-                                        builder.show();
-                                    }
-                                }
-                                if (addresses != null) {
-                                    if (progress.isShowing())
-                                        progress.dismiss();
-                                    String ans = addresses.get(0).getAddressLine(0);
-                                    signupLocation.setText(addresses.get(0).getAddressLine(2));
-                                } else {
-                                    AlertDialog.Builder builder =
-                                            new AlertDialog.Builder(Signup_Login.this, R.style.AppCompatAlertDialogStyle);
-                                    builder.setMessage("Sorry no internet connection..");
-                                    builder
-                                            .setTitle("ERROR")
-                                            .setPositiveButton("OK", null)
-                                            .setNegativeButton("CANCEL", null);
-                                    builder.show();
-                                }
-                            }
-
-                            @Override
-                            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-                            }
-
-                            @Override
-                            public void onProviderEnabled(String s) {
-
-                            }
-
-                            @Override
-                            public void onProviderDisabled(String s) {
-
-                            }
-                        };
-                        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
+                        fetchLocation();
                     }
-                } else {
-                    //else code
+                }else{
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(this,"Oops you have denied the permission for location\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
+                break;
+            case CheckForPermissions.SMS_PERMISSION_CODE:
+                //If permission is granted
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(this, "Now OTP pin will be read automatically..", Toast.LENGTH_SHORT).show();
+                }else{
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(this,"Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
+                }
+                getVerified();
                 break;
         }
     }
@@ -933,65 +884,65 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //If the request code is same..
         if (requestCode == code) {
-
-            //If gps is on..
-            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-
-                //Check for explicit permissions in android versions starting from Marshmallow..
-                if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                    //If permission is not granted..Request for permission..and check for user's response in onRequestPermissions method..
-                    ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-                } else {
-
-                    //If permissions are granted already, fetch the current location..
-                    final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
-                    progress.setMessage("Fetching your current location....");
-                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progress.setIndeterminate(true);
-                    progress.setCancelable(false);
-                    progress.show();
-                    LocationListener locationListener = new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-
-                            lat = location.getLatitude() + "";
-                            lon = location.getLongitude() + "";
-                            Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
-                            List<Address> addresses = null;
-                            try {
-                                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            if (addresses != null) {
-                                if (progress.isShowing())
-                                    progress.dismiss();
-                                String ans = addresses.get(0).getAddressLine(0);
-                                signupLocation.setText(addresses.get(0).getAddressLine(2));
-                            } else {
-                                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-                        }
-
-                        @Override
-                        public void onProviderEnabled(String s) {
-
-                        }
-
-                        @Override
-                        public void onProviderDisabled(String s) {
-
-                        }
-                    };
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-                }
-            }
+//            //If gps is on..
+//            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+//
+//                //Check for explicit permissions in android versions starting from Marshmallow..
+//                if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                    //If permission is not granted..Request for permission..and check for user's response in onRequestPermissions method..
+//                    ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+//                } else {
+//
+//                    //If permissions are granted already, fetch the current location..
+//                    final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
+//                    progress.setMessage("Fetching your current location....");
+//                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                    progress.setIndeterminate(true);
+//                    progress.setCancelable(false);
+//                    progress.show();
+//                    LocationListener locationListener = new LocationListener() {
+//                        @Override
+//                        public void onLocationChanged(Location location) {
+//
+//                            lat = location.getLatitude() + "";
+//                            lon = location.getLongitude() + "";
+//                            Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
+//                            List<Address> addresses = null;
+//                            try {
+//                                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                            if (addresses != null) {
+//                                if (progress.isShowing())
+//                                    progress.dismiss();
+//                                String ans = addresses.get(0).getAddressLine(0);
+//                                signupLocation.setText(addresses.get(0).getAddressLine(2));
+//                            } else {
+//                                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onStatusChanged(String s, int i, Bundle bundle) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onProviderEnabled(String s) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onProviderDisabled(String s) {
+//
+//                        }
+//                    };
+//                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+//                }
+//            }
+            fetchLocation();
         }
     }
 

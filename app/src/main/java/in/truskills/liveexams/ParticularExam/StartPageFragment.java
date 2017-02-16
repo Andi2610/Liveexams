@@ -20,9 +20,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -62,6 +64,7 @@ public class StartPageFragment extends Fragment {
     Bundle b;
     Handler h;
     HashMap<String,String> mapper;
+    ViewFlipper viewFlipper;
 
     public StartPageFragment() {
         // Required empty public constructor
@@ -94,6 +97,26 @@ public class StartPageFragment extends Fragment {
         descriptionStartPage = (TextView) getActivity().findViewById(R.id.descriptionStartPage);
         myLanguage = (Spinner) getActivity().findViewById(R.id.myLanguage);
         start_leave_button = (Button) getActivity().findViewById(R.id.start_leave_button);
+        viewFlipper=(ViewFlipper)getActivity().findViewById(R.id.viewFlipper);
+
+        int[] resources = {
+                R.drawable.first,
+                R.drawable.second,
+                R.drawable.third,
+                R.drawable.fourth,
+        };
+
+        for (int i = 0; i < resources.length; i++) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageResource(resources[i]);
+            viewFlipper.addView(imageView);
+        }
+
+        viewFlipper.setInAnimation(getActivity(), android.R.anim.fade_in);
+        viewFlipper.setOutAnimation(getActivity(), android.R.anim.fade_out);
+
+        viewFlipper.setAutoStart(true);
+        viewFlipper.setFlipInterval(2000);
 
         Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         startDetails.setTypeface(tff);

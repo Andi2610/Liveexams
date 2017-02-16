@@ -19,9 +19,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -56,6 +58,7 @@ public class JoinPageFragment extends Fragment {
     Handler h;
     HashMap<String,String> mapper;
     Bundle b;
+    ViewFlipper viewFlipperJoinPage;
 
     public JoinPageFragment() {
         // Required empty public constructor
@@ -84,6 +87,28 @@ public class JoinPageFragment extends Fragment {
         descriptionJoinPage = (TextView) getActivity().findViewById(R.id.descriptionJoinPage);
         myLanguageJoinPage = (Spinner) getActivity().findViewById(R.id.myLanguageJoinPage);
         join_button = (Button) getActivity().findViewById(R.id.join_button);
+
+        viewFlipperJoinPage=(ViewFlipper)getActivity().findViewById(R.id.viewFlipperJoinPage);
+
+        int[] resources = {
+                R.drawable.first,
+                R.drawable.second,
+                R.drawable.third,
+                R.drawable.fourth,
+        };
+
+        for (int i = 0; i < resources.length; i++) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageResource(resources[i]);
+            viewFlipperJoinPage.addView(imageView);
+        }
+
+        viewFlipperJoinPage.setInAnimation(getActivity(), android.R.anim.fade_in);
+        viewFlipperJoinPage.setOutAnimation(getActivity(), android.R.anim.fade_out);
+
+        viewFlipperJoinPage.setAutoStart(true);
+        viewFlipperJoinPage.setFlipInterval(2000);
+
 
         Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         startDetailsJoinPage.setTypeface(tff);
