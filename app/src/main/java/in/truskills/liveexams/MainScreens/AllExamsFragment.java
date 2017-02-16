@@ -118,7 +118,7 @@ public class AllExamsFragment extends Fragment {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                         // When the action view is collapsed, reset the query
-                        setList();
+//                        setList();
                         searchView.clearFocus();
                         // Return true to allow the action view to collapse
                         return true;

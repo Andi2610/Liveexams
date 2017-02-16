@@ -31,6 +31,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 
 import org.json.JSONException;
 
@@ -122,6 +124,10 @@ public class JoinPageFragment extends Fragment {
         timestamp = b.getString("timestamp");
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
+
+        Answers.getInstance().logCustom(new CustomEvent("Join now page inspect")
+                .putCustomAttribute("userName",prefs.getString("userName",""))
+                .putCustomAttribute("examId",examId));
 
         h=new Handler();
 

@@ -54,6 +54,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.QuestionPaperParser;
@@ -92,7 +94,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     RequestQueue requestQueue;
     String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri,section_id,section_max_marks,section_time,section_description,section_rules;
-    String questionAttributes;
+    String questionAttributes,opText;
     String examId, name, selectedLanguage;
     List<Fragment> fList;
     TextView sectionName, submittedQuestions, reviewedQuestions, notAttemptedQuestions,timer,clearedQuestions;
@@ -320,6 +322,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
                                 //Get question text to be displayed..
                                 text = QuestionPaperParser.getQuestionText(myQuestionText);
+                                //If offline required..
 
                                 //Set value of textArray[i][j] as text of question j of section i.
                                 textArray[i][j] = text;
@@ -369,11 +372,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
                                     //Parse Attributes of one option..
                                     myAttri = QuestionPaperParser.getAttributesOfOneOption(myAt);
+                                    opText=map11.get("_");
 
                                     //Assign value to optionArray as option value of a particular option of a question of a section..
-                                    optionArray[i][j][p] = map11.get("_");
+                                    optionArray[i][j][p] = opText;
 
-                                    ob.updateValuesPerOption(i,j,p,MySqlDatabase.OptionText,map11.get("_"));
+                                    ob.updateValuesPerOption(i,j,p,MySqlDatabase.OptionText,opText);
                                     ob.updateValuesPerOption(i,j,p,MySqlDatabase.OptionId,myAttri);
 
                                 }
@@ -411,6 +415,15 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     public void afterResponse(){
 
+        //If offline required..
+        for(int i=0;i<noOfSections;++i){
+            for(int j=0;j<questionArray[i];++j){
+                prepareForOffline(textArray[i][j]);
+                for(int k=0;k<myOptionsArray[i][j];++k){
+                    prepareForOffline(optionArray[i][j][k]);
+                }
+            }
+        }
         dialog.dismiss();
 
         new CountDownTimer(10800000, 1000) { // adjust the milli seconds here
@@ -645,6 +658,20 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         submitButton.setOnClickListener(this);
         reviewButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
+    }
+
+    public void prepareForOffline(String text){
+        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(text);
+
+        while (matcher.find()){
+            String group=matcher.group(2);
+            String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
+            Log.d("imageDownload",imageUrl);
+
+        }
+
     }
 
     @Override

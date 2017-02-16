@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -69,6 +72,9 @@ public class CalendarFragment extends Fragment {
 
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         joinedExams = prefs.getString("joinedExams", "noJoinedExams");
+
+        Answers.getInstance().logCustom(new CustomEvent("Calendar page inspect")
+                .putCustomAttribute("userName",prefs.getString("userName","")));
 
         Log.d("joinedExams",joinedExams);
 

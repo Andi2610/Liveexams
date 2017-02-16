@@ -32,6 +32,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -136,6 +138,10 @@ public class StartPageFragment extends Fragment {
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
 
+        Answers.getInstance().logCustom(new CustomEvent("Start page inspect")
+                .putCustomAttribute("userName",prefs.getString("userName",""))
+                .putCustomAttribute("examId",examId));
+
         start_leave_button.setText("START");
         start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
 
@@ -197,6 +203,9 @@ public class StartPageFragment extends Fragment {
 
                 //If start time of quiz hasn't reached..
                 if (start_leave_button.getText().equals("LEAVE")) {
+                    Answers.getInstance().logCustom(new CustomEvent("Leave button clicked")
+                            .putCustomAttribute("userName",prefs.getString("userName",""))
+                            .putCustomAttribute("examId",examId));
                     //Unenroll user
                     final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     String url = VariablesDefined.api + "unenrollUser/" + prefs.getString("userId", "abc");
@@ -249,6 +258,9 @@ public class StartPageFragment extends Fragment {
                     };
                     requestQueue.add(stringRequest);
                 } else {
+                    Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
+                            .putCustomAttribute("userName",prefs.getString("userName",""))
+                            .putCustomAttribute("examId",examId));
                     //Check if a valid language has been chosen from the list..
                     if(selectedLanguage.equals("LANGUAGE"))
                         //If not chosen..

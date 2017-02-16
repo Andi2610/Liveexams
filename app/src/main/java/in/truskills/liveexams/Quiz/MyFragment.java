@@ -79,16 +79,6 @@ public class MyFragment extends Fragment implements Updateable{
         webView.getSettings().setDisplayZoomControls(false);
         webView.getSettings().setJavaScriptEnabled(true);
 
-        webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
-
-        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        if (Build.VERSION.SDK_INT >= 19) {
-            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        }
-        else {
-            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
-
         MyFragmentInterface obb=(MyFragmentInterface)getActivity();
 
         o=(MyFragmentInterface) getActivity();

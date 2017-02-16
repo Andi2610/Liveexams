@@ -33,6 +33,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.pkmmte.view.CircularImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -239,7 +241,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case CheckForPermissions.STORAGE_PERMISSION_CODE:
                 //If permission is granted
                 if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    //Displaying a toast
                     boolean statusForCamera=CheckForPermissions.checkForCamera(MainActivity.this);
                     if(statusForCamera){
                         //Show options..
@@ -254,8 +255,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case CheckForPermissions.CAMERA_PERMISSION_CODE:
                 //If permission is granted
                 if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    //Displaying a toast
-                    Toast.makeText(this,"Permission granted now you can capture images and access phone's storage",Toast.LENGTH_LONG).show();
                     //Show options..
                     selectImage();
                 }else{
@@ -395,6 +394,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle("CALENDAR");
             }
         } else if (id == R.id.nav_logout) {
+            Answers.getInstance().logCustom(new CustomEvent("Logout button clicked")
+                    .putCustomAttribute("userName",prefs.getString("userName","")));
             SharedPreferences.Editor e = prefs.edit();
             e.clear();
             e.apply();

@@ -79,7 +79,6 @@ public class ForgotPassword extends AppCompatActivity {
 
         boolean result= CheckForPermissions.checkForSms(ForgotPassword.this);
         if(result){
-            Toast.makeText(this, "OTP pin will be read automatically..", Toast.LENGTH_SHORT).show();
             getVerified();
         }
     }
@@ -182,7 +181,7 @@ public class ForgotPassword extends AppCompatActivity {
             case CheckForPermissions.SMS_PERMISSION_CODE:
                 //If permission is granted
                 if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this, "Now OTP pin will be read automatically..", Toast.LENGTH_SHORT).show();
+
                 }else{
                     //Displaying another toast if permission is not granted
                     Toast.makeText(this,"Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
@@ -193,6 +192,8 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     public void getVerified(){
+
+        Toast.makeText(this, "Enter your registered mobile number", Toast.LENGTH_LONG).show();
         TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
         authCallback = new AuthCallback() {

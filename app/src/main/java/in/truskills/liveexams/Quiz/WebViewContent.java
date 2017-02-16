@@ -2,11 +2,22 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,19 +32,26 @@ import in.truskills.liveexams.R;
 
 public class WebViewContent {
 
+
+    static  Bitmap bmp;
+
     public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
         //Design proper format of the question..
-        String formattedQuestion = format(question, examId);
+        String status="online",formattedQuestion="";
+        ArrayList<String> formattedOptions= new ArrayList<>();;
 
-        ArrayList<String> formattedOptions = new ArrayList<>();
-
-        for (int i = 0; i < optionsListSize; ++i) {
-            //Design proper format of the options..
-            String formattedOption = format(optionsList.get(i), examId);
-            formattedOptions.add(formattedOption);
+        if(status.equals("online")){
+            formattedQuestion = format(question, examId);
+            for (int i = 0; i < optionsListSize; ++i) {
+                //Design proper format of the options..
+                String formattedOption = format(optionsList.get(i), examId);
+                formattedOptions.add(formattedOption);
+            }
+        }else{
+            //Load images offline from local storage..
         }
 
         String x = "";
@@ -46,15 +64,15 @@ public class WebViewContent {
         //Generate the html content..
         String content =
                 "<html>\n" +
-                        "<body>\n" +
-                        "Question:\n" + formattedQuestion +
-                        "<br>\n" +
-                        "Options:<br>\n" +
-                        "<form>\n" +
-                        "<div>" + x + "</div>\n" +
-                        "</form>\n" +
-                        "</body>\n" +
-                        "</html>";
+                "<body>\n" +
+                "Question:\n" + formattedQuestion +
+                "<br>\n" +
+                "Options:<br>\n" +
+                "<form>\n" +
+                "<div>" + x + "</div>\n" +
+                "</form>\n" +
+                "</body>\n" +
+                "</html>";
         webView.loadDataWithBaseURL(null, content, "text/HTML", "UTF-8", null);
 
         webView.addJavascriptInterface(new Object() {
@@ -81,7 +99,6 @@ public class WebViewContent {
 
                 obb.enableButtons();
 
-
             }
         }, "ok");
     }
@@ -92,15 +109,63 @@ public class WebViewContent {
         examId="changeThisToExamId";
 
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final String string = "\\Images\\q1.png mystring is this \\Images\\q1.jpg and new string is \\Images\\q2.jpg we also have \\Images\\q1.png and new string is \\Images\\q2.png";
-        final String subst = "<img src=\"https://s3.ap-south-1.amazonaws.com/live-exams/"+examId+"/Images/$2\"/>";
+        final String subst = "<img src=\""+VariablesDefined.imageUrl+""+examId+"/Images/$2\"/>";
 
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(str);
 
 // The substituted value will be contained in the result variable
-        final String result = matcher.replaceAll(subst);
+        String result=matcher.replaceAll(subst);
+
         return result;
+    }
+
+    public static void DownloadImageFromPath(final String path,final String group) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                InputStream in = null;
+                bmp = null;
+                int responseCode = -1;
+                try {
+
+                    URL url = new URL(path);//"http://192.xx.xx.xx/mypath/img1.jpg
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setDoInput(true);
+                    con.connect();
+                    responseCode = con.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        //download
+                        Log.d("hereeeeee", "inOk");
+                        in = con.getInputStream();
+                        bmp = BitmapFactory.decodeStream(in);
+                        try {
+                            saveBitmap(bmp,group);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        in.close();
+                    } else {
+                        Log.d("hereeeeee", "inNotOk");
+                    }
+
+                } catch (Exception ex) {
+                    Log.e("Exception", ex.toString());
+                }
+            }
+        }).start();
+    }
+
+
+    public static void saveBitmap(Bitmap bmp,String group) throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+        File f = new File(Environment.getExternalStorageDirectory()+"/LiveExams"
+                + File.separator + group);
+        f.createNewFile();
+        FileOutputStream fo = new FileOutputStream(f);
+        fo.write(bytes.toByteArray());
+        fo.close();
     }
 
 }

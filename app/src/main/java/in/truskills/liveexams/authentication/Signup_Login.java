@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SlidingDrawer;
 import android.widget.Spinner;
@@ -45,6 +46,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.digits.sdk.android.AuthCallback;
 import com.digits.sdk.android.AuthConfig;
 import com.digits.sdk.android.Digits;
@@ -84,7 +87,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     ProgressDialog dialog;
     AuthCallback authCallback;
-    Button loginPressed, locationIcon, registerHandleButton, loginHandleButton;
+    LinearLayout locationField;
+    Button loginPressed, registerHandleButton, loginHandleButton;
     Button signupPressed;
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
@@ -120,7 +124,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupPressed = (Button) findViewById(R.id.signupPressed);
         registerHandleButton = (Button) findViewById(R.id.registerHandleButton);
         loginHandleButton = (Button) findViewById(R.id.loginHandleButton);
-        locationIcon = (Button) findViewById(R.id.locationIcon);
         forgotPasswordPressed = (TextView) findViewById(R.id.forgotPasswordPressed);
         termsAndConditionsPressed = (TextView) findViewById(R.id.termsAndConditionsPressed);
         signupLocation = (TextView) findViewById(R.id.signupLocation);
@@ -140,6 +143,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupLanguage = (Spinner) findViewById(R.id.signupLanguage);
         signupGender = (Spinner) findViewById(R.id.signupGender);
         app_logo = (ImageView) findViewById(R.id.app_logo);
+        locationField=(LinearLayout)findViewById(R.id.locationField);
 
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         registerHandleButton.setTypeface(tff1);
@@ -166,7 +170,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupPressed.setOnClickListener(this);
         forgotPasswordPressed.setOnClickListener(this);
         termsAndConditionsPressed.setOnClickListener(this);
-        locationIcon.setOnClickListener(this);
+        locationField.setOnClickListener(this);
 
         ArrayList<String> listOfLanguages = new ArrayList<>();
         listOfLanguages.add("LANGUAGE");
@@ -464,11 +468,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
             //If login button is pressed..Check for login validation..
             case R.id.loginPressed:
+                Answers.getInstance().logCustom(new CustomEvent("Login button pressed"));
                 loginValidation();
                 break;
 
             //If signup button is pressed..Check for signup validation..
             case R.id.signupPressed:
+                Answers.getInstance().logCustom(new CustomEvent("Signup button pressed"));
                 signupValidation();
                 break;
 
@@ -485,7 +491,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 break;
 
             //If location icon is pressed..Call the getCurrentLocation method..
-            case R.id.locationIcon:
+            case R.id.locationField:
                 getCurrentLocation();
                 break;
         }
@@ -647,10 +653,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         boolean result=CheckForPermissions.checkForSms(Signup_Login.this);
         if(result){
-            Toast.makeText(this, "OTP pin will be read automatically..", Toast.LENGTH_SHORT).show();
             getVerified();
         }
     }
+
     public void getVerified(){
         TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new TwitterCore(authConfig), new Digits.Builder().build());
@@ -686,6 +692,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                             Log.d("response",mapper.get("response"));
                             if(mapper.get("success").equals("true")){
                                 Toast.makeText(Signup_Login.this, "Signup Successfull", Toast.LENGTH_SHORT).show();
+                                Answers.getInstance().logCustom(new CustomEvent("Signup successfull")
+                                        .putCustomAttribute("userName",name));
                                 signupDrawer.close();
                             }else{
                                 JSONObject jo=new JSONObject(mapper.get("response"));
@@ -789,7 +797,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         e.putString("joinedExams",mapper.get("joinedExams"));
                         e.putString("login","true");
                         e.apply();
-                        Toast.makeText(Signup_Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                        Answers.getInstance().logCustom(new CustomEvent("Login successfull")
+                        .putCustomAttribute("userName",mapper.get("userName")));
+                        Toast.makeText(Signup_Login.this, "Welcome to Live Exams", Toast.LENGTH_SHORT).show();
                         i = new Intent(Signup_Login.this, MainActivity.class);
                         startActivity(i);
                         finish();
@@ -868,7 +878,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             case CheckForPermissions.SMS_PERMISSION_CODE:
                 //If permission is granted
                 if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this, "Now OTP pin will be read automatically..", Toast.LENGTH_SHORT).show();
+
                 }else{
                     //Displaying another toast if permission is not granted
                     Toast.makeText(this,"Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
