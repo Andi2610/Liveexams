@@ -138,6 +138,8 @@ public class StartPageFragment extends Fragment {
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
 
+        Log.d("examDetails",examDetails+"");
+
         Answers.getInstance().logCustom(new CustomEvent("Start page inspect")
                 .putCustomAttribute("userName",prefs.getString("userName",""))
                 .putCustomAttribute("examId",examId));

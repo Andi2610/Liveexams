@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,7 +45,7 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.mySectionName.setText(sectionName.get(holder.getAdapterPosition()));
 
-        ArrayList<Integer> types=new ArrayList<>();
+        ArrayList<Integer> types;
         MySqlDatabase ob=new MySqlDatabase(c);
 
         int sI=ob.getIntValuesPerSectionBySerialNumber(holder.getAdapterPosition(),MySqlDatabase.SectionIndex);
@@ -55,6 +56,15 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
         holder.reviewedQuestionsAllSummary.setText(types.get(2)+"");
         holder.clearedQuestionsAllSummary.setText(types.get(3)+"");
         holder.notAttemptedQuestionsAllSummary.setText(types.get(0)+"");
+
+
+        Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        holder.mySectionName.setTypeface(tff1);
+        Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
+        holder.submittedQuestionsAllSummary.setTypeface(tff2);
+        holder.reviewedQuestionsAllSummary.setTypeface(tff2);
+        holder.clearedQuestionsAllSummary.setTypeface(tff2);
+        holder.notAttemptedQuestionsAllSummary.setTypeface(tff2);
 
         ArrayList<Integer> myType=ob.getTypesOfEachSection(sI);
 

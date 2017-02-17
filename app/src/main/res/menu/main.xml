@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:icon="@drawable/add_icon"
+        android:icon="@drawable/ic_add_white_24dp"
         android:title="Add"
         android:orderInCategory="30"
         app:showAsAction="ifRoom"
@@ -13,7 +13,7 @@
         android:id="@+id/search"
         android:orderInCategory="70"
         android:title="Search"
-        android:icon="@drawable/search"
+        android:icon="@drawable/ic_search_white_24dp"
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always|collapseActionView"></item>
 

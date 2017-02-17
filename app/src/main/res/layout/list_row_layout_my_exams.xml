@@ -25,8 +25,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="20dp"
+                android:padding="7dp"
+                android:textSize="25dp"
                 android:background="@color/sea_blue"
                 android:id="@+id/name"
                 android:textStyle="bold"/>
@@ -49,23 +49,23 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:layout_gravity="left"
                             android:text="START DATE"
                             android:layout_weight="1"/>
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:text=":"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:layout_gravity="right"
                             android:id="@+id/startDateValue"
                             android:layout_weight="1" />
@@ -78,23 +78,23 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:layout_gravity="left"
                             android:text="END DATE"
                             android:layout_weight="1"/>
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:text=":"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:layout_gravity="right"
                             android:id="@+id/endDateValue"
                             android:layout_weight="1"/>
@@ -107,23 +107,23 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:layout_gravity="left"
                             android:text="DURATION"
                             android:layout_weight="1"/>
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:text=":"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:padding="10dp"
-                            android:textSize="15dp"
+                            android:padding="2dp"
+                            android:textSize="20dp"
                             android:layout_gravity="right"
                             android:id="@+id/durationValue"
                             android:layout_weight="1"/>

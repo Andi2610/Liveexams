@@ -3,6 +3,7 @@ package in.truskills.liveexams.Quiz;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,6 +68,9 @@ public class AllSectionsSummary extends AppCompatActivity {
         allSectionsList.setItemAnimator(new DefaultItemAnimator());
         allSectionsList.setAdapter(allSectionsSummaryAdapter);
         allSectionsSummaryAdapter.notifyDataSetChanged();
+
+        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        finishButton.setTypeface(tff1);
 
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override

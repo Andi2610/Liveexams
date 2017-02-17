@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +46,8 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
             int cn=holder.getAdapterPosition();
             cn++;
             holder.questionNumber.setText(cn+"");
+            Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+            holder.questionNumber.setTypeface(tff1);
             switch (myType.get(holder.getAdapterPosition())){
                 case 0:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.black));
                     break;

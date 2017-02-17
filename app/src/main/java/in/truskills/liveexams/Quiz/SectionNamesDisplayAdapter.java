@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,10 +43,12 @@ public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionName
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.textView.setText(myList.get(position));
+        Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        holder.textView.setTypeface(tff1);
         if(holder.getAdapterPosition()==pos){
-            holder.textView.setTextColor(c.getResources().getColor(R.color.red));
-        }else{
             holder.textView.setTextColor(c.getResources().getColor(R.color.black));
+        }else{
+            holder.textView.setTextColor(c.getResources().getColor(R.color.very_light_black));
             holder.leftArrow.setVisibility(View.INVISIBLE);
             holder.rightArrow.setVisibility(View.INVISIBLE);
         }

@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -45,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.SurfaceViewRenderer;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +57,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,11 +84,12 @@ interface socketFromTeacher {
     void disconnectSession();
 }
 
-public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent {
+public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent ,Handler.Callback{
 
     private static final String SOCKET = "socket";
     //Declare the variables..
     MyPageAdapter pageAdapter;
+    int curCount = 0,myCount=0;
     private static final int REQUEST_CODE=1,REQUEST_CODE_FOR_ALL_SUMMARY=2;
     SharedPreferences quizPrefs;
     long start,end,diff;
@@ -143,6 +150,18 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         reviewButton = (Button) findViewById(R.id.reviewButton);
         clearButton = (Button) findViewById(R.id.clearButton);
         questionsList=(RecyclerView)findViewById(R.id.questionsList);
+
+        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        sectionName.setTypeface(tff1);
+        timer.setTypeface(tff1);
+        Typeface tff2=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+        submittedQuestions.setTypeface(tff2);
+        reviewedQuestions.setTypeface(tff2);
+        clearedQuestions.setTypeface(tff2);
+        notAttemptedQuestions.setTypeface(tff2);
+        submitButton.setTypeface(tff1);
+        reviewButton.setTypeface(tff1);
+        clearButton.setTypeface(tff1);
 
         ob = new MySqlDatabase(QuizMainActivity.this);
 
@@ -415,12 +434,19 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     public void afterResponse(){
 
+        String folder_main = "LiveExams";
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
         //If offline required..
         for(int i=0;i<noOfSections;++i){
             for(int j=0;j<questionArray[i];++j){
-                prepareForOffline(textArray[i][j]);
+                prepareForOfflineForQuestion(textArray[i][j],i,j);
                 for(int k=0;k<myOptionsArray[i][j];++k){
-                    prepareForOffline(optionArray[i][j][k]);
+                    myCount++;
+                    prepareForOfflineForOption(optionArray[i][j][k],i,j,k);
                 }
             }
         }
@@ -529,7 +555,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     String my_option_text=optionArray[my_section][my_question][my_option];
                     options.add(my_option_text);
                 }
-                fList.add(MyFragment.newInstance(my_text, options,examId,my_section,my_question,myFragmentCount));
+                fList.add(MyFragment.newInstance(my_text, options,examId,my_section,my_question,myFragmentCount,"offline"));
             }
         }
 
@@ -660,18 +686,60 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         clearButton.setOnClickListener(this);
     }
 
-    public void prepareForOffline(String text){
+    public void prepareForOfflineForQuestion(String text,int ii,int jj){
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
 
+        int i=0;
         while (matcher.find()){
             String group=matcher.group(2);
+            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+            String imagePath = "file://"+ base + "/LiveExams"+group;
+            textArray[ii][jj]="<img src=\""+ imagePath + "\">";
             String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
+            int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
 
+            ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                    NUMBER_OF_CORES * 2,
+                    NUMBER_OF_CORES * 2,
+                    60L,
+                    TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<Runnable>()
+            );
+
+            executor.execute(new LongThread(i, imageUrl, new Handler(QuizMainActivity.this),group));
+            ++i;
         }
+    }
 
+    public void prepareForOfflineForOption(String text,int ii,int jj,int kk){
+        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
+        final Pattern pattern = Pattern.compile(regex);
+        final Matcher matcher = pattern.matcher(text);
+
+        int i=0;
+        while (matcher.find()){
+            String group=matcher.group(2);
+            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+            String imagePath = "file://"+ base + "/LiveExams"+group;
+            optionArray[ii][jj][kk]="<img src=\""+ imagePath + "\">";
+            String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
+            Log.d("imageDownload",imageUrl);
+            int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+
+            ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                    NUMBER_OF_CORES * 2,
+                    NUMBER_OF_CORES * 2,
+                    60L,
+                    TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<Runnable>()
+            );
+
+            executor.execute(new LongThread(i, imageUrl, new Handler(QuizMainActivity.this),group));
+            ++i;
+        }
     }
 
     @Override
@@ -787,9 +855,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             clearButton.setBackgroundColor(getResources().getColor(R.color.black));
         }else{
             submitButton.setEnabled(false);
-            submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
+            submitButton.setBackgroundColor(getResources().getColor(R.color.light_black));
             clearButton.setEnabled(false);
-            clearButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
+            clearButton.setBackgroundColor(getResources().getColor(R.color.light_black));
         }
     }
 
@@ -819,6 +887,18 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     public void stoppedStreaming() {
         socket.emit(Constants.STOPPEDSTREAMING, "");
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        curCount++;
+        float per = (curCount / myCount) * 100;
+//        progressBar.setProgress((int) per);
+        if (per < 100)
+            Toast.makeText(this, "\"Downloaded [" + curCount + "/" + (int)myCount + "]\"****"+per, Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(this, "All images downloaded.****"+per, Toast.LENGTH_SHORT).show();
+        return true;
     }
 
     //Adapter for view pager..
@@ -869,6 +949,28 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         e.apply();
         //when activity will distroy student will be disconnected from session
         socketfromteacher.disconnectSession();
+        String folder_main = "LiveExams";
+
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if (f.exists()) {
+            deleteDir(f);
+        }
+
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
     }
 
     // in/truskills/liveexams/Quiz/QuizMainActivity.java:137

@@ -1,54 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:padding="10dp"
+        android:orientation="horizontal"
         android:background="@color/lightest_blue"
-        android:weightSum="100"
         android:id="@+id/myHeader">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/mySectionName"
-            android:layout_weight="80"
-            android:layout_gravity="center"/>
+            android:textSize="25dp"
+            android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="20">
+            android:gravity="right"
+            android:layout_gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/submittedQuestionsAllSummary"
                 android:textColor="@color/green"
-                android:layout_margin="5dp"/>
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/reviewedQuestionsAllSummary"
                 android:textColor="@color/orange"
-                android:layout_margin="5dp"/>
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/clearedQuestionsAllSummary"
                 android:textColor="@color/red"
-                android:layout_margin="5dp"/>
-
-
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/notAttemptedQuestionsAllSummary"
-                android:layout_margin="5dp"/>
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -60,7 +63,8 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:numColumns="auto_fit"
-        android:stretchMode="columnWidth" >
+        android:stretchMode="columnWidth"
+        android:layout_margin="5dp">
 
     </GridView>
 </LinearLayout>

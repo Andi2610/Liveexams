@@ -1,6 +1,8 @@
 package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -51,6 +53,10 @@ public class GridViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView tv=new TextView(c);
         tv.setText(myList.get(position)+"");
+        Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
+        tv.setTypeface(tff2);
+        tv.setGravity(Gravity.CENTER);
+        tv.setTextSize(20);
         switch (type.get(position)){
             case 0:tv.setTextColor(c.getResources().getColor(R.color.black));
                 break;

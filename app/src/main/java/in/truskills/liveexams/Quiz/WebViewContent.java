@@ -35,15 +35,15 @@ public class WebViewContent {
 
     static  Bitmap bmp;
 
-    public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb,String myType) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
         //Design proper format of the question..
-        String status="online",formattedQuestion="";
+        String formattedQuestion="";
         ArrayList<String> formattedOptions= new ArrayList<>();;
 
-        if(status.equals("online")){
+        if(myType.equals("online")){
             formattedQuestion = format(question, examId);
             for (int i = 0; i < optionsListSize; ++i) {
                 //Design proper format of the options..
@@ -52,6 +52,12 @@ public class WebViewContent {
             }
         }else{
             //Load images offline from local storage..
+            formattedQuestion=question;
+            for (int i = 0; i < optionsListSize; ++i) {
+                //Design proper format of the options..
+                String formattedOption = optionsList.get(i);
+                formattedOptions.add(formattedOption);
+            }
         }
 
         String x = "";

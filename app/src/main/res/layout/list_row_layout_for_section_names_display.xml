@@ -9,7 +9,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:id="@+id/leftArrow"
-        android:src="@drawable/right_arrow"
+        android:src="@drawable/ic_chevron_right_black_24dp"
         android:layout_weight="10"
         android:layout_gravity="center" />
 
@@ -20,6 +20,8 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:id="@+id/textView"
+        android:textSize="20dp"
+        android:textStyle="bold"
         android:layout_weight="80"/>
 
     <ImageView
@@ -27,7 +29,7 @@
         android:layout_height="20dp"
         android:id="@+id/rightArrow"
         android:layout_gravity="center"
-        android:src="@drawable/left_arrow"
+        android:src="@drawable/ic_chevron_left_black_24dp"
         android:layout_weight="10"/>
 
 </LinearLayout>

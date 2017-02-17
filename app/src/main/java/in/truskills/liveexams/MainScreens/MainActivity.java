@@ -10,7 +10,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -30,6 +32,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +47,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
+import in.truskills.liveexams.Miscellaneous.RealPathUtil;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
@@ -100,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navEmail = (TextView) view.findViewById(R.id.navEmail);
 
         icon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.camera);
+                R.drawable.ic_add_a_photo_white_24dp);
 
         defaultImage = BitmapToString(icon);
 
@@ -120,16 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 //Display image chooser..
-//                selectImage();
-                boolean statusForGallery=CheckForPermissions.checkForGallery(MainActivity.this);
-                if(statusForGallery){
-                    boolean statusForCamera=CheckForPermissions.checkForCamera(MainActivity.this);
-                    if(statusForCamera){
-                        //Show options..
-                        selectImage();
-                    }
-
-                }
+                selectImage();
             }
         });
     }
@@ -140,15 +135,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Else include "Remove Photo" option..
             if (prefs.getString("navImage", defaultImage).equals(defaultImage)) {
                 items = new CharSequence[3];
-                items[0] = "Take Photo";
-                items[1] = "Choose from Library";
-                items[2] = "Cancel";
+//                items[0] = "Take Photo";
+                items[0] = "Choose from Library";
+                items[1] = "Cancel";
             } else {
                 items = new CharSequence[4];
-                items[0] = "Take Photo";
-                items[1] = "Choose from Library";
-                items[2] = "Remove Photo";
-                items[3] = "Cancel";
+//                items[0] = "Take Photo";
+                items[0] = "Choose from Library";
+                items[1] = "Remove Photo";
+                items[2] = "Cancel";
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -158,11 +153,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onClick(DialogInterface dialog, int item) {
 
                     if (items[item].equals("Take Photo")) {
-                        cameraIntent();
-
+                        boolean statusForCamera=CheckForPermissions.checkForCamera(MainActivity.this);
+                        if(statusForCamera){
+                            cameraIntent();
+                        }
                     } else if (items[item].equals("Choose from Library")) {
-                        galleryIntent();
-
+                        boolean statusForGallery=CheckForPermissions.checkForGallery(MainActivity.this);
+                        if(statusForGallery){
+                            galleryIntent();
+                        }
                     } else if (items[item].equals("Remove Photo")) {
                         SharedPreferences.Editor e = prefs.edit();
                         e.putString("navImage", defaultImage);
@@ -241,11 +240,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case CheckForPermissions.STORAGE_PERMISSION_CODE:
                 //If permission is granted
                 if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    boolean statusForCamera=CheckForPermissions.checkForCamera(MainActivity.this);
-                    if(statusForCamera){
-                        //Show options..
-                        selectImage();
-                    }
+                    galleryIntent();
                 }else{
                     //Displaying another toast if permission is not granted
                     Toast.makeText(this,"Oops you have denied the permission for storage access\nGo to settings and grant them", Toast.LENGTH_LONG).show();
@@ -255,8 +250,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case CheckForPermissions.CAMERA_PERMISSION_CODE:
                 //If permission is granted
                 if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    //Show options..
-                    selectImage();
+                    cameraIntent();
                 }else{
                     //Displaying another toast if permission is not granted
                     Toast.makeText(this,"Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
@@ -296,6 +290,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             try {
 //                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
                 Uri fileUri = data.getData();
+                String realPath;
+                // SDK < API11
+                if (Build.VERSION.SDK_INT < 11)
+                    realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
+
+                    // SDK >= 11 && SDK < 19
+                else if (Build.VERSION.SDK_INT < 19)
+                    realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
+
+                    // SDK > 19 (Android 4.4)
+                else
+                    realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
+
+                Log.d("RotateImage","RealPath="+realPath);
+                getCameraPhotoOrientation(this,fileUri,realPath);
                 bm = decodeUri(fileUri);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -439,6 +448,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         t.commit();
         String title = "ADD NEW EXAMS";
         getSupportActionBar().setTitle(title);
+    }
+
+    // capture image orientation
+
+    public int getCameraPhotoOrientation(Context context, Uri imageUri,
+                                         String imagePath) {
+        int rotate = 0;
+        try {
+            context.getContentResolver().notifyChange(imageUri, null);
+            File imageFile = new File(imagePath);
+            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+
+            Log.d("RotateImage", "Exif orientation: " + orientation);
+            Log.d("RotateImage", "Rotate value: " + rotate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rotate;
     }
 
 }

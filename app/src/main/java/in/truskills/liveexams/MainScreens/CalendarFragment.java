@@ -76,11 +76,8 @@ public class CalendarFragment extends Fragment {
         Answers.getInstance().logCustom(new CustomEvent("Calendar page inspect")
                 .putCustomAttribute("userName",prefs.getString("userName","")));
 
-        Log.d("joinedExams",joinedExams);
-
         myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsListForCalendar);
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        valuesList = new ArrayList<>();
         myExamsList.setLayoutManager(linearLayoutManager);
         myExamsList.setItemAnimator(new DefaultItemAnimator());
         calendarView = (CalendarView) getActivity().findViewById(R.id.calendarView);
@@ -88,7 +85,8 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 month++;
-
+                valuesList = new ArrayList<>();
+                Log.d("joinedExams",joinedExams);
                 if (!joinedExams.equals("noJoinedExams")) {
                     try {
                         mapper = VariablesDefined.myExamsParser(joinedExams);
@@ -96,6 +94,8 @@ public class CalendarFragment extends Fragment {
                         int length = arr.length();
                         for (i = 0; i < length; ++i) {
                             if (mapper.get("leftExam").get(i).equals("false")) {
+
+                                Log.d("ExamName", mapper.get("ExamName").get(i) + "");
 
                                 myStartDate = mapper.get("StartDate").get(i);
                                 myEndDate = mapper.get("EndDate").get(i);
@@ -130,34 +130,44 @@ public class CalendarFragment extends Fragment {
                                 } else {
                                     myDurationTime = hour + " hours " + minute + " minutes";
                                 }
-                            }
 
-                            if (start_year <= year && year <= end_year) {
-                                if (start_month <= month && month <= end_month) {
-                                    if (start_day <= dayOfMonth && dayOfMonth <= end_day) {
-                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                        valuesList.add(values);
-                                        myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                                        myExamsList.setAdapter(myExamsListAdapter);
-                                        myExamsListAdapter.notifyDataSetChanged();
-                                        Log.d("joinedExams",mapper.get("ExamName").get(i)+" "+valuesList.size());
-                                    }else{
+                                Log.d("Calendar", start_year + "<=" + year + "<=" + end_year);
+                                Log.d("Calendar", start_month + "<=" + month + "<=" + end_month);
+                                Log.d("Calendar", start_day + "<=" + dayOfMonth + "<=" + end_day + " " + mapper.get("ExamName").get(i));
+
+                                if (start_year <= year && year <= end_year) {
+                                    if (start_month <= month && month <= end_month) {
+                                        if (start_day <= dayOfMonth && dayOfMonth <= end_day) {
+                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                                            valuesList.add(values);
+                                            myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
+                                            myExamsList.setAdapter(myExamsListAdapter);
+                                            myExamsListAdapter.notifyDataSetChanged();
+                                            Log.d("joinedExams", mapper.get("ExamName").get(i) + " " + valuesList.size());
+                                        } else {
+                                            if(valuesList.isEmpty()){
+                                                valuesList.clear();
+                                                myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
+                                                myExamsList.setAdapter(myExamsListAdapter);
+                                                myExamsListAdapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    } else {
+                                        if(valuesList.isEmpty()){
+                                            valuesList.clear();
+                                            myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
+                                            myExamsList.setAdapter(myExamsListAdapter);
+                                            myExamsListAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                } else {
+                                    if(valuesList.isEmpty()){
                                         valuesList.clear();
                                         myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
                                         myExamsList.setAdapter(myExamsListAdapter);
                                         myExamsListAdapter.notifyDataSetChanged();
                                     }
-                                }else{
-                                    valuesList.clear();
-                                    myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                                    myExamsList.setAdapter(myExamsListAdapter);
-                                    myExamsListAdapter.notifyDataSetChanged();
                                 }
-                            }else{
-                                valuesList.clear();
-                                myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                                myExamsList.setAdapter(myExamsListAdapter);
-                                myExamsListAdapter.notifyDataSetChanged();
                             }
                         }
 
