@@ -875,6 +875,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public void initSocketConnection() {
         try {
             socket = IO.socket("http://35.154.110.122:3001/");
+            Log.d("url", "http://35.154.110.122:3001/ found");
         } catch (URISyntaxException e) {
             Log.d("url", "http://35.154.110.122:3001/ not found");
         }
