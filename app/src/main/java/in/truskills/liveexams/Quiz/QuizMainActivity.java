@@ -881,6 +881,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         //connect to server
         socket.connect();
 
+
         //teacher will emit STARTSTREAMING socket to request student for streaming
         socket.on(Constants.STARTSTREAMING, new Emitter.Listener() {
             @Override
@@ -898,6 +899,21 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         }
                     }
                 });
+            }
+        });
+
+        socket.on(Constants.GETINFO,new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("userId", prefs.getString("userId", ""));
+                    data.put("examId", examId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socket.emit(Constants.SETINFO, data);
             }
         });
 
