@@ -2,14 +2,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="in.truskills.liveexams.MainScreens.CalendarFragment">
 
-    <CalendarView
+    <com.stacktips.view.CustomCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        app:calendarBackgroundColor="@color/light_grey"
+        app:calendarTitleTextColor="@color/black"
+        app:currentDayOfMonthColor="@color/colorPrimary"
+        app:dayOfMonthTextColor="@color/green"
+        app:dayOfWeekTextColor="@color/black"
+        app:disabledDayBackgroundColor="@color/red"
+        app:disabledDayTextColor="@color/very_light_black"
+        app:selectedDayBackgroundColor="@color/very_light_black"
+        app:titleLayoutBackgroundColor="@color/light_grey"
+        app:weekLayoutBackgroundColor="@color/very_light_blue">
+    </com.stacktips.view.CustomCalendarView>
 
 
     <android.support.v7.widget.RecyclerView

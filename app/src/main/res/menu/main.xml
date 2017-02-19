@@ -14,7 +14,7 @@
         android:orderInCategory="70"
         android:title="Search"
         android:icon="@drawable/ic_search_white_24dp"
-        app:actionViewClass="android.widget.SearchView"
+        app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always|collapseActionView"></item>
 
 </menu>
