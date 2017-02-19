@@ -84,7 +84,7 @@ interface socketFromTeacher {
     void disconnectSession();
 }
 
-public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent ,Handler.Callback{
+public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent{
 
     private static final String SOCKET = "socket";
     //Declare the variables..
@@ -562,36 +562,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     public void stoppedStreaming() {
         socket.emit(Constants.STOPPEDSTREAMING, "");
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        curCount++;
-        float per = (curCount / myCount) * 100;
-//        progressBar.setProgress((int) per);
-        if (per < 100)
-            Toast.makeText(this, "\"Downloaded [" + curCount + "/" + (int)myCount + "]\"****"+per, Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(this, "All images downloaded.****"+per, Toast.LENGTH_SHORT).show();
-        return true;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ob.deleteMyTable();
-        SharedPreferences.Editor e=quizPrefs.edit();
-        e.clear();
-        e.apply();
-        //when activity will distroy student will be disconnected from session
-        socketfromteacher.disconnectSession();
-        String folder_main = "LiveExams";
-
-        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-        if (f.exists()) {
-            deleteDir(f);
-        }
-
     }
 
     public static boolean deleteDir(File dir) {
