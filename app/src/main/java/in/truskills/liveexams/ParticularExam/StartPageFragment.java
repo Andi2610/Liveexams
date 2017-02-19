@@ -49,6 +49,7 @@ import java.util.Map;
 
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.Quiz.MySqlDatabase;
+import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.Quiz.QuizMainActivity;
 import in.truskills.liveexams.R;
 
@@ -270,11 +271,17 @@ public class StartPageFragment extends Fragment {
                     else{
                         //Else if chosen..
                         //Start Quiz
-                        Intent i = new Intent(getActivity(), QuizMainActivity.class);
+//                        Intent i = new Intent(getActivity(), QuizMainActivity.class);
+//                        i.putExtra("examId", examId);
+//                        i.putExtra("name", name);
+//                        i.putExtra("language", selectedLanguage);
+//                        getActivity().startActivity(i);
+
+                        Intent i=new Intent(getActivity(), QuestionPaperLoad.class);
                         i.putExtra("examId", examId);
                         i.putExtra("name", name);
                         i.putExtra("language", selectedLanguage);
-                        getActivity().startActivity(i);
+                        startActivity(i);
                     }
                 }
             }

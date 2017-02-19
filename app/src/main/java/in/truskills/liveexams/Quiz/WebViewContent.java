@@ -35,7 +35,7 @@ public class WebViewContent {
 
     static  Bitmap bmp;
 
-    public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb,String myType) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
@@ -43,22 +43,24 @@ public class WebViewContent {
         String formattedQuestion="";
         ArrayList<String> formattedOptions= new ArrayList<>();;
 
-        if(myType.equals("online")){
-            formattedQuestion = format(question, examId);
-            for (int i = 0; i < optionsListSize; ++i) {
-                //Design proper format of the options..
-                String formattedOption = format(optionsList.get(i), examId);
-                formattedOptions.add(formattedOption);
-            }
-        }else{
+//        if(myType.equals("online")){
+//            formattedQuestion = format(question, examId);
+//            for (int i = 0; i < optionsListSize; ++i) {
+//                //Design proper format of the options..
+//                String formattedOption = format(optionsList.get(i), examId);
+//                formattedOptions.add(formattedOption);
+//            }
+//        }else{
             //Load images offline from local storage..
             formattedQuestion=question;
+            Log.d("text",formattedQuestion);
             for (int i = 0; i < optionsListSize; ++i) {
                 //Design proper format of the options..
                 String formattedOption = optionsList.get(i);
+                Log.d("text",formattedOption);
                 formattedOptions.add(formattedOption);
             }
-        }
+//        }
 
         String x = "";
 
@@ -110,69 +112,7 @@ public class WebViewContent {
     }
 
     //This function is used to format the content i.e. add <img> tag wherever required..
-    public static String format(String str, String examId) {
 
-        examId="changeThisToExamId";
-
-        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final String subst = "<img src=\""+VariablesDefined.imageUrl+""+examId+"/Images/$2\"/>";
-
-        final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher = pattern.matcher(str);
-
-// The substituted value will be contained in the result variable
-        String result=matcher.replaceAll(subst);
-
-        return result;
-    }
-
-    public static void DownloadImageFromPath(final String path,final String group) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                InputStream in = null;
-                bmp = null;
-                int responseCode = -1;
-                try {
-
-                    URL url = new URL(path);//"http://192.xx.xx.xx/mypath/img1.jpg
-                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    con.setDoInput(true);
-                    con.connect();
-                    responseCode = con.getResponseCode();
-                    if (responseCode == HttpURLConnection.HTTP_OK) {
-                        //download
-                        Log.d("hereeeeee", "inOk");
-                        in = con.getInputStream();
-                        bmp = BitmapFactory.decodeStream(in);
-                        try {
-                            saveBitmap(bmp,group);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        in.close();
-                    } else {
-                        Log.d("hereeeeee", "inNotOk");
-                    }
-
-                } catch (Exception ex) {
-                    Log.e("Exception", ex.toString());
-                }
-            }
-        }).start();
-    }
-
-
-    public static void saveBitmap(Bitmap bmp,String group) throws IOException {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
-        File f = new File(Environment.getExternalStorageDirectory()+"/LiveExams"
-                + File.separator + group);
-        f.createNewFile();
-        FileOutputStream fo = new FileOutputStream(f);
-        fo.write(bytes.toByteArray());
-        fo.close();
-    }
 
 }
 

@@ -163,7 +163,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(SectionIndex, si);
         db.insert(TABLE_PER_SECTION, null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void setValuesPerQuestion(int si, int qi) {
@@ -172,7 +172,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         values.put(SectionIndex, si);
         values.put(QuestionIndex, qi);
         db.insert(TABLE_PER_QUESTION, null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void setValuesPerOption(int si, int qi,int oi) {
@@ -182,7 +182,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         values.put(QuestionIndex, qi);
         values.put(OptionIndex,oi);
         db.insert(TABLE_PER_OPTION, null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void setValuesForResult(int si, int qi) {
@@ -191,7 +191,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         values.put(SectionIndex, si);
         values.put(QuestionIndex, qi);
         db.insert(RESULT_TABLE, null, values);
-        db.close(); // Closing database connection
+//        db.close(); // Closing database connection
     }
 
     public void updateValuesPerSection(int si,String columnName,String value){
@@ -199,7 +199,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
         db.update(TABLE_PER_SECTION,contentValues,SectionIndex+"="+si,null);
-        db.close();
+//        db.close();
     }
 
     public void updateValuesPerQuestion(int si,int qi,String columnName,String value){
@@ -207,7 +207,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
         db.update(TABLE_PER_QUESTION,contentValues,SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi,null);
-        db.close();
+//        db.close();
     }
 
     public void updateValuesPerOption(int si,int qi,int oi,String columnName,String value){
@@ -215,7 +215,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
         db.update(TABLE_PER_OPTION,contentValues,SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi+" AND "+OptionIndex+"="+oi,null);
-        db.close();
+//        db.close();
     }
 
     public void updateValuesForResult(int si,int qi,String columnName,String value){
@@ -224,7 +224,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
         db.update(RESULT_TABLE,contentValues,SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi,null);
-        db.close();
+//        db.close();
     }
 
     public String getValuesForResult(int si,int qi,String columnName){
@@ -238,7 +238,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+//        db.close();
         return ans;
     }
 
@@ -263,7 +263,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         types.add(cursor.getCount());
 
         cursor.close();
-        db.close();
+//        db.close();
 
         return types;
 
@@ -301,7 +301,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+//        db.close();
 
         return type;
 
@@ -319,7 +319,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+//        db.close();
         return map;
     }
 
@@ -334,7 +334,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+//        db.close();
         return ans;
     }
 
@@ -349,7 +349,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+//        db.close();
         return ans;
     }
 
@@ -364,7 +364,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
             }while(cursor.moveToNext());
         }
         cursor.close();
-        db.close();
+//        db.close();
         return ans;
     }
 
@@ -382,7 +382,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         map.put("FragmentIndexList",fI);
 
         cursor.close();
-        db.close();
+//        db.close();
 
         return map;
     }
@@ -401,7 +401,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         map.put("SectionNameList",fI);
 
         cursor.close();
-        db.close();
+//        db.close();
 
         return map;
     }
@@ -418,7 +418,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
+//        db.close();
 
         return ans;
     }
@@ -435,7 +435,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
+//        db.close();
 
         return ans;
     }
@@ -452,10 +452,53 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
+//        db.close();
 
         return sr;
 
+    }
+
+    public int getNoOfOptionsInOneQuestion(int si,int qi){
+        int num=0;
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT * FROM "+TABLE_PER_OPTION+" WHERE "+SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi;
+        Cursor cursor=db.rawQuery(query,null);
+        num=cursor.getCount();
+        cursor.close();
+//        db.close();
+        return num;
+    }
+
+    public String getTextOfOneQuestion(int si,int qi){
+        String text="";
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT "+QuestionText+" FROM "+TABLE_PER_QUESTION+" WHERE "+SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                text=cursor.getString(cursor.getColumnIndex(QuestionText));
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+//        db.close();
+        return text;
+    }
+
+    public String getTextOfOneOption(int si,int qi,int oi){
+        String text="";
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT "+OptionText+" FROM "+TABLE_PER_OPTION+" WHERE "+SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi+" AND "+OptionIndex+"="+oi;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                text=cursor.getString(cursor.getColumnIndex(OptionText));
+            }while(cursor.moveToNext());
+        }
+
+        cursor.close();
+//        db.close();
+        return text;
     }
 
     public JSONArray getResults(String table_name)

@@ -63,14 +63,19 @@
         <activity
             android:name=".Quiz.QuizMainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Quiz.AllSectionsSummary"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Quiz.SectionNamesDisplay"
+        <activity
+            android:name=".Quiz.AllSectionsSummary"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Quiz.SectionNamesDisplay"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Dialog"></activity>
+            android:theme="@android:style/Theme.Dialog" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="392f8a786ac85c7b9899687155b01647d8538cbc" />
+
+        <activity android:name=".Quiz.QuestionPaperLoad"></activity>
     </application>
 
 </manifest>

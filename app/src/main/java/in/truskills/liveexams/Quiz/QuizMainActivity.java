@@ -88,27 +88,22 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     private static final String SOCKET = "socket";
     //Declare the variables..
-    MyPageAdapter pageAdapter;
     int curCount = 0,myCount=0;
+    MyPageAdapter pageAdapter;
+    String myOptionsArray[][];
     private static final int REQUEST_CODE=1,REQUEST_CODE_FOR_ALL_SUMMARY=2;
     SharedPreferences quizPrefs;
     long start,end,diff;
     ArrayList<Integer> types;
-    int questionArray[], languageArray[][], myOptionsArray[][], fragmentIndex[][], sectionIndex, questionIndex;
+    int questionArray[];
     String textArray[][], optionArray[][][], sectionTitle;
-    HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11;
-    int noOfQuestions, noOfExamName, noOfLanguage, noOfOption, noOfSections, num, fi = -1;
-    RequestQueue requestQueue;
-    String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
-    String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri,section_id,section_max_marks,section_time,section_description,section_rules;
-    String questionAttributes,opText;
+    int noOfSections, num;
     String examId, name, selectedLanguage;
-    List<Fragment> fList;
+    ArrayList<Fragment> fList;
     TextView sectionName, submittedQuestions, reviewedQuestions, notAttemptedQuestions,timer,clearedQuestions;
     Button submitButton, reviewButton, clearButton;
     ViewPager pager;
     MySqlDatabase ob;
-    ProgressDialog dialog;
     RecyclerView questionsList;
     AllQuestionsInOneSectionAdapter allQuestionsInOneSectionAdapter;
     LinearLayoutManager linearLayoutManager;
@@ -177,259 +172,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         //CONNECT TO SOCKET..
         initSocketConnection();
 
-        dialog = new ProgressDialog(this);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("Loading. Please wait...");
-        dialog.setIndeterminate(true);
-        dialog.setCancelable(false);
-        dialog.show();
+        noOfSections=getIntent().getIntExtra("noOfSections",0);
+        questionArray=getIntent().getIntArrayExtra("questionArray");
 
-        //Api to be connected to get the question paper..
-        url = VariablesDefined.api + "questionPaper/" + examId;
-        //Make the request..
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String result) {
-                try {
-                    //Parse the result..
-                    map1 = QuestionPaperParser.resultParser(result);
-                    //Get success..
-                    success = map1.get("success");
-                    if (success.equals("true")) {
-
-
-                        //Get response..
-                        response = map1.get("response");
-
-                        //Parse response..
-                        map2 = QuestionPaperParser.responseParser(response);
-
-                        //Get Paperset..
-                        Paperset = map2.get("Paperset");
-
-                        //Parse Paperset..
-                        map3 = QuestionPaperParser.PapersetParser(Paperset);
-
-                        //Get Sections..
-                        Sections = map3.get("Sections");
-
-                        //Parse Sections..
-                        map4 = QuestionPaperParser.SectionsParser(Sections);
-
-                        //Get Section..
-                        Section = map4.get("Section");
-
-                        //Get no. of sections..
-                        noOfSections = QuestionPaperParser.getNoOfSections(Section);
-
-                        //Initialize arrays..
-                        questionArray = new int[noOfSections];
-                        languageArray = new int[noOfSections][];
-                        optionArray = new String[noOfSections][][];
-                        textArray = new String[noOfSections][];
-                        fragmentIndex = new int[noOfSections][];
-                        myOptionsArray = new int[noOfSections][];
-
-                        //Loop through all the sections..
-                        for (int i = 0; i < noOfSections; ++i) {
-
-                            //Parse one section..
-                            map5 = QuestionPaperParser.SectionParser(Section, i);
-
-                            //Get it's variables..
-                            SectionQuestions = map5.get("SectionQuestions");
-                            AttributesOfSection = map5.get("Attributes");
-                            section_max_marks=map5.get("SectionMaxMarks");
-                            section_time=map5.get("SectionTime");
-                            section_description=map5.get("SectionDescription");
-                            section_rules=map5.get("SectionRules");
-
-                            //Parse one section attributes..
-                            map6 = QuestionPaperParser.getAttributesOfSection(AttributesOfSection);
-
-                            //Get it's variables..
-                            name = map6.get("Name");
-                            section_id=map6.get("id");
-
-                            //Set in database..
-                            ob.setValuesPerSection(i);
-                            ob.updateValuesPerSection(i,MySqlDatabase.SectionName,name);
-                            ob.updateValuesPerSection(i,MySqlDatabase.SectionId,section_id);
-                            ob.updateValuesPerSection(i,MySqlDatabase.SectionMaxMarks,section_max_marks);
-                            ob.updateValuesPerSection(i,MySqlDatabase.SectionTime,section_time);
-                            ob.updateValuesPerSection(i,MySqlDatabase.SectionDescription,section_description);
-                            ob.updateValuesPerSection(i,MySqlDatabase.SectionRules,section_rules);
-
-                            //Parse one section SectionQuestions..
-                            map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
-
-                            //Get it's variables..
-                            Question = map7.get("Question");
-
-                            //Get no. of questions in one section..
-                            noOfQuestions = QuestionPaperParser.getNoOfQuestionInOneSection(Question);
-
-                            //Set value questionArray[i]=noOfQuestions in section i.
-                            questionArray[i] = noOfQuestions;
-
-                            //Initialise the arrays as array[noOfSections][noOfQuestions]..
-                            textArray[i] = new String[noOfQuestions];
-                            fragmentIndex[i] = new int[noOfQuestions];
-                            myOptionsArray[i] = new int[noOfQuestions];
-
-                            //Initialise the optionArray[i] as optionArray[noOfSections][noOfQuestions]..
-                            optionArray[i] = new String[noOfQuestions][];
-
-                            //Loop through all the questions of one section..
-                            for (int j = 0; j < noOfQuestions; ++j) {
-
-                                //Increment fragment index..
-                                fi++;
-                                //Assign it's value to the array..
-                                fragmentIndex[i][j] = fi;
-
-                                //Set in database..
-                                ob.setValuesPerQuestion(i,j);
-                                ob.setValuesForResult(i,j);
-
-                                //Initialise languageArray[i][] as noOfQuestions in section i.
-                                languageArray[i] = new int[noOfQuestions];
-
-                                //Parse one section one Question..
-                                map8 = QuestionPaperParser.QuestionParser(Question, j);
-
-                                //Get it's variables..
-                                myAskedIn = map8.get("AskedIn");
-                                myLanguage = map8.get("Language");
-                                questionAttributes=map8.get("Attributes");
-
-                                //Parse one section one question askedIn..
-                                map9 = QuestionPaperParser.AskedInParser(myAskedIn);
-
-                                //Get it's variables..
-                                myExamName = map9.get("ExamName");
-                                myYear = map9.get("Year");
-
-                                //Get no. of Exam names in which the question has been asked..
-                                noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
-
-                                //Loop through the entire exam and year array..
-                                for (int k = 0; k < noOfExamName; ++k) {
-                                    //Get exam name one by one..
-                                    nm = QuestionPaperParser.getExamNamesOfOneQuestion(myExamName, k);
-                                    //Get Year one by one..
-                                    nmm = QuestionPaperParser.getYearsOfOneQuestion(myYear, k);
-                                }
-
-                                //Get length of language array of one question of one section..
-                                noOfLanguage = QuestionPaperParser.getLengthOfLanguageOfOneQuestion(myLanguage);
-
-                                //Get index of the language array which has to get parsed..
-                                int index = QuestionPaperParser.getIndex(selectedLanguage, myLanguage);
-                                if (index == -1) {
-                                    //Language not found..
-                                } else {
-                                    //Parse the desired index jsonObject og the language array..
-                                    map10 = QuestionPaperParser.LanguageParser(myLanguage, index);
-                                }
-
-                                //Get it's variables..
-                                myQuestionText = map10.get("QuestionText");
-                                myOptions = map10.get("Options");
-
-                                //Get question text to be displayed..
-                                text = QuestionPaperParser.getQuestionText(myQuestionText);
-                                //If offline required..
-
-                                //Set value of textArray[i][j] as text of question j of section i.
-                                textArray[i][j] = text;
-
-                                HashMap<String,String> map12=QuestionPaperParser.getAttributesOfQuestion(questionAttributes);
-
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.QuestionText,text);
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.CorrectAnswer,map12.get("CorrectAnswer"));
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.QuestionCorrectMarks,map12.get("QuestionCorrectMarks"));
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.QuestionIncorrectMarks,map12.get("QuestionIncorrectMarks"));
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.PassageID,map12.get("PassageID"));
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.QuestionType,map12.get("QuestionType"));
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.QuestionTime,map12.get("QuestionTime"));
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.QuestionDifficultyLevel,map12.get("QuestionDifficultyLevel"));
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.QuestionRelativeTopic,map12.get("QuestionRelativeTopic"));
-                                ob.updateValuesPerQuestion(i,j,MySqlDatabase.QuestionId,map12.get("id"));
-
-                                ob.updateValuesForResult(i,j,MySqlDatabase.SectionId,section_id);
-                                ob.updateValuesForResult(i,j,MySqlDatabase.QuestionId,map12.get("id"));
-
-                                //Parse Options to get Option array..
-                                myOption = QuestionPaperParser.OptionsParser(myOptions);
-
-                                //Get length of option array..
-                                noOfOption = QuestionPaperParser.getLengthOfOptionArray(myOption);
-
-                                //Initialise the myPptionsArray[i][j] as noOfOptions in section i question j..
-                                myOptionsArray[i][j] = noOfOption;
-
-                                //Initialise optionArray[i] as optionArray of particular option of a particular question of a particular section..
-                                optionArray[i][j] = new String[noOfOption];
-
-                                //Loop through entire option array..
-                                for (int p = 0; p < noOfOption; ++p) {
-
-                                    //Set in database..
-                                    ob.setValuesPerOption(i,j,p);
-
-                                    //Parse Option Array at the desirex index to get one option..
-                                    myOp = QuestionPaperParser.OptionParser(myOption, p);
-
-                                    //Parse one option..
-                                    map11 = QuestionPaperParser.oneOptionParser(myOp);
-
-                                    //Get Attributes of one option..
-                                    myAt = map11.get("Attributes");
-
-                                    //Parse Attributes of one option..
-                                    myAttri = QuestionPaperParser.getAttributesOfOneOption(myAt);
-                                    opText=map11.get("_");
-
-                                    //Assign value to optionArray as option value of a particular option of a question of a section..
-                                    optionArray[i][j][p] = opText;
-
-                                    ob.updateValuesPerOption(i,j,p,MySqlDatabase.OptionText,opText);
-                                    ob.updateValuesPerOption(i,j,p,MySqlDatabase.OptionId,myAttri);
-
-                                }
-                            }
-                        }
-
-                        Handler handler = new Handler();
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //Back to main thread..
-                                afterResponse();
-                            }
-                        });
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                dialog.dismiss();
-
-                //If connection couldn't be made..
-                Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-
-                finish();
-            }
-        });
-        requestQueue.add(stringRequest);
+        afterResponse();
     }
 
     public void afterResponse(){
@@ -439,18 +185,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         if (!f.exists()) {
             f.mkdirs();
         }
-
-        //If offline required..
-        for(int i=0;i<noOfSections;++i){
-            for(int j=0;j<questionArray[i];++j){
-                prepareForOfflineForQuestion(textArray[i][j],i,j);
-                for(int k=0;k<myOptionsArray[i][j];++k){
-                    myCount++;
-                    prepareForOfflineForOption(optionArray[i][j][k],i,j,k);
-                }
-            }
-        }
-        dialog.dismiss();
 
         new CountDownTimer(10800000, 1000) { // adjust the milli seconds here
 
@@ -504,9 +238,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             //Set the serial number of this section..
             ob.updateValuesPerSection(my_section,MySqlDatabase.SerialNumber,mySectionCount+"");
 
-
             //Getting total no.of questions in that section randomly..
             num=questionArray[arrayForNoOfSections.get(i)];
+
             arrayForQuestions=new ArrayList<>();
             for(int j=0;j<num;++j){
                 arrayForQuestions.add(j);
@@ -529,12 +263,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 ob.updateValuesPerQuestion(my_section,my_question,MySqlDatabase.FragmentIndex,myFragmentCount+"");
                 ob.updateValuesForResult(my_section,my_question,MySqlDatabase.SerialNumber,myQuestionCount+"");
 
-                String my_text=textArray[my_section][my_question];
+                String my_text=ob.getTextOfOneQuestion(my_section,my_question);
 
-                int numOp=myOptionsArray[my_section][my_question];
+                int numOp=ob.getNoOfOptionsInOneQuestion(my_section,my_question);
 
                 arrayForOptions=new ArrayList<>();
-                for(int p=0;p<numOp;++p){
+                for(int p=0;p<4;++p){
                     arrayForOptions.add(p);
                 }
                 //Shuffle if required..
@@ -552,15 +286,16 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     //Set the serial number of this option..
                     ob.updateValuesPerOption(my_section,my_question,my_option,MySqlDatabase.SerialNumber,myOptionCount+"");
 
-                    String my_option_text=optionArray[my_section][my_question][my_option];
+//                    String my_option_text=optionArray[my_section][my_question][my_option];
+                    String my_option_text=ob.getTextOfOneOption(my_section,my_question,my_option);
                     options.add(my_option_text);
                 }
-                fList.add(MyFragment.newInstance(my_text, options,examId,my_section,my_question,myFragmentCount,"offline"));
+                fList.add(MyFragment.newInstance(my_text, options,examId,my_section,my_question,myFragmentCount));
             }
         }
 
         //Set the view pager adapter..
-        pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
+        pageAdapter= new MyPageAdapter(getSupportFragmentManager(),fList);
         pager = (ViewPager) findViewById(R.id.viewpager);
         pager.setAdapter(pageAdapter);
         pager.setOffscreenPageLimit(++myFragmentCount);
@@ -672,10 +407,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 int sI=ob.getIntValuesPerQuestionByFragmentIndex(num,MySqlDatabase.SectionIndex);
                 //Get serial number of this section from PerSectionDetails..
                 String srNo=ob.getStringValuesPerSectionBySectionIndex(sI,MySqlDatabase.SerialNumber);
-//                SharedPreferences.Editor e=quizPrefs.edit();
-//                e.putInt("mySectionIndex",s);
-//                e.putInt("myQuestionIndex",q);
-//                e.apply();
                 Intent i =new Intent(QuizMainActivity.this,SectionNamesDisplay.class);
                 i.putExtra("serialNumber",srNo);
                 startActivityForResult(i,REQUEST_CODE);
@@ -684,62 +415,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         submitButton.setOnClickListener(this);
         reviewButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
-    }
-
-    public void prepareForOfflineForQuestion(String text,int ii,int jj){
-        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher = pattern.matcher(text);
-
-        int i=0;
-        while (matcher.find()){
-            String group=matcher.group(2);
-            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-            String imagePath = "file://"+ base + "/LiveExams"+group;
-            textArray[ii][jj]="<img src=\""+ imagePath + "\">";
-            String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
-            Log.d("imageDownload",imageUrl);
-            int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-
-            ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                    NUMBER_OF_CORES * 2,
-                    NUMBER_OF_CORES * 2,
-                    60L,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>()
-            );
-
-            executor.execute(new LongThread(i, imageUrl, new Handler(QuizMainActivity.this),group));
-            ++i;
-        }
-    }
-
-    public void prepareForOfflineForOption(String text,int ii,int jj,int kk){
-        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher = pattern.matcher(text);
-
-        int i=0;
-        while (matcher.find()){
-            String group=matcher.group(2);
-            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-            String imagePath = "file://"+ base + "/LiveExams"+group;
-            optionArray[ii][jj][kk]="<img src=\""+ imagePath + "\">";
-            String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
-            Log.d("imageDownload",imageUrl);
-            int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-
-            ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                    NUMBER_OF_CORES * 2,
-                    NUMBER_OF_CORES * 2,
-                    60L,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>()
-            );
-
-            executor.execute(new LongThread(i, imageUrl, new Handler(QuizMainActivity.this),group));
-            ++i;
-        }
     }
 
     @Override
@@ -899,45 +574,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         else
             Toast.makeText(this, "All images downloaded.****"+per, Toast.LENGTH_SHORT).show();
         return true;
-    }
-
-    //Adapter for view pager..
-    class MyPageAdapter extends FragmentPagerAdapter {
-        private List<Fragment> fragments;
-        SparseArray<Fragment> registeredFragments = new SparseArray<>();
-
-        public MyPageAdapter(FragmentManager fm, List<Fragment> fragments) {
-            super(fm);
-            this.fragments = fragments;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return this.fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return this.fragments.size();
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.instantiateItem(container, position);
-            registeredFragments.put(position, fragment);
-            return fragment;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            registeredFragments.remove(position);
-            super.destroyItem(container, position, object);
-        }
-
-        public Fragment getRegisteredFragment(int position) {
-            return registeredFragments.get(position);
-        }
-
     }
 
     @Override

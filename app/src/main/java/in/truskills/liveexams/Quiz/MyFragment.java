@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
@@ -21,6 +23,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import in.truskills.liveexams.R;
@@ -38,7 +41,7 @@ public class MyFragment extends Fragment implements Updateable{
     MyFragmentInterface o;
     String myType;
 
-    public static final MyFragment newInstance(String question, ArrayList<String> options, String examId,int si,int qi,int fragmentCount,String type) {
+    public static final MyFragment newInstance(String question, ArrayList<String> options, String examId,int si,int qi,int fragmentCount) {
         MyFragment f = new MyFragment();
         Bundle bundle = new Bundle();
         bundle.putString("Question", question);
@@ -47,7 +50,6 @@ public class MyFragment extends Fragment implements Updateable{
         bundle.putInt("SectionIndex",si);
         bundle.putInt("QuestionIndex",qi);
         bundle.putInt("FragmentCount",fragmentCount);
-        bundle.putString("type",type);
         f.setArguments(bundle);
         return f;
     }
@@ -66,7 +68,6 @@ public class MyFragment extends Fragment implements Updateable{
         mySi=getArguments().getInt("SectionIndex");
         myQi=getArguments().getInt("QuestionIndex");
         myFragmentCount=getArguments().getInt("FragmentCount");
-        myType=getArguments().getString("type");
 
         if(getArguments().getString("here")!=null){
             Log.d("here","again"+" "+getArguments().getString("here"));
@@ -85,7 +86,7 @@ public class MyFragment extends Fragment implements Updateable{
 
         o=(MyFragmentInterface) getActivity();
         WebViewContent obj=new WebViewContent();
-        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb,myType);
+        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb);
 
         return v;
     }
@@ -95,9 +96,8 @@ public class MyFragment extends Fragment implements Updateable{
         MyFragmentInterface obb=(MyFragmentInterface)getActivity();
         o=(MyFragmentInterface) getActivity();
         WebViewContent obj=new WebViewContent();
-        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb,myType);
+        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb);
     }
-
 }
 
 interface MyFragmentInterface{
