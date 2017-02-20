@@ -19,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -357,6 +358,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
             }
         }
 
+        progressBar.setVisibility(View.VISIBLE);
+
 //        Else if Online..
 //        for(int i=0;i<noOfSections;++i){
 //            for(int j=0;j<questionArray[i];++j){
@@ -371,6 +374,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 //                }
 //            }
 //        }
+//        progressBar.setVisibility(View.GONE);
 //
 //        Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
 //        intent.putExtra("examId", examId);
@@ -386,13 +390,17 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
+        String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+        String subst="<img src=\"file://"+base+"/LiveExams/$2";
+        String result=matcher.replaceAll(subst);
+        ob.updateValuesPerQuestion(ii,jj,MySqlDatabase.QuestionText,result);
 
         int i=0;
         while (matcher.find()){
             String group=matcher.group(2);
-            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-            String imagePath = "file://"+ base + "/LiveExams/"+group;
-            ob.updateValuesPerQuestion(ii,jj,MySqlDatabase.QuestionText,"<img src=\""+ imagePath + "\">");
+//            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+//            String imagePath = "file://"+ base + "/LiveExams/"+group;
+//            ob.updateValuesPerQuestion(ii,jj,MySqlDatabase.QuestionText,"<img src=\""+ imagePath + "\">");
             String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
             int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
@@ -414,13 +422,17 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
+        String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+        String subst="<img src=\"file://"+base+"/LiveExams/$2";
+        String result=matcher.replaceAll(subst);
+        ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,result);
 
         int i=0;
         while (matcher.find()){
             String group=matcher.group(2);
-            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-            String imagePath = "file://"+ base + "/LiveExams/"+group;
-            ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,"<img src=\""+ imagePath + "\">");
+//            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+//            String imagePath = "file://"+ base + "/LiveExams/"+group;
+//            ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,"<img src=\""+ imagePath + "\">");
             String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
             int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
@@ -440,7 +452,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
     @Override
     public boolean handleMessage(Message msg) {
-        Log.d("message",msg.arg1+" "+msg.arg2+" "+msg);
         curCount++;
         Log.d("count",curCount+" "+myCount);
         float per = (curCount / myCount) * 100;

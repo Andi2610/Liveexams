@@ -790,6 +790,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     dialog.dismiss();
                     //If successfull signup.. save the desired info in shared preferences..
                     if(mapper.get("success").equals("true")) {
+
+                        Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                                R.drawable.ic_add_a_photo_white_24dp);
+
+                        String defaultImage = BitmapToString(icon);
+
                         SharedPreferences.Editor e=prefs.edit();
                         e.putString("userId",mapper.get("id"));
                         e.putString("userName",mapper.get("userName"));
@@ -798,6 +804,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         e.putString("profileImageUrl",mapper.get("profileImageUrl"));
                         e.putString("joinedExams",mapper.get("joinedExams"));
                         e.putString("login","true");
+                        e.putString("navImage",defaultImage);
                         e.apply();
                         Answers.getInstance().logCustom(new CustomEvent("Login successfull")
                         .putCustomAttribute("userName",mapper.get("userName")));

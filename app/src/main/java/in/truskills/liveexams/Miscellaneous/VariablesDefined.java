@@ -20,7 +20,7 @@ import java.util.Iterator;
 public class VariablesDefined {
 
     //Api used to connect to the server..
-    public static final String api = "http://35.154.110.122:3001/api/";
+    public static final String api = "http://35.154.110.122:3002/api/";
 
     //Url for image..
     public static final String imageUrl = "https://s3.ap-south-1.amazonaws.com/live-exams/";

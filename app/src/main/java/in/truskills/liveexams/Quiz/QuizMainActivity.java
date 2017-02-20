@@ -87,18 +87,11 @@ interface socketFromTeacher {
 public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent{
 
     private static final String SOCKET = "socket";
-    //Declare the variables..
-    int curCount = 0,myCount=0;
     MyPageAdapter pageAdapter;
-    String myOptionsArray[][];
     private static final int REQUEST_CODE=1,REQUEST_CODE_FOR_ALL_SUMMARY=2;
     SharedPreferences quizPrefs;
     long start,end,diff;
-    ArrayList<Integer> types;
-    int questionArray[];
-    String textArray[][], optionArray[][][], sectionTitle;
-    int noOfSections, num;
-    String examId, name, selectedLanguage;
+    String examId, name, selectedLanguage,sectionTitle;
     ArrayList<Fragment> fList;
     TextView sectionName, submittedQuestions, reviewedQuestions, notAttemptedQuestions,timer,clearedQuestions;
     Button submitButton, reviewButton, clearButton;
@@ -108,9 +101,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     AllQuestionsInOneSectionAdapter allQuestionsInOneSectionAdapter;
     LinearLayoutManager linearLayoutManager;
     private static final String FORMAT = "%02d:%02d:%02d";
-    ArrayList<Integer> arrayForNoOfSections,arrayForQuestions,arrayForOptions;
+    ArrayList<Integer> arrayForNoOfSections,arrayForQuestions,arrayForOptions,types;
     ArrayList<String> options;
-    int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option;
+    int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option,questionArray[],noOfSections, num;
     Socket socket;
     socketFromTeacher socketfromteacher;
 
@@ -562,6 +555,25 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     public void stoppedStreaming() {
         socket.emit(Constants.STOPPEDSTREAMING, "");
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ob.deleteMyTable();
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.clear();
+        e.apply();
+        //when activity will distroy student will be disconnected from session
+        socketfromteacher.disconnectSession();
+        String folder_main = "LiveExams";
+
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if (f.exists()) {
+            deleteDir(f);
+        }
+
     }
 
     public static boolean deleteDir(File dir) {

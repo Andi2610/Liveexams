@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CircularImageView navImage;
     TextView navName, navEmail;
     static final int REQUEST_CAMERA = 1, SELECT_FILE = 1;
-    String userChoosenTask, defaultImage;
+    String defaultImage;
     Bundle bundle;
     SharedPreferences prefs;
     Bitmap icon;

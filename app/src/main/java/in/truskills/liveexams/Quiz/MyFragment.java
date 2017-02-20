@@ -86,7 +86,7 @@ public class MyFragment extends Fragment implements Updateable{
 
         o=(MyFragmentInterface) getActivity();
         WebViewContent obj=new WebViewContent();
-        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb);
+        obj.contentGenerator(myQuestion, myOptions,webView,mySi,myQi,getActivity(),obb);
 
         return v;
     }
@@ -96,7 +96,7 @@ public class MyFragment extends Fragment implements Updateable{
         MyFragmentInterface obb=(MyFragmentInterface)getActivity();
         o=(MyFragmentInterface) getActivity();
         WebViewContent obj=new WebViewContent();
-        obj.contentGenerator(myQuestion, myOptions, myExamId,webView,mySi,myQi,getActivity(),obb);
+        obj.contentGenerator(myQuestion, myOptions,webView,mySi,myQi,getActivity(),obb);
     }
 }
 

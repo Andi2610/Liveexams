@@ -32,35 +32,21 @@ import in.truskills.liveexams.R;
 
 public class WebViewContent {
 
-
-    static  Bitmap bmp;
-
-    public void contentGenerator(final String question, final ArrayList<String> optionsList, final String examId,final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
         //Design proper format of the question..
         String formattedQuestion="";
-        ArrayList<String> formattedOptions= new ArrayList<>();;
-
-//        if(myType.equals("online")){
-//            formattedQuestion = format(question, examId);
-//            for (int i = 0; i < optionsListSize; ++i) {
-//                //Design proper format of the options..
-//                String formattedOption = format(optionsList.get(i), examId);
-//                formattedOptions.add(formattedOption);
-//            }
-//        }else{
-            //Load images offline from local storage..
-            formattedQuestion=question;
-            Log.d("text",formattedQuestion);
-            for (int i = 0; i < optionsListSize; ++i) {
-                //Design proper format of the options..
-                String formattedOption = optionsList.get(i);
-                Log.d("text",formattedOption);
-                formattedOptions.add(formattedOption);
-            }
-//        }
+        ArrayList<String> formattedOptions= new ArrayList<>();
+        formattedQuestion=question;
+        Log.d("text",formattedQuestion);
+        for (int i = 0; i < optionsListSize; ++i) {
+            //Design proper format of the options..
+            String formattedOption = optionsList.get(i);
+            Log.d("text",formattedOption);
+            formattedOptions.add(formattedOption);
+        }
 
         String x = "";
 
@@ -110,9 +96,6 @@ public class WebViewContent {
             }
         }, "ok");
     }
-
-    //This function is used to format the content i.e. add <img> tag wherever required..
-
 
 }
 
