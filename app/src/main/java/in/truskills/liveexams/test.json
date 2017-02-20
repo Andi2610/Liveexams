@@ -1,0 +1,1688 @@
+{
+  "response": [
+    {
+      "_id": "58aa8e2f6da5731977705f7b",
+      "LanguagesAvailible": [],
+      "__v": 0,
+      "Paperset": [
+        {
+          "Attributes": {
+            "id": 1
+          },
+          "Sections": [
+            {
+              "Section": [
+                {
+                  "SectionQuestions": [
+                    {
+                      "Question": [
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q1a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q1.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q1ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q1h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 4,
+                            "id": 1
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q2a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q2.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q2ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q2h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 2,
+                            "id": 2
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q3a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q3.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q3ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q3h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 1,
+                            "id": 3
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q4a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q4.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q4ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q4h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 3,
+                            "id": 4
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q5a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q5.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q5ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q5h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 4,
+                            "id": 5
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "Attributes": {
+                    "Name": "Maths",
+                    "id": 1
+                  },
+                  "SectionRules": [
+                    "This Section is for......"
+                  ],
+                  "SectionDescription": [
+                    "This Section is for maths"
+                  ],
+                  "SectionTime": [
+                    "01-00"
+                  ],
+                  "SectionMaxMarks": [
+                    120
+                  ]
+                },
+                {
+                  "SectionQuestions": [
+                    {
+                      "Question": [
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q1a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q1.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q1ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q1h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 4,
+                            "id": 1
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q2a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q2.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q2ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q2h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 2,
+                            "id": 2
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q3a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q3.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q3ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q3h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 1,
+                            "id": 3
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q4a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q4.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q4ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q4h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 3,
+                            "id": 4
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q5a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q5.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q5ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q5h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 4,
+                            "id": 5
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "Attributes": {
+                    "Name": "Chemistry",
+                    "id": 2
+                  },
+                  "SectionRules": [
+                    "This Section is for......"
+                  ],
+                  "SectionDescription": [
+                    "This Section is for maths"
+                  ],
+                  "SectionTime": [
+                    "01-00"
+                  ],
+                  "SectionMaxMarks": [
+                    120
+                  ]
+                },
+                {
+                  "SectionQuestions": [
+                    {
+                      "Question": [
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q1a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q1.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q1ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q1ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q1h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 4,
+                            "id": 1
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q2a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q2.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q2ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q2ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q2h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 2,
+                            "id": 2
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q3a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q3.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q3ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q3ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q3h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 1,
+                            "id": 3
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q4a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q4.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q4ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q4ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q4h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 3,
+                            "id": 4
+                          }
+                        },
+                        {
+                          "Language": [
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q5a1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5a4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "English"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q5.jpg"
+                              ]
+                            },
+                            {
+                              "Options": [
+                                {
+                                  "Option": [
+                                    {
+                                      "_": "\\Images\\q5ha1.jpg",
+                                      "Attributes": {
+                                        "id": 1
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha2.jpg",
+                                      "Attributes": {
+                                        "id": 2
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha3.jpg",
+                                      "Attributes": {
+                                        "id": 3
+                                      }
+                                    },
+                                    {
+                                      "_": "\\Images\\q5ha4.jpg",
+                                      "Attributes": {
+                                        "id": 4
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Attributes": {
+                                "Name": "Hindi"
+                              },
+                              "QuestionText": [
+                                "\\Images\\q5h.jpg"
+                              ]
+                            }
+                          ],
+                          "AskedIn": [
+                            {
+                              "Year": [
+                                2009,
+                                2011
+                              ],
+                              "ExamName": [
+                                "JEE Main",
+                                "JEE Main"
+                              ]
+                            }
+                          ],
+                          "Attributes": {
+                            "QuestionRelativeTopic": "Matrix",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionTime": "00-02",
+                            "QuestionType": "MCQ",
+                            "PassageID": null,
+                            "QuestionIncorrectMarks": -1,
+                            "QuestionCorrectMarks": 4,
+                            "CorrectAnswer": 4,
+                            "id": 5
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "Attributes": {
+                    "Name": "Physics",
+                    "id": 3
+                  },
+                  "SectionRules": [
+                    "This Section is for......"
+                  ],
+                  "SectionDescription": [
+                    "This Section is for maths"
+                  ],
+                  "SectionTime": [
+                    "01-00"
+                  ],
+                  "SectionMaxMarks": [
+                    120
+                  ]
+                }
+              ]
+            }
+          ],
+          "Purpose": [
+            "Explain the purpose of this exam"
+          ]
+        }
+      ],
+      "AuthorDetails": [
+        {
+          "Attributes": {
+            "Location": "Delhi",
+            "Qualification": "",
+            "Contact": null,
+            "Emailid": "shivangi@gmail.com",
+            "Name": "shivangilm10",
+            "id": "58aa8d606da5731977705f7a"
+          }
+        }
+      ],
+      "ExamImage": [
+        "\\LiveExamPaper\\ExamImage.jpg"
+      ],
+      "Description": [
+        "description of the exam"
+      ],
+      "Instructions": [
+        "some sequence of instructions"
+      ],
+      "ExamDuration": [
+        "03-00"
+      ],
+      "EndTime": [
+        "18-00"
+      ],
+      "StartTime": [
+        "15-00"
+      ],
+      "EndDate": [
+        "Thu Feb 16 2017 00:00:00 GMT+0530 (IST)"
+      ],
+      "StartDate": [
+        "Sat Feb 11 2017 00:00:00 GMT+0530 (IST)"
+      ],
+      "MaximumMarks": [
+        360
+      ],
+      "ExamId": [
+        "000004"
+      ],
+      "ExamName": [
+        "Calculus"
+      ]
+    }
+  ],
+  "success": "true"
+}

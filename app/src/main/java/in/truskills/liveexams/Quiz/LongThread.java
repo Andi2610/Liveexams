@@ -39,6 +39,7 @@ public class LongThread implements Runnable {
         try {
             savebitmap(bmp,group);
         } catch (IOException e) {
+            Log.e("in","exception:"+e.toString());
             e.printStackTrace();
         }
         sendMessage(threadNo, "Thread Completed");
@@ -81,6 +82,7 @@ public class LongThread implements Runnable {
             bitmap = BitmapFactory.decodeStream(input);
             // Do extra processing with the bitmap
         } catch (Exception e) {
+            Log.e("in","exception:"+e.toString());
             e.printStackTrace();
         }
         return bitmap;

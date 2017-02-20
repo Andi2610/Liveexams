@@ -37,6 +37,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
@@ -52,13 +54,9 @@ public class CalendarFragment extends Fragment {
     List<Values> valuesList;
     Values values;
     RecyclerView myExamsList;
-    CalendarView calendarView;
     String joinedExams, myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime;
-    String[] parts;
     SimpleDateFormat simpleDateFormat;
-    Calendar calendar;
-    Date date;
-    int start_day, start_month, start_year, hour, minute, end_day, end_month, end_year;
+    int start_day, start_month, start_year, end_day, end_month, end_year;
     SharedPreferences prefs;
     HashMap<String, ArrayList<String>> mapper;
     int i;
@@ -108,13 +106,7 @@ public class CalendarFragment extends Fragment {
         calendarView.setCalendarListener(new CalendarListener() {
             @Override
             public void onDateSelected(Date date) {
-                SimpleDateFormat myDay = new SimpleDateFormat("dd");
-                SimpleDateFormat myMonth = new SimpleDateFormat("MM");
-                SimpleDateFormat myYear = new SimpleDateFormat("yyyy");
-                int d = Integer.parseInt(myDay.format(date));
-                int m = Integer.parseInt(myMonth.format(date));
-                int y = Integer.parseInt(myYear.format(date));
-                populateListForCalendar(d, m, y);
+                populateListForCalendar(date);
             }
 
             @Override
@@ -151,17 +143,11 @@ public class CalendarFragment extends Fragment {
         @Override
         public void decorate(DayView dayView) {
             Date date=dayView.getDate();
-            SimpleDateFormat myDay = new SimpleDateFormat("dd");
-            SimpleDateFormat myMonth = new SimpleDateFormat("MM");
-            SimpleDateFormat myYear = new SimpleDateFormat("yyyy");
-            int d = Integer.parseInt(myDay.format(date));
-            int m = Integer.parseInt(myMonth.format(date));
-            int y = Integer.parseInt(myYear.format(date));
-            getDurationOfEachExam(d,m,y,dayView);
+            getDurationOfEachExam(date,dayView);
         }
     }
 
-    private void populateListForCalendar(int day, int month, int year) {
+    private void populateListForCalendar(Date date) {
         valuesList = new ArrayList<>();
         if (!joinedExams.equals("noJoinedExams")) {
             try {
@@ -173,68 +159,47 @@ public class CalendarFragment extends Fragment {
 
                         myStartDate = mapper.get("StartDate").get(i);
                         myEndDate = mapper.get("EndDate").get(i);
-
-                        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-                        date = simpleDateFormat.parse(myStartDate);
-                        calendar = Calendar.getInstance();
-                        calendar.setTime(date);
-                        start_day = calendar.get(Calendar.DAY_OF_MONTH);
-                        start_year = calendar.get(Calendar.YEAR);
-                        start_month = calendar.get(Calendar.MONTH);
-                        start_month++;
-                        myDateOfStart = start_day + "/" + start_month + "/" + start_year;
-
-                        date = simpleDateFormat.parse(myEndDate);
-                        calendar = Calendar.getInstance();
-                        calendar.setTime(date);
-                        end_day = calendar.get(Calendar.DAY_OF_MONTH);
-                        end_year = calendar.get(Calendar.YEAR);
-                        end_month = calendar.get(Calendar.MONTH);
-                        end_month++;
-                        myDateOfEnd = end_day + "/" + end_month + "/" + end_year;
-
                         myDuration = mapper.get("ExamDuration").get(i);
-                        parts = myDuration.split("-");
-                        hour = Integer.parseInt(parts[0]);
-                        minute = Integer.parseInt(parts[1]);
 
-                        if (minute == 0) {
-                            myDurationTime = hour + " hours";
-                        } else {
-                            myDurationTime = hour + " hours " + minute + " minutes";
-                        }
+                        myDateOfStart=VariablesDefined.parseDate(myStartDate);
+                        myDateOfEnd=VariablesDefined.parseDate(myEndDate);
+                        myDurationTime=VariablesDefined.parseDuration(myDuration);
 
-//                                Log.d("Calendar", start_year + "<=" + year + "<=" + end_year);
-//                                Log.d("Calendar", start_month + "<=" + month + "<=" + end_month);
-//                                Log.d("Calendar", start_day + "<=" + day + "<=" + end_day + " " + mapper.get("ExamName").get(i));
+                        String array[]=myDateOfStart.split("/");
+                        start_day=Integer.parseInt(array[0]);
+                        start_month=Integer.parseInt(array[1]);
+                        start_year=Integer.parseInt(array[2]);
 
-                        if (start_year <= year && year <= end_year) {
-                            if (start_month <= month && month <= end_month) {
-                                if (start_day <= day && day <= end_day) {
-                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                    valuesList.add(values);
-                                    myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                                    myExamsList.setAdapter(myExamsListAdapter);
-                                    myExamsListAdapter.notifyDataSetChanged();
-                                    Log.d("joinedExams", mapper.get("ExamName").get(i) + " " + valuesList.size());
-                                } else {
-                                    if (valuesList.isEmpty()) {
-                                        valuesList.clear();
-                                        myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                                        myExamsList.setAdapter(myExamsListAdapter);
-                                        myExamsListAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            } else {
-                                if (valuesList.isEmpty()) {
-                                    valuesList.clear();
-                                    myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                                    myExamsList.setAdapter(myExamsListAdapter);
-                                    myExamsListAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        } else {
+                        array=myDateOfEnd.split("/");
+                        end_day=Integer.parseInt(array[0]);
+                        end_month=Integer.parseInt(array[1]);
+                        end_year=Integer.parseInt(array[2]);
+
+                        String strDate=date.toString();
+                        simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Date date2 = simpleDateFormat.parse(strDate);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date2);
+                        int day2 = calendar.get(Calendar.DAY_OF_MONTH);
+                        int year2 = calendar.get(Calendar.YEAR);
+                        int month2 = calendar.get(Calendar.MONTH);
+                        month2++;
+                        String myParsedDate = day2 + "/" + month2 + "/" + year2;
+
+                        simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+                        Date start_date=simpleDateFormat.parse(myDateOfStart);
+                        Date end_date=simpleDateFormat.parse(myDateOfEnd);
+                        Date middle_date=simpleDateFormat.parse(myParsedDate);
+
+                        if(!(middle_date.before(start_date) || middle_date.after(end_date))){
+                            Log.d("dates","inBetween");
+                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                            valuesList.add(values);
+                            myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
+                            myExamsList.setAdapter(myExamsListAdapter);
+                            myExamsListAdapter.notifyDataSetChanged();
+                        }else{
+                            Log.d("dates","NotBetween");
                             if (valuesList.isEmpty()) {
                                 valuesList.clear();
                                 myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
@@ -242,6 +207,8 @@ public class CalendarFragment extends Fragment {
                                 myExamsListAdapter.notifyDataSetChanged();
                             }
                         }
+
+                        Log.d("dates",myDateOfStart+" ** "+myParsedDate+" ** "+myDateOfEnd);
                     }
                 }
 
@@ -251,45 +218,52 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    private void getDurationOfEachExam(int d,int m,int y,DayView dayView) {
+    private void getDurationOfEachExam(Date date,DayView dayView) {
         if (!joinedExams.equals("noJoinedExams")) {
             try {
                 mapper = VariablesDefined.myExamsParser(joinedExams);
                 JSONArray arr = new JSONArray(joinedExams);
                 int length = arr.length();
+                ArrayList<Integer> list=new ArrayList<>();
                 for (i = 0; i < length; ++i) {
                     if (mapper.get("leftExam").get(i).equals("false")) {
                         myStartDate = mapper.get("StartDate").get(i);
                         myEndDate = mapper.get("EndDate").get(i);
 
-                        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        myDateOfStart=VariablesDefined.parseDate(myStartDate);
+                        myDateOfEnd=VariablesDefined.parseDate(myEndDate);
 
-                        date = simpleDateFormat.parse(myStartDate);
-                        calendar = Calendar.getInstance();
-                        calendar.setTime(date);
-                        start_day = calendar.get(Calendar.DAY_OF_MONTH);
-                        start_year = calendar.get(Calendar.YEAR);
-                        start_month = calendar.get(Calendar.MONTH);
-                        start_month++;
+                       String array[]=myDateOfStart.split("/");
+                        start_day=Integer.parseInt(array[0]);
+                        start_month=Integer.parseInt(array[1]);
+                        start_year=Integer.parseInt(array[2]);
 
-                        date = simpleDateFormat.parse(myEndDate);
-                        calendar = Calendar.getInstance();
-                        calendar.setTime(date);
-                        end_day = calendar.get(Calendar.DAY_OF_MONTH);
-                        end_year = calendar.get(Calendar.YEAR);
-                        end_month = calendar.get(Calendar.MONTH);
-                        end_month++;
+                        array=myDateOfEnd.split("/");
+                        end_day=Integer.parseInt(array[0]);
+                        end_month=Integer.parseInt(array[1]);
+                        end_year=Integer.parseInt(array[2]);
 
+                        String strDate=date.toString();
+                        simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                        Date date2 = simpleDateFormat.parse(strDate);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(date2);
+                        int day2 = calendar.get(Calendar.DAY_OF_MONTH);
+                        int year2 = calendar.get(Calendar.YEAR);
+                        int month2 = calendar.get(Calendar.MONTH);
+                        month2++;
+                        String myParsedDate = day2 + "/" + month2 + "/" + year2;
 
-                        Log.d("myDate=",d+"*"+start_day+" "+m+"*"+start_month+" "+y+"*"+start_year);
-                        if(d==start_day&&m==start_month&&y==start_year){
-                            int start=d;
-                            while(start<=end_day){
-                                dayView.setTextColor(Color.parseColor("#f44336"));
-                                ++start;
-                            }
+                        simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+                        Date start_date=simpleDateFormat.parse(myDateOfStart);
+                        Date end_date=simpleDateFormat.parse(myDateOfEnd);
+                        Date middle_date=simpleDateFormat.parse(myParsedDate);
+
+                        if(!(middle_date.before(start_date) || middle_date.after(end_date))){
+                            Log.d("dates","inBetween");
+                            dayView.setTextColor(Color.parseColor("#f44336"));
+                            list.add(1);
                         }
-
                     }
                 }
             } catch (JSONException e) {
