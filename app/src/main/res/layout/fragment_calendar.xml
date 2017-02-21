@@ -9,17 +9,14 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_grey"
-        app:calendarBackgroundColor="@color/light_grey"
+        android:background="@color/white"
+        app:calendarBackgroundColor="@color/white"
         app:calendarTitleTextColor="@color/black"
-        app:currentDayOfMonthColor="@color/colorPrimary"
-        app:dayOfMonthTextColor="@color/green"
+        app:currentDayOfMonthColor="@color/black"
         app:dayOfWeekTextColor="@color/black"
-        app:disabledDayBackgroundColor="@color/red"
-        app:disabledDayTextColor="@color/very_light_black"
-        app:selectedDayBackgroundColor="@color/very_light_black"
-        app:titleLayoutBackgroundColor="@color/light_grey"
-        app:weekLayoutBackgroundColor="@color/very_light_blue">
+        app:selectedDayBackgroundColor="@color/colorPrimary"
+        app:titleLayoutBackgroundColor="@color/white"
+        app:weekLayoutBackgroundColor="@color/light_grey">
     </com.stacktips.view.CustomCalendarView>
 
 

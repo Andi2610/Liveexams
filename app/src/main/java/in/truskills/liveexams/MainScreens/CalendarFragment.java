@@ -56,7 +56,7 @@ public class CalendarFragment extends Fragment {
     RecyclerView myExamsList;
     String joinedExams, myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime;
     SimpleDateFormat simpleDateFormat;
-    int start_day, start_month, start_year, end_day, end_month, end_year;
+    int start_day, start_month, start_year, end_day, end_month, end_year,curr_day,curr_month,curr_year,cm;
     SharedPreferences prefs;
     HashMap<String, ArrayList<String>> mapper;
     int i;
@@ -65,7 +65,6 @@ public class CalendarFragment extends Fragment {
     public CalendarFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,6 +91,15 @@ public class CalendarFragment extends Fragment {
 
         //Initialize calendar with date
         currentCalendar = Calendar.getInstance(Locale.getDefault());
+        curr_day=currentCalendar.get(Calendar.DAY_OF_MONTH);
+        cm=currentCalendar.get(Calendar.MONTH);
+        curr_year=currentCalendar.get(Calendar.YEAR);
+
+        curr_month=cm+1;
+        populateListForCalendar(curr_day,curr_month,curr_year);
+
+//        Log.d("current",currentCalendar.get(Calendar.DAY_OF_MONTH)+"");
+
 
         //Show Monday as first date of week
         calendarView.setFirstDayOfWeek(Calendar.MONDAY);
@@ -106,7 +114,13 @@ public class CalendarFragment extends Fragment {
         calendarView.setCalendarListener(new CalendarListener() {
             @Override
             public void onDateSelected(Date date) {
-                populateListForCalendar(date);
+                simpleDateFormat=new SimpleDateFormat("dd");
+                int dd=Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat=new SimpleDateFormat("MM");
+                int mm=Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat=new SimpleDateFormat("yyyy");
+                int yy=Integer.parseInt(simpleDateFormat.format(date));
+                populateListForCalendar(dd,mm,yy);
             }
 
             @Override
@@ -132,10 +146,18 @@ public class CalendarFragment extends Fragment {
     private class DisabledColorDecorator implements DayDecorator {
         @Override
         public void decorate(DayView dayView) {
-            if (CalendarUtils.isPastDay(dayView.getDate())) {
-                int color = Color.parseColor("#FFFFFF");
-                dayView.setTextColor(color);
-            }
+//            if (CalendarUtils.isPastDay(dayView.getDate())) {
+//                int color = Color.parseColor("#FFFFFF");
+//                dayView.setTextColor(color);
+//            }
+            simpleDateFormat=new SimpleDateFormat("dd");
+            int myD=Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
+            simpleDateFormat=new SimpleDateFormat("MM");
+            int myM=Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
+            simpleDateFormat=new SimpleDateFormat("yyyy");
+            int myY=Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
+            if(myD==curr_day&&myM==curr_month&&myY==curr_year)
+                dayView.setBackgroundColor(Color.parseColor("#E0E0E0"));
         }
     }
 
@@ -147,7 +169,7 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    private void populateListForCalendar(Date date) {
+    private void populateListForCalendar(int d,int m,int y) {
         valuesList = new ArrayList<>();
         if (!joinedExams.equals("noJoinedExams")) {
             try {
@@ -175,16 +197,7 @@ public class CalendarFragment extends Fragment {
                         end_month=Integer.parseInt(array[1]);
                         end_year=Integer.parseInt(array[2]);
 
-                        String strDate=date.toString();
-                        simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Date date2 = simpleDateFormat.parse(strDate);
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(date2);
-                        int day2 = calendar.get(Calendar.DAY_OF_MONTH);
-                        int year2 = calendar.get(Calendar.YEAR);
-                        int month2 = calendar.get(Calendar.MONTH);
-                        month2++;
-                        String myParsedDate = day2 + "/" + month2 + "/" + year2;
+                        String myParsedDate = d + "/" + m + "/" + y;
 
                         simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
                         Date start_date=simpleDateFormat.parse(myDateOfStart);
@@ -261,7 +274,7 @@ public class CalendarFragment extends Fragment {
 
                         if(!(middle_date.before(start_date) || middle_date.after(end_date))){
                             Log.d("dates","inBetween");
-                            dayView.setTextColor(Color.parseColor("#f44336"));
+                            dayView.setTextColor(Color.parseColor("#00B4A8"));
                             list.add(1);
                         }
                     }

@@ -56,6 +56,7 @@ import java.util.regex.Pattern;
 import in.truskills.liveexams.Miscellaneous.QuestionPaperParser;
 import in.truskills.liveexams.Miscellaneous.VariablesDefined;
 import in.truskills.liveexams.R;
+import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class QuestionPaperLoad extends AppCompatActivity implements Handler.Callback{
 
@@ -73,6 +74,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     TextView myWaitMessage;
     MySqlDatabase ob;
     ProgressBar progressBar;
+    ArrayList<String> urls,groups;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         selectedLanguage = getIntent().getStringExtra("language");
 
         fList = new ArrayList<>();
+        urls=new ArrayList<>();
+        groups=new ArrayList<>();
         ob=new MySqlDatabase(this);
 
         //Api to be connected to get the question paper..
@@ -360,6 +364,38 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
             }
         }
 
+        if(urls.isEmpty()){
+            Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
+            intent.putExtra("examId", examId);
+            intent.putExtra("name", name);
+            intent.putExtra("language", selectedLanguage);
+            intent.putExtra("noOfSections",noOfSections);
+            intent.putExtra("questionArray",questionArray);
+            startActivity(intent);
+            finish();
+        }else{
+            int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+            ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                    NUMBER_OF_CORES * 2,
+                    NUMBER_OF_CORES * 2,
+                    60L,
+                    TimeUnit.SECONDS,
+                    new LinkedBlockingQueue<Runnable>()
+            );
+            for(int i=0;i<urls.size();++i){
+                executor.execute(new LongThread(i, urls.get(i), new Handler(QuestionPaperLoad.this),groups.get(i),QuestionPaperLoad.this));
+            }
+
+            executor.shutdown();
+            executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
+
+            if(executor.isTerminated()==true){
+                Log.d("termination","true");
+            }else{
+                Log.d("termination","false");
+            }
+        }
+
         progressBar.setVisibility(View.VISIBLE);
 
 //        Else if Online..
@@ -398,28 +434,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         String result=matcher1.replaceAll(subst);
         ob.updateValuesPerQuestion(ii,jj,MySqlDatabase.QuestionText,result);
 
-        int i=0;
-
         while (matcher.find()){
             Log.d("messi","matcher.findInLoop");
             String group=matcher.group(2);
-//            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-//            String imagePath = "file://"+ base + "/LiveExams/"+group;
-//            ob.updateValuesPerQuestion(ii,jj,MySqlDatabase.QuestionText,"<img src=\""+ imagePath + "\">");
             String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
-            int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-
-            ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                    NUMBER_OF_CORES * 2,
-                    NUMBER_OF_CORES * 2,
-                    60L,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>()
-            );
-
-            executor.execute(new LongThread(i, imageUrl, new Handler(QuestionPaperLoad.this),group));
-            ++i;
+            urls.add(imageUrl);
+            groups.add(group);
         }
     }
 
@@ -433,35 +454,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         String result=matcher1.replaceAll(subst);
         ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,result);
 
-        int i=0;
-
-//        if(matcher.find())
-//            Log.d("messi","findInOption");
-//        else
-//            Log.d("messi","notFind");
-
-
         while (matcher.find()){
             Log.d("messi","matcher.findInLoop");
-
             String group=matcher.group(2);
-//            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-//            String imagePath = "file://"+ base + "/LiveExams/"+group;
-//            ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,"<img src=\""+ imagePath + "\">");
             String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
-            int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-
-            ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                    NUMBER_OF_CORES * 2,
-                    NUMBER_OF_CORES * 2,
-                    60L,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>()
-            );
-
-            executor.execute(new LongThread(i, imageUrl, new Handler(QuestionPaperLoad.this),group));
-            ++i;
+            urls.add(imageUrl);
+            groups.add(group);
         }
     }
 
@@ -516,5 +515,24 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     public void prepareForOnlineForOption(int ii,int jj,int kk,String text){
         String myText=format(text,examId);
         ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,myText);
+    }
+
+    private class DownloadImages extends AsyncTask{
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            File dir=new File(Environment.getExternalStorageDirectory(),"/LiveExams");
+            if(!dir.exists())
+                dir.mkdir();
+
+            for(int i=0;i<urls.size();++i){
+                File f=new File(dir+"/"+groups.get(i));
+                if(!f.exists()){
+
+                }
+            }
+            return null;
+        }
     }
 }

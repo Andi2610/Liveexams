@@ -20,7 +20,7 @@ import java.util.Iterator;
 public class VariablesDefined {
 
     //Api used to connect to the server..
-    public static final String api = "http://35.154.110.122:3001/api/";
+    public static final String api = "http://35.154.110.122:3002/api/";
 
     //Url for image..
     public static final String imageUrl = "https://s3.ap-south-1.amazonaws.com/live-exams/";
@@ -195,7 +195,7 @@ public class VariablesDefined {
     }
 
     public static String parseDate(String myDate) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E MMM dd yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = simpleDateFormat.parse(myDate);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);

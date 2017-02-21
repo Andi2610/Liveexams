@@ -697,6 +697,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                                 Answers.getInstance().logCustom(new CustomEvent("Signup successfull")
                                         .putCustomAttribute("userName",name));
                                 signupDrawer.close();
+                                loginDrawer.open();
                             }else{
                                 JSONObject jo=new JSONObject(mapper.get("response"));
                                 String errmsg=jo.getString("errmsg");

@@ -1,11 +1,14 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -20,16 +23,18 @@ public class LongThread implements Runnable {
     String imageUrl;
     Bitmap bmp;
     String group;
+    Context c;
     public static final String TAG = "LongThread";
 
     public LongThread() {
     }
 
-    public LongThread(int threadNo, String imageUrl, Handler handler,String group) {
+    public LongThread(int threadNo, String imageUrl, Handler handler,String group,Context c) {
         this.threadNo = threadNo;
         this.handler = handler;
         this.imageUrl = imageUrl;
         this.group=group;
+        this.c=c;
     }
 
     @Override
@@ -78,8 +83,10 @@ public class LongThread implements Runnable {
         try {
             // Download Image from URL
             InputStream input = new java.net.URL(url).openStream();
-            // Decode Bitmap
-            bitmap = BitmapFactory.decodeStream(input);
+                // Decode Bitmap
+                bitmap = BitmapFactory.decodeStream(input);
+
+
             // Do extra processing with the bitmap
         } catch (Exception e) {
             Log.e("in","exception:"+e.toString());
