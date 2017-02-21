@@ -103,7 +103,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     private static final String FORMAT = "%02d:%02d:%02d";
     ArrayList<Integer> arrayForNoOfSections, arrayForQuestions, arrayForOptions, types;
     ArrayList<String> options;
-    int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option, questionArray[], noOfSections, num;
+    int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option, questionArray[], noOfSections, num,total;
     Socket socket;
     socketFromTeacher socketfromteacher;
 
@@ -163,7 +163,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         //Interface to communicate with Flashphoner class
         socketfromteacher = (socketFromTeacher) flashphoner;
         //CONNECT TO SOCKET..
-        initSocketConnection();
+//        initSocketConnection();
 
         noOfSections = getIntent().getIntExtra("noOfSections", 0);
         questionArray = getIntent().getIntArrayExtra("questionArray");

@@ -34,7 +34,7 @@ public class QuestionPaperParser {
     private static final String AuthorDetails="AuthorDetails";
     private static final String Paperset="Paperset";
     private static final String _v="__v";
-    private static final String LanguagesAvailable="LanguagesAvailible";
+    private static final String LanguagesAvailable="Languages";
     private static final String StartDate="StartDate";
     private static final String id="id";
     private static final String Name="Name";
@@ -119,7 +119,9 @@ public class QuestionPaperParser {
     public static ArrayList<String> getLanguagesAvailable(String myLanguagesAvailable) throws JSONException {
         ArrayList<String> lang=new ArrayList<>();
         JSONArray jsonArray=new JSONArray(myLanguagesAvailable);
-        for(int i=0;i<jsonArray.length();++i){
+        JSONObject jsonObject=jsonArray.getJSONObject(0);
+        JSONArray jsonArray1=jsonObject.getJSONArray(Language);
+        for(int i=0;i<jsonArray1.length();++i){
             lang.add(jsonArray.get(i).toString());
         }
 

@@ -43,6 +43,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -145,9 +146,6 @@ public class StartPageFragment extends Fragment {
                 .putCustomAttribute("userName",prefs.getString("userName",""))
                 .putCustomAttribute("examId",examId));
 
-        start_leave_button.setText("START");
-        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-
 
         //Parse the exam details..
         try {
@@ -159,11 +157,78 @@ public class StartPageFragment extends Fragment {
             String myEndDate=VariablesDefined.parseDate(endDate);
             String startTime=mapper.get("StartTime");
 
+            Log.d("timeDetails","dateInitially="+myStartDate+"**"+myEndDate);
+
             String myStartTime=VariablesDefined.parseTimeForDetails(startTime);
             String endTime=mapper.get("EndTime");
             String myEndTime=VariablesDefined.parseTimeForDetails(endTime);
 
-            Log.d("time",timestamp+" **** "+startTime+" **** "+endTime);
+            Log.d("timeDetails","timeInitially="+myStartTime+"**"+myEndTime);
+
+
+            String myTimestamp=VariablesDefined.parseTimestamp(timestamp);
+
+            Log.d("timeDetails","timestampDateInitially="+myTimestamp);
+
+
+            String myTime=VariablesDefined.parseTimestampForTime(timestamp);
+
+            Log.d("timeDetails","timestampTimeInitially="+myTime);
+
+
+
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+            Date start_date=simpleDateFormat.parse(myStartDate);
+            Date end_date=simpleDateFormat.parse(myEndDate);
+            Date middle_date=simpleDateFormat.parse(myTimestamp);
+
+            Log.d("timeDetails","DateFinally"+start_date+"**"+middle_date+"**"+end_date);
+
+            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
+            Date start_time=simpleDateFormat2.parse(myStartTime);
+            Date end_time=simpleDateFormat2.parse(myEndTime);
+            Date middle_time=simpleDateFormat2.parse(myTime);
+
+            Log.d("timeDetails","TimeFinally"+start_time+"**"+middle_time+"**"+end_time);
+
+//            if(middle_date.before(start_date)){
+//                Log.d("timeDetails","in1");
+//            }else{
+//                Log.d("timeDetails","in2");
+//            }
+//            if(middle_date.after(end_date)){
+//                Log.d("timeDetails","in1");
+//            }else{
+//                Log.d("timeDetails","in2");
+//            }
+//            if(middle_time.before(start_time)){
+//                Log.d("timeDetails","in1");
+//            }else{
+//                Log.d("timeDetails","in2");
+//            }
+//            if(middle_time.after(end_time)){
+//                Log.d("timeDetails","in1");
+//            }else{
+//                Log.d("timeDetails","in2");
+//            }
+
+            if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
+                if(!(middle_time.before(start_time)||middle_time.after(end_time))){
+                    start_leave_button.setText("START");
+                    start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+                }
+            }else if(middle_date.after(end_date)){
+                start_leave_button.setText("EXAM IS OVER");
+                start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
+            }else {
+                start_leave_button.setText("LEAVE");
+                start_leave_button.setBackgroundColor(Color.parseColor("#f44336"));
+            }
+
+//            start_leave_button.setText("START");
+//            start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+
+            Log.d("newTimestamp=",myTimestamp);
 
             startDetails.setText(myStartDate + "\n\n" + myStartTime);
             endDetails.setText(myEndDate + "\n\n" + myEndTime);
@@ -260,7 +325,7 @@ public class StartPageFragment extends Fragment {
                         }
                     };
                     requestQueue.add(stringRequest);
-                } else {
+                } else if(start_leave_button.getText().equals("START")){
                     Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
                             .putCustomAttribute("userName",prefs.getString("userName",""))
                             .putCustomAttribute("examId",examId));
@@ -283,6 +348,8 @@ public class StartPageFragment extends Fragment {
                         i.putExtra("language", selectedLanguage);
                         startActivity(i);
                     }
+                }else{
+                    Toast.makeText(getActivity(), "This exam is over", Toast.LENGTH_SHORT).show();
                 }
             }
         });

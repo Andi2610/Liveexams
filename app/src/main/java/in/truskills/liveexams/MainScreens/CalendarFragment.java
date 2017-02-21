@@ -204,6 +204,8 @@ public class CalendarFragment extends Fragment {
                         Date end_date=simpleDateFormat.parse(myDateOfEnd);
                         Date middle_date=simpleDateFormat.parse(myParsedDate);
 
+                        Log.d("calendarDetails",start_date+" "+middle_date+" "+end_date);
+
                         if(!(middle_date.before(start_date) || middle_date.after(end_date))){
                             Log.d("dates","inBetween");
                             values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));

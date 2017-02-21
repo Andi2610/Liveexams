@@ -400,7 +400,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             t.commit();
             navigationView.setCheckedItem(R.id.nav_home);
             getSupportActionBar().setTitle("HOME");
-
         }
     }
 

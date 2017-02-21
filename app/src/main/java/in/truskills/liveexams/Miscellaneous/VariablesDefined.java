@@ -195,7 +195,7 @@ public class VariablesDefined {
     }
 
     public static String parseDate(String myDate) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
         Date date = simpleDateFormat.parse(myDate);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -237,5 +237,24 @@ public class VariablesDefined {
         return ans;
     }
 
+    public static String parseTimestamp(String myDate) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = simpleDateFormat.parse(myDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        month++;
+        String myParsedDate = day + "/" + month + "/" + year;
+        return myParsedDate;
+    }
 
+    public static String parseTimestampForTime(String myTime) throws ParseException {
+        DateFormat f1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz");
+        Date d = f1.parse(myTime);
+        DateFormat f2 = new SimpleDateFormat("h-mm a");
+        String ans=f2.format(d).toLowerCase();
+        return ans;
+    }
 }

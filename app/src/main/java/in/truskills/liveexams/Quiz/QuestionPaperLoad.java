@@ -80,14 +80,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_paper_load);
+        com.wang.avi.AVLoadingIndicatorView avi=(AVLoadingIndicatorView)findViewById(R.id.avi);
+        avi.show();
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         myWaitMessage=(TextView)findViewById(R.id.myWaitMessage);
         Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         myWaitMessage.setTypeface(tff1);
-        com.wang.avi.AVLoadingIndicatorView avi=(AVLoadingIndicatorView)findViewById(R.id.avi);
-        avi.show();
 
         examId = getIntent().getStringExtra("examId");
         name = getIntent().getStringExtra("name");
@@ -341,11 +341,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     }
 
     public void afterResponse() throws InterruptedException {
-        String folder_main = "LiveExams";
-        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-        if (!f.exists()) {
-            f.mkdirs();
-        }
+
 
 //        If offline required..
         for(int i=0;i<noOfSections;++i){
@@ -391,6 +387,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
             if(executor.isTerminated()==true){
                 Log.d("termination","true");
+                Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
+                intent.putExtra("examId", examId);
+                intent.putExtra("name", name);
+                intent.putExtra("language", selectedLanguage);
+                intent.putExtra("noOfSections",noOfSections);
+                intent.putExtra("questionArray",questionArray);
+                startActivity(intent);
+                finish();
             }else{
                 Log.d("termination","false");
             }
@@ -473,14 +477,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         progressBar.setProgress((int) per);
         if(progressBar.getProgress()==100){
             Log.d("place","complete");
-            Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
-            intent.putExtra("examId", examId);
-            intent.putExtra("name", name);
-            intent.putExtra("language", selectedLanguage);
-            intent.putExtra("noOfSections",noOfSections);
-            intent.putExtra("questionArray",questionArray);
-            startActivity(intent);
-            finish();
+//            Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
+//            intent.putExtra("examId", examId);
+//            intent.putExtra("name", name);
+//            intent.putExtra("language", selectedLanguage);
+//            intent.putExtra("noOfSections",noOfSections);
+//            intent.putExtra("questionArray",questionArray);
+//            startActivity(intent);
+//            finish();
         }
         else
             Log.d("place","incomplete");
