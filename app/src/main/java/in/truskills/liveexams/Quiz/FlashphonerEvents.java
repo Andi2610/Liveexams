@@ -8,7 +8,9 @@ import com.flashphoner.fpwcsapi.Flashphoner;
 import com.flashphoner.fpwcsapi.bean.Connection;
 import com.flashphoner.fpwcsapi.bean.Data;
 import com.flashphoner.fpwcsapi.bean.StreamStatus;
+import com.flashphoner.fpwcsapi.constraints.AudioConstraints;
 import com.flashphoner.fpwcsapi.constraints.Constraints;
+import com.flashphoner.fpwcsapi.constraints.VideoConstraints;
 import com.flashphoner.fpwcsapi.session.Session;
 import com.flashphoner.fpwcsapi.session.SessionEvent;
 import com.flashphoner.fpwcsapi.session.SessionOptions;
@@ -34,7 +36,8 @@ public class FlashphonerEvents implements socketFromTeacher {
     Context context;
     public static final String FLASHPHONER = "flashphoner";
     public String studentId, teacherId;
-
+    private final int cameraID = 1;
+    private VideoConstraints studentVideoConstraints;
     //to handle streaming events
     private StreamStatusEvent studentEvent = new StreamStatusEvent() {
         @Override
@@ -73,7 +76,7 @@ public class FlashphonerEvents implements socketFromTeacher {
     //called from in/truskills/liveexams/Quiz/QuizMainActivity.java:953
     @Override
     public void startStreaming(String studentId, String teacherId) {
-        Log.d(FLASHPHONER,"startSreaming called from QuizMainActivity");
+        Log.d(FLASHPHONER, "startSreaming called from QuizMainActivity");
         this.studentId = studentId;
         this.teacherId = teacherId;
 
@@ -84,7 +87,7 @@ public class FlashphonerEvents implements socketFromTeacher {
         /**
          * Session for connection to WCS server is created with method createSession().
          */
-        session = com.flashphoner.fpwcsapi.Flashphoner.createSession(sessionOptions);
+        session = Flashphoner.createSession(sessionOptions);
 
         /**
          * Callback functions for session status events are added to make appropriate changes in controls of the interface when connection is established and closed.
@@ -117,7 +120,14 @@ public class FlashphonerEvents implements socketFromTeacher {
         * public Constraints(boolean hasAudio,
                    boolean hasVideo)
         * */
-        studentConstraints = new Constraints(true, true);
+
+        //studentConstraints = new Constraints(true, true);
+
+        studentVideoConstraints = new VideoConstraints();
+       // studentVideoConstraints.setCameraId(cameraID);
+        studentVideoConstraints.setVideoFps(30);
+        studentVideoConstraints.setResolution(1770, 1000);
+        studentConstraints = new Constraints(new AudioConstraints(), studentVideoConstraints);
 
         studentOptions = new StreamOptions(studentId + teacherId);
         studentOptions.setRenderer(extraRender);

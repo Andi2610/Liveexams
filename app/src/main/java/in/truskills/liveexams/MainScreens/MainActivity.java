@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
@@ -38,6 +39,7 @@ import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.digits.sdk.android.events.LogoutEventDetails;
 import com.pkmmte.view.CircularImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -57,13 +59,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     CircularImageView navImage;
     TextView navName, navEmail;
-    static final int REQUEST_CAMERA = 1, SELECT_FILE = 1;
+    static final int REQUEST_CAMERA = 2, SELECT_FILE = 1;
     String defaultImage;
     Bundle bundle;
     SharedPreferences prefs;
     Bitmap icon;
     CharSequence[] items;
     FragmentManager manager;
+    private String selectedImagePath;
+    private String filename;
+    private final String CAMERA = "camera";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navName.setText(prefs.getString("userName", ""));
         navEmail.setText(prefs.getString("emailAddress", ""));
 
-        Typeface tff=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
 
         navName.setTypeface(tff);
         navEmail.setTypeface(tff);
@@ -133,17 +138,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //If no image set.. do not include "Remove Photo" option
         //Else include "Remove Photo" option..
+        try {
             if (prefs.getString("navImage", defaultImage).equals(defaultImage)) {
                 items = new CharSequence[3];
-//                items[0] = "Take Photo";
-                items[0] = "Choose from Library";
-                items[1] = "Cancel";
+                items[0] = "Take Photo";
+                items[1] = "Choose from Library";
+                items[2] = "Cancel";
             } else {
                 items = new CharSequence[4];
-//                items[0] = "Take Photo";
-                items[0] = "Choose from Library";
-                items[1] = "Remove Photo";
-                items[2] = "Cancel";
+                items[0] = "Take Photo";
+                items[1] = "Choose from Library";
+                items[2] = "Remove Photo";
+                items[3] = "Cancel";
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -153,13 +159,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onClick(DialogInterface dialog, int item) {
 
                     if (items[item].equals("Take Photo")) {
-                        boolean statusForCamera=CheckForPermissions.checkForCamera(MainActivity.this);
-                        if(statusForCamera){
+                        boolean statusForCamera = CheckForPermissions.checkForCamera(MainActivity.this);
+                        if (statusForCamera) {
+                            Log.d(CAMERA, "permission granted for camera");
                             cameraIntent();
                         }
                     } else if (items[item].equals("Choose from Library")) {
-                        boolean statusForGallery=CheckForPermissions.checkForGallery(MainActivity.this);
-                        if(statusForGallery){
+                        boolean statusForGallery = CheckForPermissions.checkForGallery(MainActivity.this);
+                        if (statusForGallery) {
                             galleryIntent();
                         }
                     } else if (items[item].equals("Remove Photo")) {
@@ -173,12 +180,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
             builder.show();
+        } catch (Exception e) {
+            Log.d(CAMERA, e.toString());
+        }
     }
 
     //If capture an image from camera is requested..
     private void cameraIntent() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, REQUEST_CAMERA);
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = getFile();
+        Log.d(CAMERA, "we got file for camera");
+        try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(MainActivity.this, "in.truskills.liveexams.fileprovider", file));
+                Log.d(CAMERA, "we got file for camera");
+            } else {
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+            }
+
+            startActivityForResult(camera_intent, REQUEST_CAMERA);
+        } catch (Exception e) {
+            Log.d(CAMERA, "camera intent start error" + e.toString());
+        }
+    }
+
+    private File getFile() {
+        File imagePath;
+        //implementation will be different according to android version
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            imagePath = new File(getFilesDir(), "images");
+            if (!imagePath.exists()) {
+                imagePath.mkdir();
+            }
+            selectedImagePath = imagePath.getAbsolutePath();
+        } else {
+            imagePath = new File("sdcard/camera_app");
+            if (!imagePath.exists()) {
+                imagePath.mkdir();
+            }
+            selectedImagePath = "sdcard/camera_app";
+        }
+        Long tsLong = System.currentTimeMillis() / 1000;
+        String ts = tsLong.toString();
+        File image_file = new File(imagePath, "cam_image" + ts + ".jpeg");
+        filename = "cam_image" + ts + ".jpeg";
+        return image_file;
     }
 
     //If choose an image from gallery is requested..
@@ -189,15 +235,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
 
-    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException
-    {
+    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
         BitmapFactory.Options o = new BitmapFactory.Options();
 
         o.inJustDecodeBounds = true;
 
         ContentResolver cr = this.getContentResolver();
 
-        BitmapFactory.decodeStream(cr.openInputStream(selectedImage) ,null, o);
+        BitmapFactory.decodeStream(cr.openInputStream(selectedImage), null, o);
 
 //        BitmapFactory.decodeStream(getContentResolver()
 //                .openInputStream(selectedImage), null, o);
@@ -208,10 +253,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int scale = 1;
 
-        while (true)
-        {
-            if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
-            {
+        while (true) {
+            if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE) {
                 break;
             }
             width_tmp /= 2;
@@ -229,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                .openInputStream(selectedImage), null, o2);
         ContentResolver cr2 = this.getContentResolver();
 
-        Bitmap bitmap=BitmapFactory.decodeStream(cr2.openInputStream(selectedImage) ,null, o2);
+        Bitmap bitmap = BitmapFactory.decodeStream(cr2.openInputStream(selectedImage), null, o2);
 
         return bitmap;
     }
@@ -239,21 +282,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (requestCode) {
             case CheckForPermissions.STORAGE_PERMISSION_CODE:
                 //If permission is granted
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     galleryIntent();
-                }else{
+                } else {
                     //Displaying another toast if permission is not granted
-                    Toast.makeText(this,"Oops you have denied the permission for storage access\nGo to settings and grant them", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Oops you have denied the permission for storage access\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
                 break;
 
             case CheckForPermissions.CAMERA_PERMISSION_CODE:
                 //If permission is granted
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent();
-                }else{
+                } else {
                     //Displaying another toast if permission is not granted
-                    Toast.makeText(this,"Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
                 break;
         }
@@ -264,22 +307,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK) {
+            Log.d(CAMERA, requestCode + "");
             if (requestCode == SELECT_FILE)
                 onSelectFromGalleryResult(data);
-            else if (requestCode == REQUEST_CAMERA)
-                try {
-                    onCaptureImageResult(data);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+            else if (requestCode == REQUEST_CAMERA) {
+                if (resultCode == RESULT_OK) {
+                    Log.d(CAMERA, "camera1");
+                    String path = selectedImagePath + "/" + filename;
+                    Log.d(CAMERA, path + " CAMERA");
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] b = baos.toByteArray();
+                    navImage.setImageBitmap(bitmap);
+
+                    SharedPreferences.Editor e = prefs.edit();
+                    e.putString("navImage", Base64.encodeToString(b, Base64.DEFAULT));
+                    e.apply();
+                } else if (resultCode == RESULT_CANCELED) {
+                    Log.d(CAMERA, "User cancelled image capture");
+                } else {
+                    Log.d(CAMERA, "Sorry! Failed to capture image");
+                    // failed to capture image
                 }
-        }else if(requestCode==10){
-            FrameLayout frameLayout=(FrameLayout) findViewById(R.id.fragment);
+            }
+        } else if (requestCode == 10) {
+            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment);
             frameLayout.removeAllViewsInLayout();
-            HomeFragment f=new HomeFragment();
+            HomeFragment f = new HomeFragment();
             FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
-            fragTransaction.replace(R.id.fragment,f,"HomeFragment");
+            fragTransaction.replace(R.id.fragment, f, "HomeFragment");
             fragTransaction.commit();
         }
+
     }
 
     @SuppressWarnings("deprecation")
@@ -303,8 +364,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 else
                     realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
 
-                Log.d("RotateImage","RealPath="+realPath);
-                getCameraPhotoOrientation(this,fileUri,realPath);
+                Log.d("RotateImage", "RealPath=" + realPath);
+                getCameraPhotoOrientation(this, fileUri, realPath);
                 bm = decodeUri(fileUri);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -316,35 +377,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         e.putString("navImage", tempString);
         e.apply();
         navImage.setImageBitmap(bm);
-    }
-
-    private void onCaptureImageResult(Intent data) throws FileNotFoundException {
-
-        Uri fileUri = data.getData();
-        Bitmap thumbnail = decodeUri(fileUri);
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String tempString = BitmapToString(thumbnail);
-        //Edit shared preference of navImage to currently obtained image..
-        SharedPreferences.Editor e = prefs.edit();
-        e.putString("navImage", tempString);
-        e.apply();
-        navImage.setImageBitmap(thumbnail);
     }
 
     @Override
@@ -404,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else if (id == R.id.nav_logout) {
             Answers.getInstance().logCustom(new CustomEvent("Logout button clicked")
-                    .putCustomAttribute("userName",prefs.getString("userName","")));
+                    .putCustomAttribute("userName", prefs.getString("userName", "")));
             SharedPreferences.Editor e = prefs.edit();
             e.clear();
             e.apply();
@@ -430,10 +462,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void releaseBitmap(Bitmap mDrawBitmap) {
+        if (mDrawBitmap != null) {
+            mDrawBitmap.recycle();
+            mDrawBitmap = null;
+        }
+    }
+
     //A method to convert string to bitmap..
     public String BitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
         String temp = Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
