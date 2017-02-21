@@ -60,7 +60,7 @@ import in.truskills.liveexams.R;
 public class QuestionPaperLoad extends AppCompatActivity implements Handler.Callback{
 
     //Declare the variables..
-    int curCount = 0,myCount=0,questionArray[];
+    int curCount = 0,myCount=0,questionArray[],status=0;
     int languageArray[][], fragmentIndex[][];
     HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11,map12;
     int noOfQuestions, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1;
@@ -349,10 +349,12 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                 myCount++;
                 String mt=ob.getTextOfOneQuestion(i,j);
                 prepareForOfflineForQuestion(mt,i,j);
+                Log.d("textHere","OfQuestions"+mt);
                 int noo=ob.getNoOfOptionsInOneQuestion(i,j);
                 for(int k=0;k<noo;++k){
                     myCount++;
                     String mo=ob.getTextOfOneOption(i,j,k);
+                    Log.d("textHere","OfOptions"+mo);
                     prepareForOfflineForOption(mo,i,j,k);
                 }
             }
@@ -390,13 +392,16 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
+        final Matcher matcher1= pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst="<img src=\"file://"+base+"/LiveExams/$2";
-        String result=matcher.replaceAll(subst);
+        String subst="<img src=\"file://"+base+"/LiveExams/$2\"/>";
+        String result=matcher1.replaceAll(subst);
         ob.updateValuesPerQuestion(ii,jj,MySqlDatabase.QuestionText,result);
 
         int i=0;
+
         while (matcher.find()){
+            Log.d("messi","matcher.findInLoop");
             String group=matcher.group(2);
 //            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
 //            String imagePath = "file://"+ base + "/LiveExams/"+group;
@@ -422,13 +427,23 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
+        final Matcher matcher1= pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst="<img src=\"file://"+base+"/LiveExams/$2";
-        String result=matcher.replaceAll(subst);
+        String subst="<img src=\"file://"+base+"/LiveExams/$2\"/>";
+        String result=matcher1.replaceAll(subst);
         ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,result);
 
         int i=0;
+
+//        if(matcher.find())
+//            Log.d("messi","findInOption");
+//        else
+//            Log.d("messi","notFind");
+
+
         while (matcher.find()){
+            Log.d("messi","matcher.findInLoop");
+
             String group=matcher.group(2);
 //            String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
 //            String imagePath = "file://"+ base + "/LiveExams/"+group;
@@ -454,7 +469,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     public boolean handleMessage(Message msg) {
         curCount++;
         Log.d("count",curCount+" "+myCount);
-        float per = (curCount / myCount) * 100;
+        float per = (curCount / (float)myCount) * 100;
+        Log.d("myPer=",per+"");
         progressBar.setProgress((int) per);
         if(progressBar.getProgress()==100){
             Log.d("place","complete");

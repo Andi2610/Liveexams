@@ -171,37 +171,13 @@ public class AllExamsFragment extends Fragment {
                                         for (int i = 0; i < length; ++i) {
                                             myStartDate=mapper.get("StartDate").get(i);
                                             myEndDate=mapper.get("EndDate").get(i);
-
-                                            simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-
-                                            date=simpleDateFormat.parse(myStartDate);
-                                            calendar= java.util.Calendar.getInstance();
-                                            calendar.setTime(date);
-                                            day=calendar.get(java.util.Calendar.DAY_OF_MONTH);
-                                            year=calendar.get(java.util.Calendar.YEAR);
-                                            month=calendar.get(java.util.Calendar.MONTH);
-                                            month++;
-                                            myDateOfStart=day+"/"+month+"/"+year;
-
-                                            date=simpleDateFormat.parse(myEndDate);
-                                            calendar= java.util.Calendar.getInstance();
-                                            calendar.setTime(date);
-                                            day=calendar.get(java.util.Calendar.DAY_OF_MONTH);
-                                            year=calendar.get(java.util.Calendar.YEAR);
-                                            month=calendar.get(java.util.Calendar.MONTH);
-                                            month++;
-                                            myDateOfEnd=day+"/"+month+"/"+year;
-
                                             myDuration=mapper.get("ExamDuration").get(i);
-                                            parts = myDuration.split("-");
-                                            hour=Integer.parseInt(parts[0]);
-                                            minute=Integer.parseInt(parts[1]);
 
-                                            if(minute==0){
-                                                myDurationTime=hour+" hours";
-                                            }else{
-                                                myDurationTime=hour+" hours "+minute+" minutes";
-                                            }
+                                            Log.d("myDate=",myStartDate+" ****** "+myEndDate+" **** "+myDuration);
+
+                                            myDateOfStart=VariablesDefined.parseDate(myStartDate);
+                                            myDateOfEnd=VariablesDefined.parseDate(myEndDate);
+                                            myDurationTime=VariablesDefined.parseDuration(myDuration);
 
                                             values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                             filteredList.add(values);

@@ -80,21 +80,21 @@ public class QuestionPaperParser {
         HashMap<String,String> mapper=new HashMap<>();
         JSONObject jsonObject=new JSONObject(myResponse);
         mapper.put("_id",jsonObject.getString(_id));
-        mapper.put("ExamName",jsonObject.getString(ExamName));
-        mapper.put("ExamId",jsonObject.getString(ExamId));
-        mapper.put("MaximumMarks",jsonObject.getString(MaximumMarks));
-        mapper.put("EndDate",jsonObject.getString(EndDate));
-        mapper.put("StartTime",jsonObject.getString(StartTime));
-        mapper.put("EndTime",jsonObject.getString(EndTime));
+        mapper.put("ExamName",jsonObject.getJSONArray(ExamName).get(0).toString());
+        mapper.put("ExamId",jsonObject.getJSONArray(ExamId).get(0).toString());
+        mapper.put("MaximumMarks",jsonObject.getJSONArray(MaximumMarks).get(0).toString());
+        mapper.put("EndDate",jsonObject.getJSONArray(EndDate).get(0).toString());
+        mapper.put("StartTime",jsonObject.getJSONArray(StartTime).get(0).toString());
+        mapper.put("EndTime",jsonObject.getJSONArray(EndTime).get(0).toString());
         mapper.put("ExamDuration",jsonObject.getJSONArray(ExamDuration).toString());
-        mapper.put("Instructions",jsonObject.getString(Instructions));
-        mapper.put("Description",jsonObject.getString(Description));
-        mapper.put("ExamImage",jsonObject.getString(ExamImage));
+        mapper.put("Instructions",jsonObject.getJSONArray(Instructions).get(0).toString());
+        mapper.put("Description",jsonObject.getJSONArray(Description).get(0).toString());
+        mapper.put("ExamImage",jsonObject.getJSONArray(ExamImage).get(0).toString());
         mapper.put("AuthorDetails",jsonObject.getJSONArray(AuthorDetails).getJSONObject(0).toString());
         mapper.put("Paperset",jsonObject.getJSONArray(Paperset).getJSONObject(0).toString());
         mapper.put("_v",jsonObject.getString(_v));
         mapper.put("LanguagesAvailable",jsonObject.getJSONArray(LanguagesAvailable).toString());
-        mapper.put("StartDate",jsonObject.getString(StartDate));
+        mapper.put("StartDate",jsonObject.getJSONArray(StartDate).get(0).toString());
         return mapper;
     }
 

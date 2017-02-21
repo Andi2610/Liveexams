@@ -20,7 +20,7 @@ import java.util.Iterator;
 public class VariablesDefined {
 
     //Api used to connect to the server..
-    public static final String api = "http://35.154.110.122:3002/api/";
+    public static final String api = "http://35.154.110.122:3001/api/";
 
     //Url for image..
     public static final String imageUrl = "https://s3.ap-south-1.amazonaws.com/live-exams/";
@@ -94,10 +94,10 @@ public class VariablesDefined {
             while (keys.hasNext()) {
                 String key = keys.next();
                 JSONObject jsonObject = jsonArray.getJSONObject(i).getJSONArray(key).getJSONObject(0);
-                ExamNameList.add(jsonObject.getString(ExamName));
+                ExamNameList.add(jsonObject.getJSONArray(ExamName).get(0).toString());
                 ExamDurationList.add(jsonObject.getJSONArray(ExamDuration).get(0).toString());
-                StartDateList.add(jsonObject.getString(StartDate));
-                EndDateList.add(jsonObject.getString(EndDate));
+                StartDateList.add(jsonObject.getJSONArray(StartDate).get(0).toString());
+                EndDateList.add(jsonObject.getJSONArray(EndDate).get(0).toString());
                 ExamIdList.add(key);
                 leftExamList.add(jsonObject.getString(leftExam));
             }
@@ -124,12 +124,12 @@ public class VariablesDefined {
         HashMap<String, ArrayList<String>> mapper = new HashMap<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            ExamNameList.add(jsonObject.getString(ExamName));
+            ExamNameList.add(jsonObject.getJSONArray(ExamName).get(0).toString());
             ExamDurationList.add(jsonObject.getJSONArray(ExamDuration).get(0).toString());
-            StartTimeList.add(jsonObject.getString(StartTime));
-            EndTimeList.add(jsonObject.getString(EndTime));
-            StartDateList.add(jsonObject.getString(StartDate));
-            EndDateList.add(jsonObject.getString(EndDate));
+            StartTimeList.add(jsonObject.getJSONArray(StartTime).get(0).toString());
+            EndTimeList.add(jsonObject.getJSONArray(EndTime).get(0).toString());
+            StartDateList.add(jsonObject.getJSONArray(StartDate).get(0).toString());
+            EndDateList.add(jsonObject.getJSONArray(EndDate).get(0).toString());
             ExamIdList.add(jsonObject.getString(id));
         }
         mapper.put("ExamName", ExamNameList);
@@ -157,12 +157,12 @@ public class VariablesDefined {
         HashMap<String, String> mapper = new HashMap<>();
         JSONArray jsonArray = new JSONArray(result);
         JSONObject jsonObject = jsonArray.getJSONObject(0);
-        mapper.put("StartDate", jsonObject.getString(StartDate));
-        mapper.put("EndDate", jsonObject.getString(EndDate));
-        mapper.put("StartTime", jsonObject.getString(StartTime));
-        mapper.put("EndTime", jsonObject.getString(EndTime));
-        mapper.put("Description", jsonObject.getString(Description));
-        mapper.put("ExamName", jsonObject.getString(ExamName));
+        mapper.put("StartDate", jsonObject.getJSONArray(StartDate).get(0).toString());
+        mapper.put("EndDate", jsonObject.getJSONArray(EndDate).get(0).toString());
+        mapper.put("StartTime", jsonObject.getJSONArray(StartTime).get(0).toString());
+        mapper.put("EndTime", jsonObject.getJSONArray(EndTime).get(0).toString());
+        mapper.put("Description", jsonObject.getJSONArray(Description).get(0).toString());
+        mapper.put("ExamName", jsonObject.getJSONArray(ExamName).get(0).toString());
 
         return mapper;
     }
@@ -195,7 +195,7 @@ public class VariablesDefined {
     }
 
     public static String parseDate(String myDate) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E MMM dd yyyy");
         Date date = simpleDateFormat.parse(myDate);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
