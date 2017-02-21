@@ -475,23 +475,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         float per = (curCount / (float)myCount) * 100;
         Log.d("myPer=",per+"");
         progressBar.setProgress((int) per);
-        if(progressBar.getProgress()==100){
-            Log.d("place","complete");
-//            Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
-//            intent.putExtra("examId", examId);
-//            intent.putExtra("name", name);
-//            intent.putExtra("language", selectedLanguage);
-//            intent.putExtra("noOfSections",noOfSections);
-//            intent.putExtra("questionArray",questionArray);
-//            startActivity(intent);
-//            finish();
-        }
-        else
-            Log.d("place","incomplete");
-//        if (per < 100)
-//            Toast.makeText(this, "\"Downloaded [" + curCount + "/" + (int)myCount + "]\"****"+per, Toast.LENGTH_SHORT).show();
-//        else
-//            Toast.makeText(this, "All images downloaded.****"+per, Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -521,22 +504,4 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,myText);
     }
 
-    private class DownloadImages extends AsyncTask{
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            File dir=new File(Environment.getExternalStorageDirectory(),"/LiveExams");
-            if(!dir.exists())
-                dir.mkdir();
-
-            for(int i=0;i<urls.size();++i){
-                File f=new File(dir+"/"+groups.get(i));
-                if(!f.exists()){
-
-                }
-            }
-            return null;
-        }
-    }
 }
