@@ -103,7 +103,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     private static final String FORMAT = "%02d:%02d:%02d";
     ArrayList<Integer> arrayForNoOfSections, arrayForQuestions, arrayForOptions, types;
     ArrayList<String> options;
-    int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option, questionArray[], noOfSections, num,total;
+    int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option, questionArray[], noOfSections, num,total,myTime;
     Socket socket;
     socketFromTeacher socketfromteacher;
 
@@ -167,6 +167,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         noOfSections = getIntent().getIntExtra("noOfSections", 0);
         questionArray = getIntent().getIntArrayExtra("questionArray");
+        myTime=getIntent().getIntExtra("ExamDuration",0);
 
         afterResponse();
     }
@@ -179,7 +180,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             f.mkdirs();
         }
 
-        new CountDownTimer(10800000, 1000) { // adjust the milli seconds here
+        new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
 
             public void onTick(long millisUntilFinished) {
 
@@ -381,7 +382,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 notAttemptedQuestions.setText(types.get(0)+"");
 
                 HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(SI);
-                ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
+                ArrayList<Integer> my_fragment_index_list;
                 my_fragment_index_list=my_map.get("FragmentIndexList");
                 ArrayList<Integer> myType=ob.getTypesOfEachSection(SI);
                 allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
@@ -472,9 +473,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
             case R.id.submitButton:
                 n=pager.getCurrentItem();
-                int next=++n;
-                if(next<=total)
-                    pager.setCurrentItem(next);
                 clickMethods(n,1);
                 break;
             case R.id.reviewButton:
@@ -517,6 +515,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
         questionsList.setAdapter(allQuestionsInOneSectionAdapter);
         allQuestionsInOneSectionAdapter.notifyDataSetChanged();
+        int next=n+1;
+        if(next<=total)
+            pager.setCurrentItem(next);
     }
 
     public void changeButtonStatus(boolean status){

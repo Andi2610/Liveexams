@@ -213,7 +213,17 @@ public class StartPageFragment extends Fragment {
 //            }
 
             if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
-                if(!(middle_time.before(start_time)||middle_time.after(end_time))){
+                if(middle_date.equals(start_date)){
+                    if(!middle_time.before(start_time)){
+                        start_leave_button.setText("START");
+                        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+                    }
+                }else if(middle_date.equals(end_date)){
+                    if(!middle_time.after(end_time)){
+                        start_leave_button.setText("START");
+                        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+                    }
+                }else{
                     start_leave_button.setText("START");
                     start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
                 }

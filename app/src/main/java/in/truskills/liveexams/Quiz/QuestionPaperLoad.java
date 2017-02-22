@@ -1,5 +1,6 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -61,17 +62,16 @@ import io.fabric.sdk.android.services.concurrency.AsyncTask;
 public class QuestionPaperLoad extends AppCompatActivity implements Handler.Callback{
 
     //Declare the variables..
-    int curCount = 0,myCount=0,questionArray[],status=0;
     int languageArray[][], fragmentIndex[][];
     HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11,map12;
-    int noOfQuestions, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1;
+    int noOfQuestions, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1,hour,minute,myTime,curCount = 0,myCount=0,questionArray[];
     RequestQueue requestQueue;
     String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri,section_id,section_max_marks,section_time,section_description,section_rules;
-    String questionAttributes,opText;
-    String examId, name, selectedLanguage;
+    String questionAttributes,opText,examDuration,examId, name, selectedLanguage,myExamDuration;
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
+    float per;
     MySqlDatabase ob;
     ProgressBar progressBar;
     ArrayList<String> urls,groups;
@@ -119,6 +119,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
                         //Parse response..
                         map2 = QuestionPaperParser.responseParser(response);
+                        examDuration=map2.get("ExamDuration");
+                        myExamDuration=QuestionPaperParser.getExamDuration(examDuration);
+                        String[] parts = myExamDuration.split("-");
+                        hour = Integer.parseInt(parts[0]);
+                        minute = Integer.parseInt(parts[1]);
+                        myTime=hour*60*60*1000+minute*60*1000;
+                        Log.d("myTime",myTime+"");
 
                         //Get Paperset..
                         Paperset = map2.get("Paperset");
@@ -367,6 +374,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
             intent.putExtra("language", selectedLanguage);
             intent.putExtra("noOfSections",noOfSections);
             intent.putExtra("questionArray",questionArray);
+            intent.putExtra("ExamDuration",myTime);
             startActivity(intent);
             finish();
         }else{
@@ -393,6 +401,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                 intent.putExtra("language", selectedLanguage);
                 intent.putExtra("noOfSections",noOfSections);
                 intent.putExtra("questionArray",questionArray);
+                intent.putExtra("ExamDuration",myTime);
                 startActivity(intent);
                 finish();
             }else{
@@ -472,9 +481,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     public boolean handleMessage(Message msg) {
         curCount++;
         Log.d("count",curCount+" "+myCount);
-        float per = (curCount / (float)myCount) * 100;
+        per = (curCount / (float)myCount) * 100;
         Log.d("myPer=",per+"");
-        progressBar.setProgress((int) per);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setProgress((int) per);
+            }
+        });
         return true;
     }
 
