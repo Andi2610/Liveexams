@@ -58,13 +58,15 @@ public class GridViewAdapter extends BaseAdapter {
         tv.setGravity(Gravity.CENTER);
         tv.setTextSize(20);
         switch (type.get(position)){
-            case 0:tv.setTextColor(c.getResources().getColor(R.color.black));
+            case 0:tv.setTextColor(c.getResources().getColor(R.color.green));
                 break;
-            case 1:tv.setTextColor(c.getResources().getColor(R.color.green));
+            case 1:tv.setTextColor(c.getResources().getColor(R.color.orange));
                 break;
-            case 2:tv.setTextColor(c.getResources().getColor(R.color.orange));
+            case 2:tv.setTextColor(c.getResources().getColor(R.color.purple));
                 break;
             case 3:tv.setTextColor(c.getResources().getColor(R.color.red));
+                break;
+            case 4:tv.setTextColor(c.getResources().getColor(R.color.black));
                 break;
         }
         return tv;

@@ -68,7 +68,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     RequestQueue requestQueue;
     String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri,section_id,section_max_marks,section_time,section_description,section_rules;
-    String questionAttributes,opText,examDuration,examId, name, selectedLanguage,myExamDuration;
+    String questionAttributes,opText,examDuration,examId, name, selectedLanguage,myExamDuration,paperName;
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
     float per;
@@ -90,7 +90,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         myWaitMessage.setTypeface(tff1);
 
         examId = getIntent().getStringExtra("examId");
-        name = getIntent().getStringExtra("name");
+        paperName = getIntent().getStringExtra("name");
         selectedLanguage = getIntent().getStringExtra("language");
 
         fList = new ArrayList<>();
@@ -397,7 +397,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                 Log.d("termination","true");
                 Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
                 intent.putExtra("examId", examId);
-                intent.putExtra("name", name);
+                intent.putExtra("name", paperName);
                 intent.putExtra("language", selectedLanguage);
                 intent.putExtra("noOfSections",noOfSections);
                 intent.putExtra("questionArray",questionArray);
@@ -482,13 +482,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         curCount++;
         Log.d("count",curCount+" "+myCount);
         per = (curCount / (float)myCount) * 100;
-        Log.d("myPer=",per+"");
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setProgress((int) per);
-            }
-        });
+        progressBar.setProgress((int) per);
+//        Log.d("myPer=",per+"");
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                progressBar.setProgress((int) per);
+//            }
+//        });
         return true;
     }
 

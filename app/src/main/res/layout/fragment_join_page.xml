@@ -34,7 +34,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/startDetailsJoinPage"
                     android:layout_weight="50"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:padding="10dp"
                     android:gravity="center"
                     android:background="@color/sea_blue"/>
@@ -44,7 +44,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/endDetailsJoinPage"
                     android:layout_weight="50"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:gravity="center"
                     android:background="@color/light_sea_blue"
                     android:padding="10dp"/>

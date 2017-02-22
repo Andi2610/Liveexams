@@ -63,6 +63,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
     public static final String QuestionText = "questionText";
     public static final String FragmentIndex = "fragmentIndex";
     public static final String QuestionStatus = "questionStatus";
+    public static final String TempAnswerSerialNumber = "tempAnswerSerialNumber";
 
 
 
@@ -114,7 +115,8 @@ public class MySqlDatabase extends SQLiteOpenHelper {
                     + QuestionIndex + " INTEGER DEFAULT 0,"
                     + SerialNumber + " TEXT DEFAULT '0',"
                     + FinalAnswerSerialNumber + " TEXT DEFAULT '-1',"
-                    + QuestionStatus + " TEXT DEFAULT '0',"
+                    + TempAnswerSerialNumber + " TEXT DEFAULT '-1',"
+                    + QuestionStatus + " TEXT DEFAULT '4',"
                     + SectionId + " TEXT DEFAULT 'SectionId',"
                     + QuestionId + " TEXT DEFAULT 'QuestionId',"
                     + FinalAnswerId + " TEXT DEFAULT '-1',"
@@ -262,6 +264,10 @@ public class MySqlDatabase extends SQLiteOpenHelper {
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
 
+        query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=4 AND "+SectionIndex+"="+si;
+        cursor=db.rawQuery(query,null);
+        types.add(cursor.getCount());
+
         cursor.close();
 //        db.close();
 
@@ -282,6 +288,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
                 types.add(n);
             }while (cursor.moveToNext());
         }
+        cursor.close();
 
         return types;
     }

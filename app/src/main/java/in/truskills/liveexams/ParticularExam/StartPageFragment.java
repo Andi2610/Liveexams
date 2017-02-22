@@ -222,6 +222,7 @@ public class StartPageFragment extends Fragment {
                     if(!middle_time.after(end_time)){
                         start_leave_button.setText("START");
                         start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+                        endDetails.setBackgroundColor(Color.parseColor("#ef9a9a"));
                     }
                 }else{
                     start_leave_button.setText("START");
@@ -240,8 +241,8 @@ public class StartPageFragment extends Fragment {
 
             Log.d("newTimestamp=",myTimestamp);
 
-            startDetails.setText(myStartDate + "\n\n" + myStartTime);
-            endDetails.setText(myEndDate + "\n\n" + myEndTime);
+            startDetails.setText(myStartDate + "\n" + myStartTime);
+            endDetails.setText(myEndDate + "\n" + myEndTime);
             name = mapper.get("ExamName");
 
 

@@ -119,7 +119,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                                     writer.append(jsonObject.toString());
                                     writer.flush();
                                     writer.close();
-                                    Toast.makeText(AllSectionsSummary.this, "Saved", Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(AllSectionsSummary.this, "Saved", Toast.LENGTH_SHORT).show();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
