@@ -11,4 +11,5 @@ public class Constants {
     public static final String STOPPEDSTREAMING = "stoppedStreaming";
     public static final String GETINFO = "getInfo";
     public static final java.lang.String SETINFO = "setInfo";
+    public static String FLASHPHONER="flashphoner";
 }

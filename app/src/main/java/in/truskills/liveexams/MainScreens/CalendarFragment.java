@@ -48,7 +48,6 @@ import in.truskills.liveexams.R;
  */
 public class CalendarFragment extends Fragment {
 
-
     LinearLayoutManager linearLayoutManager;
     MyExamsListAdapter myExamsListAdapter;
     List<Values> valuesList;
