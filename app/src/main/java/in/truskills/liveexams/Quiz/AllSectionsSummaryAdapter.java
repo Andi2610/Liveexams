@@ -52,17 +52,19 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
 
         types=ob.getTypes(sI);
 
-        holder.submittedQuestionsAllSummary.setText(types.get(1)+"");
-        holder.reviewedQuestionsAllSummary.setText(types.get(2)+"");
+        holder.submittedQuestionsAllSummary.setText(types.get(0)+"");
+        holder.reviewedTickedQuestionsAllSummary.setText(types.get(1)+"");
+        holder.reviewedUntickedQuestionsAllSummary.setText(types.get(2)+"");
         holder.clearedQuestionsAllSummary.setText(types.get(3)+"");
-        holder.notAttemptedQuestionsAllSummary.setText(types.get(0)+"");
+        holder.notAttemptedQuestionsAllSummary.setText(types.get(4)+"");
 
 
         Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.mySectionName.setTypeface(tff1);
         Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
         holder.submittedQuestionsAllSummary.setTypeface(tff2);
-        holder.reviewedQuestionsAllSummary.setTypeface(tff2);
+        holder.reviewedTickedQuestionsAllSummary.setTypeface(tff2);
+        holder.reviewedUntickedQuestionsAllSummary.setTypeface(tff2);
         holder.clearedQuestionsAllSummary.setTypeface(tff2);
         holder.notAttemptedQuestionsAllSummary.setTypeface(tff2);
 
@@ -82,6 +84,22 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
                 ((AllSectionsSummary)c).finish();
             }
         });
+
+        holder.mySectionName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentMessage=new Intent();
+                // put the message in Intent
+                //message=serial number of a section..
+                int mySrNo=holder.getAdapterPosition();
+                MySqlDatabase mySqlDatabase=new MySqlDatabase(c);
+                int sI=mySqlDatabase.getIntValuesPerSectionBySerialNumber(mySrNo,MySqlDatabase.SectionIndex);
+                int my_fi=mySqlDatabase.getIntValuesPerQuestionBySiAndSrno(sI,0,MySqlDatabase.FragmentIndex);
+                intentMessage.putExtra("jumpTo",my_fi);
+                ((AllSectionsSummary)c).setResult(2,intentMessage);
+                ((AllSectionsSummary)c).finish();
+            }
+        });
     }
 
     @Override
@@ -91,14 +109,15 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mySectionName,submittedQuestionsAllSummary,reviewedQuestionsAllSummary,clearedQuestionsAllSummary,notAttemptedQuestionsAllSummary;
+        TextView mySectionName,submittedQuestionsAllSummary,reviewedTickedQuestionsAllSummary,reviewedUntickedQuestionsAllSummary,clearedQuestionsAllSummary,notAttemptedQuestionsAllSummary;
         GridView gridView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             mySectionName = (TextView) itemView.findViewById(R.id.mySectionName);
             submittedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.submittedQuestionsAllSummary);
-            reviewedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.reviewedQuestionsAllSummary);
+            reviewedTickedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.reviewedTickedQuestionsAllSummary);
+            reviewedUntickedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.reviewedUntickedQuestionsAllSummary);
             clearedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.clearedQuestionsAllSummary);
             notAttemptedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.notAttemptedQuestionsAllSummary);
 

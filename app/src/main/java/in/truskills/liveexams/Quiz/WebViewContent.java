@@ -32,7 +32,7 @@ import in.truskills.liveexams.R;
 
 public class WebViewContent {
 
-    public void contentGenerator(final String question, final ArrayList<String> optionsList, final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, final WebView webView,final int mySi,final int myQi,final Context c,final MyFragmentInterface obb,final int myFragmentCount) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
@@ -86,22 +86,24 @@ public class WebViewContent {
                 MySqlDatabase ob=new MySqlDatabase(c);
 
 
-                //Get options ticked.. update it in final answer..
-                //Also increment no. of toggles for the question by one..
+                //Get options ticked..
                 String stringVariable = strl;
                 int myStr=Integer.parseInt(stringVariable);
-                ob.updateValuesForResult(mySi,myQi,MySqlDatabase.FinalAnswerSerialNumber,myStr+"");
-                int oi=ob.getOptionIdBySerialNumber(myStr+"");
-                ob.updateValuesForResult(mySi,myQi,MySqlDatabase.FinalAnswerId,oi+"");
+                //update it in temp answer..
+                ob.updateValuesForResult(mySi,myQi,MySqlDatabase.TempAnswerSerialNumber,myStr+"");
+                String temp=ob.getValuesForResult(mySi,myQi,MySqlDatabase.TempAnswerSerialNumber);
+                Log.d("myData","tempStr="+temp);
 
+                //Also increment no. of toggles for the question by one..
                 String not=ob.getValuesForResult(mySi,myQi,MySqlDatabase.NumberOfToggles);
                 int numOfTog=Integer.parseInt(not);
                 numOfTog++;
                 ob.updateValuesForResult(mySi,myQi,MySqlDatabase.NumberOfToggles,numOfTog+"");
-
+                //Put status of question as not answered.. i.e. in red..
                 //Enable buttons..
-
                 obb.enableButtons();
+                int status=Integer.parseInt(ob.getValuesForResult(mySi,myQi,MySqlDatabase.QuestionStatus));
+                obb.putDetailsForNotAnswered(mySi,myQi,myFragmentCount);
 
             }
         }, "ok");

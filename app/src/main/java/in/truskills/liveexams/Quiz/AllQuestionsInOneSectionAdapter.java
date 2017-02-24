@@ -49,13 +49,15 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
             Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
             holder.questionNumber.setTypeface(tff1);
             switch (myType.get(holder.getAdapterPosition())){
-                case 0:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.black));
+                case 0:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.green));
                     break;
-                case 1:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.green));
+                case 1:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.orange));
                     break;
-                case 2:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.orange));
+                case 2:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.purple));
                     break;
                 case 3:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.red));
+                    break;
+                case 4:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.black));
                     break;
             }
             if(holder.getAdapterPosition()==pos){

@@ -145,8 +145,8 @@ public class JoinPageFragment extends Fragment {
             String endTime=mapper.get("EndTime");
             String myEndTime=VariablesDefined.parseTimeForDetails(endTime);
 
-            startDetailsJoinPage.setText(myStartDate + "\n\n" + myStartTime);
-            endDetailsJoinPage.setText(myEndDate + "\n\n" + myEndTime);
+            startDetailsJoinPage.setText(myStartDate + "\n" + myStartTime);
+            endDetailsJoinPage.setText(myEndDate + "\n" + myEndTime);
 
 
 

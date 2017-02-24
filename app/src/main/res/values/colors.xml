@@ -17,4 +17,6 @@
     <color name="very_light_black">#616161</color>
     <color name="grey">#a9afb9</color>
     <color name="very_light_blue">#B1E1F2</color>
+    <color name="light_red">#ef9a9a</color>
+    <color name="purple">#7B1FA2</color>
 </resources>

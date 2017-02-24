@@ -43,8 +43,9 @@ public class LongThread implements Runnable {
         bmp=getBitmap(imageUrl);
         try {
             savebitmap(bmp,group);
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.e("in","exception:"+e.toString());
+//            Toast.makeText(c, "No connection", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         sendMessage(threadNo, "Thread Completed");
@@ -74,6 +75,7 @@ public class LongThread implements Runnable {
 
 
     public void sendMessage(int what, String msg) {
+
         Message message = handler.obtainMessage(what, msg);
         message.sendToTarget();
     }

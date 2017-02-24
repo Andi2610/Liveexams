@@ -13,14 +13,65 @@
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:background="@color/black"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="You have not visited this question"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@color/red"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="You have not answered this question"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@color/green"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Answers Submitted"
+            android:text="You have submitted this question"
             android:layout_marginLeft="10dp"
-            android:id="@+id/tv1"/>
+            android:id="@+id/tv3"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="20dp">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@color/purple"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="You have not answered this question and marked for review"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tv7"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -35,26 +86,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Questions marked for review"
+            android:text="You have answered this question and marked for review"
             android:layout_marginLeft="10dp"
-            android:id="@+id/tv2"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="20dp">
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@color/black"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Questions not attempted"
-            android:layout_marginLeft="10dp"
-            android:id="@+id/tv3"/>
+            android:id="@+id/tv8"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
