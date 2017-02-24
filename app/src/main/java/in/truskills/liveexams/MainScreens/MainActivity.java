@@ -129,7 +129,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 //Display image chooser..
-                selectImage();
+                boolean statusForCamera = CheckForPermissions.checkForCamera(MainActivity.this);
+                if (statusForCamera) {
+                    boolean statusForGallery = CheckForPermissions.checkForGallery(MainActivity.this);
+                    if (statusForGallery) {
+                        selectImage();
+                    }
+                }
             }
         });
     }
@@ -160,15 +166,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     if (items[item].equals("Take Photo")) {
                         boolean statusForCamera = CheckForPermissions.checkForCamera(MainActivity.this);
-                        if (statusForCamera) {
-                            Log.d(CAMERA, "permission granted for camera");
+//                        if (statusForCamera) {
+//                            Log.d(CAMERA, "permission granted for camera");
                             cameraIntent();
-                        }
+//                        }
                     } else if (items[item].equals("Choose from Library")) {
-                        boolean statusForGallery = CheckForPermissions.checkForGallery(MainActivity.this);
-                        if (statusForGallery) {
+//                        boolean statusForGallery = CheckForPermissions.checkForGallery(MainActivity.this);
+//                        if (statusForGallery) {
                             galleryIntent();
-                        }
+//                        }
                     } else if (items[item].equals("Remove Photo")) {
                         SharedPreferences.Editor e = prefs.edit();
                         e.putString("navImage", defaultImage);
@@ -283,7 +289,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case CheckForPermissions.STORAGE_PERMISSION_CODE:
                 //If permission is granted
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    galleryIntent();
+//                    galleryIntent();
+                    selectImage();
                 } else {
                     //Displaying another toast if permission is not granted
                     Toast.makeText(this, "Oops you have denied the permission for storage access\nGo to settings and grant them", Toast.LENGTH_LONG).show();
@@ -293,7 +300,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case CheckForPermissions.CAMERA_PERMISSION_CODE:
                 //If permission is granted
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    cameraIntent();
+                    boolean statusForGallery = CheckForPermissions.checkForGallery(MainActivity.this);
+                    if (statusForGallery) {
+                        selectImage();
+                    }
+//                    cameraIntent();
                 } else {
                     //Displaying another toast if permission is not granted
                     Toast.makeText(this, "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
@@ -442,6 +453,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(MainActivity.this, Signup_Login.class);
             startActivity(i);
             finish();
+        }else if(id==R.id.nav_statistics){
+            StatisticsFragment f = (StatisticsFragment) manager.findFragmentByTag("StatisticsFragment");
+            if (!(f != null && f.isVisible())) {
+
+                StatisticsFragment fragment = new StatisticsFragment();
+                FragmentTransaction t = manager.beginTransaction();
+                t.replace(R.id.fragment, fragment, "StatisticsFragment");
+                t.commit();
+                navigationView.setCheckedItem(R.id.nav_statistics);
+                getSupportActionBar().setTitle("STATISTICS");
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

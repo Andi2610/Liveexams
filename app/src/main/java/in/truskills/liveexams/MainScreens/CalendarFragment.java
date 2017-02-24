@@ -15,8 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -24,7 +22,6 @@ import com.stacktips.view.CalendarListener;
 import com.stacktips.view.CustomCalendarView;
 import com.stacktips.view.DayDecorator;
 import com.stacktips.view.DayView;
-import com.stacktips.view.utils.CalendarUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,10 +34,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.R;
 
 /**
@@ -172,7 +167,7 @@ public class CalendarFragment extends Fragment {
         valuesList = new ArrayList<>();
         if (!joinedExams.equals("noJoinedExams")) {
             try {
-                mapper = VariablesDefined.myExamsParser(joinedExams);
+                mapper = MiscellaneousParser.myExamsParser(joinedExams);
                 JSONArray arr = new JSONArray(joinedExams);
                 int length = arr.length();
                 for (i = 0; i < length; ++i) {
@@ -182,9 +177,9 @@ public class CalendarFragment extends Fragment {
                         myEndDate = mapper.get("EndDate").get(i);
                         myDuration = mapper.get("ExamDuration").get(i);
 
-                        myDateOfStart=VariablesDefined.parseDate(myStartDate);
-                        myDateOfEnd=VariablesDefined.parseDate(myEndDate);
-                        myDurationTime=VariablesDefined.parseDuration(myDuration);
+                        myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
+                        myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
+                        myDurationTime= MiscellaneousParser.parseDuration(myDuration);
 
                         String array[]=myDateOfStart.split("/");
                         start_day=Integer.parseInt(array[0]);
@@ -235,7 +230,7 @@ public class CalendarFragment extends Fragment {
     private void getDurationOfEachExam(Date date,DayView dayView) {
         if (!joinedExams.equals("noJoinedExams")) {
             try {
-                mapper = VariablesDefined.myExamsParser(joinedExams);
+                mapper = MiscellaneousParser.myExamsParser(joinedExams);
                 JSONArray arr = new JSONArray(joinedExams);
                 int length = arr.length();
                 ArrayList<Integer> list=new ArrayList<>();
@@ -244,8 +239,8 @@ public class CalendarFragment extends Fragment {
                         myStartDate = mapper.get("StartDate").get(i);
                         myEndDate = mapper.get("EndDate").get(i);
 
-                        myDateOfStart=VariablesDefined.parseDate(myStartDate);
-                        myDateOfEnd=VariablesDefined.parseDate(myEndDate);
+                        myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
+                        myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
 
                        String array[]=myDateOfStart.split("/");
                         start_day=Integer.parseInt(array[0]);

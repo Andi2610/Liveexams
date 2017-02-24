@@ -1,47 +1,57 @@
 {
-  "response": [
-    {
-      "_id": "58aa8e2f6da5731977705f7b",
-      "LanguagesAvailible": [],
+  "response": {
+    "questionPaper": {
+      "_id": "58abfdd579a6231a55703f43",
       "__v": 0,
       "Paperset": [
         {
+          "_id": "58abfdd579a6231a55703f44",
           "Attributes": {
             "id": 1
           },
           "Sections": [
             {
+              "_id": "58abfdd579a6231a55703f45",
               "Section": [
                 {
+                  "_id": "58abfdd579a6231a55703fd6",
                   "SectionQuestions": [
                     {
+                      "_id": "58abfdd579a6231a55703fd7",
                       "Question": [
                         {
+                          "_id": "58abfdd579a6231a55704010",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55704017",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55704018",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q1a1.jpg",
+                                      "_id": "58abfdd579a6231a5570401c",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a2.jpg",
+                                      "_id": "58abfdd579a6231a5570401b",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a3.jpg",
+                                      "_id": "58abfdd579a6231a5570401a",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a4.jpg",
+                                      "_id": "58abfdd579a6231a55704019",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -57,29 +67,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55704011",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55704012",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q1ha1.jpg",
+                                      "_id": "58abfdd579a6231a55704016",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha2.jpg",
+                                      "_id": "58abfdd579a6231a55704015",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha3.jpg",
+                                      "_id": "58abfdd579a6231a55704014",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha4.jpg",
+                                      "_id": "58abfdd579a6231a55704013",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -97,6 +113,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a5570401d",
                               "Year": [
                                 2009,
                                 2011
@@ -108,43 +125,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 1,
                             "CorrectAnswer": 4,
-                            "id": 1
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55704002",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55704009",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a5570400a",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q2a1.jpg",
+                                      "_id": "58abfdd579a6231a5570400e",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a2.jpg",
+                                      "_id": "58abfdd579a6231a5570400d",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a3.jpg",
+                                      "_id": "58abfdd579a6231a5570400c",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a4.jpg",
+                                      "_id": "58abfdd579a6231a5570400b",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -160,29 +184,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55704003",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55704004",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q2ha1.jpg",
+                                      "_id": "58abfdd579a6231a55704008",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha2.jpg",
+                                      "_id": "58abfdd579a6231a55704007",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha3.jpg",
+                                      "_id": "58abfdd579a6231a55704006",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha4.jpg",
+                                      "_id": "58abfdd579a6231a55704005",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -200,6 +230,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a5570400f",
                               "Year": [
                                 2009,
                                 2011
@@ -211,43 +242,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 2,
                             "CorrectAnswer": 2,
-                            "id": 2
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703ff4",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703ffb",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703ffc",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q3a1.jpg",
+                                      "_id": "58abfdd579a6231a55704000",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a2.jpg",
+                                      "_id": "58abfdd579a6231a55703fff",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a3.jpg",
+                                      "_id": "58abfdd579a6231a55703ffe",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a4.jpg",
+                                      "_id": "58abfdd579a6231a55703ffd",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -263,29 +301,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703ff5",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703ff6",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q3ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703ffa",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703ff9",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703ff8",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703ff7",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -303,6 +347,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55704001",
                               "Year": [
                                 2009,
                                 2011
@@ -314,43 +359,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 3,
                             "CorrectAnswer": 1,
-                            "id": 3
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703fe6",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703fed",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fee",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q4a1.jpg",
+                                      "_id": "58abfdd579a6231a55703ff2",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a2.jpg",
+                                      "_id": "58abfdd579a6231a55703ff1",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a3.jpg",
+                                      "_id": "58abfdd579a6231a55703ff0",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a4.jpg",
+                                      "_id": "58abfdd579a6231a55703fef",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -366,29 +418,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703fe7",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fe8",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q4ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703fec",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703feb",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703fea",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703fe9",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -406,6 +464,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703ff3",
                               "Year": [
                                 2009,
                                 2011
@@ -417,43 +476,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 4,
                             "CorrectAnswer": 3,
-                            "id": 4
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703fd8",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703fdf",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fe0",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q5a1.jpg",
+                                      "_id": "58abfdd579a6231a55703fe4",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a2.jpg",
+                                      "_id": "58abfdd579a6231a55703fe3",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a3.jpg",
+                                      "_id": "58abfdd579a6231a55703fe2",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a4.jpg",
+                                      "_id": "58abfdd579a6231a55703fe1",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -469,29 +535,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703fd9",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fda",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q5ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703fde",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703fdd",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703fdc",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703fdb",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -509,6 +581,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703fe5",
                               "Year": [
                                 2009,
                                 2011
@@ -520,23 +593,23 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 5,
                             "CorrectAnswer": 4,
-                            "id": 5
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         }
                       ]
                     }
                   ],
                   "Attributes": {
-                    "Name": "Maths",
-                    "id": 1
+                    "id": 1,
+                    "Name": "Maths"
                   },
                   "SectionRules": [
                     "This Section is for......"
@@ -552,35 +625,44 @@
                   ]
                 },
                 {
+                  "_id": "58abfdd579a6231a55703f8e",
                   "SectionQuestions": [
                     {
+                      "_id": "58abfdd579a6231a55703f8f",
                       "Question": [
                         {
+                          "_id": "58abfdd579a6231a55703fc8",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703fcf",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fd0",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q1a1.jpg",
+                                      "_id": "58abfdd579a6231a55703fd4",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a2.jpg",
+                                      "_id": "58abfdd579a6231a55703fd3",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a3.jpg",
+                                      "_id": "58abfdd579a6231a55703fd2",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a4.jpg",
+                                      "_id": "58abfdd579a6231a55703fd1",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -596,29 +678,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703fc9",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fca",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q1ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703fce",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703fcd",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703fcc",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703fcb",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -636,6 +724,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703fd5",
                               "Year": [
                                 2009,
                                 2011
@@ -647,43 +736,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 1,
                             "CorrectAnswer": 4,
-                            "id": 1
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703fba",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703fc1",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fc2",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q2a1.jpg",
+                                      "_id": "58abfdd579a6231a55703fc6",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a2.jpg",
+                                      "_id": "58abfdd579a6231a55703fc5",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a3.jpg",
+                                      "_id": "58abfdd579a6231a55703fc4",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a4.jpg",
+                                      "_id": "58abfdd579a6231a55703fc3",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -699,29 +795,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703fbb",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fbc",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q2ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703fc0",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703fbf",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703fbe",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703fbd",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -739,6 +841,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703fc7",
                               "Year": [
                                 2009,
                                 2011
@@ -750,43 +853,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 2,
                             "CorrectAnswer": 2,
-                            "id": 2
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703fac",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703fb3",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fb4",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q3a1.jpg",
+                                      "_id": "58abfdd579a6231a55703fb8",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a2.jpg",
+                                      "_id": "58abfdd579a6231a55703fb7",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a3.jpg",
+                                      "_id": "58abfdd579a6231a55703fb6",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a4.jpg",
+                                      "_id": "58abfdd579a6231a55703fb5",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -802,29 +912,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703fad",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fae",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q3ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703fb2",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703fb1",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703fb0",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703faf",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -842,6 +958,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703fb9",
                               "Year": [
                                 2009,
                                 2011
@@ -853,43 +970,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 3,
                             "CorrectAnswer": 1,
-                            "id": 3
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703f9e",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703fa5",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fa6",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q4a1.jpg",
+                                      "_id": "58abfdd579a6231a55703faa",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a2.jpg",
+                                      "_id": "58abfdd579a6231a55703fa9",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a3.jpg",
+                                      "_id": "58abfdd579a6231a55703fa8",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a4.jpg",
+                                      "_id": "58abfdd579a6231a55703fa7",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -905,29 +1029,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703f9f",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703fa0",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q4ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703fa4",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703fa3",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703fa2",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703fa1",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -945,6 +1075,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703fab",
                               "Year": [
                                 2009,
                                 2011
@@ -956,43 +1087,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 4,
                             "CorrectAnswer": 3,
-                            "id": 4
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703f90",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703f97",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f98",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q5a1.jpg",
+                                      "_id": "58abfdd579a6231a55703f9c",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a2.jpg",
+                                      "_id": "58abfdd579a6231a55703f9b",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a3.jpg",
+                                      "_id": "58abfdd579a6231a55703f9a",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a4.jpg",
+                                      "_id": "58abfdd579a6231a55703f99",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1008,29 +1146,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703f91",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f92",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q5ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703f96",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703f95",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703f94",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703f93",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1048,6 +1192,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703f9d",
                               "Year": [
                                 2009,
                                 2011
@@ -1059,23 +1204,23 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 5,
                             "CorrectAnswer": 4,
-                            "id": 5
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         }
                       ]
                     }
                   ],
                   "Attributes": {
-                    "Name": "Chemistry",
-                    "id": 2
+                    "id": 2,
+                    "Name": "Chemistry"
                   },
                   "SectionRules": [
                     "This Section is for......"
@@ -1091,35 +1236,44 @@
                   ]
                 },
                 {
+                  "_id": "58abfdd579a6231a55703f46",
                   "SectionQuestions": [
                     {
+                      "_id": "58abfdd579a6231a55703f47",
                       "Question": [
                         {
+                          "_id": "58abfdd579a6231a55703f80",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703f87",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f88",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q1a1.jpg",
+                                      "_id": "58abfdd579a6231a55703f8c",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a2.jpg",
+                                      "_id": "58abfdd579a6231a55703f8b",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a3.jpg",
+                                      "_id": "58abfdd579a6231a55703f8a",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1a4.jpg",
+                                      "_id": "58abfdd579a6231a55703f89",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1135,29 +1289,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703f81",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f82",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q1ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703f86",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703f85",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703f84",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q1ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703f83",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1175,6 +1335,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703f8d",
                               "Year": [
                                 2009,
                                 2011
@@ -1186,43 +1347,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 1,
                             "CorrectAnswer": 4,
-                            "id": 1
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703f72",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703f79",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f7a",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q2a1.jpg",
+                                      "_id": "58abfdd579a6231a55703f7e",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a2.jpg",
+                                      "_id": "58abfdd579a6231a55703f7d",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a3.jpg",
+                                      "_id": "58abfdd579a6231a55703f7c",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2a4.jpg",
+                                      "_id": "58abfdd579a6231a55703f7b",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1238,29 +1406,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703f73",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f74",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q2ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703f78",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703f77",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703f76",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q2ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703f75",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1278,6 +1452,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703f7f",
                               "Year": [
                                 2009,
                                 2011
@@ -1289,43 +1464,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 2,
                             "CorrectAnswer": 2,
-                            "id": 2
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703f64",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703f6b",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f6c",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q3a1.jpg",
+                                      "_id": "58abfdd579a6231a55703f70",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a2.jpg",
+                                      "_id": "58abfdd579a6231a55703f6f",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a3.jpg",
+                                      "_id": "58abfdd579a6231a55703f6e",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3a4.jpg",
+                                      "_id": "58abfdd579a6231a55703f6d",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1341,29 +1523,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703f65",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f66",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q3ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703f6a",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703f69",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703f68",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q3ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703f67",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1381,6 +1569,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703f71",
                               "Year": [
                                 2009,
                                 2011
@@ -1392,43 +1581,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 3,
                             "CorrectAnswer": 1,
-                            "id": 3
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703f56",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703f5d",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f5e",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q4a1.jpg",
+                                      "_id": "58abfdd579a6231a55703f62",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a2.jpg",
+                                      "_id": "58abfdd579a6231a55703f61",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a3.jpg",
+                                      "_id": "58abfdd579a6231a55703f60",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4a4.jpg",
+                                      "_id": "58abfdd579a6231a55703f5f",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1444,29 +1640,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703f57",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f58",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q4ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703f5c",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703f5b",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703f5a",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q4ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703f59",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1484,6 +1686,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703f63",
                               "Year": [
                                 2009,
                                 2011
@@ -1495,43 +1698,50 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 4,
                             "CorrectAnswer": 3,
-                            "id": 4
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         },
                         {
+                          "_id": "58abfdd579a6231a55703f48",
                           "Language": [
                             {
+                              "_id": "58abfdd579a6231a55703f4f",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f50",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q5a1.jpg",
+                                      "_id": "58abfdd579a6231a55703f54",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a2.jpg",
+                                      "_id": "58abfdd579a6231a55703f53",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a3.jpg",
+                                      "_id": "58abfdd579a6231a55703f52",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5a4.jpg",
+                                      "_id": "58abfdd579a6231a55703f51",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1547,29 +1757,35 @@
                               ]
                             },
                             {
+                              "_id": "58abfdd579a6231a55703f49",
                               "Options": [
                                 {
+                                  "_id": "58abfdd579a6231a55703f4a",
                                   "Option": [
                                     {
                                       "_": "\\Images\\q5ha1.jpg",
+                                      "_id": "58abfdd579a6231a55703f4e",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha2.jpg",
+                                      "_id": "58abfdd579a6231a55703f4d",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha3.jpg",
+                                      "_id": "58abfdd579a6231a55703f4c",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
                                       "_": "\\Images\\q5ha4.jpg",
+                                      "_id": "58abfdd579a6231a55703f4b",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1587,6 +1803,7 @@
                           ],
                           "AskedIn": [
                             {
+                              "_id": "58abfdd579a6231a55703f55",
                               "Year": [
                                 2009,
                                 2011
@@ -1598,23 +1815,23 @@
                             }
                           ],
                           "Attributes": {
-                            "QuestionRelativeTopic": "Matrix",
-                            "QuestionDifficultyLevel": 1,
-                            "QuestionTime": "00-02",
-                            "QuestionType": "MCQ",
-                            "PassageID": null,
-                            "QuestionIncorrectMarks": -1,
-                            "QuestionCorrectMarks": 4,
+                            "id": 5,
                             "CorrectAnswer": 4,
-                            "id": 5
+                            "QuestionCorrectMarks": 4,
+                            "QuestionIncorrectMarks": -1,
+                            "PassageID": null,
+                            "QuestionType": "MCQ",
+                            "QuestionTime": "00-02",
+                            "QuestionDifficultyLevel": 1,
+                            "QuestionRelativeTopic": "Matrix"
                           }
                         }
                       ]
                     }
                   ],
                   "Attributes": {
-                    "Name": "Physics",
-                    "id": 3
+                    "id": 3,
+                    "Name": "Physics"
                   },
                   "SectionRules": [
                     "This Section is for......"
@@ -1639,14 +1856,24 @@
       ],
       "AuthorDetails": [
         {
+          "_id": "58abfdd579a6231a5570401e",
           "Attributes": {
-            "Location": "Delhi",
+            "id": "58a04c60cd479a5571e5925e",
+            "Name": "preet1",
+            "Emailid": "preet1@gmail.com",
+            "Contact": 9123456789,
             "Qualification": "",
-            "Contact": null,
-            "Emailid": "shivangi@gmail.com",
-            "Name": "shivangilm10",
-            "id": "58aa8d606da5731977705f7a"
+            "Location": "Vadodara"
           }
+        }
+      ],
+      "Languages": [
+        {
+          "_id": "58abfdd579a6231a5570401f",
+          "Language": [
+            "Hindi",
+            "English"
+          ]
         }
       ],
       "ExamImage": [
@@ -1668,21 +1895,532 @@
         "15-00"
       ],
       "EndDate": [
-        "Thu Feb 16 2017 00:00:00 GMT+0530 (IST)"
+        "8/18/2015"
       ],
       "StartDate": [
-        "Sat Feb 11 2017 00:00:00 GMT+0530 (IST)"
+        "8/18/2015"
       ],
       "MaximumMarks": [
         360
       ],
       "ExamId": [
-        "000004"
+        "0001"
       ],
       "ExamName": [
-        "Calculus"
+        "Example Paper"
+      ]
+    },
+    "answerKey": {
+      "_id": "58ac01a38a9d631ef3c46480",
+      "ExamId": "58abfdd579a6231a55703f43",
+      "__v": 0,
+      "answerKey": [
+        {
+          "rightAnswer": 3,
+          "sectionId": 1,
+          "questionId": 1,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c4648f"
+        },
+        {
+          "rightAnswer": 2,
+          "sectionId": 1,
+          "questionId": 2,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c4648e"
+        },
+        {
+          "rightAnswer": 4,
+          "sectionId": 1,
+          "questionId": 3,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c4648d"
+        },
+        {
+          "rightAnswer": 1,
+          "sectionId": 1,
+          "questionId": 4,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c4648c"
+        },
+        {
+          "rightAnswer": 2,
+          "sectionId": 1,
+          "questionId": 5,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c4648b"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 2,
+          "questionId": 1,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c4648a"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 2,
+          "questionId": 2,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46489"
+        },
+        {
+          "rightAnswer": 1,
+          "sectionId": 2,
+          "questionId": 3,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46488"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 2,
+          "questionId": 4,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46487"
+        },
+        {
+          "rightAnswer": 2,
+          "sectionId": 2,
+          "questionId": 5,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46486"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 3,
+          "questionId": 1,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46485"
+        },
+        {
+          "rightAnswer": 4,
+          "sectionId": 3,
+          "questionId": 2,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46484"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 3,
+          "questionId": 3,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46483"
+        },
+        {
+          "rightAnswer": 2,
+          "sectionId": 3,
+          "questionId": 4,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46482"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 3,
+          "questionId": 5,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58ac01a38a9d631ef3c46481"
+        }
+      ]
+    },
+    "answerPaper": {
+      "_id": "58ac0156512f711d94b49b57",
+      "ExamId": "58abfdd579a6231a55703f43",
+      "userId": "58a04c2fcd479a5571e5925d",
+      "__v": 0,
+      "answerPaper": [
+        {
+          "numberOfToggles": 7,
+          "readStatus": 1,
+          "finalAnswerId": 2,
+          "questionStatus": 0,
+          "sectionId": 1,
+          "timeSpent": 100,
+          "questionId": 1,
+          "_id": "58ac0156512f711d94b49b66"
+        },
+        {
+          "numberOfToggles": 0,
+          "readStatus": 0,
+          "finalAnswerId": -1,
+          "questionStatus": 0,
+          "sectionId": 1,
+          "timeSpent": 0,
+          "questionId": 2,
+          "_id": "58ac0156512f711d94b49b65"
+        },
+        {
+          "numberOfToggles": 0,
+          "readStatus": 1,
+          "finalAnswerId": 1,
+          "questionStatus": 1,
+          "sectionId": 1,
+          "timeSpent": 127,
+          "questionId": 3,
+          "_id": "58ac0156512f711d94b49b64"
+        },
+        {
+          "numberOfToggles": 2,
+          "readStatus": 1,
+          "finalAnswerId": 2,
+          "questionStatus": 1,
+          "sectionId": 1,
+          "timeSpent": 168,
+          "questionId": 4,
+          "_id": "58ac0156512f711d94b49b63"
+        },
+        {
+          "numberOfToggles": 0,
+          "readStatus": 1,
+          "finalAnswerId": 4,
+          "questionStatus": 1,
+          "sectionId": 1,
+          "timeSpent": 132,
+          "questionId": 5,
+          "_id": "58ac0156512f711d94b49b62"
+        },
+        {
+          "numberOfToggles": 2,
+          "readStatus": 1,
+          "finalAnswerId": 1,
+          "questionStatus": 1,
+          "sectionId": 2,
+          "timeSpent": 185,
+          "questionId": 1,
+          "_id": "58ac0156512f711d94b49b61"
+        },
+        {
+          "numberOfToggles": 0,
+          "readStatus": 1,
+          "finalAnswerId": 3,
+          "questionStatus": 2,
+          "sectionId": 2,
+          "timeSpent": 115,
+          "questionId": 2,
+          "_id": "58ac0156512f711d94b49b60"
+        },
+        {
+          "numberOfToggles": 1,
+          "readStatus": 1,
+          "finalAnswerId": 4,
+          "questionStatus": 1,
+          "sectionId": 2,
+          "timeSpent": 35,
+          "questionId": 3,
+          "_id": "58ac0156512f711d94b49b5f"
+        },
+        {
+          "numberOfToggles": 0,
+          "readStatus": 1,
+          "finalAnswerId": 4,
+          "questionStatus": 1,
+          "sectionId": 2,
+          "timeSpent": 65,
+          "questionId": 4,
+          "_id": "58ac0156512f711d94b49b5e"
+        },
+        {
+          "numberOfToggles": 5,
+          "readStatus": 1,
+          "finalAnswerId": 1,
+          "questionStatus": 1,
+          "sectionId": 2,
+          "timeSpent": 77,
+          "questionId": 5,
+          "_id": "58ac0156512f711d94b49b5d"
+        },
+        {
+          "numberOfToggles": 3,
+          "readStatus": 1,
+          "finalAnswerId": 4,
+          "questionStatus": 3,
+          "sectionId": 3,
+          "timeSpent": 23,
+          "questionId": 1,
+          "_id": "58ac0156512f711d94b49b5c"
+        },
+        {
+          "numberOfToggles": 2,
+          "readStatus": 1,
+          "finalAnswerId": 4,
+          "questionStatus": 2,
+          "sectionId": 3,
+          "timeSpent": 108,
+          "questionId": 2,
+          "_id": "58ac0156512f711d94b49b5b"
+        },
+        {
+          "numberOfToggles": 0,
+          "readStatus": 0,
+          "finalAnswerId": -1,
+          "questionStatus": 0,
+          "sectionId": 3,
+          "timeSpent": 0,
+          "questionId": 3,
+          "_id": "58ac0156512f711d94b49b5a"
+        },
+        {
+          "numberOfToggles": 0,
+          "readStatus": 0,
+          "finalAnswerId": -1,
+          "questionStatus": 0,
+          "sectionId": 3,
+          "timeSpent": 0,
+          "questionId": 4,
+          "_id": "58ac0156512f711d94b49b59"
+        },
+        {
+          "numberOfToggles": 0,
+          "readStatus": 1,
+          "finalAnswerId": 4,
+          "questionStatus": 1,
+          "sectionId": 3,
+          "timeSpent": 99,
+          "questionId": 5,
+          "_id": "58ac0156512f711d94b49b58"
+        }
+      ]
+    },
+    "endExamAnalytics": {
+      "_id": "58ac372a23bfa221268f39cd",
+      "ExamId": "58abfdd579a6231a55703f43",
+      "__v": 0,
+      "analytics": [
+        {
+          "sectionId": 1,
+          "questionId": 1,
+          "rightAnsweredBy": 1,
+          "wrongAnsweredBy": 1,
+          "minimumTime": 0,
+          "maximumTime": 100,
+          "_id": "58ac372a23bfa221268f39dc"
+        },
+        {
+          "sectionId": 1,
+          "questionId": 2,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 3,
+          "minimumTime": 0,
+          "maximumTime": 104,
+          "_id": "58ac372a23bfa221268f39db"
+        },
+        {
+          "sectionId": 1,
+          "questionId": 3,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 3,
+          "minimumTime": 0,
+          "maximumTime": 127,
+          "_id": "58ac372a23bfa221268f39da"
+        },
+        {
+          "sectionId": 1,
+          "questionId": 4,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 3,
+          "minimumTime": 0,
+          "maximumTime": 168,
+          "_id": "58ac372a23bfa221268f39d9"
+        },
+        {
+          "sectionId": 1,
+          "questionId": 5,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 3,
+          "minimumTime": 0,
+          "maximumTime": 132,
+          "_id": "58ac372a23bfa221268f39d8"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 1,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 4,
+          "minimumTime": 0,
+          "maximumTime": 185,
+          "_id": "58ac372a23bfa221268f39d7"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 2,
+          "rightAnsweredBy": 2,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 178,
+          "_id": "58ac372a23bfa221268f39d6"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 3,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 4,
+          "minimumTime": 0,
+          "maximumTime": 307,
+          "_id": "58ac372a23bfa221268f39d5"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 4,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 2,
+          "minimumTime": 0,
+          "maximumTime": 215,
+          "_id": "58ac372a23bfa221268f39d4"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 5,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 2,
+          "minimumTime": 0,
+          "maximumTime": 77,
+          "_id": "58ac372a23bfa221268f39d3"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 1,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 2,
+          "minimumTime": 0,
+          "maximumTime": 156,
+          "_id": "58ac372a23bfa221268f39d2"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 2,
+          "rightAnsweredBy": 1,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 178,
+          "_id": "58ac372a23bfa221268f39d1"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 3,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 1,
+          "minimumTime": 0,
+          "maximumTime": 16,
+          "_id": "58ac372a23bfa221268f39d0"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 4,
+          "rightAnsweredBy": 1,
+          "wrongAnsweredBy": 1,
+          "minimumTime": 0,
+          "maximumTime": 75,
+          "_id": "58ac372a23bfa221268f39cf"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 5,
+          "rightAnsweredBy": 1,
+          "wrongAnsweredBy": 2,
+          "minimumTime": 0,
+          "maximumTime": 99,
+          "_id": "58ac372a23bfa221268f39ce"
+        }
+      ],
+      "sectionWiseAnalytics": []
+    },
+    "EndStudentAnalytics": {
+      "_id": "58ac372a23bfa221268f3995",
+      "ExamId": "58abfdd579a6231a55703f43",
+      "userId": "58a04c2fcd479a5571e5925d",
+      "__v": 0,
+      "analytics": [
+        {
+          "totalMarks": -8,
+          "totalTimeSpent": 1234,
+          "totalAttemptedQuestions": 11,
+          "totalReadQuestions": 12,
+          "_id": "58ac372a23bfa221268f3996",
+          "sectionWiseReadQuestions": [
+            {
+              "sectionId": 1,
+              "readQuestions": 4,
+              "_id": "58ac372a23bfa221268f3999"
+            },
+            {
+              "sectionId": 2,
+              "readQuestions": 5,
+              "_id": "58ac372a23bfa221268f3998"
+            },
+            {
+              "sectionId": 3,
+              "readQuestions": 3,
+              "_id": "58ac372a23bfa221268f3997"
+            }
+          ],
+          "sectionWiseAttemptedQuestions": [
+            {
+              "sectionId": 1,
+              "attemptedQuestions": 3,
+              "_id": "58ac372a23bfa221268f399c"
+            },
+            {
+              "sectionId": 2,
+              "attemptedQuestions": 5,
+              "_id": "58ac372a23bfa221268f399b"
+            },
+            {
+              "sectionId": 3,
+              "attemptedQuestions": 3,
+              "_id": "58ac372a23bfa221268f399a"
+            }
+          ],
+          "sectionWiseTimeSpent": [
+            {
+              "sectionId": 1,
+              "timespent": 527,
+              "_id": "58ac372a23bfa221268f399f"
+            },
+            {
+              "sectionId": 2,
+              "timespent": 477,
+              "_id": "58ac372a23bfa221268f399e"
+            },
+            {
+              "sectionId": 3,
+              "timespent": 230,
+              "_id": "58ac372a23bfa221268f399d"
+            }
+          ],
+          "sectionWiseMarks": [
+            {
+              "sectionId": 1,
+              "sectionMarks": -3,
+              "_id": "58ac372a23bfa221268f39a2"
+            },
+            {
+              "sectionId": 2,
+              "sectionMarks": -4,
+              "_id": "58ac372a23bfa221268f39a1"
+            },
+            {
+              "sectionId": 3,
+              "sectionMarks": -1,
+              "_id": "58ac372a23bfa221268f39a0"
+            }
+          ]
+        }
       ]
     }
-  ],
+  },
   "success": "true"
 }

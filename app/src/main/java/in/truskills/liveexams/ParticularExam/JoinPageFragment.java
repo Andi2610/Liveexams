@@ -1,7 +1,6 @@
 package in.truskills.liveexams.ParticularExam;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -41,9 +40,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import in.truskills.liveexams.MainScreens.MainActivity;
-import in.truskills.liveexams.Miscellaneous.QuestionPaperParser;
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
 //This is Join Fragment where a user can enroll for a new exam..
@@ -133,17 +131,17 @@ public class JoinPageFragment extends Fragment {
 
         //Parse the exam details..
         try {
-                HashMap<String, String> mapper = VariablesDefined.join_start_Parser(examDetails);
+                HashMap<String, String> mapper = MiscellaneousParser.join_start_Parser(examDetails);
                 descriptionJoinPage.setText(mapper.get("Description"));
 
             String startDate=mapper.get("StartDate");
-            String myStartDate=VariablesDefined.parseDate(startDate);
+            String myStartDate= MiscellaneousParser.parseDate(startDate);
             String endDate=mapper.get("EndDate");
-            String myEndDate=VariablesDefined.parseDate(endDate);
+            String myEndDate= MiscellaneousParser.parseDate(endDate);
             String startTime=mapper.get("StartTime");
-            String myStartTime=VariablesDefined.parseTimeForDetails(startTime);
+            String myStartTime= MiscellaneousParser.parseTimeForDetails(startTime);
             String endTime=mapper.get("EndTime");
-            String myEndTime=VariablesDefined.parseTimeForDetails(endTime);
+            String myEndTime= MiscellaneousParser.parseTimeForDetails(endTime);
 
             startDetailsJoinPage.setText(myStartDate + "\n" + myStartTime);
             endDetailsJoinPage.setText(myEndDate + "\n" + myEndTime);
@@ -164,13 +162,13 @@ public class JoinPageFragment extends Fragment {
 
                 //Enroll User
                 final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-                String url = VariablesDefined.api + "enrollUser/" + prefs.getString("userId", "abc");
+                String url = ConstantsDefined.api + "enrollUser/" + prefs.getString("userId", "abc");
                 StringRequest stringRequest = new StringRequest(Request.Method.PUT,
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            mapper = VariablesDefined.enrollUserParser(response);
+                            mapper = MiscellaneousParser.enrollUserParser(response);
                             String success = mapper.get("success");
                             if (success.equals("true")) {
                                 Log.e("messi", "onResponse: "+getActivity() );
@@ -180,7 +178,7 @@ public class JoinPageFragment extends Fragment {
                                     public void run() {
                                         String myJoinedExams= null;
                                         try {
-                                            myJoinedExams = VariablesDefined.getJoinedExams(mapper.get("response"));
+                                            myJoinedExams = MiscellaneousParser.getJoinedExams(mapper.get("response"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }

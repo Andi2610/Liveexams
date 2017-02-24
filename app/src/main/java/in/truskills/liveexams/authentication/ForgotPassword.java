@@ -36,8 +36,9 @@ import org.json.JSONException;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 import io.fabric.sdk.android.Fabric;
 
@@ -122,7 +123,7 @@ public class ForgotPassword extends AppCompatActivity {
 
                     //Call change password api..
                     //Api to be connected to..
-                    String url = VariablesDefined.api+"changePassword";
+                    String url = ConstantsDefined.api+"changePassword";
 
                     dialog = new ProgressDialog(ForgotPassword.this);
                     dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -138,7 +139,7 @@ public class ForgotPassword extends AppCompatActivity {
                             //On getting the response..
                             try {
                                 //Parse the login response..
-                                HashMap<String ,String> mapper=VariablesDefined.changePasswordParser(response);
+                                HashMap<String ,String> mapper= MiscellaneousParser.changePasswordParser(response);
                                 dialog.dismiss();
                                 //If successfull signup.. save the desired info in shared preferences..
                                 if(mapper.get("success").equals("true")) {

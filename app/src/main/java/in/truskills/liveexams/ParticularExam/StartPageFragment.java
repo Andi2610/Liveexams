@@ -35,23 +35,19 @@ import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Quiz.MySqlDatabase;
 import in.truskills.liveexams.Quiz.QuestionPaperLoad;
-import in.truskills.liveexams.Quiz.QuizMainActivity;
 import in.truskills.liveexams.R;
 
 //This is Start Fragment where a user can unenroll from an exam or start the quiz of the exam..
@@ -149,29 +145,29 @@ public class StartPageFragment extends Fragment {
 
         //Parse the exam details..
         try {
-            HashMap<String, String> mapper = VariablesDefined.join_start_Parser(examDetails);
+            HashMap<String, String> mapper = MiscellaneousParser.join_start_Parser(examDetails);
             descriptionStartPage.setText(mapper.get("Description"));
             String startDate=mapper.get("StartDate");
-            String myStartDate=VariablesDefined.parseDate(startDate);
+            String myStartDate= MiscellaneousParser.parseDate(startDate);
             String endDate=mapper.get("EndDate");
-            String myEndDate=VariablesDefined.parseDate(endDate);
+            String myEndDate= MiscellaneousParser.parseDate(endDate);
             String startTime=mapper.get("StartTime");
 
             Log.d("timeDetails","dateInitially="+myStartDate+"**"+myEndDate);
 
-            String myStartTime=VariablesDefined.parseTimeForDetails(startTime);
+            String myStartTime= MiscellaneousParser.parseTimeForDetails(startTime);
             String endTime=mapper.get("EndTime");
-            String myEndTime=VariablesDefined.parseTimeForDetails(endTime);
+            String myEndTime= MiscellaneousParser.parseTimeForDetails(endTime);
 
             Log.d("timeDetails","timeInitially="+myStartTime+"**"+myEndTime);
 
 
-            String myTimestamp=VariablesDefined.parseTimestamp(timestamp);
+            String myTimestamp= MiscellaneousParser.parseTimestamp(timestamp);
 
             Log.d("timeDetails","timestampDateInitially="+myTimestamp);
 
 
-            String myTime=VariablesDefined.parseTimestampForTime(timestamp);
+            String myTime= MiscellaneousParser.parseTimestampForTime(timestamp);
 
             Log.d("timeDetails","timestampTimeInitially="+myTime);
 
@@ -222,7 +218,7 @@ public class StartPageFragment extends Fragment {
                     if(!middle_time.after(end_time)){
                         start_leave_button.setText("START");
                         start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-                        endDetails.setBackgroundColor(Color.parseColor("#ef9a9a"));
+                        endDetails.setTextColor(Color.parseColor("#f44336"));
                     }
                 }else{
                     start_leave_button.setText("START");
@@ -287,13 +283,13 @@ public class StartPageFragment extends Fragment {
                             .putCustomAttribute("examId",examId));
                     //Unenroll user
                     final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-                    String url = VariablesDefined.api + "unenrollUser/" + prefs.getString("userId", "abc");
+                    String url = ConstantsDefined.api + "unenrollUser/" + prefs.getString("userId", "abc");
                     StringRequest stringRequest = new StringRequest(Request.Method.PUT,
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                    mapper = VariablesDefined.unenrollUserParser(response);
+                                    mapper = MiscellaneousParser.unenrollUserParser(response);
                                     String success = mapper.get("success");
                                     if (success.equals("true")) {
                                         //Get Joined Exams Result
@@ -302,7 +298,7 @@ public class StartPageFragment extends Fragment {
                                             public void run() {
                                                 String myJoinedExams= null;
                                                 try {
-                                                    myJoinedExams = VariablesDefined.getJoinedExams(mapper.get("response"));
+                                                    myJoinedExams = MiscellaneousParser.getJoinedExams(mapper.get("response"));
                                                     SharedPreferences.Editor e=prefs.edit();
                                                     e.putString("joinedExams",myJoinedExams);
                                                     e.apply();

@@ -13,26 +13,21 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Calendar;
 
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.R;
 
 //This is the home fragment in which myExams list is loaded..
@@ -48,11 +43,6 @@ public class HomeFragment extends Fragment {
     Values values;
     HomeInterface ob;
     String joinedExams, myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime;
-    String[] parts;
-    SimpleDateFormat simpleDateFormat;
-    Calendar calendar;
-    Date date;
-    int day, month, year, hour, minute;
     SharedPreferences prefs;
 
     public HomeFragment() {
@@ -168,7 +158,7 @@ public class HomeFragment extends Fragment {
         if (!joinedExams.equals("noJoinedExams")) {
             try {
                 //Parse myExams Result..
-                HashMap<String, ArrayList<String>> mapper = VariablesDefined.myExamsParser(joinedExams);
+                HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(joinedExams);
                 JSONArray arr = new JSONArray(joinedExams);
                 int length = arr.length();
                 for (int i = 0; i < length; ++i) {
@@ -180,9 +170,9 @@ public class HomeFragment extends Fragment {
                         myEndDate = mapper.get("EndDate").get(i);
                         myDuration = mapper.get("ExamDuration").get(i);
 
-                        myDateOfStart = VariablesDefined.parseDate(myStartDate);
-                        myDateOfEnd = VariablesDefined.parseDate(myEndDate);
-                        myDurationTime=VariablesDefined.parseDuration(myDuration);
+                        myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                        myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                        myDurationTime= MiscellaneousParser.parseDuration(myDuration);
 
                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                         valuesList.add(values);

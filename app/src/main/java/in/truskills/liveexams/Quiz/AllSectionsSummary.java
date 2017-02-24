@@ -1,6 +1,7 @@
 package in.truskills.liveexams.Quiz;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -15,6 +16,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,8 +33,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import in.truskills.liveexams.MainScreens.MainActivity;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
 public class AllSectionsSummary extends AppCompatActivity {
@@ -37,6 +48,8 @@ public class AllSectionsSummary extends AppCompatActivity {
     ArrayList<ArrayList<Integer>> questionArray;
     MySqlDatabase ob;
     Button finishButton;
+    String examId,userId;
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +58,11 @@ public class AllSectionsSummary extends AppCompatActivity {
 
         allSectionsList=(RecyclerView)findViewById(R.id.allSectionsList);
         finishButton=(Button)findViewById(R.id.finishButton);
+
+        examId=getIntent().getStringExtra("examId");
+        userId=getIntent().getStringExtra("userId");
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
 
         ob=new MySqlDatabase(AllSectionsSummary.this);
         sectionName=new ArrayList<>();
@@ -92,13 +110,12 @@ public class AllSectionsSummary extends AppCompatActivity {
 //                                JSONArray jsonArray4=ob.getResults(MySqlDatabase.RESULT_TABLE);
 
                                 JSONArray jsonArray=ob.getQuizResult();
-                                JSONObject jsonObject=new JSONObject();
+                                final JSONObject jsonObject=new JSONObject();
                                 try {
                                     jsonObject.put("result",jsonArray);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-
 //                                JSONObject jsonObject=new JSONObject();
 //                                try {
 //                                    jsonObject.put("sectionDetails",jsonArray1);
@@ -108,7 +125,6 @@ public class AllSectionsSummary extends AppCompatActivity {
 //                                } catch (JSONException e) {
 //                                    e.printStackTrace();
 //                                }
-
                                 try {
                                     File root = new File(Environment.getExternalStorageDirectory(), "Notes");
                                     if (!root.exists()) {
@@ -124,9 +140,67 @@ public class AllSectionsSummary extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                                startActivity(intent);
+                                //Api to be connected to..
+                                String url = ConstantsDefined.api+"answerPaper";
+
+                                final ProgressDialog progressDialog = new ProgressDialog(AllSectionsSummary.this);
+                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                progressDialog.setMessage("Submitting your answers.. Please wait...");
+                                progressDialog.setIndeterminate(true);
+                                progressDialog.setCancelable(false);
+                                progressDialog.show();
+
+                                //Make a request..
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                                        url, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        //On getting the response..
+                                        progressDialog.dismiss();
+                                        try {
+                                            JSONObject jsonObject1=new JSONObject(response);
+                                            String success=jsonObject1.getString("success");
+                                            String result=jsonObject1.getString("response");
+                                            if(success.equals("true")){
+                                                Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                                                startActivity(intent);
+                                            }else{
+                                                JSONObject jsonObject2=new JSONObject(result);
+                                                Toast.makeText(AllSectionsSummary.this, jsonObject2.getString("errmsg")+"", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                                                startActivity(intent);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            progressDialog.dismiss();
+                                        }
+
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        //In case the connection to the Api couldn't be established..
+                                        progressDialog.dismiss();
+                                        Log.d("error",error.toString()+"");
+                                        Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                                    }
+                                }){
+                                    @Override
+                                    protected Map<String, String> getParams() throws AuthFailureError {
+
+                                        //Put all the required parameters for the post request..
+                                        Map<String,String> params = new HashMap<String, String>();
+                                        params.put("userId",userId);
+                                        params.put("examId",examId);
+                                        params.put("answerPaper",jsonObject.toString());
+                                        return params;
+                                    }
+                                };
+                                requestQueue.add(stringRequest);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -8,7 +8,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.ParticularExam.ParticularExamMainActivity;
 import in.truskills.liveexams.R;
 
@@ -73,6 +73,9 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
         holder.endDateValue.setTypeface(tff);
         holder.durationValue.setText(value.getDurationValue());
         holder.durationValue.setTypeface(tff);
+        holder.startDateText.setTypeface(tff);
+        holder.endDateText.setTypeface(tff);
+        holder.durationText.setTypeface(tff);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,14 +92,14 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                 dialog.show();
 
                 //Get exam details of the exam on which the user has clicked..
-                String url = VariablesDefined.api + "examDetails";
+                String url = ConstantsDefined.api + "examDetails";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST,
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             //Parse Exam details..
-                            HashMap<String, String> mapper = VariablesDefined.examDetailsParser(response);
+                            HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
 
                             //Get it's variables..
                             enrolled = mapper.get("enrolled");
@@ -156,7 +159,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, startDatevalue, endDateValue, durationValue;
+        public TextView name, startDatevalue, endDateValue, durationValue,startDateText,endDateText,durationText;
         LinearLayout container;
 
         public MyViewHolder(View itemView) {
@@ -165,6 +168,9 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
             startDatevalue = (TextView) itemView.findViewById(R.id.startDateValue);
             endDateValue = (TextView) itemView.findViewById(R.id.endDateValue);
             durationValue = (TextView) itemView.findViewById(R.id.durationValue);
+            startDateText = (TextView) itemView.findViewById(R.id.startDateText);
+            endDateText = (TextView) itemView.findViewById(R.id.endDateText);
+            durationText = (TextView) itemView.findViewById(R.id.durationText);
             container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }

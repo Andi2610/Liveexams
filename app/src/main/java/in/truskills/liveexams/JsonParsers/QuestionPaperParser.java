@@ -1,4 +1,4 @@
-package in.truskills.liveexams.Miscellaneous;
+package in.truskills.liveexams.JsonParsers;
 
 import android.graphics.Path;
 import android.util.Log;

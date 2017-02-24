@@ -1,28 +1,15 @@
 package in.truskills.liveexams.Quiz;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,31 +20,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.nkzawa.socketio.client.Socket;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
-import org.webrtc.SurfaceViewRenderer;
 
-import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import in.truskills.liveexams.Miscellaneous.QuestionPaperParser;
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.JsonParsers.QuestionPaperParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
-import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
 public class QuestionPaperLoad extends AppCompatActivity implements Handler.Callback{
 
@@ -99,7 +76,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         ob=new MySqlDatabase(this);
 
         //Api to be connected to get the question paper..
-        url = VariablesDefined.api + "questionPaper/" + examId;
+        url = ConstantsDefined.api + "questionPaper/" + examId;
         //Make the request..
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -450,7 +427,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         while (matcher.find()){
             Log.d("messi","matcher.findInLoop");
             String group=matcher.group(2);
-            String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
+            String imageUrl = ConstantsDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
             urls.add(imageUrl);
             groups.add(group);
@@ -470,7 +447,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         while (matcher.find()){
             Log.d("messi","matcher.findInLoop");
             String group=matcher.group(2);
-            String imageUrl = VariablesDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
+            String imageUrl = ConstantsDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
             urls.add(imageUrl);
             groups.add(group);
@@ -498,7 +475,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         examId="changeThisToExamId";
 
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final String subst = "<img src=\""+VariablesDefined.imageUrl+""+examId+"/Images/$2\"/>";
+        final String subst = "<img src=\""+ ConstantsDefined.imageUrl+""+examId+"/Images/$2\"/>";
 
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(str);

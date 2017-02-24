@@ -2,7 +2,6 @@ package in.truskills.liveexams.authentication;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,7 +27,6 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -53,7 +51,6 @@ import com.crashlytics.android.answers.CustomEvent;
 import com.digits.sdk.android.AuthCallback;
 import com.digits.sdk.android.AuthConfig;
 import com.digits.sdk.android.Digits;
-import com.digits.sdk.android.DigitsAuthButton;
 import com.digits.sdk.android.DigitsException;
 import com.digits.sdk.android.DigitsSession;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -70,9 +67,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.Miscellaneous.TermsAndConditions;
 import io.fabric.sdk.android.Fabric;
@@ -669,7 +667,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(Signup_Login.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
 
                 //Api to be connected to..
-                String url = VariablesDefined.api+"signup";
+                String url = ConstantsDefined.api+"signup";
 
                 dialog = new ProgressDialog(Signup_Login.this);
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -689,7 +687,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                             Log.d("myResponse=",response);
                             dialog.dismiss();
 
-                            HashMap<String ,String> mapper=VariablesDefined.signupParser(response);
+                            HashMap<String ,String> mapper= MiscellaneousParser.signupParser(response);
 //                            Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                             Log.d("response",mapper.get("response"));
                             if(mapper.get("success").equals("true")){
@@ -769,7 +767,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     public void loginFunction() {
 
         //Api to be connected to..
-        String url = VariablesDefined.api+"login";
+        String url = ConstantsDefined.api+"login";
 
         dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -787,7 +785,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 Intent i = null;
                 try {
                     //Parse the login response..
-                    HashMap<String ,String> mapper=VariablesDefined.loginParser(response);
+                    HashMap<String ,String> mapper= MiscellaneousParser.loginParser(response);
                     dialog.dismiss();
                     //If successfull signup.. save the desired info in shared preferences..
                     if(mapper.get("success").equals("true")) {

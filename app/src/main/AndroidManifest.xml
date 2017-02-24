@@ -22,7 +22,6 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -88,7 +87,9 @@
             android:name="io.fabric.ApiKey"
             android:value="392f8a786ac85c7b9899687155b01647d8538cbc" />
 
-        <activity android:name=".Quiz.QuestionPaperLoad"></activity>
+        <activity android:name=".Quiz.QuestionPaperLoad"
+            android:screenOrientation="portrait"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="in.truskills.liveexams.fileprovider"
@@ -98,6 +99,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
+
+        <activity android:name=".ParticularExamStatistics.InitialInfo"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

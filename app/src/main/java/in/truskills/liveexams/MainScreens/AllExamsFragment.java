@@ -36,11 +36,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Calendar;
 
-import in.truskills.liveexams.Miscellaneous.VariablesDefined;
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
 
@@ -56,12 +55,7 @@ public class AllExamsFragment extends Fragment {
     Handler h;
     SearchView searchView;
     String myStartDate,myEndDate,myDateOfStart,myDateOfEnd,myDuration,myDurationTime;
-    String [] parts;
-    SimpleDateFormat simpleDateFormat;
-    Calendar calendar;
-    Date date;
     TextView searchExams;
-    int hour,minute,day,month,year;
 
     public AllExamsFragment() {
         // Required empty public constructor
@@ -147,14 +141,14 @@ public class AllExamsFragment extends Fragment {
                         allExamsListAdapter.notifyDataSetChanged();
                         searchExams.setVisibility(View.VISIBLE);
                     }else{
-                        String url = VariablesDefined.api + "searchExams/" + s;
+                        String url = ConstantsDefined.api + "searchExams/" + s;
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                                 url, new Response.Listener<JSONObject>() {
 
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    HashMap<String, ArrayList<String>> mapper = VariablesDefined.allExamsParser(response);
+                                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(response);
                                     int length = response.getJSONArray("response").length();
                                     if(length==0){
                                         filteredList.clear();
@@ -176,9 +170,9 @@ public class AllExamsFragment extends Fragment {
 
                                             Log.d("myDate=",myStartDate+" ****** "+myEndDate+" **** "+myDuration);
 
-                                            myDateOfStart=VariablesDefined.parseDate(myStartDate);
-                                            myDateOfEnd=VariablesDefined.parseDate(myEndDate);
-                                            myDurationTime=VariablesDefined.parseDuration(myDuration);
+                                            myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
+                                            myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
+                                            myDurationTime= MiscellaneousParser.parseDuration(myDuration);
 
                                             Log.d("myDate=",myDateOfStart+" ****** "+myDateOfEnd+" **** "+myDurationTime);
 
@@ -238,14 +232,14 @@ public class AllExamsFragment extends Fragment {
             allExamsList.setAdapter(allExamsListAdapter);
             allExamsListAdapter.notifyDataSetChanged();
         }else{
-            String url = VariablesDefined.api + "searchExams/" + searchView.getQuery();
+            String url = ConstantsDefined.api + "searchExams/" + searchView.getQuery();
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                     url, new Response.Listener<JSONObject>() {
 
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        HashMap<String, ArrayList<String>> mapper = VariablesDefined.allExamsParser(response);
+                        HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(response);
                         int length = response.getJSONArray("response").length();
                         if(length==0){
                             filteredList.clear();
@@ -263,9 +257,9 @@ public class AllExamsFragment extends Fragment {
                                 myEndDate=mapper.get("EndDate").get(i);
                                 myDuration=mapper.get("ExamDuration").get(i);
 
-                                myDateOfStart=VariablesDefined.parseDate(myStartDate);
-                                myDateOfEnd=VariablesDefined.parseDate(myEndDate);
-                                myDurationTime=VariablesDefined.parseDuration(myDuration);
+                                myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
+                                myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
+                                myDurationTime= MiscellaneousParser.parseDuration(myDuration);
 
                                 values = new Values(mapper.get("ExamName").get(i),myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                 filteredList.add(values);

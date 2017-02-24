@@ -1,4 +1,4 @@
-package in.truskills.liveexams.Miscellaneous;
+package in.truskills.liveexams.JsonParsers;
 
 import android.util.Log;
 
@@ -17,13 +17,7 @@ import java.util.Iterator;
 
 //This class contains miscellaneous functions and variables used in the entire code..
 
-public class VariablesDefined {
-
-    //Api used to connect to the server..
-    public static final String api = "http://35.154.110.122:3002/api/";
-
-    //Url for image..
-    public static final String imageUrl = "https://s3.ap-south-1.amazonaws.com/live-exams/";
+public class MiscellaneousParser {
 
     //All fields that are parsed..
     private static String response = "response";

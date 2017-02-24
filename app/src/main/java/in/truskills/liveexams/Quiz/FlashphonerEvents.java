@@ -2,13 +2,11 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.flashphoner.fpwcsapi.Flashphoner;
 import com.flashphoner.fpwcsapi.bean.Connection;
 import com.flashphoner.fpwcsapi.bean.Data;
 import com.flashphoner.fpwcsapi.bean.StreamStatus;
-import com.flashphoner.fpwcsapi.constraints.AudioConstraints;
 import com.flashphoner.fpwcsapi.constraints.Constraints;
 import com.flashphoner.fpwcsapi.constraints.VideoConstraints;
 import com.flashphoner.fpwcsapi.layout.PercentFrameLayout;
@@ -21,6 +19,8 @@ import com.flashphoner.fpwcsapi.session.StreamStatusEvent;
 
 import org.webrtc.RendererCommon;
 import org.webrtc.SurfaceViewRenderer;
+
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 
 /**
  * Created by rajiv on 2/13/2017.
@@ -43,22 +43,22 @@ public class FlashphonerEvents implements socketFromTeacher {
     private StreamStatusEvent studentEvent = new StreamStatusEvent() {
         @Override
         public void onStreamStatus(Stream stream, StreamStatus streamStatus) {
-            Log.d(Constants.FLASHPHONER, "on StreamStatus");
+            Log.d(ConstantsDefined.FLASHPHONER, "on StreamStatus");
             switch (streamStatus.toString()) {
                 case "PUBLISHING":
                     try {
-                        Log.d(Constants.FLASHPHONER, "published");
+                        Log.d(ConstantsDefined.FLASHPHONER, "published");
                         socketfromstudent.startedStreaming(teacherId, studentId);
                     }catch(Exception e){
-                        Log.d(Constants.FLASHPHONER,e.toString());
+                        Log.d(ConstantsDefined.FLASHPHONER,e.toString());
                     }
                     break;
                 case "UNPUBLISHED":
                     socketfromstudent.stoppedStreaming();
-                    Log.d(Constants.FLASHPHONER, "unpublished");
+                    Log.d(ConstantsDefined.FLASHPHONER, "unpublished");
                     break;
                 case "FAILED":
-                    Log.d(Constants.FLASHPHONER, "failed");
+                    Log.d(ConstantsDefined.FLASHPHONER, "failed");
                     break;
             }
         }
@@ -72,19 +72,19 @@ public class FlashphonerEvents implements socketFromTeacher {
 
     //in/truskills/liveexams/Quiz/QuizMainActivity.java:140
     public FlashphonerEvents(QuizMainActivity context, SurfaceViewRenderer extraRender,PercentFrameLayout parentRender) {
-        Log.d(Constants.FLASHPHONER, "constructor called");
+        Log.d(ConstantsDefined.FLASHPHONER, "constructor called");
         this.extraRender = extraRender;
         this.context = context;
         this.parentRender = parentRender;
         socketfromstudent = (socketFromStudent) context;
-        Log.d(Constants.FLASHPHONER, "initialization done");
+        Log.d(ConstantsDefined.FLASHPHONER, "initialization done");
         Flashphoner.init(context);
     }
 
     //called from in/truskills/liveexams/Quiz/QuizMainActivity.java:953
     @Override
     public void startStreaming(String studentId, String teacherId) {
-        Log.d(Constants.FLASHPHONER, "startSreaming called from QuizMainActivity");
+        Log.d(ConstantsDefined.FLASHPHONER, "startSreaming called from QuizMainActivity");
         this.studentId = studentId;
         this.teacherId = teacherId;
 
@@ -115,20 +115,20 @@ public class FlashphonerEvents implements socketFromTeacher {
         session.connect(new Connection());
 
         try {
-            Log.d(Constants.FLASHPHONER, "extra render started"+ extraRender.getId());
+            Log.d(ConstantsDefined.FLASHPHONER, "extra render started"+ extraRender.getId());
 
             parentRender.setPosition(0, 0, 100, 100);
             extraRender.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
             extraRender.setMirror(false);
             extraRender.requestLayout();
-            Log.d(Constants.FLASHPHONER, "extra render set");
+            Log.d(ConstantsDefined.FLASHPHONER, "extra render set");
 
         } catch (Exception e) {
-            Log.d(Constants.FLASHPHONER, "exception thrown from extraRender setting " + e.toString());
+            Log.d(ConstantsDefined.FLASHPHONER, "exception thrown from extraRender setting " + e.toString());
         }
 
         try {
-            Log.d(Constants.FLASHPHONER, "student constraint started");
+            Log.d(ConstantsDefined.FLASHPHONER, "student constraint started");
 
             studentVideoConstraints = new VideoConstraints();
             studentVideoConstraints.setVideoFps(30);
@@ -139,29 +139,29 @@ public class FlashphonerEvents implements socketFromTeacher {
             studentOptions.setRenderer(extraRender);
             String streamId=studentId;
             studentOptions.setName(streamId);
-            Log.d(Constants.FLASHPHONER,streamId);
+            Log.d(ConstantsDefined.FLASHPHONER,streamId);
             studentOptions.setConstraints(studentConstraints);
 
-            Log.d(Constants.FLASHPHONER, "student constraint set");
+            Log.d(ConstantsDefined.FLASHPHONER, "student constraint set");
 
         } catch (Exception e) {
-            Log.d(Constants.FLASHPHONER, "exception thrown from student options setting " + e.toString());
+            Log.d(ConstantsDefined.FLASHPHONER, "exception thrown from student options setting " + e.toString());
         }
 
         try {
-            Log.d(Constants.FLASHPHONER, "student streaming setup");
+            Log.d(ConstantsDefined.FLASHPHONER, "student streaming setup");
 
             studentStream = session.createStream(studentOptions);
-            Log.d(Constants.FLASHPHONER, "student create stream");
+            Log.d(ConstantsDefined.FLASHPHONER, "student create stream");
 
             studentStream.on(studentEvent);
-            Log.d(Constants.FLASHPHONER, "student create events");
+            Log.d(ConstantsDefined.FLASHPHONER, "student create events");
 
             studentStream.publish();
-            Log.d(Constants.FLASHPHONER, "published");
+            Log.d(ConstantsDefined.FLASHPHONER, "published");
 
         } catch (Exception e) {
-            Log.d(Constants.FLASHPHONER, "exception thrown from studentStream setting " + e.toString());
+            Log.d(ConstantsDefined.FLASHPHONER, "exception thrown from studentStream setting " + e.toString());
         }
 
     }
