@@ -15,6 +15,7 @@ import in.truskills.liveexams.R;
 public class InitialInfo extends AppCompatActivity {
 
     String date,startTime,endTime,score,attempts,totalMarks,duration,examName;
+    int noOfSections,questionArray[];
     Button answerKeyButton;
     TextView dateText,dateValue,startTimeText,startTimeValue,endTimeText,endTimeValue,totalMarksText,totalMarksValue;
 
@@ -31,6 +32,8 @@ public class InitialInfo extends AppCompatActivity {
         totalMarks=getIntent().getStringExtra("totalMarks");
         duration=getIntent().getStringExtra("duration");
         examName=getIntent().getStringExtra("examName");
+        noOfSections=getIntent().getIntExtra("noOfSections",0);
+        questionArray=getIntent().getIntArrayExtra("questionarray");
 
         answerKeyButton=(Button)findViewById(R.id.answerKeyButton);
         dateText=(TextView)findViewById(R.id.dateText);
@@ -58,9 +61,11 @@ public class InitialInfo extends AppCompatActivity {
         answerKeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(InitialInfo.this,AnswersMainActivity.class);
-                i.putExtra("examName",examName);
-                startActivity(i);
+                Intent intent =new Intent(InitialInfo.this,AnswersMainActivity.class);
+                intent.putExtra("examName",examName);
+                intent.putExtra("noOfSections",noOfSections);
+                intent.putExtra("questionArray",questionArray);
+                startActivity(intent);
             }
         });
 

@@ -340,6 +340,8 @@ public class AnswerPaperLoad extends AppCompatActivity {
                             intent.putExtra("score",score);
                             intent.putExtra("attempts",attempts);
                             intent.putExtra("examName",examName);
+                            intent.putExtra("noOfSections",noOfSections);
+                            intent.putExtra("questionArray",questionArray);
                             startActivity(intent);
 
                         } catch (JSONException e) {

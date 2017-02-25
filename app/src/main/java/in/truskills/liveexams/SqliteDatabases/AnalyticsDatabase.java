@@ -199,4 +199,19 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         return text;
     }
 
+    public String getStringValuesPerQuestion(int si,int qi,String columnName){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String ans="";
+        String query="SELECT "+columnName+" FROM "+TABLE_PER_QUESTION+" WHERE "+SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                ans=cursor.getString(cursor.getColumnIndex(columnName));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+//        db.close();
+        return ans;
+    }
+
 }
