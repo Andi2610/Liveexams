@@ -1,32 +1,18 @@
 package in.truskills.liveexams.Quiz;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 //This fragment is used for quiz question and options display..
 
@@ -37,9 +23,7 @@ public class MyFragment extends Fragment implements Updateable{
     String myQuestion, myExamId;
     ArrayList<String> myOptions;
     int mySi,myQi,myFragmentCount;
-    MySqlDatabase ob;
     MyFragmentInterface o;
-    String myType;
 
     public static final MyFragment newInstance(String question, ArrayList<String> options, String examId,int si,int qi,int fragmentCount) {
         MyFragment f = new MyFragment();

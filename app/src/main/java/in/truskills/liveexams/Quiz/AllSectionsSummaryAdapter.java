@@ -3,19 +3,17 @@ package in.truskills.liveexams.Quiz;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.annotation.IntegerRes;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 import in.truskills.liveexams.R;
 
 /**
@@ -46,9 +44,9 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
         holder.mySectionName.setText(sectionName.get(holder.getAdapterPosition()));
 
         ArrayList<Integer> types;
-        MySqlDatabase ob=new MySqlDatabase(c);
+        QuizDatabase ob=new QuizDatabase(c);
 
-        int sI=ob.getIntValuesPerSectionBySerialNumber(holder.getAdapterPosition(),MySqlDatabase.SectionIndex);
+        int sI=ob.getIntValuesPerSectionBySerialNumber(holder.getAdapterPosition(), QuizDatabase.SectionIndex);
 
         types=ob.getTypes(sI);
 
@@ -92,9 +90,9 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
                 // put the message in Intent
                 //message=serial number of a section..
                 int mySrNo=holder.getAdapterPosition();
-                MySqlDatabase mySqlDatabase=new MySqlDatabase(c);
-                int sI=mySqlDatabase.getIntValuesPerSectionBySerialNumber(mySrNo,MySqlDatabase.SectionIndex);
-                int my_fi=mySqlDatabase.getIntValuesPerQuestionBySiAndSrno(sI,0,MySqlDatabase.FragmentIndex);
+                QuizDatabase quizDatabase =new QuizDatabase(c);
+                int sI= quizDatabase.getIntValuesPerSectionBySerialNumber(mySrNo, QuizDatabase.SectionIndex);
+                int my_fi= quizDatabase.getIntValuesPerQuestionBySiAndSrno(sI,0, QuizDatabase.FragmentIndex);
                 intentMessage.putExtra("jumpTo",my_fi);
                 ((AllSectionsSummary)c).setResult(2,intentMessage);
                 ((AllSectionsSummary)c).finish();

@@ -1,4 +1,4 @@
-package in.truskills.liveexams.Quiz;
+package in.truskills.liveexams.SqliteDatabases;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,7 +20,7 @@ import in.truskills.liveexams.MainScreens.MainActivity;
  * Created by Shivansh Gupta on 07-02-2017.
  */
 
-public class MySqlDatabase extends SQLiteOpenHelper {
+public class QuizDatabase extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
 
@@ -128,7 +128,7 @@ public class MySqlDatabase extends SQLiteOpenHelper {
 
     Context c;
 
-    public MySqlDatabase(Context context) {
+    public QuizDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         c=context;
     }

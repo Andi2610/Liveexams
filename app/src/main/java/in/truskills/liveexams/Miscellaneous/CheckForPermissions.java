@@ -21,6 +21,7 @@ public class CheckForPermissions {
     public static final int CAMERA_PERMISSION_CODE = 2;
     public static final int LOCATION_PERMISSION_CODE = 3;
     public static final int SMS_PERMISSION_CODE = 4;
+    public static final int WRITE_STORAGE_CODE = 5;
 
     public static boolean checkForGallery(Context c){
         int result = ContextCompat.checkSelfPermission(c, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -97,6 +98,25 @@ public class CheckForPermissions {
             }
             //And finally ask for the permission
             ActivityCompat.requestPermissions((Activity)c,new String[]{Manifest.permission.RECEIVE_SMS},SMS_PERMISSION_CODE);
+        }
+        return false;
+    }
+
+    public static boolean checkForWriteStorage(Context c){
+        int result = ContextCompat.checkSelfPermission(c, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (result == PackageManager.PERMISSION_GRANTED){
+            //Permission is already given..
+            return true;
+        }else{
+            //Request storage permission..
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) c,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                //If the user has denied the permission previously your code will come to this block
+                //Here you can explain why you need this permission
+                //Explain here why you need this permission
+                Toast.makeText(c, "This permission is needed to write external storage", Toast.LENGTH_SHORT).show();
+            }
+            //And finally ask for the permission
+            ActivityCompat.requestPermissions((Activity)c,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},WRITE_STORAGE_CODE);
         }
         return false;
     }

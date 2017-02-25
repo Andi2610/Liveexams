@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_answers_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.truskills.liveexams.ParticularExamStatistics.AnswersMainActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/upper">
+
+        <include
+            layout="@layout/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></include>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@color/lightest_blue"
+                android:id="@+id/header">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sectionNameForAnswers"
+                    android:textSize="20dp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentRight="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/submittedQuestionsForAnswers"
+                        android:textColor="@color/green"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/reviewedTickedQuestionsForAnswers"
+                        android:textColor="@color/orange"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/reviewedUntickedQuestionsForAnswers"
+                        android:textColor="@color/purple"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/clearedQuestionsForAnswers"
+                        android:textColor="@color/red"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="10dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/notAttemptedQuestionsForAnswers"
+                        android:textSize="20dp"
+                        android:layout_marginLeft="10dp"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/questionsListForAnswers"
+                android:layout_below="@+id/header"
+                android:layout_centerHorizontal="true">
+            </android.support.v7.widget.RecyclerView>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpagerForAnswers"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/questionsListForAnswers"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="80dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:background="@color/lightest_blue">
+
+                <TableLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:shrinkColumns="*"
+                    android:stretchColumns="*"
+                    android:id="@+id/tableLayout"
+                    >
+
+                    <TableRow
+                        android:id="@+id/tableRow1"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="left"
+                            android:text="Your Time"
+                            android:layout_weight="1"
+                            android:id="@+id/yourTimeText"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="right"
+                            android:id="@+id/yourTimeValue"
+                            android:layout_weight="1" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRow2"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="left"
+                            android:text="Minimum Time"
+                            android:layout_weight="1"
+                            android:id="@+id/minimumTimeText"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="right"
+                            android:id="@+id/minimumTimeValue"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/tableRow3"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="left"
+                            android:text="Maximum Time"
+                            android:layout_weight="1"
+                            android:id="@+id/maximumTimeText"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="right"
+                            android:id="@+id/maximumTimeValue"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow4"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="left"
+                            android:text=""
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="right"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow5"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="left"
+                            android:text="Correctly Answered"
+                            android:layout_weight="1"
+                            android:id="@+id/correctlyAnsweredText"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:padding="2dp"
+                            android:textSize="20dp"
+                            android:layout_gravity="right"
+                            android:id="@+id/correctlyAnsweredValue"
+                            android:layout_weight="1"/>
+
+                    </TableRow>
+
+                </TableLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

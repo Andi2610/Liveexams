@@ -4,10 +4,12 @@ package in.truskills.liveexams.ParticularExam;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -45,8 +47,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.Quiz.MySqlDatabase;
+import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.R;
 
@@ -82,7 +85,7 @@ public class StartPageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        MySqlDatabase o=new MySqlDatabase(getActivity());
+        QuizDatabase o=new QuizDatabase(getActivity());
 
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -333,28 +336,28 @@ public class StartPageFragment extends Fragment {
                     };
                     requestQueue.add(stringRequest);
                 } else if(start_leave_button.getText().equals("START")){
+
+                    boolean statusForWriteStorage = CheckForPermissions.checkForWriteStorage(getActivity());
+                    if (statusForWriteStorage) {
+                        //Check if a valid language has been chosen from the list..
+                        if(selectedLanguage.equals("LANGUAGE"))
+                            //If not chosen..
+                            Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
+                        else{
+                            //Else if chosen..
+                            //Start Quiz
+                            Intent i=new Intent(getActivity(), QuestionPaperLoad.class);
+                            i.putExtra("examId", examId);
+                            i.putExtra("name", name);
+                            i.putExtra("language", selectedLanguage);
+                            startActivity(i);
+                        }
+                    }
+
                     Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
                             .putCustomAttribute("userName",prefs.getString("userName",""))
                             .putCustomAttribute("examId",examId));
-                    //Check if a valid language has been chosen from the list..
-                    if(selectedLanguage.equals("LANGUAGE"))
-                        //If not chosen..
-                        Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
-                    else{
-                        //Else if chosen..
-                        //Start Quiz
-//                        Intent i = new Intent(getActivity(), QuizMainActivity.class);
-//                        i.putExtra("examId", examId);
-//                        i.putExtra("name", name);
-//                        i.putExtra("language", selectedLanguage);
-//                        getActivity().startActivity(i);
 
-                        Intent i=new Intent(getActivity(), QuestionPaperLoad.class);
-                        i.putExtra("examId", examId);
-                        i.putExtra("name", name);
-                        i.putExtra("language", selectedLanguage);
-                        startActivity(i);
-                    }
                 }else{
                     Toast.makeText(getActivity(), "This exam is over", Toast.LENGTH_SHORT).show();
                 }
@@ -379,6 +382,33 @@ public class StartPageFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CheckForPermissions.WRITE_STORAGE_CODE:
+                //If permission is granted
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Check if a valid language has been chosen from the list..
+                    if(selectedLanguage.equals("LANGUAGE"))
+                        //If not chosen..
+                        Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
+                    else{
+                        //Else if chosen..
+                        //Start Quiz
+                        Intent i=new Intent(getActivity(), QuestionPaperLoad.class);
+                        i.putExtra("examId", examId);
+                        i.putExtra("name", name);
+                        i.putExtra("language", selectedLanguage);
+                        startActivity(i);
+                    }
+                } else {
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(getActivity(), "Oops you have denied the permission for write to storage\nGo to settings and grant them", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
     }
 }
 

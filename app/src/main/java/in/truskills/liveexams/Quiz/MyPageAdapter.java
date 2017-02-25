@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by Shivansh Gupta on 19-02-2017.
  */
 
-class MyPageAdapter extends FragmentPagerAdapter {
+public class MyPageAdapter extends FragmentPagerAdapter {
 
     private ArrayList<Fragment> fragments;
     SparseArray<Fragment> registeredFragments = new SparseArray<>();

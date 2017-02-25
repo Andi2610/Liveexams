@@ -28,6 +28,7 @@ import java.text.ParseException;
 import java.util.*;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
 //This is the home fragment in which myExams list is loaded..

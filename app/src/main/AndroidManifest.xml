@@ -10,7 +10,6 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -56,7 +55,7 @@
             android:name=".authentication.ForgotPassword"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainScreens.SearchResultsActivity"
+            android:name=".Miscellaneous.SearchResultsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light">
@@ -87,8 +86,9 @@
             android:name="io.fabric.ApiKey"
             android:value="392f8a786ac85c7b9899687155b01647d8538cbc" />
 
-        <activity android:name=".Quiz.QuestionPaperLoad"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Quiz.QuestionPaperLoad"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -97,12 +97,16 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ParticularExamStatistics.InitialInfo"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".ParticularExamStatistics.InitialInfo"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ParticularExamStatistics.AnswerPaperLoad"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ParticularExamStatistics.AnswersMainActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

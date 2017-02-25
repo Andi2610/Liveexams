@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 import in.truskills.liveexams.JsonParsers.QuestionPaperParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class QuestionPaperLoad extends AppCompatActivity implements Handler.Callback{
 
@@ -49,7 +50,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
     float per;
-    MySqlDatabase ob;
+    QuizDatabase ob;
     ProgressBar progressBar;
     ArrayList<String> urls,groups;
 
@@ -73,7 +74,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         fList = new ArrayList<>();
         urls=new ArrayList<>();
         groups=new ArrayList<>();
-        ob=new MySqlDatabase(this);
+        ob=new QuizDatabase(this);
 
         //Api to be connected to get the question paper..
         url = ConstantsDefined.api + "questionPaper/" + examId;
@@ -154,12 +155,12 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    ob.updateValuesPerSection(iiii,MySqlDatabase.SectionName,name);
-                                    ob.updateValuesPerSection(iiii,MySqlDatabase.SectionId,section_id);
-                                    ob.updateValuesPerSection(iiii,MySqlDatabase.SectionMaxMarks,section_max_marks);
-                                    ob.updateValuesPerSection(iiii,MySqlDatabase.SectionTime,section_time);
-                                    ob.updateValuesPerSection(iiii,MySqlDatabase.SectionDescription,section_description);
-                                    ob.updateValuesPerSection(iiii,MySqlDatabase.SectionRules,section_rules);
+                                    ob.updateValuesPerSection(iiii, QuizDatabase.SectionName,name);
+                                    ob.updateValuesPerSection(iiii, QuizDatabase.SectionId,section_id);
+                                    ob.updateValuesPerSection(iiii, QuizDatabase.SectionMaxMarks,section_max_marks);
+                                    ob.updateValuesPerSection(iiii, QuizDatabase.SectionTime,section_time);
+                                    ob.updateValuesPerSection(iiii, QuizDatabase.SectionDescription,section_description);
+                                    ob.updateValuesPerSection(iiii, QuizDatabase.SectionRules,section_rules);
                                 }
                             }).start();
                             map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
@@ -241,18 +242,18 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.QuestionText,text);
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.CorrectAnswer,map12.get("CorrectAnswer"));
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.QuestionCorrectMarks,map12.get("QuestionCorrectMarks"));
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.QuestionIncorrectMarks,map12.get("QuestionIncorrectMarks"));
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.PassageID,map12.get("PassageID"));
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.QuestionType,map12.get("QuestionType"));
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.QuestionTime,map12.get("QuestionTime"));
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.QuestionDifficultyLevel,map12.get("QuestionDifficultyLevel"));
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.QuestionRelativeTopic,map12.get("QuestionRelativeTopic"));
-                                        ob.updateValuesPerQuestion(iiii,jjjj,MySqlDatabase.QuestionId,map12.get("id"));
-                                        ob.updateValuesForResult(iiii,jjjj,MySqlDatabase.SectionId,section_id);
-                                        ob.updateValuesForResult(iiii,jjjj,MySqlDatabase.QuestionId,map12.get("id"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionText,text);
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.CorrectAnswer,map12.get("CorrectAnswer"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionCorrectMarks,map12.get("QuestionCorrectMarks"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionIncorrectMarks,map12.get("QuestionIncorrectMarks"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.PassageID,map12.get("PassageID"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionType,map12.get("QuestionType"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionTime,map12.get("QuestionTime"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionDifficultyLevel,map12.get("QuestionDifficultyLevel"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionRelativeTopic,map12.get("QuestionRelativeTopic"));
+                                        ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionId,map12.get("id"));
+                                        ob.updateValuesForResult(iiii,jjjj, QuizDatabase.SectionId,section_id);
+                                        ob.updateValuesForResult(iiii,jjjj, QuizDatabase.QuestionId,map12.get("id"));
 
                                     }
                                 }).start();
@@ -285,8 +286,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                     new Thread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            ob.updateValuesPerOption(iiii,jjjj,pppp,MySqlDatabase.OptionText,opText);
-                                            ob.updateValuesPerOption(iiii,jjjj,pppp,MySqlDatabase.OptionId,myAttri);
+                                            ob.updateValuesPerOption(iiii,jjjj,pppp, QuizDatabase.OptionText,opText);
+                                            ob.updateValuesPerOption(iiii,jjjj,pppp, QuizDatabase.OptionId,myAttri);
                                         }
                                     }).start();
 
@@ -422,7 +423,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
         String subst="<img src=\"file://"+base+"/LiveExams/$2\"/>";
         String result=matcher1.replaceAll(subst);
-        ob.updateValuesPerQuestion(ii,jj,MySqlDatabase.QuestionText,result);
+        ob.updateValuesPerQuestion(ii,jj, QuizDatabase.QuestionText,result);
 
         while (matcher.find()){
             Log.d("messi","matcher.findInLoop");
@@ -442,7 +443,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
         String subst="<img src=\"file://"+base+"/LiveExams/$2\"/>";
         String result=matcher1.replaceAll(subst);
-        ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,result);
+        ob.updateValuesPerOption(ii,jj,kk, QuizDatabase.OptionText,result);
 
         while (matcher.find()){
             Log.d("messi","matcher.findInLoop");
@@ -488,12 +489,12 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
     public void prepareForOnlineForQuestion(int ii,int jj,String text){
         String myText=format(text,examId);
-        ob.updateValuesPerQuestion(ii,jj,MySqlDatabase.QuestionText,myText);
+        ob.updateValuesPerQuestion(ii,jj, QuizDatabase.QuestionText,myText);
     }
 
     public void prepareForOnlineForOption(int ii,int jj,int kk,String text){
         String myText=format(text,examId);
-        ob.updateValuesPerOption(ii,jj,kk,MySqlDatabase.OptionText,myText);
+        ob.updateValuesPerOption(ii,jj,kk, QuizDatabase.OptionText,myText);
     }
 
 }

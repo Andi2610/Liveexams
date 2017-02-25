@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class SectionNamesDisplay extends Activity {
 
@@ -23,7 +23,7 @@ public class SectionNamesDisplay extends Activity {
     HashMap<String,String> map;
     LinearLayoutManager linearLayoutManager;
     SectionNamesDisplayAdapter sectionNamesDisplayAdapter;
-    MySqlDatabase ob;
+    QuizDatabase ob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class SectionNamesDisplay extends Activity {
         name=new ArrayList<>();
         map=new HashMap<>();
 
-        ob=new MySqlDatabase(SectionNamesDisplay.this);
+        ob=new QuizDatabase(SectionNamesDisplay.this);
 
         HashMap<String,ArrayList<String>> map=ob.getAllStringValuesPerSection();
         name=map.get("SectionNameList");

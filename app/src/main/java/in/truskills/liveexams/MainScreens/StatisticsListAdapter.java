@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import in.truskills.liveexams.ParticularExamStatistics.AnswerPaperLoad;
 import in.truskills.liveexams.ParticularExamStatistics.InitialInfo;
 import in.truskills.liveexams.R;
 
@@ -64,57 +65,10 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<StatisticsListAd
             public void onClick(View view) {
 
                 value=myList.get(holder.getAdapterPosition());
-                startMyActivity("a","a","a","a","a");
-
-//                final RequestQueue requestQueue= Volley.newRequestQueue(c);
-//                prefs=c.getSharedPreferences("prefs",Context.MODE_PRIVATE);
-//
-//                dialog = new ProgressDialog(c);
-//                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//                dialog.setMessage("Loading. Please wait...");
-//                dialog.setIndeterminate(true);
-//                dialog.setCancelable(false);
-//                dialog.show();
-//
-//                String url=MiscellaneousParser.api+"examDetails";
-//                StringRequest stringRequest = new StringRequest(Request.Method.POST,
-//                        url, new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            HashMap<String,String> mapper=MiscellaneousParser.examDetailsParser(response);
-//                            final String enrolled=mapper.get("enrolled");
-//                            final String timestamp=mapper.get("timestamp");
-//                            final String examDetails=mapper.get("examDetails");
-//                            dialog.dismiss();
-//                            final String examId=value.getExamId();
-//                            h=new Handler();
-//                            h.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    startMyActivity(enrolled,timestamp,examDetails,value.getName(),examId);
-//                                }
-//                            });
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        dialog.dismiss();
-//                        Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-//                    }
-//                }){
-//                    @Override
-//                    protected Map<String,String> getParams(){
-//                        Map<String,String> params = new HashMap<String, String>();
-//                        params.put("userId",prefs.getString("userId","abc"));
-//                        params.put("examId",value.getExamId());
-//                        return params;
-//                    }
-//                };
-//                requestQueue.add(stringRequest);
+                Intent i =new Intent(c,AnswerPaperLoad.class);
+                i.putExtra("examId", value.getExamId());
+                i.putExtra("examName",value.getName());
+                c.startActivity(i);
             }
         });
     }

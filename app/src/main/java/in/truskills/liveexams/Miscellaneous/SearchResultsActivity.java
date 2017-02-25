@@ -1,4 +1,4 @@
-package in.truskills.liveexams.MainScreens;
+package in.truskills.liveexams.Miscellaneous;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

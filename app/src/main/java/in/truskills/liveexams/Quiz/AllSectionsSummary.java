@@ -38,6 +38,7 @@ import java.util.Map;
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class AllSectionsSummary extends AppCompatActivity {
 
@@ -46,9 +47,9 @@ public class AllSectionsSummary extends AppCompatActivity {
     RecyclerView allSectionsList;
     ArrayList<String> sectionName;
     ArrayList<ArrayList<Integer>> questionArray;
-    MySqlDatabase ob;
+    QuizDatabase ob;
     Button finishButton;
-    String examId,userId;
+    String examId,userId,selectedLanguage;
     RequestQueue requestQueue;
 
     @Override
@@ -61,10 +62,11 @@ public class AllSectionsSummary extends AppCompatActivity {
 
         examId=getIntent().getStringExtra("examId");
         userId=getIntent().getStringExtra("userId");
+        selectedLanguage=getIntent().getStringExtra("selectedLanguage");
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
 
-        ob=new MySqlDatabase(AllSectionsSummary.this);
+        ob=new QuizDatabase(AllSectionsSummary.this);
         sectionName=new ArrayList<>();
         questionArray=new ArrayList<>();
 
@@ -72,7 +74,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         sectionName=map.get("SectionNameList");
 
         for(int i=0;i<sectionName.size();++i){
-            int sI=ob.getIntValuesPerSectionBySerialNumber(i,MySqlDatabase.SectionIndex);
+            int sI=ob.getIntValuesPerSectionBySerialNumber(i, QuizDatabase.SectionIndex);
             HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(sI);
             ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
             my_fragment_index_list=my_map.get("FragmentIndexList");
@@ -102,17 +104,18 @@ public class AllSectionsSummary extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
 
 
-                                MySqlDatabase ob=new MySqlDatabase(AllSectionsSummary.this);
+                                QuizDatabase ob=new QuizDatabase(AllSectionsSummary.this);
 
-//                                JSONArray jsonArray1=ob.getResults(MySqlDatabase.TABLE_PER_SECTION);
-//                                JSONArray jsonArray2=ob.getResults(MySqlDatabase.TABLE_PER_QUESTION);
-//                                JSONArray jsonArray3=ob.getResults(MySqlDatabase.TABLE_PER_OPTION);
-//                                JSONArray jsonArray4=ob.getResults(MySqlDatabase.RESULT_TABLE);
+//                                JSONArray jsonArray1=ob.getResults(QuizDatabase.TABLE_PER_SECTION);
+//                                JSONArray jsonArray2=ob.getResults(QuizDatabase.TABLE_PER_QUESTION);
+//                                JSONArray jsonArray3=ob.getResults(QuizDatabase.TABLE_PER_OPTION);
+//                                JSONArray jsonArray4=ob.getResults(QuizDatabase.RESULT_TABLE);
 
                                 JSONArray jsonArray=ob.getQuizResult();
                                 final JSONObject jsonObject=new JSONObject();
                                 try {
                                     jsonObject.put("result",jsonArray);
+                                    jsonObject.put("selectedLanguage",selectedLanguage);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

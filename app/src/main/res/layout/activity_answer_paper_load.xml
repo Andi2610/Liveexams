@@ -5,7 +5,7 @@
     android:id="@+id/activity_question_paper_load"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.truskills.liveexams.Quiz.QuestionPaperLoad"
+    tools:context="in.truskills.liveexams.ParticularExamStatistics.AnswerPaperLoad"
     android:background="@color/light_grey">
 
     <RelativeLayout
@@ -17,34 +17,34 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/myWaitMessage"
+            android:id="@+id/myWaitMessageForAnswer"
             android:textSize="20dp"
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:layout_centerHorizontal="true"
-            android:text="Please wait.. \n Your question paper is getting ready.."/>
+            android:text="Please wait.. \n Your answer paper is getting ready.."/>
 
         <com.wang.avi.AVLoadingIndicatorView
-            android:id="@+id/avi"
+            android:id="@+id/aviForAnswer"
             android:layout_width="100dp"
             android:layout_height="100dp"
             style="@style/AVLoadingIndicatorView"
             android:visibility="visible"
             app:indicatorName="BallClipRotatePulseIndicator"
-            android:layout_below="@+id/myWaitMessage"
+            android:layout_below="@+id/myWaitMessageForAnswer"
             app:indicatorColor="@color/colorPrimary"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/avi"
-            android:layout_marginTop="30dp"
-            android:layout_centerHorizontal="true" />
+        <!--<ProgressBar-->
+            <!--android:id="@+id/progressBar"-->
+            <!--style="?android:attr/progressBarStyleHorizontal"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/avi"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:layout_centerHorizontal="true" />-->
 
     </RelativeLayout>
 
