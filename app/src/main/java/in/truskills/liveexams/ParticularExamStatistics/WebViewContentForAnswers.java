@@ -20,7 +20,9 @@ public class WebViewContentForAnswers {
         //Get size of options list..
         int optionsListSize = optionsList.size();
         int myAnswerId=Integer.parseInt(myAnswer);
+        --myAnswerId;
         int correctanswerId=Integer.parseInt(correctAnswer);
+        --correctanswerId;
         //Design proper format of the question..
         String formattedQuestion="";
         ArrayList<String> formattedOptions= new ArrayList<>();
@@ -36,8 +38,34 @@ public class WebViewContentForAnswers {
         String x = "";
 
         //Dynamic radio buttons added depending upon the options list size..
-        for (int i = 1; i <=optionsListSize; ++i) {
-            x = x + "<input type=\"checkbox\" id=\"" + i + "\" name=\"options\" value=\"" + i + "\" onclick=\"ok.performClick(this.value);\" ><label for=\""+i+"\">" + formattedOptions.get(i) + "</label></input><br>";
+        for (int i = 0; i <optionsListSize; ++i) {
+            if(i==correctanswerId){
+                x=x+"<div>\n" +
+                        "\t<div style=\"padding:10px;background-color:green;height:3px;width:3px;float:left\"></div>\n" +
+                        "\t<div style=\"margin-left:20px;float:left\">"+formattedOptions.get(i)+"</div>\n" +
+                        "</div>\n" +
+                        "<br><br><br><br>";
+            }else if(i==myAnswerId){
+                if(myAnswerId==correctanswerId){
+                    x=x+"<div>\n" +
+                            "\t<div style=\"padding:10px;background-color:green;height:3px;width:3px;float:left\"></div>\n" +
+                            "\t<div style=\"margin-left:20px;float:left\">"+formattedOptions.get(i)+"</div>\n" +
+                            "</div>\n" +
+                            "<br><br>";
+                }else{
+                    x=x+"<div>\n" +
+                            "\t<div style=\"padding:10px;background-color:red;height:3px;width:3px;float:left\"></div>\n" +
+                            "\t<div style=\"margin-left:20px;float:left\">"+formattedOptions.get(i)+"</div>\n" +
+                            "</div>\n" +
+                            "<br><br>";
+                }
+            }else{
+                x=x+"<div>\n" +
+                        "\t<div style=\"padding:10px;background-color:black;height:3px;width:3px;float:left\"></div>\n" +
+                        "\t<div style=\"margin-left:20px;float:left\">"+formattedOptions.get(i)+"</div>\n" +
+                        "</div>\n" +
+                        "<br><br>";
+            }
         }
 
         //Generate the html content..

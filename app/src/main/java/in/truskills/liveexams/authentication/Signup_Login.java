@@ -103,6 +103,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     RequestQueue requestQueue;
     SharedPreferences prefs;
     ImageView app_logo;
+    ArrayList<String> listOfLanguages;
 
     //Called when the activity is created..
     @Override
@@ -149,6 +150,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         registerHandleButton.setTypeface(tff1);
         loginHandleButton.setTypeface(tff1);
 
+        listOfLanguages=new ArrayList<>();
+
         Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         loginName.setTypeface(tff2);
         loginPassword.setTypeface(tff2);
@@ -172,19 +175,51 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         termsAndConditionsPressed.setOnClickListener(this);
         locationField.setOnClickListener(this);
 
-        ArrayList<String> listOfLanguages = new ArrayList<>();
-        listOfLanguages.add("LANGUAGE");
-        listOfLanguages.add("English");
-        listOfLanguages.add("Hindi");
+
+        //Api to be connected to..
+        String url = ConstantsDefined.api+"beforeSignup";
+
+        dialog = new ProgressDialog(Signup_Login.this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading.. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        //Make a request..
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    //Parse the signup response..
+
+                    Log.d("myResponse=",response);
+                    dialog.dismiss();
+
+                   listOfLanguages= MiscellaneousParser.beforeSignupParser(response);
+                    ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(Signup_Login.this, R.layout.spinner_item, listOfLanguages);
+                    signupLanguage.setAdapter(adapterLanguage);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //If connection could not be made..
+                dialog.dismiss();
+                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest);
 
         //List of Gender
         ArrayList<String> listOfGender = new ArrayList<>();
         listOfGender.add("GENDER");
         listOfGender.add("Male");
         listOfGender.add("Female");
-
-        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(this, R.layout.spinner_item, listOfLanguages);
-        signupLanguage.setAdapter(adapterLanguage);
 
         //Set Adapter for Gender Spinner
         ArrayAdapter<String> adapterGender = new ArrayAdapter<String>(this, R.layout.spinner_item, listOfGender);

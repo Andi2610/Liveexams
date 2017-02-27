@@ -103,9 +103,17 @@
         <activity
             android:name=".ParticularExamStatistics.InitialInfo"
             android:screenOrientation="portrait" />
-        <activity android:name=".ParticularExamStatistics.AnswerPaperLoad"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ParticularExamStatistics.AnswersMainActivity"
+        <activity
+            android:name=".ParticularExamStatistics.AnswerPaperLoad"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ParticularExamStatistics.AnswersMainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ParticularExamStatistics.SectionNamesDisplayForAnswers"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".ParticularExamStatistics.AllSectionsSummaryForAnswers"
             android:screenOrientation="portrait"></activity>
     </application>
 

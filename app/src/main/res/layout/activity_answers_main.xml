@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/questionsListForAnswers"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="80dp"/>
+                android:layout_marginBottom="150dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

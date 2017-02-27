@@ -4,7 +4,7 @@
     android:id="@+id/activity_section_names_display"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.truskills.liveexams.Quiz.SectionNamesDisplay"
+    tools:context="in.truskills.liveexams.ParticularExamStatistics.SectionNamesDisplayForAnswers"
     android:orientation="vertical">
 
     <TextView
@@ -16,12 +16,12 @@
         android:textColor="@color/white"
         android:gravity="center"
         android:textSize="20dp"
-        android:id="@+id/sectionText"/>
+        android:id="@+id/sectionTextForAnswers"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/mySectionsList"
+        android:id="@+id/mySectionsListForAnswers"
         android:background="@color/lightest_blue"
         android:layout_marginTop="5dp">
 

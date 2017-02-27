@@ -7,6 +7,16 @@
     tools:context="in.truskills.liveexams.ParticularExamStatistics.InitialInfo"
     android:background="@color/white">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></include>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -182,6 +192,7 @@
 
     </RelativeLayout>
     </ScrollView>
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
@@ -193,5 +204,7 @@
         android:textSize="20dp"
         android:padding="10dp"
         android:id="@+id/answerKeyButton"/>
+
+
 
 </RelativeLayout>

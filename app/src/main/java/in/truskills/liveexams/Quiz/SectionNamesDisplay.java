@@ -1,11 +1,13 @@
 package in.truskills.liveexams.Quiz;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Window;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +38,9 @@ public class SectionNamesDisplay extends Activity {
 
 
         mySectionsList=(RecyclerView) findViewById(R.id.mySectionsList);
+        TextView sectionText=(TextView)findViewById(R.id.sectionText);
+        Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        sectionText.setTypeface(tff1);
 
         name=new ArrayList<>();
         map=new HashMap<>();

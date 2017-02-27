@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 /**
  * Created by Shivansh Gupta on 25-02-2017.
  */
@@ -43,24 +45,33 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
     public static final String FinalAnswerId = "finalAnswerId";
     public static final String OptionIndex = "OptionIndex";
     public static final String OptionText = "optionText";
+    public static final String SectionId = "sectionId";
+    public static final String QuestionId = "questionId";
+    public static final String OptionId = "optionId";
+    public static final String QuestionStatus = "questionStatus";
+    public static final String SectionTime = "sectionTime";
 
 
     String CREATE_MY_TABLE_PER_SECTION =
             "CREATE TABLE " + TABLE_PER_SECTION + "("
                     + SectionIndex + " INTEGER PRIMARY KEY,"
+                    + SectionId + " TEXT,"
                     + SectionName + " TEXT,"
                     + SectionMarks + " TEXT,"
                     + SectionWiseMarks + " TEXT,"
                     + SectionWiseAttemptedQuestions + " TEXT,"
                     + SectionWiseTimeSpent + " TEXT,"
-                    + SectionWiseRank + " TEXT,"
+                    + SectionWiseRank + " TEXT DEFAULT '1',"
+                    + SectionTime + " TEXT"
                     + ")";
 
     String CREATE_MY_TABLE_PER_QUESTION =
             "CREATE TABLE " + TABLE_PER_QUESTION + "("
                     + FragmentIndex + " INTEGER,"
                     + SectionIndex + " INTEGER,"
-                    + QuestionIndex + " TEXT,"
+                    + QuestionIndex + " INTEGER,"
+                    + SectionId + " TEXT,"
+                    + QuestionId + " TEXT,"
                     + QuestionText + " TEXT,"
                     + RightAnswer + " TEXT,"
                     + RightAnsweredBy + " TEXT,"
@@ -68,6 +79,7 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
                     + MaximumTime + " TEXT,"
                     + TimeSpent + " TEXT,"
                     + FinalAnswerId + " TEXT,"
+                    + QuestionStatus + " TEXT,"
                     + " PRIMARY KEY ("+ SectionIndex+","+ QuestionIndex+")"
                     + ")";
 
@@ -75,7 +87,10 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
             "CREATE TABLE " + TABLE_PER_OPTION + "("
                     + SectionIndex + " INTEGER,"
                     + QuestionIndex + " INTEGER,"
-                    + OptionIndex + " TEXT,"
+                    + OptionIndex + " INTEGER,"
+                    + SectionId + " TEXT,"
+                    + QuestionId + " TEXT,"
+                    + OptionId + " TEXT,"
                     + OptionText + " TEXT,"
                     + " PRIMARY KEY ("+ SectionIndex+","+ QuestionIndex+","+OptionIndex+")"
                     + ")";
@@ -106,7 +121,7 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_PER_OPTION);
     }
 
-    public void setValuesPerSection(String si) {
+    public void setValuesPerSection(int si) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SectionIndex, si);
@@ -114,7 +129,7 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
 //        db.close(); // Closing database connection
     }
 
-    public void setValuesPerQuestion(String si, String qi) {
+    public void setValuesPerQuestion(int si, int qi) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SectionIndex, si);
@@ -123,7 +138,7 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
 //        db.close(); // Closing database connection
     }
 
-    public void setValuesPerOption(String si, String qi,String oi) {
+    public void setValuesPerOption(int si, int qi,int oi) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SectionIndex, si);
@@ -133,7 +148,7 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
 //        db.close(); // Closing database connection
     }
 
-    public void updateValuesPerSection(String si,String columnName,String value){
+    public void updateValuesPerSection(int si,String columnName,String value){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
@@ -141,7 +156,7 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
 //        db.close();
     }
 
-    public void updateValuesPerQuestion(String si,String qi,String columnName,String value){
+    public void updateValuesPerQuestion(int si,int qi,String columnName,String value){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
@@ -149,13 +164,30 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
 //        db.close();
     }
 
-    public void updateValuesPerOption(String si,String qi,String oi,String columnName,String value){
+    public void updateValuesPerOption(int si,int qi,int oi,String columnName,String value){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
         contentValues.put(columnName,value);
         db.update(TABLE_PER_OPTION,contentValues,SectionIndex+"="+si+" AND "+QuestionIndex+"="+qi+" AND "+OptionIndex+"="+oi,null);
 //        db.close();
     }
+
+    public void updateValuesPerSectionById(int si,String columnName,String value){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(columnName,value);
+        db.update(TABLE_PER_SECTION,contentValues,SectionId+"='"+si+"'",null);
+//        db.close();
+    }
+
+    public void updateValuesPerQuestionById(int si,int qi,String columnName,String value){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(columnName,value);
+        db.update(TABLE_PER_QUESTION,contentValues,SectionId+"='"+si+"' AND "+QuestionId+"='"+qi+"'",null);
+//        db.close();
+    }
+
     public int getNoOfOptionsInOneQuestion(int si,int qi){
         int num=0;
         SQLiteDatabase db=this.getReadableDatabase();
@@ -212,6 +244,66 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         cursor.close();
 //        db.close();
         return ans;
+    }
+
+    public String getValuesPerQuestionByFragmentIndex(int fi,String columnName){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String ans="";
+        String query="SELECT "+columnName+" FROM "+TABLE_PER_QUESTION+" WHERE "+FragmentIndex+"="+fi;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                ans=cursor.getString(cursor.getColumnIndex(columnName));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return ans;
+    }
+
+    public String getValuesPerSection(int si,String columnName){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String ans="";
+        String query="SELECT "+columnName+" FROM "+TABLE_PER_SECTION+" WHERE "+SectionIndex+"="+si;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                ans=cursor.getString(cursor.getColumnIndex(columnName));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return ans;
+    }
+
+    public ArrayList<String> getAllStringValuesPerSection(String columnName){
+        SQLiteDatabase db=this.getReadableDatabase();
+        ArrayList<String> ans=new ArrayList<>();
+        String query="SELECT "+columnName+" FROM "+TABLE_PER_SECTION;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                ans.add(cursor.getString(cursor.getColumnIndex(columnName)));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        return ans;
+    }
+
+    public ArrayList<Integer> getIntValuesOfEachSection(int si,String columnName){
+        ArrayList<Integer> types=new ArrayList<>();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT "+columnName+" FROM "+TABLE_PER_QUESTION+" WHERE "+SectionIndex+"="+si+" ORDER BY "+QuestionIndex;
+
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                String s=cursor.getString(cursor.getColumnIndex(columnName));
+                int n=Integer.parseInt(s);
+                types.add(n);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return types;
     }
 
 }

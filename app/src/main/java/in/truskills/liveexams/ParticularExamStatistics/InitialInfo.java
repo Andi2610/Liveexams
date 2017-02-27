@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,6 +26,10 @@ public class InitialInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_info);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
         date=getIntent().getStringExtra("date");
         startTime=getIntent().getStringExtra("startTime");
         endTime=getIntent().getStringExtra("endTime");
@@ -33,7 +39,12 @@ public class InitialInfo extends AppCompatActivity {
         duration=getIntent().getStringExtra("duration");
         examName=getIntent().getStringExtra("examName");
         noOfSections=getIntent().getIntExtra("noOfSections",0);
-        questionArray=getIntent().getIntArrayExtra("questionarray");
+        questionArray=new int[noOfSections];
+        questionArray=getIntent().getIntArrayExtra("questionArray");
+        Log.d("myLengthInitialInfo=",questionArray.length+"");
+
+
+        getSupportActionBar().setTitle(examName);
 
         answerKeyButton=(Button)findViewById(R.id.answerKeyButton);
         dateText=(TextView)findViewById(R.id.dateText);

@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import in.truskills.liveexams.ParticularExamStatistics.SectionNamesdisplayAdapterForAnswers;
+
 //This class contains miscellaneous functions and variables used in the entire code..
 
 public class MiscellaneousParser {
@@ -40,8 +42,21 @@ public class MiscellaneousParser {
     private static String Description = "Description";
     private static String leftExam = "leftExam";
     private static String message = "message";
+    private static String Languages = "Languages";
+    private static String Language = "Language";
 
-
+    public static ArrayList<String> beforeSignupParser(String result) throws JSONException {
+        ArrayList<String> list=new ArrayList<>();
+        JSONObject jsonObject=new JSONObject(result);
+        String respo=jsonObject.getString(response);
+        JSONObject jsonObject1=new JSONObject(respo);
+        String languages=jsonObject1.getJSONArray(Languages).toString();
+        JSONArray jsonArray=new JSONArray(languages);
+        for(int i=0;i<jsonArray.length();++i){
+            list.add(jsonArray.get(i).toString());
+        }
+        return list;
+    }
 
     public static HashMap signupParser(String result) throws JSONException {
         JSONObject jsonObject = new JSONObject(result);
@@ -157,8 +172,19 @@ public class MiscellaneousParser {
         mapper.put("EndTime", jsonObject.getJSONArray(EndTime).get(0).toString());
         mapper.put("Description", jsonObject.getJSONArray(Description).get(0).toString());
         mapper.put("ExamName", jsonObject.getJSONArray(ExamName).get(0).toString());
-
+        mapper.put("Languages",jsonObject.getJSONArray(Languages).get(0).toString());
         return mapper;
+    }
+
+    public static ArrayList<String> getLanguagesPerExam(String myLanguages) throws JSONException {
+        ArrayList<String> result=new ArrayList<>();
+        JSONObject jsonObject=new JSONObject(myLanguages);
+        String language=jsonObject.getJSONArray(Language).toString();
+        JSONArray jsonArray=new JSONArray(language);
+        for(int i=0;i<jsonArray.length();++i){
+            result.add(jsonArray.get(i).toString());
+        }
+        return result;
     }
 
     public static HashMap<String, String> enrollUserParser(String myResponse) throws JSONException {
@@ -250,5 +276,35 @@ public class MiscellaneousParser {
         DateFormat f2 = new SimpleDateFormat("h-mm a");
         String ans=f2.format(d).toLowerCase();
         return ans;
+    }
+
+    public static HashMap analyzedExamsParser(JSONObject result) throws JSONException {
+        JSONArray jsonArray = result.getJSONArray(response);
+        ArrayList<String> ExamNameList = new ArrayList<>();
+        ArrayList<String> StartDateList = new ArrayList<>();
+        ArrayList<String> EndDateList = new ArrayList<>();
+        ArrayList<String> EndTimeList = new ArrayList<>();
+        ArrayList<String> StartTimeList = new ArrayList<>();
+        ArrayList<String> ExamDurationList = new ArrayList<>();
+        ArrayList<String> ExamIdList = new ArrayList<>();
+        HashMap<String, ArrayList<String>> mapper = new HashMap<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            ExamNameList.add(jsonObject.getJSONArray(ExamName).get(0).toString());
+            ExamDurationList.add(jsonObject.getJSONArray(ExamDuration).get(0).toString());
+            StartTimeList.add(jsonObject.getJSONArray(StartTime).get(0).toString());
+            EndTimeList.add(jsonObject.getJSONArray(EndTime).get(0).toString());
+            StartDateList.add(jsonObject.getJSONArray(StartDate).get(0).toString());
+            EndDateList.add(jsonObject.getJSONArray(EndDate).get(0).toString());
+            ExamIdList.add(jsonObject.getString(id));
+        }
+        mapper.put("ExamName", ExamNameList);
+        mapper.put("ExamDuration", ExamDurationList);
+        mapper.put("StartDate", StartDateList);
+        mapper.put("EndDate", EndDateList);
+        mapper.put("StartTime", StartTimeList);
+        mapper.put("EndTime", EndTimeList);
+        mapper.put("ExamId", ExamIdList);
+        return mapper;
     }
 }

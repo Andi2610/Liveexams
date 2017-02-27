@@ -1,19 +1,23 @@
 package in.truskills.liveexams.MainScreens;
 
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,13 +25,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
@@ -46,7 +62,9 @@ public class StatisticsFragment extends Fragment {
     Handler h;
     SearchView searchView;
     String myStartDate,myEndDate,myDateOfStart,myDateOfEnd,myDuration,myDurationTime;
+    SharedPreferences prefs;
     TextView noExams;
+    ProgressDialog dialog;
 
     public StatisticsFragment() {
         // Required empty public constructor
@@ -69,6 +87,7 @@ public class StatisticsFragment extends Fragment {
 
         requestQueue = Volley.newRequestQueue(getActivity());
         h=new Handler();
+        prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
         noExams=(TextView)getActivity().findViewById(R.id.noExams);
         Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
@@ -82,18 +101,69 @@ public class StatisticsFragment extends Fragment {
     public void setList(){
         valuesList=new ArrayList<>();
 
-        //Get data for list populate..
-        values=new Values("abc","abc","abc","abc","abc");
-        valuesList.add(values);
+        dialog = new ProgressDialog(getActivity());
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.show();
 
-        statisticsListAdapter=new StatisticsListAdapter(valuesList,getActivity());
-        statisticsList.setAdapter(statisticsListAdapter);
-        statisticsListAdapter.notifyDataSetChanged();
-        if (valuesList.isEmpty()) {
-            noExams.setVisibility(View.VISIBLE);
-        } else {
-            noExams.setVisibility(View.GONE);
-        }
+        //Get data for list populate..
+        String url = ConstantsDefined.api + "getAnalyzedExams/" + prefs.getString("userId","");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.analyzedExamsParser(response);
+                    int length = response.getJSONArray("response").length();
+                    dialog.dismiss();
+                    if (length == 0) {
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateList(valuesList);
+                            }
+                        });
+                    } else {
+                        valuesList = new ArrayList<Values>();
+                        for (int i = 0; i < length; ++i) {
+                            myStartDate = mapper.get("StartDate").get(i);
+                            myEndDate = mapper.get("EndDate").get(i);
+                            myDuration = mapper.get("ExamDuration").get(i);
+
+                            Log.d("myDate=", myStartDate + " ****** " + myEndDate + " **** " + myDuration);
+
+                            myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                            myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                            myDurationTime = MiscellaneousParser.parseDuration(myDuration);
+
+                            Log.d("myDate=", myDateOfStart + " ****** " + myDateOfEnd + " **** " + myDurationTime);
+
+
+                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                            valuesList.add(values);
+                            h.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    populateList(valuesList);
+                                }
+                            });
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
+            }
+            }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 
     @Override
@@ -143,12 +213,21 @@ public class StatisticsFragment extends Fragment {
                             filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
                         }
                     }
-                    statisticsListAdapter = new StatisticsListAdapter(filteredList, getActivity());
-                    statisticsList.setAdapter(statisticsListAdapter);
-                    statisticsListAdapter.notifyDataSetChanged();
+                    populateList(filteredList);
                     return true;
                 }
             });
+        }
+    }
+
+    public void populateList(List<Values> list){
+        statisticsListAdapter=new StatisticsListAdapter(list,getActivity());
+        statisticsList.setAdapter(statisticsListAdapter);
+        statisticsListAdapter.notifyDataSetChanged();
+        if (list.isEmpty()) {
+            noExams.setVisibility(View.VISIBLE);
+        } else {
+            noExams.setVisibility(View.GONE);
         }
     }
 }

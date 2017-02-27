@@ -23,6 +23,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +44,6 @@ import in.truskills.liveexams.JsonParsers.QuestionPaperParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.AnalyticsDatabase;
-import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class AnswerPaperLoad extends AppCompatActivity {
 
@@ -77,6 +77,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
 
         examId = getIntent().getStringExtra("examId");
         examName = getIntent().getStringExtra("examName");
+        selectedLanguage="English";
 
         prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
@@ -140,6 +141,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                 //Parse response..
                 map2 = QuestionPaperParser.responseParser(response);
                 examDuration=map2.get("ExamDuration");
+                examDuration = QuestionPaperParser.getExamDuration(examDuration);
                 myExamDuration= MiscellaneousParser.parseDuration(examDuration);
                 startTime=map2.get("StartTime");
                 myStartTime=MiscellaneousParser.parseTimeForDetails(startTime);
@@ -184,6 +186,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                     section_time=map5.get("SectionTime");
                     section_description=map5.get("SectionDescription");
                     section_rules=map5.get("SectionRules");
+                    String my_section_time=MiscellaneousParser.parseDuration(section_time);
 
                     //Parse one section attributes..
                     map6 = QuestionPaperParser.getAttributesOfSection(AttributesOfSection);
@@ -193,12 +196,14 @@ public class AnswerPaperLoad extends AppCompatActivity {
                     section_id=map6.get("id");
 
                     //Set in database..
-                    ob.setValuesPerSection(i+"");
+                    ob.setValuesPerSection(i);
 //                    new Thread(new Runnable() {
 //                        @Override
 //                        public void run() {
-                            ob.updateValuesPerSection(iiii+"", AnalyticsDatabase.SectionName,name);
-                            ob.updateValuesPerSection(iiii+"", AnalyticsDatabase.SectionMarks,section_max_marks);
+                            ob.updateValuesPerSection(iiii,AnalyticsDatabase.SectionId,section_id);
+                            ob.updateValuesPerSection(iiii, AnalyticsDatabase.SectionName,name);
+                            ob.updateValuesPerSection(iiii, AnalyticsDatabase.SectionMarks,section_max_marks);
+                            ob.updateValuesPerSection(iiii,AnalyticsDatabase.SectionTime,my_section_time);
 //                        }
 //                    }).start();
                     map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
@@ -224,7 +229,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                         fragmentIndex[i][j] = fi;
 
                         //Set in database..
-                        ob.setValuesPerQuestion(i+"",j+"");
+                        ob.setValuesPerQuestion(i,j);
 
                         //Initialise languageArray[i][] as noOfQuestions in section i.
                         languageArray[i] = new int[noOfQuestions];
@@ -279,7 +284,9 @@ public class AnswerPaperLoad extends AppCompatActivity {
 //                        new Thread(new Runnable() {
 //                            @Override
 //                            public void run() {
-                                ob.updateValuesPerQuestion(iiii+"",jjjj+"", AnalyticsDatabase.QuestionText,text);
+                                ob.updateValuesPerQuestion(iiii,jjjj,AnalyticsDatabase.SectionId,section_id);
+                                ob.updateValuesPerQuestion(iiii,jjjj,AnalyticsDatabase.QuestionId,map12.get("id"));
+                                ob.updateValuesPerQuestion(iiii,jjjj, AnalyticsDatabase.QuestionText,text);
 //                            }
 //                        }).start();
                         myOption = QuestionPaperParser.OptionsParser(myOptions);
@@ -293,7 +300,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                             final int pppp=p;
 
                             //Set in database..
-                            ob.setValuesPerOption(i+"",j+"",p+"");
+                            ob.setValuesPerOption(i,j,p);
 
                             //Parse Option Array at the desirex index to get one option..
                             myOp = QuestionPaperParser.OptionParser(myOption, p);
@@ -311,7 +318,8 @@ public class AnswerPaperLoad extends AppCompatActivity {
 //                            new Thread(new Runnable() {
 //                                @Override
 //                                public void run() {
-                                    ob.updateValuesPerOption(iiii+"",jjjj+"",pppp+"", AnalyticsDatabase.OptionText,opText);
+                            ob.updateValuesPerOption(iiii,jjjj,pppp, AnalyticsDatabase.OptionId,myAttri);
+                            ob.updateValuesPerOption(iiii,jjjj,pppp, AnalyticsDatabase.OptionText,opText);
 //                                }
 //                            }).start();
 
@@ -341,8 +349,10 @@ public class AnswerPaperLoad extends AppCompatActivity {
                             intent.putExtra("attempts",attempts);
                             intent.putExtra("examName",examName);
                             intent.putExtra("noOfSections",noOfSections);
+                            Log.d("myLength=",questionArray.length+"");
                             intent.putExtra("questionArray",questionArray);
                             startActivity(intent);
+                            finish();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -358,71 +368,90 @@ public class AnswerPaperLoad extends AppCompatActivity {
 
     public void setEndStudentAnalyticsResponse(String response) throws JSONException {
         HashMap<String,String> map= EndStudentAnalyticsParser.responseParser(response);
+        int si;
         String analytics=map.get("analytics");
+        JSONArray jsonArray;
+        int len;
         HashMap<String,String> mapper=EndStudentAnalyticsParser.analyticsParser(analytics);
         String sectionWiseMarks=mapper.get("sectionWiseMarks");
         String sectionWiseTimeSpent=mapper.get("sectionWiseTimeSpent");
         String sectionWiseAttemptedQuestions=mapper.get("sectionWiseAttemptedQuestions");
         score=mapper.get("totalMarks");
         attempts=mapper.get("totalAttemptedQuestions");
-        for(int i =0;i<noOfSections;++i){
+        jsonArray=new JSONArray(sectionWiseMarks);
+        len=jsonArray.length();
+        for(int i=0;i<len;++i){
             HashMap<String,String> mapper1=EndStudentAnalyticsParser.sectionWiseMarksParser(sectionWiseMarks,i);
             int swm=Integer.parseInt(mapper1.get("sectionMarks"));
+            si=Integer.parseInt(mapper1.get("sectionId"));
+            ob.updateValuesPerSectionById(si,AnalyticsDatabase.SectionWiseMarks,swm+"");
+        }
+        jsonArray=new JSONArray(sectionWiseTimeSpent);
+        len=jsonArray.length();
+        for(int i=0;i<len;++i){
             HashMap<String,String> mapper2=EndStudentAnalyticsParser.sectionWiseTimeSpentParser(sectionWiseTimeSpent,i);
             int swts=Integer.parseInt(mapper2.get("timespent"));
+            si=Integer.parseInt(mapper2.get("sectionId"));
+            ob.updateValuesPerSectionById(si,AnalyticsDatabase.SectionWiseTimeSpent,swts+"");
+        }
+        jsonArray=new JSONArray(sectionWiseAttemptedQuestions);
+        len=jsonArray.length();
+        for(int i=0;i<len;++i){
             HashMap<String,String> mapper3=EndStudentAnalyticsParser.sectionWiseAttemptedQuestionsParser(sectionWiseAttemptedQuestions,i);
             int swaq=Integer.parseInt(mapper3.get("attemptedQuestions"));
-            ob.updateValuesPerSection(i+"",AnalyticsDatabase.SectionWiseMarks,swm+"");
-            ob.updateValuesPerSection(i+"",AnalyticsDatabase.SectionWiseTimeSpent,swts+"");
-            ob.updateValuesPerSection(i+"",AnalyticsDatabase.SectionWiseAttemptedQuestions,swaq+"");
+            si=Integer.parseInt(mapper3.get("sectionId"));
+            ob.updateValuesPerSectionById(si,AnalyticsDatabase.SectionWiseAttemptedQuestions,swaq+"");
         }
     }
 
     public void setEndExamAnalyticsResponse(String response) throws JSONException {
         HashMap<String,String> map= EndExamAnalyticsParser.responseParser(response);
         String analytics=map.get("analytics");
-        int cnt=-1;
-        for (int i=0;i<noOfSections;++i){
-            for (int j=0;j<questionArray[i];++j){
-                cnt++;
-                HashMap<String,String> mapper=EndExamAnalyticsParser.analyticsParser(analytics,cnt);
-                int rightAnsweredBy=Integer.parseInt(mapper.get("rightAnsweredBy"));
-                int minimumTime=Integer.parseInt(mapper.get("minimumTime"));
-                int maximumTime=Integer.parseInt(mapper.get("maximumTime"));
-                ob.updateValuesPerQuestion(i+"",j+"",AnalyticsDatabase.RightAnsweredBy,rightAnsweredBy+"");
-                ob.updateValuesPerQuestion(i+"",j+"",AnalyticsDatabase.MinimumTime,minimumTime+"");
-                ob.updateValuesPerQuestion(i+"",j+"",AnalyticsDatabase.MaximumTime,maximumTime+"");
-            }
+        int si,qi;
+        JSONArray jsonArray=new JSONArray(analytics);
+        int len=jsonArray.length();
+        for(int i=0;i<len;++i){
+            HashMap<String,String> mapper=EndExamAnalyticsParser.analyticsParser(analytics,i);
+            si=Integer.parseInt(mapper.get("sectionId"));
+            qi=Integer.parseInt(mapper.get("questionId"));
+            int rightAnsweredBy=Integer.parseInt(mapper.get("rightAnsweredBy"));
+            int minimumTime=Integer.parseInt(mapper.get("minimumTime"));
+            int maximumTime=Integer.parseInt(mapper.get("maximumTime"));
+            ob.updateValuesPerQuestionById(si,qi,AnalyticsDatabase.RightAnsweredBy,rightAnsweredBy+"");
+            ob.updateValuesPerQuestionById(si,qi,AnalyticsDatabase.MinimumTime,minimumTime+"");
+            ob.updateValuesPerQuestionById(si,qi,AnalyticsDatabase.MaximumTime,maximumTime+"");
         }
     }
 
     public void setAnswerPaperResponse(String response) throws JSONException {
         HashMap<String,String> map= AnswerPaperParser.responseParser(response);
         String answerPaper=map.get("answerPaper");
-        int cnt=-1;
-        for (int i=0;i<noOfSections;++i){
-            for (int j=0;j<questionArray[i];++j){
-                cnt++;
-                HashMap<String,String> mapper=AnswerPaperParser.answerPaperParser(answerPaper,cnt);
-                int finalAnswerId=Integer.parseInt(mapper.get("finalAnswerId"));
-                int timeSpent=Integer.parseInt(mapper.get("timeSpent"));
-                ob.updateValuesPerQuestion(i+"",j+"",AnalyticsDatabase.FinalAnswerId,finalAnswerId+"");
-                ob.updateValuesPerQuestion(i+"",j+"",AnalyticsDatabase.TimeSpent,timeSpent+"");
-            }
+        JSONArray jsonArray=new JSONArray(answerPaper);
+        int len=jsonArray.length();
+        for(int i=0;i<len;++i){
+            HashMap<String,String> mapper=AnswerPaperParser.answerPaperParser(answerPaper,i);
+            int finalAnswerId=Integer.parseInt(mapper.get("finalAnswerId"));
+            int timeSpent=Integer.parseInt(mapper.get("timeSpent"));
+            int si=Integer.parseInt(mapper.get("sectionId"));
+            int qi=Integer.parseInt(mapper.get("questionId"));
+            int qs=Integer.parseInt(mapper.get("questionStatus"));
+            ob.updateValuesPerQuestionById(si,qi,AnalyticsDatabase.FinalAnswerId,finalAnswerId+"");
+            ob.updateValuesPerQuestionById(si,qi,AnalyticsDatabase.TimeSpent,timeSpent+"");
+            ob.updateValuesPerQuestionById(si,qi,AnalyticsDatabase.QuestionStatus,qs+"");
         }
     }
 
     public void setAnswerKeyResponse(String response) throws JSONException {
         HashMap<String,String> map= AnswerKeyParser.responseParser(response);
         String answerKey=map.get("answerKey");
-        int cnt=-1;
-        for (int i=0;i<noOfSections;++i){
-            for (int j=0;j<questionArray[i];++j){
-                cnt++;
-                HashMap<String,String> mapper=AnswerKeyParser.answerKeyParser(answerKey,cnt);
-                int rightAnswer=Integer.parseInt(mapper.get("rightAnswer"));
-                ob.updateValuesPerQuestion(i+"",j+"",AnalyticsDatabase.RightAnswer,rightAnswer+"");
-            }
+        JSONArray jsonArray=new JSONArray(answerKey);
+        int len=jsonArray.length();
+        for(int i=0;i<len;++i){
+            HashMap<String,String> mapper=AnswerKeyParser.answerKeyParser(answerKey,i);
+            int rightAnswer=Integer.parseInt(mapper.get("rightAnswer"));
+            int si=Integer.parseInt(mapper.get("sectionId"));
+            int qi=Integer.parseInt(mapper.get("questionId"));
+            ob.updateValuesPerQuestionById(si,qi,AnalyticsDatabase.RightAnswer,rightAnswer+"");
         }
     }
 
@@ -431,7 +460,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
         for(int i=0;i<noOfSections;++i){
             for(int j=0;j<questionArray[i];++j){
                 cnt++;
-                ob.updateValuesPerQuestion(i+"",j+"",AnalyticsDatabase.FragmentIndex,cnt+"");
+                ob.updateValuesPerQuestion(i,j,AnalyticsDatabase.FragmentIndex,cnt+"");
                 String my_text=ob.getTextOfOneQuestion(i,j);
                 formatTextForQuestion(my_text,i,j);
                 int numOp=ob.getNoOfOptionsInOneQuestion(i,j);
@@ -444,22 +473,28 @@ public class AnswerPaperLoad extends AppCompatActivity {
     }
 
     public void formatTextForQuestion(String text,int ii,int jj) {
-        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher1= pattern.matcher(text);
-        String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst="<img src=\"file://"+base+"/LiveExams/$2\"/>";
-        String result=matcher1.replaceAll(subst);
-        ob.updateValuesPerQuestion(ii+"",jj+"", AnalyticsDatabase.QuestionText,result);
+        String myText=format(text,examId);
+        ob.updateValuesPerQuestion(ii,jj, AnalyticsDatabase.QuestionText,myText);
     }
 
     public void formatTextForOption(String text,int ii,int jj,int kk) {
+        String myText=format(text,examId);
+        ob.updateValuesPerOption(ii,jj,kk, AnalyticsDatabase.OptionText,myText);
+    }
+
+    public static String format(String str, String examId) {
+
+        examId="changeThisToExamId";
+
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
+        final String subst = "<img src=\""+ ConstantsDefined.imageUrl+""+examId+"/Images/$2\"/>";
+
         final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher1= pattern.matcher(text);
-        String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst="<img src=\"file://"+base+"/LiveExams/$2\"/>";
-        String result=matcher1.replaceAll(subst);
-        ob.updateValuesPerOption(ii+"",jj+"",kk+"", AnalyticsDatabase.OptionText,result);
+        final Matcher matcher = pattern.matcher(str);
+
+// The substituted value will be contained in the result variable
+        String result=matcher.replaceAll(subst);
+
+        return result;
     }
 }

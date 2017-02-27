@@ -19,6 +19,7 @@ import java.util.List;
 import in.truskills.liveexams.ParticularExamStatistics.AnswerPaperLoad;
 import in.truskills.liveexams.ParticularExamStatistics.InitialInfo;
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.SqliteDatabases.AnalyticsDatabase;
 
 /**
  * Created by 6155dx on 22-01-2017.
@@ -65,6 +66,8 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<StatisticsListAd
             public void onClick(View view) {
 
                 value=myList.get(holder.getAdapterPosition());
+                AnalyticsDatabase ob=new AnalyticsDatabase(c);
+                ob.deleteMyTable();
                 Intent i =new Intent(c,AnswerPaperLoad.class);
                 i.putExtra("examId", value.getExamId());
                 i.putExtra("examName",value.getName());

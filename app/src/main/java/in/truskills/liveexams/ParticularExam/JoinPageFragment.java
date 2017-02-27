@@ -52,7 +52,7 @@ public class JoinPageFragment extends Fragment {
     JoinPageInterface ob;
     TextView startDetailsJoinPage, endDetailsJoinPage, descriptionJoinPage;
     Spinner myLanguageJoinPage;
-    String selectedLanguage, timestamp, examDetails, examId;
+    String selectedLanguage, timestamp, examDetails, examId,Languages;
     SharedPreferences prefs;
     Button join_button;
     Handler h;
@@ -142,6 +142,7 @@ public class JoinPageFragment extends Fragment {
             String myStartTime= MiscellaneousParser.parseTimeForDetails(startTime);
             String endTime=mapper.get("EndTime");
             String myEndTime= MiscellaneousParser.parseTimeForDetails(endTime);
+            Languages=mapper.get("Languages");
 
             startDetailsJoinPage.setText(myStartDate + "\n" + myStartTime);
             endDetailsJoinPage.setText(myEndDate + "\n" + myEndTime);
@@ -221,10 +222,11 @@ public class JoinPageFragment extends Fragment {
 //        endDetailsJoinPage.setText("Saturday\n14th January 2017\n7:00 PM");
 
         ArrayList<String> listOfLanguages = new ArrayList<>();
-        listOfLanguages.add("LANGUAGE");
-        listOfLanguages.add("Hindi");
-        listOfLanguages.add("Gujarati");
-        listOfLanguages.add("English");
+        try {
+            listOfLanguages = MiscellaneousParser.getLanguagesPerExam(Languages);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
         myLanguageJoinPage.setAdapter(adapterLanguage);

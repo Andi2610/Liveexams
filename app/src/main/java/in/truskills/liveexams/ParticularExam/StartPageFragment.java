@@ -61,7 +61,7 @@ public class StartPageFragment extends Fragment {
     StartPageInterface ob;
     TextView startDetails, endDetails, descriptionStartPage;
     Spinner myLanguage;
-    String selectedLanguage, timestamp, examDetails, examId, name;
+    String selectedLanguage, timestamp, examDetails, examId, name,Languages;
     SharedPreferences prefs;
     Button start_leave_button;
     Bundle b;
@@ -155,6 +155,8 @@ public class StartPageFragment extends Fragment {
             String endDate=mapper.get("EndDate");
             String myEndDate= MiscellaneousParser.parseDate(endDate);
             String startTime=mapper.get("StartTime");
+            Languages=mapper.get("Languages");
+
 
             Log.d("timeDetails","dateInitially="+myStartDate+"**"+myEndDate);
 
@@ -251,11 +253,12 @@ public class StartPageFragment extends Fragment {
             e.printStackTrace();
         }
 
-        ArrayList<String> listOfLanguages = new ArrayList<>();
-        listOfLanguages.add("LANGUAGE");
-        listOfLanguages.add("Hindi");
-        listOfLanguages.add("Gujarati");
-        listOfLanguages.add("English");
+        ArrayList<String> listOfLanguages =new ArrayList<>();
+        try {
+            listOfLanguages = MiscellaneousParser.getLanguagesPerExam(Languages);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
         myLanguage.setAdapter(adapterLanguage);
