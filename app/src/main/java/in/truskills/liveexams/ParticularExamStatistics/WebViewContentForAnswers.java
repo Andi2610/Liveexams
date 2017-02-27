@@ -41,30 +41,30 @@ public class WebViewContentForAnswers {
         for (int i = 0; i <optionsListSize; ++i) {
             if(i==correctanswerId){
                 x=x+"<div>\n" +
-                        "\t<div style=\"padding:10px;background-color:green;height:3px;width:3px;float:left\"></div>\n" +
-                        "\t<div style=\"margin-left:20px;float:left\">"+formattedOptions.get(i)+"</div>\n" +
+                        "\t<span style=\"padding:10px;background-color:green;\"></span>\n" +
+                        "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
                         "</div>\n" +
-                        "<br><br><br><br>";
+                        "<br>";
             }else if(i==myAnswerId){
                 if(myAnswerId==correctanswerId){
                     x=x+"<div>\n" +
-                            "\t<div style=\"padding:10px;background-color:green;height:3px;width:3px;float:left\"></div>\n" +
-                            "\t<div style=\"margin-left:20px;float:left\">"+formattedOptions.get(i)+"</div>\n" +
+                            "\t<span style=\"padding:10px;background-color:green;\"></span>\n" +
+                            "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
                             "</div>\n" +
-                            "<br><br>";
+                            "<br>";
                 }else{
                     x=x+"<div>\n" +
-                            "\t<div style=\"padding:10px;background-color:red;height:3px;width:3px;float:left\"></div>\n" +
-                            "\t<div style=\"margin-left:20px;float:left\">"+formattedOptions.get(i)+"</div>\n" +
+                            "\t<span style=\"padding:10px;background-color:red;\"></span>\n" +
+                            "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
                             "</div>\n" +
-                            "<br><br>";
+                            "<br>";
                 }
             }else{
                 x=x+"<div>\n" +
-                        "\t<div style=\"padding:10px;background-color:black;height:3px;width:3px;float:left\"></div>\n" +
-                        "\t<div style=\"margin-left:20px;float:left\">"+formattedOptions.get(i)+"</div>\n" +
+                        "\t<span style=\"padding:10px;background-color:black;\"></span>\n" +
+                        "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
                         "</div>\n" +
-                        "<br><br>";
+                        "<br>";
             }
         }
 
