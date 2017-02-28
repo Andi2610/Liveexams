@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
@@ -55,7 +56,7 @@ public class AllExamsFragment extends Fragment {
     RequestQueue requestQueue;
     Handler h;
     SearchView searchView;
-    String myStartDate,myEndDate,myDateOfStart,myDateOfEnd,myDuration,myDurationTime;
+    String myStartDate,myEndDate,myDateOfStart,myDateOfEnd,myDuration,myDurationTime,myStartTime,myEndTime;
     TextView searchExams;
 
     public AllExamsFragment() {
@@ -168,12 +169,27 @@ public class AllExamsFragment extends Fragment {
                                             myStartDate=mapper.get("StartDate").get(i);
                                             myEndDate=mapper.get("EndDate").get(i);
                                             myDuration=mapper.get("ExamDuration").get(i);
+                                            myStartTime=mapper.get("StartTime").get(i);
+                                            myEndTime=mapper.get("EndTime").get(i);
 
                                             Log.d("myDate=",myStartDate+" ****** "+myEndDate+" **** "+myDuration);
 
                                             myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
                                             myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
                                             myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+                                            String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
+                                            String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
+
+                                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+                                            Date start_date=simpleDateFormat.parse(myDateOfStart);
+                                            Date end_date=simpleDateFormat.parse(myDateOfEnd);
+//                                            Date middle_date=simpleDateFormat.parse(myTimestamp);
+
+                                            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
+                                            Date start_time=simpleDateFormat2.parse(myTimeOfStart);
+                                            Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
+//                                            Date middle_time=simpleDateFormat2.parse(myTime);
+
 
                                             Log.d("myDate=",myDateOfStart+" ****** "+myDateOfEnd+" **** "+myDurationTime);
 

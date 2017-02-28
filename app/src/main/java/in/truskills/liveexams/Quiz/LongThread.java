@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class LongThread implements Runnable {
 
@@ -25,15 +27,18 @@ public class LongThread implements Runnable {
     String group;
     Context c;
     public static final String TAG = "LongThread";
+    SharedPreferences prefs;
+    ThreadPoolExecutor executor;
 
     public LongThread() {
     }
 
-    public LongThread(int threadNo, String imageUrl, Handler handler,String group,Context c) {
+    public LongThread(int threadNo, String imageUrl, Handler handler, String group, Context c, ThreadPoolExecutor executor) {
         this.threadNo = threadNo;
         this.handler = handler;
         this.imageUrl = imageUrl;
         this.group=group;
+        this.executor=executor;
         this.c=c;
     }
 
@@ -45,8 +50,8 @@ public class LongThread implements Runnable {
             savebitmap(bmp,group);
         } catch (Exception e) {
             Log.e("in","exception:"+e.toString());
-//            Toast.makeText(c, "No connection", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
+            return;
         }
         sendMessage(threadNo, "Thread Completed");
         Log.i(TAG, "Thread Completed " + threadNo);
@@ -93,8 +98,10 @@ public class LongThread implements Runnable {
         } catch (Exception e) {
             Log.e("in","exception:"+e.toString());
             e.printStackTrace();
+            return null;
         }
         return bitmap;
     }
 
 }
+

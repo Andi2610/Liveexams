@@ -44,6 +44,7 @@ public class MiscellaneousParser {
     private static String message = "message";
     private static String Languages = "Languages";
     private static String Language = "Language";
+    private static String examGiven = "examGiven";
 
     public static ArrayList<String> beforeSignupParser(String result) throws JSONException {
         ArrayList<String> list=new ArrayList<>();
@@ -159,6 +160,7 @@ public class MiscellaneousParser {
         mapper.put("timestamp", jsonObject.getString(timestamp));
         String examDetails = jsonObject.getJSONArray(exam).toString();
         mapper.put("examDetails", examDetails);
+        mapper.put("examGiven",jsonObject.getString(examGiven));
         return mapper;
     }
 

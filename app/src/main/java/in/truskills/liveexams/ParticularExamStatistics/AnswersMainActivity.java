@@ -123,6 +123,8 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
         setValuesForQuestionList(0);
 
+        setValuesForTextViews(0);
+
         setValuesForFooter(0);
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -136,6 +138,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
                 setValuesForHeader(position);
                 setValuesForQuestionList(position);
+                setValuesForTextViews(position);
                 setValuesForFooter(position);
             }
 
@@ -208,6 +211,17 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         allQuestionsInOneSectionAdapterForAnswers=new AllQuestionsInOneSectionAdapterForAnswers(listOfFi,AnswersMainActivity.this,qi,types);
         questionsList.setAdapter(allQuestionsInOneSectionAdapterForAnswers);
         allQuestionsInOneSectionAdapterForAnswers.notifyDataSetChanged();
+    }
+
+    public void setValuesForTextViews(int fi){
+        SectionIndex=ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.SectionIndex);
+        int si=Integer.parseInt(SectionIndex);
+        ArrayList<Integer> types=ob.getTypes(si);
+        submittedQuestionsForAnswers.setText(types.get(0)+"");
+        reviewedTickedQuestionsForAnswers.setText(types.get(1)+"");
+        reviewedUntickedQuestionsForAnswers.setText(types.get(2)+"");
+        clearedQuestionsForAnswers.setText(types.get(3)+"");
+        notAttemptedQuestionsForAnswers.setText(types.get(4)+"");
     }
 
     @Override

@@ -41,27 +41,27 @@ public class WebViewContentForAnswers {
         for (int i = 0; i <optionsListSize; ++i) {
             if(i==correctanswerId){
                 x=x+"<div>\n" +
-                        "\t<span style=\"padding:10px;background-color:green;\"></span>\n" +
+                        "\t<span style=\"padding:10px;background-color:green;margin-left:10px\"></span>\n" +
                         "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
                         "</div>\n" +
                         "<br>";
             }else if(i==myAnswerId){
                 if(myAnswerId==correctanswerId){
                     x=x+"<div>\n" +
-                            "\t<span style=\"padding:10px;background-color:green;\"></span>\n" +
+                            "\t<span style=\"padding:10px;background-color:green;margin-left:10px\"></span>\n" +
                             "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
                             "</div>\n" +
                             "<br>";
                 }else{
                     x=x+"<div>\n" +
-                            "\t<span style=\"padding:10px;background-color:red;\"></span>\n" +
+                            "\t<span style=\"padding:10px;background-color:red;margin-left:10px\"></span>\n" +
                             "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
                             "</div>\n" +
                             "<br>";
                 }
             }else{
                 x=x+"<div>\n" +
-                        "\t<span style=\"padding:10px;background-color:black;\"></span>\n" +
+                        "\t<span style=\"padding:10px;background-color:black;margin-left:10px\"></span>\n" +
                         "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
                         "</div>\n" +
                         "<br>";
@@ -71,16 +71,6 @@ public class WebViewContentForAnswers {
         //Generate the html content..
         String content =
                 "<html>\n" +
-                        "<head>"+
-                        "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"\n" +
-                        "        integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">\n" +
-                        "  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css\"\n" +
-                        "        integrity=\"sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp\" crossorigin=\"anonymous\">\n" +
-                        "  <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script>\n" +
-                        "  <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"\n" +
-                        "          integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\"\n" +
-                        "          crossorigin=\"anonymous\"></script>"+
-                        "</head>"+
                         "<body>\n" +
                         "Question:\n" + formattedQuestion +
                         "<br>\n" +

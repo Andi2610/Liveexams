@@ -102,13 +102,14 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                             final String enrolled=mapper.get("enrolled");
                             final String timestamp=mapper.get("timestamp");
                             final String examDetails=mapper.get("examDetails");
+                            final String examGiven=mapper.get("examGiven");
                             dialog.dismiss();
                             final String examId=value.getExamId();
                             h=new Handler();
                             h.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    startMyActivity(enrolled,timestamp,examDetails,value.getName(),examId);
+                                    startMyActivity(enrolled,timestamp,examDetails,value.getName(),examId,examGiven);
                                 }
                             });
                         } catch (JSONException e) {
@@ -168,7 +169,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
         }
     }
 
-    public void startMyActivity(String enrolled,String timestamp,String examDetails,String name,String examId){
+    public void startMyActivity(String enrolled,String timestamp,String examDetails,String name,String examId,String examGiven){
 
         Bundle b=new Bundle();
         b.putString("enrolled",enrolled);
@@ -176,6 +177,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
         b.putString("examDetails",examDetails);
         b.putString("name",name);
         b.putString("examId",examId);
+        b.putString("examGiven",examGiven);
         Intent i=new Intent(c,ParticularExamMainActivity.class);
         i.putExtra("bundle",b);
         i.putExtra("from","allExams");

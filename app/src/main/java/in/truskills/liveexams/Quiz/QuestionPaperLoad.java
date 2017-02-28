@@ -1,6 +1,9 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.os.Handler;
@@ -24,6 +27,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -53,7 +57,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     QuizDatabase ob;
     ProgressBar progressBar;
     ArrayList<String> urls,groups;
-
+    SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         avi.show();
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
         myWaitMessage=(TextView)findViewById(R.id.myWaitMessage);
         Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
@@ -365,23 +370,44 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                     new LinkedBlockingQueue<Runnable>()
             );
             for(int i=0;i<urls.size();++i){
-                executor.execute(new LongThread(i, urls.get(i), new Handler(QuestionPaperLoad.this),groups.get(i),QuestionPaperLoad.this));
+                executor.execute(new LongThread(i, urls.get(i), new Handler(QuestionPaperLoad.this),groups.get(i),QuestionPaperLoad.this,executor));
             }
 
             executor.shutdown();
             executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
 
             if(executor.isTerminated()==true){
-                Log.d("termination","true");
-                Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
-                intent.putExtra("examId", examId);
-                intent.putExtra("name", paperName);
-                intent.putExtra("language", selectedLanguage);
-                intent.putExtra("noOfSections",noOfSections);
-                intent.putExtra("questionArray",questionArray);
-                intent.putExtra("ExamDuration",myTime);
-                startActivity(intent);
-                finish();
+
+                String folder_main = "LiveExams";
+                Toast.makeText(this, "count="+myCount, Toast.LENGTH_SHORT).show();
+
+                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                if (f.exists()) {
+                    String[] children = f.list();
+                    int len=children.length;
+                    //TODO
+                    /*
+                    Write myCount instead of 25..
+                     */
+                    if(len==25){
+                        Log.d("termination","true");
+                        Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
+                        intent.putExtra("examId", examId);
+                        intent.putExtra("name", paperName);
+                        intent.putExtra("language", selectedLanguage);
+                        intent.putExtra("noOfSections",noOfSections);
+                        intent.putExtra("questionArray",questionArray);
+                        intent.putExtra("ExamDuration",myTime);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Toast.makeText(this, "No internet connection.. Please try again..", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }else{
+                    Toast.makeText(this, "No internet connection.. Please try again..", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }else{
                 Log.d("termination","false");
             }
@@ -457,6 +483,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
     @Override
     public boolean handleMessage(Message msg) {
+
         curCount++;
         Log.d("count",curCount+" "+myCount);
         per = (curCount / (float)myCount) * 100;

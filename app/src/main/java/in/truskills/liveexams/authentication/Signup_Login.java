@@ -27,6 +27,8 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -93,7 +95,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
     EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile;
-    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence;
+    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence,successfullRegister;
     Spinner signupLanguage, signupGender;
     LocationManager locationManager;
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -104,6 +106,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     SharedPreferences prefs;
     ImageView app_logo;
     ArrayList<String> listOfLanguages;
+    Animation slide_down;
 
     //Called when the activity is created..
     @Override
@@ -116,8 +119,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         //Shared Preferences for user's selected language
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
+        SharedPreferences.Editor e=prefs.edit();
+        e.putInt("signup",0);
+        e.apply();
+
         //Initialise the request for Volley connection
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        slide_down = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.slide_down);
 
 
         //Attach all the variables used in layout
@@ -129,6 +139,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         termsAndConditionsPressed = (TextView) findViewById(R.id.termsAndConditionsPressed);
         signupLocation = (TextView) findViewById(R.id.signupLocation);
         sentence = (TextView) findViewById(R.id.sentence);
+        successfullRegister = (TextView) findViewById(R.id.successfullRegister);
         signupDrawer = (SlidingDrawer) findViewById(R.id.signupDrawer);
         loginDrawer = (SlidingDrawer) findViewById(R.id.loginDrawer);
         signupLayout = (RelativeLayout) findViewById(R.id.signupLayout);
@@ -146,7 +157,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         app_logo = (ImageView) findViewById(R.id.app_logo);
         locationField=(LinearLayout)findViewById(R.id.locationField);
 
-        Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        final Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         registerHandleButton.setTypeface(tff1);
         loginHandleButton.setTypeface(tff1);
 
@@ -254,6 +265,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
             @Override
             public void onDrawerOpened() {
+
+                SharedPreferences.Editor e=prefs.edit();
+                e.putInt("signup",0);
+                e.apply();
 
                 //Hide the login drawer..
                 loginDrawer.setVisibility(View.GONE);
@@ -417,6 +432,17 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         loginDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
             @Override
             public void onDrawerOpened() {
+
+                if(prefs.getInt("signup",0)==1){
+                    successfullRegister.setVisibility(View.VISIBLE);
+                    successfullRegister.startAnimation(slide_down);
+                    successfullRegister.setTypeface(tff1);
+                    SharedPreferences.Editor e=prefs.edit();
+                    e.putInt("signup",0);
+                    e.apply();
+                }else{
+                    successfullRegister.setVisibility(View.GONE);
+                }
 
                 //Hide the signup drawer..
                 signupDrawer.setVisibility(View.GONE);
@@ -593,6 +619,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 List<Address> addresses = null;
                 try {
                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    Log.d("addresses",addresses+"");
                 } catch (IOException e) {
                     e.printStackTrace();
                     if (!((Activity) Signup_Login.this).isFinishing()) {
@@ -608,6 +635,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     signupLocation.setText(addresses.get(0).getAddressLine(2));
                 } else {
                     Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
+                    progress.dismiss();
                 }
             }
 
@@ -726,7 +754,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 //                            Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                             Log.d("response",mapper.get("response"));
                             if(mapper.get("success").equals("true")){
-                                Toast.makeText(Signup_Login.this, "Signup Successfull", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(Signup_Login.this, "Signup Successfull", Toast.LENGTH_SHORT).show();
+                                SharedPreferences.Editor e=prefs.edit();
+                                e.putInt("signup",1);
+                                e.apply();
                                 Answers.getInstance().logCustom(new CustomEvent("Signup successfull")
                                         .putCustomAttribute("userName",name));
                                 signupDrawer.close();

@@ -52,7 +52,7 @@ public class JoinPageFragment extends Fragment {
     JoinPageInterface ob;
     TextView startDetailsJoinPage, endDetailsJoinPage, descriptionJoinPage;
     Spinner myLanguageJoinPage;
-    String selectedLanguage, timestamp, examDetails, examId,Languages;
+    String selectedLanguage, timestamp, examDetails, examId,Languages,examGiven;
     SharedPreferences prefs;
     Button join_button;
     Handler h;
@@ -122,6 +122,7 @@ public class JoinPageFragment extends Fragment {
         timestamp = b.getString("timestamp");
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
+        examGiven=b.getString("examGiven");
 
         Answers.getInstance().logCustom(new CustomEvent("Join now page inspect")
                 .putCustomAttribute("userName",prefs.getString("userName",""))
@@ -217,9 +218,6 @@ public class JoinPageFragment extends Fragment {
                 ob.changeFragmentFromJoinPage(f, "name");
             }
         });
-
-//        startDetailsJoinPage.setText("Thursday\n12th January 2017\n8:00 AM");
-//        endDetailsJoinPage.setText("Saturday\n14th January 2017\n7:00 PM");
 
         ArrayList<String> listOfLanguages = new ArrayList<>();
         try {

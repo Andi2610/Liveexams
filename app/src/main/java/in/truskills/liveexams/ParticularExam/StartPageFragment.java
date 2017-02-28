@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +40,7 @@ import com.crashlytics.android.answers.CustomEvent;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,13 +63,14 @@ public class StartPageFragment extends Fragment {
     StartPageInterface ob;
     TextView startDetails, endDetails, descriptionStartPage;
     Spinner myLanguage;
-    String selectedLanguage, timestamp, examDetails, examId, name,Languages;
+    String selectedLanguage, timestamp, examDetails, examId, name,Languages,examGiven;
     SharedPreferences prefs;
     Button start_leave_button;
     Bundle b;
     Handler h;
     HashMap<String,String> mapper;
     ViewFlipper viewFlipper;
+    QuizDatabase o;
 
     public StartPageFragment() {
         // Required empty public constructor
@@ -85,7 +88,7 @@ public class StartPageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        QuizDatabase o=new QuizDatabase(getActivity());
+        o=new QuizDatabase(getActivity());
 
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -138,8 +141,9 @@ public class StartPageFragment extends Fragment {
 
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
+        examGiven=b.getString("examGiven");
 
-        Log.d("examDetails",examDetails+"");
+        Log.d("examGiven",examGiven+"");
 
         Answers.getInstance().logCustom(new CustomEvent("Start page inspect")
                 .putCustomAttribute("userName",prefs.getString("userName",""))
@@ -212,29 +216,33 @@ public class StartPageFragment extends Fragment {
 //            }else{
 //                Log.d("timeDetails","in2");
 //            }
-
-            if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
-                if(middle_date.equals(start_date)){
-                    if(!middle_time.before(start_time)){
-                        start_leave_button.setText("START");
-                        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-                    }
-                }else if(middle_date.equals(end_date)){
-                    if(!middle_time.after(end_time)){
-                        start_leave_button.setText("START");
-                        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-                        endDetails.setTextColor(Color.parseColor("#f44336"));
-                    }
-                }else{
-                    start_leave_button.setText("START");
-                    start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-                }
-            }else if(middle_date.after(end_date)){
+            if(examGiven.equals("false")){
                 start_leave_button.setText("EXAM IS OVER");
                 start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
-            }else {
-                start_leave_button.setText("LEAVE");
-                start_leave_button.setBackgroundColor(Color.parseColor("#f44336"));
+            }else{
+                if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
+                    if(middle_date.equals(start_date)){
+                        if(!middle_time.before(start_time)){
+                            start_leave_button.setText("START");
+                            start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+                        }
+                    }else if(middle_date.equals(end_date)){
+                        if(!middle_time.after(end_time)){
+                            start_leave_button.setText("START");
+                            start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+                            endDetails.setTextColor(Color.parseColor("#f44336"));
+                        }
+                    }else{
+                        start_leave_button.setText("START");
+                        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+                    }
+                }else if(middle_date.after(end_date)){
+                    start_leave_button.setText("EXAM IS OVER");
+                    start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
+                }else {
+                    start_leave_button.setText("LEAVE");
+                    start_leave_button.setBackgroundColor(Color.parseColor("#f44336"));
+                }
             }
 
 //            start_leave_button.setText("START");
@@ -349,12 +357,21 @@ public class StartPageFragment extends Fragment {
                         else{
                             //Else if chosen..
                             //Start Quiz
+                            String folder_main = "LiveExams";
+
+                            File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                            if (f.exists()) {
+                                deleteDir(f);
+                            }
+
                             Intent i=new Intent(getActivity(), QuestionPaperLoad.class);
                             i.putExtra("examId", examId);
                             i.putExtra("name", name);
                             i.putExtra("language", selectedLanguage);
                             startActivity(i);
                         }
+
+                        o.deleteMyTable();
                     }
 
                     Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
@@ -367,6 +384,22 @@ public class StartPageFragment extends Fragment {
             }
         });
     }
+
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

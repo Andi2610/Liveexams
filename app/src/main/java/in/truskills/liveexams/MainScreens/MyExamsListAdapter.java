@@ -45,7 +45,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
     ProgressDialog dialog;
     Handler h;
     RequestQueue requestQueue;
-    String enrolled, timestamp, examDetails, examId;
+    String enrolled, timestamp, examDetails, examId,examGiven;
 
     MyExamsListAdapter(List<Values> myList, Context c) {
         this.myList = myList;
@@ -105,6 +105,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                             enrolled = mapper.get("enrolled");
                             timestamp = mapper.get("timestamp");
                             examDetails = mapper.get("examDetails");
+                            examGiven = mapper.get("examGiven");
 
                             examId = value.getExamId();
                             dialog.dismiss();
@@ -120,6 +121,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                                     b.putString("examDetails", examDetails);
                                     b.putString("name", value.getName());
                                     b.putString("examId", examId);
+                                    b.putString("examGiven",examGiven);
                                     Intent i = new Intent(c, ParticularExamMainActivity.class);
                                     i.putExtra("bundle", b);
                                     i.putExtra("from","home");

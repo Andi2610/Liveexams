@@ -65,12 +65,13 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
         holder.timeSectionWise.setText("TIME:  "+time+"/"+totalTime);
         holder.rankSectionWise.setText("RANK:  "+rank+"/"+totalRank);
 
-//        holder.submittedQuestionsAllSummary.setText(types.get(0)+"");
-//        holder.reviewedTickedQuestionsAllSummary.setText(types.get(1)+"");
-//        holder.reviewedUntickedQuestionsAllSummary.setText(types.get(2)+"");
-//        holder.clearedQuestionsAllSummary.setText(types.get(3)+"");
-//        holder.notAttemptedQuestionsAllSummary.setText(types.get(4)+"");
+        ArrayList<Integer> myTypes=ob.getTypes(sI);
 
+        holder.submittedQuestionsAllSummary.setText(myTypes.get(0)+"");
+        holder.reviewedTickedQuestionsAllSummary.setText(myTypes.get(1)+"");
+        holder.reviewedUntickedQuestionsAllSummary.setText(myTypes.get(2)+"");
+        holder.clearedQuestionsAllSummary.setText(myTypes.get(3)+"");
+        holder.notAttemptedQuestionsAllSummary.setText(myTypes.get(4)+"");
 
         Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.mySectionName.setTypeface(tff1);

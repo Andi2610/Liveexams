@@ -31,7 +31,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -116,6 +118,9 @@ public class AllSectionsSummary extends AppCompatActivity {
                                 try {
                                     jsonObject.put("result",jsonArray);
                                     jsonObject.put("selectedLanguage",selectedLanguage);
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                    String format = simpleDateFormat.format(new Date());
+                                    jsonObject.put("date",format);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -172,7 +177,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                                             }else{
                                                 JSONObject jsonObject2=new JSONObject(result);
                                                 Toast.makeText(AllSectionsSummary.this, jsonObject2.getString("errmsg")+"", Toast.LENGTH_SHORT).show();
-                                                Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
+//                                                Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                                                 startActivity(intent);

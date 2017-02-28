@@ -306,4 +306,35 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         return types;
     }
 
+    public ArrayList<Integer> getTypes(int si){
+        ArrayList<Integer> types=new ArrayList<>();
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=0 AND "+SectionIndex+"="+si;
+
+        Cursor cursor=db.rawQuery(query,null);
+        types.add(cursor.getCount());
+
+        query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=1 AND "+SectionIndex+"="+si;
+        cursor=db.rawQuery(query,null);
+        types.add(cursor.getCount());
+
+        query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=2 AND "+SectionIndex+"="+si;
+        cursor=db.rawQuery(query,null);
+        types.add(cursor.getCount());
+
+        query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=3 AND "+SectionIndex+"="+si;
+        cursor=db.rawQuery(query,null);
+        types.add(cursor.getCount());
+
+        query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=4 AND "+SectionIndex+"="+si;
+        cursor=db.rawQuery(query,null);
+        types.add(cursor.getCount());
+
+        cursor.close();
+//        db.close();
+
+        return types;
+
+    }
+
 }

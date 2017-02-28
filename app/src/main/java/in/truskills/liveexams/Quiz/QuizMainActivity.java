@@ -1,14 +1,17 @@
 package in.truskills.liveexams.Quiz;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flashphoner.fpwcsapi.layout.PercentFrameLayout;
 import com.github.nkzawa.emitter.Emitter;
@@ -36,10 +40,14 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import in.truskills.liveexams.MainScreens.MainActivity;
+import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
@@ -56,7 +64,7 @@ interface socketFromTeacher {
     void disconnectSession();
 }
 
-public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent {
+public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent, ConnectivityReciever.ConnectivityReceiverListener {
 
     private static final String SOCKET = "socket";
     MyPageAdapter pageAdapter;
@@ -79,6 +87,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     Socket socket;
     socketFromTeacher socketfromteacher;
     SharedPreferences prefs;
+    CountDownTimer count;
+    android.support.v7.app.AlertDialog.Builder builder;
+    AlertDialog mAlertDialog;
+    long timeUntil;
 
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
@@ -165,12 +177,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         questionsList.setItemAnimator(new DefaultItemAnimator());
 
         forQuiz();
+
     }
 
     public void forQuiz() {
 
         //Set timer..
-        new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
+        count=new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
 
             public void onTick(long millisUntilFinished) {
 
@@ -180,6 +193,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                                 TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
                                 TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                timeUntil=millisUntilFinished;
             }
 
             public void onFinish() {
@@ -204,7 +218,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 AlertDialog alert = builder.create();
                 alert.show();
             }
-        }.start();
+
+
+        };
+        count.start();
 
         //Initially.. fragmentIndex=0;
         //Getting SectionIndex, QuestionIndex and SerialNumber of fragmentIndex=0;
@@ -702,5 +719,94 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             }
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyApplication.getInstance().setConnectivityListener(QuizMainActivity.this);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(final boolean isConnected) {
+        Toast.makeText(this, isConnected + "", Toast.LENGTH_SHORT).show();
+        if (!isConnected) {
+            builder = new android.support.v7.app.AlertDialog.Builder(QuizMainActivity.this, R.style.AppCompatAlertDialogStyle);
+            builder.setTitle("Internet Connectivity Lost..");
+            builder.setMessage("Please re-connect to resume your quiz");
+            builder.setCancelable(false);
+            mAlertDialog = builder.create();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(15000);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(!isConnected){
+                                    mAlertDialog.show();
+                                    end = System.currentTimeMillis();
+                                    diff = end - start;
+                                    diff = diff / 1000;
+                                    int preIndex = quizPrefs.getInt("previousIndex", 0);
+                                    int preSi = ob.getIntValuesPerQuestionByFragmentIndex(preIndex, QuizDatabase.SectionIndex);
+                                    int preQi = ob.getIntValuesPerQuestionByFragmentIndex(preIndex, QuizDatabase.QuestionIndex);
+                                    String myTime = ob.getValuesForResult(preSi, preQi, QuizDatabase.TimeSpent);
+                                    long time = Long.parseLong(myTime);
+                                    time = time + diff;
+                                    ob.updateValuesForResult(preSi, preQi, QuizDatabase.TimeSpent, time + "");
+                                    count.cancel();
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
+        } else {
+            mAlertDialog.dismiss();
+            start = System.currentTimeMillis();
+            count = new CountDownTimer(timeUntil, 1000) { // adjust the milli seconds here
+
+                public void onTick(long millisUntilFinished) {
+
+                    timer.setText("" + String.format(FORMAT,
+                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                    timeUntil = millisUntilFinished;
+                }
+
+                public void onFinish() {
+                    timer.setText("done!");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(QuizMainActivity.this);
+                    builder.setMessage("Quiz is over!! Re-directing to Home page");
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(3000);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            } finally {
+                                Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                                startActivity(intent);
+                            }
+                        }
+                    });
+                    t.start();
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+
+            };
+            count.start();
+        }
     }
 }
