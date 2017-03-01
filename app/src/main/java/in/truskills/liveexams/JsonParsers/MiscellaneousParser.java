@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import in.truskills.liveexams.ParticularExamStatistics.SectionNamesdisplayAdapterForAnswers;
 
@@ -39,6 +40,7 @@ public class MiscellaneousParser {
     private static String enrolled = "enrolled";
     private static String timestamp = "timestamp";
     private static String exam = "exam";
+    private static String exams = "exams";
     private static String Description = "Description";
     private static String leftExam = "leftExam";
     private static String message = "message";
@@ -98,6 +100,8 @@ public class MiscellaneousParser {
         ArrayList<String> ExamDurationList = new ArrayList<>();
         ArrayList<String> ExamIdList = new ArrayList<>();
         ArrayList<String> leftExamList = new ArrayList<>();
+        ArrayList<String> startTimeList = new ArrayList<>();
+        ArrayList<String> endTimeList = new ArrayList<>();
         HashMap<String, ArrayList<String>> mapper = new HashMap<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             Iterator<String> keys = jsonArray.getJSONObject(i).keys();
@@ -110,6 +114,8 @@ public class MiscellaneousParser {
                 EndDateList.add(jsonObject.getJSONArray(EndDate).get(0).toString());
                 ExamIdList.add(key);
                 leftExamList.add(jsonObject.getString(leftExam));
+                startTimeList.add(jsonObject.getJSONArray(StartTime).get(0).toString());
+                endTimeList.add(jsonObject.getJSONArray(EndTime).get(0).toString());
             }
         }
         mapper.put("ExamName", ExamNameList);
@@ -118,12 +124,26 @@ public class MiscellaneousParser {
         mapper.put("EndDate", EndDateList);
         mapper.put("ExamId", ExamIdList);
         mapper.put("leftExam", leftExamList);
+        mapper.put("StartTime", startTimeList);
+        mapper.put("EndTime", endTimeList);
 
         return mapper;
     }
 
-    public static HashMap allExamsParser(JSONObject result) throws JSONException {
-        JSONArray jsonArray = result.getJSONArray(response);
+    public static HashMap<String,String> allExamsApiParser(JSONObject result) throws JSONException {
+        HashMap<String,String> map=new HashMap<>();
+        map.put("response",result.getJSONObject(response).toString());
+        map.put("success",result.getString(success));
+        JSONObject jsonObject1=new JSONObject(result.getJSONObject(response).toString());
+        String myTimestamp=jsonObject1.getString(timestamp);
+        String myExams=jsonObject1.getJSONArray(exams).toString();
+        map.put("timestamp",myTimestamp);
+        map.put("exams",myExams);
+        return map;
+    }
+
+    public static HashMap allExamsParser(String result) throws JSONException {
+        JSONArray jsonArray = new JSONArray(result);
         ArrayList<String> ExamNameList = new ArrayList<>();
         ArrayList<String> StartDateList = new ArrayList<>();
         ArrayList<String> EndDateList = new ArrayList<>();

@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -13,6 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,14 +22,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
@@ -43,8 +56,10 @@ public class HomeFragment extends Fragment {
     List<Values> valuesList, filteredList;
     Values values;
     HomeInterface ob;
-    String joinedExams, myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime;
+    String joinedExams, myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime,myStartTime,myEndTime;
     SharedPreferences prefs;
+    RequestQueue requestQueue;
+    Handler h;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -65,10 +80,14 @@ public class HomeFragment extends Fragment {
 
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        requestQueue = Volley.newRequestQueue(getActivity());
+        h=new Handler();
+        valuesList=new ArrayList<>();
 
         //Initialise the variables..
         add = (Button) getActivity().findViewById(R.id.add);
         myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsList);
+        add.setVisibility(View.GONE);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         ob = (HomeInterface) getActivity();
 
@@ -152,45 +171,105 @@ public class HomeFragment extends Fragment {
     }
 
     public void setList(){
-        joinedExams = prefs.getString("joinedExams", "noJoinedExams");
-        valuesList = new ArrayList<>();
 
-        //If user has joined to some exams..
-        if (!joinedExams.equals("noJoinedExams")) {
-            try {
-                //Parse myExams Result..
-                HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(joinedExams);
-                JSONArray arr = new JSONArray(joinedExams);
-                int length = arr.length();
-                for (int i = 0; i < length; ++i) {
+        //connect to joinedExams api..
 
-                    //If user is still enrolled to this exam..
-                    if (mapper.get("leftExam").get(i).equals("false")) {
+        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId","");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
 
-                        myStartDate = mapper.get("StartDate").get(i);
-                        myEndDate = mapper.get("EndDate").get(i);
-                        myDuration = mapper.get("ExamDuration").get(i);
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String myResponse=response.getJSONObject("response").toString();
+                    JSONObject jsonObject=new JSONObject(myResponse);
+                    String timestamp=jsonObject.getString("timestamp");
+                    String myJoinedExams=jsonObject.getJSONArray("joinedExams").toString();
+                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExams);
+                    JSONArray arr = new JSONArray(myJoinedExams);
+                    int length = arr.length();
+                    for (int i = 0; i < length; ++i) {
 
-                        myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
-                        myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
-                        myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+                        //If user is still enrolled to this exam..
+                        if (mapper.get("leftExam").get(i).equals("false")) {
 
-                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                        valuesList.add(values);
+                            myStartDate = mapper.get("StartDate").get(i);
+                            myEndDate = mapper.get("EndDate").get(i);
+                            myDuration = mapper.get("ExamDuration").get(i);
+                            myStartTime=mapper.get("StartTime").get(i);
+                            myEndTime=mapper.get("EndTime").get(i);
+
+                            myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                            myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                            myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+
+                            String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
+                            String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
+                            Log.d("myTimestamp=",timestamp);
+                            String myTimestamp=MiscellaneousParser.parseTimestamp(timestamp);
+                            String myTime=MiscellaneousParser.parseTimestampForTime(timestamp);
+
+                            Log.d("myTimestamp=",myTimestamp);
+
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+                            Date start_date=simpleDateFormat.parse(myDateOfStart);
+                            Date end_date=simpleDateFormat.parse(myDateOfEnd);
+                            Date middle_date=simpleDateFormat.parse(myTimestamp);
+
+                            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
+                            Date start_time=simpleDateFormat2.parse(myTimeOfStart);
+                            Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
+                            Date middle_time=simpleDateFormat2.parse(myTime);
+
+                            if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
+                                if(middle_date.equals(start_date)){
+                                    if(!middle_time.before(start_time)){
+                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                        valuesList.add(values);
+                                    }
+                                }else if(middle_date.equals(end_date)){
+                                    if(!middle_time.after(end_time)){
+                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                        valuesList.add(values);
+                                    }
+                                }else{
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                    valuesList.add(values);
+                                }
+                            }else if(middle_date.after(end_date)){
+                            }else {
+                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                valuesList.add(values);
+                            }
+                        }
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateList(valuesList);
+                            }
+                        });
                     }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException | ParseException e) {
-                e.printStackTrace();
-            }
-        }
 
-        myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+    public void populateList(List<Values> list){
+        myExamsListAdapter = new MyExamsListAdapter(list, getActivity());
         myExamsList.setLayoutManager(linearLayoutManager);
         myExamsList.setItemAnimator(new DefaultItemAnimator());
         myExamsList.setAdapter(myExamsListAdapter);
         myExamsListAdapter.notifyDataSetChanged();
 
-        if (valuesList.isEmpty()) {
+        if (list.isEmpty()) {
             add.setVisibility(View.VISIBLE);
         } else {
             add.setVisibility(View.GONE);

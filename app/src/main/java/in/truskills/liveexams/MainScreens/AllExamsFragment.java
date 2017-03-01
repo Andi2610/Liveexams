@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -143,81 +144,7 @@ public class AllExamsFragment extends Fragment {
                         allExamsListAdapter.notifyDataSetChanged();
                         searchExams.setVisibility(View.VISIBLE);
                     }else{
-                        String url = ConstantsDefined.api + "searchExams/" + s;
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                                url, new Response.Listener<JSONObject>() {
-
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(response);
-                                    int length = response.getJSONArray("response").length();
-                                    if(length==0){
-                                        filteredList.clear();
-                                        h.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                searchExams.setVisibility(View.VISIBLE);
-                                                populateList(filteredList);
-                                            }
-                                        });
-                                    }
-                                    else{
-                                        searchExams.setVisibility(View.GONE);
-                                        filteredList=new ArrayList<Values>();
-                                        for (int i = 0; i < length; ++i) {
-                                            myStartDate=mapper.get("StartDate").get(i);
-                                            myEndDate=mapper.get("EndDate").get(i);
-                                            myDuration=mapper.get("ExamDuration").get(i);
-                                            myStartTime=mapper.get("StartTime").get(i);
-                                            myEndTime=mapper.get("EndTime").get(i);
-
-                                            Log.d("myDate=",myStartDate+" ****** "+myEndDate+" **** "+myDuration);
-
-                                            myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
-                                            myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
-                                            myDurationTime= MiscellaneousParser.parseDuration(myDuration);
-                                            String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
-                                            String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
-
-                                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-                                            Date start_date=simpleDateFormat.parse(myDateOfStart);
-                                            Date end_date=simpleDateFormat.parse(myDateOfEnd);
-//                                            Date middle_date=simpleDateFormat.parse(myTimestamp);
-
-                                            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
-                                            Date start_time=simpleDateFormat2.parse(myTimeOfStart);
-                                            Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
-//                                            Date middle_time=simpleDateFormat2.parse(myTime);
-
-
-                                            Log.d("myDate=",myDateOfStart+" ****** "+myDateOfEnd+" **** "+myDurationTime);
-
-
-                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-                                            filteredList.add(values);
-                                            h.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    populateList(filteredList);
-                                                }
-                                            });
-
-                                        }
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        requestQueue.add(jsonObjectRequest);
+                        connectToApi(s);
                     }
                     return true;
                 }
@@ -249,59 +176,115 @@ public class AllExamsFragment extends Fragment {
             allExamsList.setAdapter(allExamsListAdapter);
             allExamsListAdapter.notifyDataSetChanged();
         }else{
-            String url = ConstantsDefined.api + "searchExams/" + searchView.getQuery();
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                    url, new Response.Listener<JSONObject>() {
+            connectToApi(searchView.getQuery()+"");
+        }
+    }
 
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(response);
-                        int length = response.getJSONArray("response").length();
-                        if(length==0){
-                            filteredList.clear();
+    public void connectToApi(String s){
+        String url = ConstantsDefined.api + "searchExams/" + s;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    HashMap<String,String> map=MiscellaneousParser.allExamsApiParser(response);
+                    String exams=map.get("exams");
+                    String timestamp=map.get("timestamp");
+                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(exams);
+                    Log.d("myExamName",mapper.get("ExamName").get(0)+"");
+                    JSONArray jsonArray=new JSONArray(exams);
+                    int length=jsonArray.length();
+                    if(length==0){
+                        filteredList.clear();
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                searchExams.setVisibility(View.VISIBLE);
+                                populateList(filteredList);
+                            }
+                        });
+                    }
+                    else{
+                        searchExams.setVisibility(View.GONE);
+                        filteredList=new ArrayList<Values>();
+                        for (int i = 0; i < length; ++i) {
+                            myStartDate=mapper.get("StartDate").get(i);
+                            myEndDate=mapper.get("EndDate").get(i);
+                            myDuration=mapper.get("ExamDuration").get(i);
+                            myStartTime=mapper.get("StartTime").get(i);
+                            myEndTime=mapper.get("EndTime").get(i);
+
+                            Log.d("myDate=",myStartDate+" ****** "+myEndDate+" **** "+myDuration);
+
+                            myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
+                            myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
+                            myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+
+                            String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
+                            String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
+                            Log.d("myTimestamp=",timestamp);
+                            String myTimestamp=MiscellaneousParser.parseTimestamp(timestamp);
+                            String myTime=MiscellaneousParser.parseTimestampForTime(timestamp);
+
+                            Log.d("myTimestamp=",myTimestamp);
+
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+                            Date start_date=simpleDateFormat.parse(myDateOfStart);
+                            Date end_date=simpleDateFormat.parse(myDateOfEnd);
+                            Date middle_date=simpleDateFormat.parse(myTimestamp);
+
+                            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
+                            Date start_time=simpleDateFormat2.parse(myTimeOfStart);
+                            Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
+                            Date middle_time=simpleDateFormat2.parse(myTime);
+
+
+                            Log.d("myDate=",myDateOfStart+" ****** "+myDateOfEnd+" **** "+myDurationTime);
+
+                            if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
+                                if(middle_date.equals(start_date)){
+                                    if(!middle_time.before(start_time)){
+                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                        filteredList.add(values);
+                                    }
+                                }else if(middle_date.equals(end_date)){
+                                    if(!middle_time.after(end_time)){
+                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                        filteredList.add(values);
+                                    }
+                                }else{
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                    filteredList.add(values);
+                                }
+                            }else if(middle_date.after(end_date)){
+                            }else {
+                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                filteredList.add(values);
+                            }
+//                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+
                             h.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     populateList(filteredList);
                                 }
                             });
+
                         }
-                        else{
-                            filteredList=new ArrayList<>();
-                            for (int i = 0; i < length; ++i) {
-                                myStartDate=mapper.get("StartDate").get(i);
-                                myEndDate=mapper.get("EndDate").get(i);
-                                myDuration=mapper.get("ExamDuration").get(i);
-
-                                myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
-                                myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
-                                myDurationTime= MiscellaneousParser.parseDuration(myDuration);
-
-                                values = new Values(mapper.get("ExamName").get(i),myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-                                filteredList.add(values);
-                                h.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        populateList(filteredList);
-                                    }
-                                });
-
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-                }
-            });
-            requestQueue.add(jsonObjectRequest);
-        }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 }

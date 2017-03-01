@@ -216,7 +216,7 @@ public class StartPageFragment extends Fragment {
 //            }else{
 //                Log.d("timeDetails","in2");
 //            }
-            if(examGiven.equals("false")){
+            if(examGiven.equals("true")){
                 start_leave_button.setText("EXAM IS OVER");
                 start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
             }else{
