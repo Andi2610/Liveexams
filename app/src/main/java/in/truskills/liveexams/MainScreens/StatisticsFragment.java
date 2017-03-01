@@ -117,6 +117,7 @@ public class StatisticsFragment extends Fragment {
                 try {
                     HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.analyzedExamsParser(response);
                     int length = response.getJSONArray("response").length();
+                    Log.d("analyzed",response+"");
                     dialog.dismiss();
                     if (length == 0) {
                         h.post(new Runnable() {
@@ -153,6 +154,7 @@ public class StatisticsFragment extends Fragment {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d("myError",e+"");
                     dialog.dismiss();
                 }
             }
@@ -160,6 +162,7 @@ public class StatisticsFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
+                Log.d("myError",error+"");
                 Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         });

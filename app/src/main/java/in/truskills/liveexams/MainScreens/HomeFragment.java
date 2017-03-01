@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
         //Initialise the variables..
         add = (Button) getActivity().findViewById(R.id.add);
         myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsList);
-        add.setVisibility(View.GONE);
+//        add.setVisibility(View.GONE);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         ob = (HomeInterface) getActivity();
 
