@@ -9,9 +9,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="2dp"
-        card_view:cardElevation="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        card_view:cardElevation="3dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         card_view:cardUseCompatPadding="true"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground">
@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="7dp"
-                android:textSize="25dp"
+                android:textSize="23dp"
                 android:background="@color/sea_blue"
                 android:id="@+id/name"
                 android:textStyle="bold"/>
@@ -41,7 +41,7 @@
                     android:layout_height="match_parent"
                     android:shrinkColumns="*"
                     android:stretchColumns="*"
-                    android:background="#ffffff">
+                    android:background="@color/white">
 
                     <TableRow
                         android:id="@+id/tableRow1"
@@ -49,24 +49,24 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:layout_gravity="left"
                             android:text="START DATE"
                             android:layout_weight="1"
                             android:id="@+id/startDateText"/>
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:text=":"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:layout_gravity="right"
                             android:id="@+id/startDateValue"
                             android:layout_weight="1" />
@@ -79,24 +79,24 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:layout_gravity="left"
                             android:text="END DATE"
                             android:layout_weight="1"
                             android:id="@+id/endDateText"/>
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:text=":"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:layout_gravity="right"
                             android:id="@+id/endDateValue"
                             android:layout_weight="1"/>
@@ -109,24 +109,24 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:layout_gravity="left"
                             android:text="DURATION"
                             android:layout_weight="1"
                             android:id="@+id/durationText"/>
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:text=":"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:padding="2dp"
-                            android:textSize="20dp"
+                            android:padding="1dp"
+                            android:textSize="18dp"
                             android:layout_gravity="right"
                             android:id="@+id/durationValue"
                             android:layout_weight="1"/>

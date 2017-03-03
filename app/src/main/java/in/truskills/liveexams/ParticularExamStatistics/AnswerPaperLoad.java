@@ -56,7 +56,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
     String url, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri,section_id,section_max_marks,section_time,section_description,section_rules;
     String questionAttributes,opText,examDuration,examId, name, selectedLanguage,myExamDuration,questionPaperResponse,answerKeyResponse,endStudentAnalyticsResponse,endExamAnalyticsResponse,answerPaperResponse;
-    String startTime,endTime,totalMarks,score,attempts,myStartTime,myEndTime,examName;
+    String startTime,endTime,totalMarks,score,attempts,myStartTime,myEndTime,examName,date;
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
     AnalyticsDatabase ob;
@@ -77,7 +77,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
 
         examId = getIntent().getStringExtra("examId");
         examName = getIntent().getStringExtra("examName");
-        selectedLanguage="English";
+//        selectedLanguage="English";
 
         prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
@@ -106,7 +106,10 @@ public class AnswerPaperLoad extends AppCompatActivity {
                         answerPaperResponse=jsonObject1.getString("answerPaper");
                         endExamAnalyticsResponse=jsonObject1.getString("endExamAnalytics");
                         endStudentAnalyticsResponse=jsonObject1.getString("EndStudentAnalytics");
-                        setQuestionPaperResponse(questionPaperResponse);
+                        HashMap<String,String> map= AnswerPaperParser.responseParser(answerPaperResponse);
+                        date=map.get("date");
+                        selectedLanguage=map.get("selectedLanguage");
+                        setQuestionPaperResponse(questionPaperResponse,selectedLanguage);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -135,7 +138,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    public void setQuestionPaperResponse(String response){
+    public void setQuestionPaperResponse(String response,String language){
 
         try {
                 //Parse response..
@@ -264,7 +267,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                         noOfLanguage = QuestionPaperParser.getLengthOfLanguageOfOneQuestion(myLanguage);
 
                         //Get index of the language array which has to get parsed..
-                        int index = QuestionPaperParser.getIndex(selectedLanguage, myLanguage);
+                        int index = QuestionPaperParser.getIndex(language, myLanguage);
                         if (index == -1) {
                             //Language not found..
                         } else {
@@ -340,7 +343,6 @@ public class AnswerPaperLoad extends AppCompatActivity {
                             formDataForViewPager();
 
                             Intent intent =new Intent(AnswerPaperLoad.this,InitialInfo.class);
-                            intent.putExtra("date","date");
                             intent.putExtra("startTime",myStartTime);
                             intent.putExtra("endTime",myEndTime);
                             intent.putExtra("duration",myExamDuration);
@@ -349,6 +351,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                             intent.putExtra("attempts",attempts);
                             intent.putExtra("examName",examName);
                             intent.putExtra("noOfSections",noOfSections);
+                            intent.putExtra("date",date);
                             Log.d("myLength=",questionArray.length+"");
                             intent.putExtra("questionArray",questionArray);
                             startActivity(intent);

@@ -1,57 +1,57 @@
 {
-  "response": [
-    {
-      "_id": "58b669915f30ff160e88de7f",
+  "response": {
+    "questionPaper": {
+      "_id": "58b9518115178543c184ff29",
       "__v": 0,
       "Paperset": [
         {
-          "_id": "58b669915f30ff160e88de80",
+          "_id": "58b9518115178543c184ff2a",
           "Attributes": {
             "id": 1
           },
           "Sections": [
             {
-              "_id": "58b669915f30ff160e88de81",
+              "_id": "58b9518115178543c184ff2b",
               "Section": [
                 {
-                  "_id": "58b669915f30ff160e88df12",
+                  "_id": "58b9518115178543c184ffbc",
                   "SectionQuestions": [
                     {
-                      "_id": "58b669915f30ff160e88df13",
+                      "_id": "58b9518115178543c184ffbd",
                       "Question": [
                         {
-                          "_id": "58b669915f30ff160e88df4c",
+                          "_id": "58b9518115178543c184fff6",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88df53",
+                              "_id": "58b9518115178543c184fffd",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df54",
+                                  "_id": "58b9518115178543c184fffe",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q1a1.jpg",
-                                      "_id": "58b669915f30ff160e88df58",
+                                      "_": "Maths:Q1:Op1",
+                                      "_id": "58b9518115178543c1850002",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a2.jpg",
-                                      "_id": "58b669915f30ff160e88df57",
+                                      "_": "Maths:Q1:Op2",
+                                      "_id": "58b9518115178543c1850001",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a3.jpg",
-                                      "_id": "58b669915f30ff160e88df56",
+                                      "_": "Maths:Q1:Op3",
+                                      "_id": "58b9518115178543c1850000",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a4.jpg",
-                                      "_id": "58b669915f30ff160e88df55",
+                                      "_": "Maths:Q1:Op4",
+                                      "_id": "58b9518115178543c184ffff",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -63,39 +63,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q1.jpg"
+                                "Maths:Q1"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88df4d",
+                              "_id": "58b9518115178543c184fff7",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df4e",
+                                  "_id": "58b9518115178543c184fff8",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q1ha1.jpg",
-                                      "_id": "58b669915f30ff160e88df52",
+                                      "_": "Maths:Q1:Op1",
+                                      "_id": "58b9518115178543c184fffc",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha2.jpg",
-                                      "_id": "58b669915f30ff160e88df51",
+                                      "_": "Maths:Q1:Op2",
+                                      "_id": "58b9518115178543c184fffb",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha3.jpg",
-                                      "_id": "58b669915f30ff160e88df50",
+                                      "_": "Maths:Q1:Op3",
+                                      "_id": "58b9518115178543c184fffa",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha4.jpg",
-                                      "_id": "58b669915f30ff160e88df4f",
+                                      "_": "Maths:Q1:Op4",
+                                      "_id": "58b9518115178543c184fff9",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -107,13 +107,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q1h.jpg"
+                                "Maths:Q1"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88df59",
+                              "_id": "58b9518115178543c1850003",
                               "Year": [
                                 2009,
                                 2011
@@ -137,38 +137,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88df3e",
+                          "_id": "58b9518115178543c184ffe8",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88df45",
+                              "_id": "58b9518115178543c184ffef",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df46",
+                                  "_id": "58b9518115178543c184fff0",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q2a1.jpg",
-                                      "_id": "58b669915f30ff160e88df4a",
+                                      "_": "Maths:Q2:Op1",
+                                      "_id": "58b9518115178543c184fff4",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a2.jpg",
-                                      "_id": "58b669915f30ff160e88df49",
+                                      "_": "Maths:Q2:Op2",
+                                      "_id": "58b9518115178543c184fff3",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a3.jpg",
-                                      "_id": "58b669915f30ff160e88df48",
+                                      "_": "Maths:Q2:Op3",
+                                      "_id": "58b9518115178543c184fff2",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a4.jpg",
-                                      "_id": "58b669915f30ff160e88df47",
+                                      "_": "Maths:Q2:Op4",
+                                      "_id": "58b9518115178543c184fff1",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -180,39 +180,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q2.jpg"
+                                "Maths:Q2"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88df3f",
+                              "_id": "58b9518115178543c184ffe9",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df40",
+                                  "_id": "58b9518115178543c184ffea",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q2ha1.jpg",
-                                      "_id": "58b669915f30ff160e88df44",
+                                      "_": "Maths:Q2:Op1",
+                                      "_id": "58b9518115178543c184ffee",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha2.jpg",
-                                      "_id": "58b669915f30ff160e88df43",
+                                      "_": "Maths:Q2:Op2",
+                                      "_id": "58b9518115178543c184ffed",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha3.jpg",
-                                      "_id": "58b669915f30ff160e88df42",
+                                      "_": "Maths:Q2:Op3",
+                                      "_id": "58b9518115178543c184ffec",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha4.jpg",
-                                      "_id": "58b669915f30ff160e88df41",
+                                      "_": "Maths:Q2:Op4",
+                                      "_id": "58b9518115178543c184ffeb",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -224,13 +224,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q2h.jpg"
+                                "Maths:Q2"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88df4b",
+                              "_id": "58b9518115178543c184fff5",
                               "Year": [
                                 2009,
                                 2011
@@ -254,38 +254,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88df30",
+                          "_id": "58b9518115178543c184ffda",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88df37",
+                              "_id": "58b9518115178543c184ffe1",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df38",
+                                  "_id": "58b9518115178543c184ffe2",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q3a1.jpg",
-                                      "_id": "58b669915f30ff160e88df3c",
+                                      "_": "Maths:Q3:Op1",
+                                      "_id": "58b9518115178543c184ffe6",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a2.jpg",
-                                      "_id": "58b669915f30ff160e88df3b",
+                                      "_": "Maths:Q3:Op2",
+                                      "_id": "58b9518115178543c184ffe5",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a3.jpg",
-                                      "_id": "58b669915f30ff160e88df3a",
+                                      "_": "Maths:Q3:Op3",
+                                      "_id": "58b9518115178543c184ffe4",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a4.jpg",
-                                      "_id": "58b669915f30ff160e88df39",
+                                      "_": "Maths:Q3:Op4",
+                                      "_id": "58b9518115178543c184ffe3",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -297,39 +297,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q3.jpg"
+                                "Maths:Q3"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88df31",
+                              "_id": "58b9518115178543c184ffdb",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df32",
+                                  "_id": "58b9518115178543c184ffdc",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q3ha1.jpg",
-                                      "_id": "58b669915f30ff160e88df36",
+                                      "_": "Maths:Q3:Op1",
+                                      "_id": "58b9518115178543c184ffe0",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha2.jpg",
-                                      "_id": "58b669915f30ff160e88df35",
+                                      "_": "Maths:Q3:Op2",
+                                      "_id": "58b9518115178543c184ffdf",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha3.jpg",
-                                      "_id": "58b669915f30ff160e88df34",
+                                      "_": "Maths:Q3:Op3",
+                                      "_id": "58b9518115178543c184ffde",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha4.jpg",
-                                      "_id": "58b669915f30ff160e88df33",
+                                      "_": "Maths:Q3:Op4",
+                                      "_id": "58b9518115178543c184ffdd",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -341,13 +341,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q3h.jpg"
+                                "Maths:Q3"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88df3d",
+                              "_id": "58b9518115178543c184ffe7",
                               "Year": [
                                 2009,
                                 2011
@@ -371,38 +371,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88df22",
+                          "_id": "58b9518115178543c184ffcc",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88df29",
+                              "_id": "58b9518115178543c184ffd3",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df2a",
+                                  "_id": "58b9518115178543c184ffd4",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q4a1.jpg",
-                                      "_id": "58b669915f30ff160e88df2e",
+                                      "_": "Maths:Q4:Op1",
+                                      "_id": "58b9518115178543c184ffd8",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a2.jpg",
-                                      "_id": "58b669915f30ff160e88df2d",
+                                      "_": "Maths:Q4:Op2",
+                                      "_id": "58b9518115178543c184ffd7",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a3.jpg",
-                                      "_id": "58b669915f30ff160e88df2c",
+                                      "_": "Maths:Q4:Op3",
+                                      "_id": "58b9518115178543c184ffd6",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a4.jpg",
-                                      "_id": "58b669915f30ff160e88df2b",
+                                      "_": "Maths:Q4:Op4",
+                                      "_id": "58b9518115178543c184ffd5",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -414,39 +414,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q4.jpg"
+                                "Maths:Q4"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88df23",
+                              "_id": "58b9518115178543c184ffcd",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df24",
+                                  "_id": "58b9518115178543c184ffce",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q4ha1.jpg",
-                                      "_id": "58b669915f30ff160e88df28",
+                                      "_": "Maths:Q4:Op1",
+                                      "_id": "58b9518115178543c184ffd2",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha2.jpg",
-                                      "_id": "58b669915f30ff160e88df27",
+                                      "_": "Maths:Q4:Op2",
+                                      "_id": "58b9518115178543c184ffd1",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha3.jpg",
-                                      "_id": "58b669915f30ff160e88df26",
+                                      "_": "Maths:Q4:Op3",
+                                      "_id": "58b9518115178543c184ffd0",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha4.jpg",
-                                      "_id": "58b669915f30ff160e88df25",
+                                      "_": "Maths:Q4:Op4",
+                                      "_id": "58b9518115178543c184ffcf",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -458,13 +458,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q4h.jpg"
+                                "Maths:Q4"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88df2f",
+                              "_id": "58b9518115178543c184ffd9",
                               "Year": [
                                 2009,
                                 2011
@@ -488,38 +488,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88df14",
+                          "_id": "58b9518115178543c184ffbe",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88df1b",
+                              "_id": "58b9518115178543c184ffc5",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df1c",
+                                  "_id": "58b9518115178543c184ffc6",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q5a1.jpg",
-                                      "_id": "58b669915f30ff160e88df20",
+                                      "_": "Maths:Q5:Op1",
+                                      "_id": "58b9518115178543c184ffca",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a2.jpg",
-                                      "_id": "58b669915f30ff160e88df1f",
+                                      "_": "Maths:Q5:Op2",
+                                      "_id": "58b9518115178543c184ffc9",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a3.jpg",
-                                      "_id": "58b669915f30ff160e88df1e",
+                                      "_": "Maths:Q5:Op3",
+                                      "_id": "58b9518115178543c184ffc8",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a4.jpg",
-                                      "_id": "58b669915f30ff160e88df1d",
+                                      "_": "Maths:Q5:Op4",
+                                      "_id": "58b9518115178543c184ffc7",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -531,39 +531,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q5.jpg"
+                                "Maths:Q5"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88df15",
+                              "_id": "58b9518115178543c184ffbf",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df16",
+                                  "_id": "58b9518115178543c184ffc0",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q5ha1.jpg",
-                                      "_id": "58b669915f30ff160e88df1a",
+                                      "_": "Maths:Q5:Op1",
+                                      "_id": "58b9518115178543c184ffc4",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha2.jpg",
-                                      "_id": "58b669915f30ff160e88df19",
+                                      "_": "Maths:Q5:Op2",
+                                      "_id": "58b9518115178543c184ffc3",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha3.jpg",
-                                      "_id": "58b669915f30ff160e88df18",
+                                      "_": "Maths:Q5:Op3",
+                                      "_id": "58b9518115178543c184ffc2",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha4.jpg",
-                                      "_id": "58b669915f30ff160e88df17",
+                                      "_": "Maths:Q5:Op4",
+                                      "_id": "58b9518115178543c184ffc1",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -575,13 +575,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q5h.jpg"
+                                "Maths:Q5"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88df21",
+                              "_id": "58b9518115178543c184ffcb",
                               "Year": [
                                 2009,
                                 2011
@@ -625,44 +625,44 @@
                   ]
                 },
                 {
-                  "_id": "58b669915f30ff160e88deca",
+                  "_id": "58b9518115178543c184ff74",
                   "SectionQuestions": [
                     {
-                      "_id": "58b669915f30ff160e88decb",
+                      "_id": "58b9518115178543c184ff75",
                       "Question": [
                         {
-                          "_id": "58b669915f30ff160e88df04",
+                          "_id": "58b9518115178543c184ffae",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88df0b",
+                              "_id": "58b9518115178543c184ffb5",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df0c",
+                                  "_id": "58b9518115178543c184ffb6",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q1a1.jpg",
-                                      "_id": "58b669915f30ff160e88df10",
+                                      "_": "Chemistry:Q1:Op1",
+                                      "_id": "58b9518115178543c184ffba",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a2.jpg",
-                                      "_id": "58b669915f30ff160e88df0f",
+                                      "_": "Chemistry:Q1:Op2",
+                                      "_id": "58b9518115178543c184ffb9",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a3.jpg",
-                                      "_id": "58b669915f30ff160e88df0e",
+                                      "_": "Chemistry:Q1:Op3",
+                                      "_id": "58b9518115178543c184ffb8",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a4.jpg",
-                                      "_id": "58b669915f30ff160e88df0d",
+                                      "_": "Chemistry:Q1:Op4",
+                                      "_id": "58b9518115178543c184ffb7",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -674,39 +674,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q1.jpg"
+                                "Chemistry:Q1"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88df05",
+                              "_id": "58b9518115178543c184ffaf",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88df06",
+                                  "_id": "58b9518115178543c184ffb0",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q1ha1.jpg",
-                                      "_id": "58b669915f30ff160e88df0a",
+                                      "_": "Chemistry:Q1:Op1",
+                                      "_id": "58b9518115178543c184ffb4",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha2.jpg",
-                                      "_id": "58b669915f30ff160e88df09",
+                                      "_": "Chemistry:Q1:Op2",
+                                      "_id": "58b9518115178543c184ffb3",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha3.jpg",
-                                      "_id": "58b669915f30ff160e88df08",
+                                      "_": "Chemistry:Q1:Op3",
+                                      "_id": "58b9518115178543c184ffb2",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha4.jpg",
-                                      "_id": "58b669915f30ff160e88df07",
+                                      "_": "Chemistry:Q1:Op4",
+                                      "_id": "58b9518115178543c184ffb1",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -718,13 +718,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q1h.jpg"
+                                "Chemistry:Q1"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88df11",
+                              "_id": "58b9518115178543c184ffbb",
                               "Year": [
                                 2009,
                                 2011
@@ -748,38 +748,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88def6",
+                          "_id": "58b9518115178543c184ffa0",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88defd",
+                              "_id": "58b9518115178543c184ffa7",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88defe",
+                                  "_id": "58b9518115178543c184ffa8",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q2a1.jpg",
-                                      "_id": "58b669915f30ff160e88df02",
+                                      "_": "Chemistry:Q2:Op1",
+                                      "_id": "58b9518115178543c184ffac",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a2.jpg",
-                                      "_id": "58b669915f30ff160e88df01",
+                                      "_": "Chemistry:Q2:Op2",
+                                      "_id": "58b9518115178543c184ffab",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a3.jpg",
-                                      "_id": "58b669915f30ff160e88df00",
+                                      "_": "Chemistry:Q2:Op3",
+                                      "_id": "58b9518115178543c184ffaa",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a4.jpg",
-                                      "_id": "58b669915f30ff160e88deff",
+                                      "_": "Chemistry:Q2:Op4",
+                                      "_id": "58b9518115178543c184ffa9",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -791,39 +791,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q2.jpg"
+                                "Chemistry:Q2"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88def7",
+                              "_id": "58b9518115178543c184ffa1",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88def8",
+                                  "_id": "58b9518115178543c184ffa2",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q2ha1.jpg",
-                                      "_id": "58b669915f30ff160e88defc",
+                                      "_": "Chemistry:Q2:Op1",
+                                      "_id": "58b9518115178543c184ffa6",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha2.jpg",
-                                      "_id": "58b669915f30ff160e88defb",
+                                      "_": "Chemistry:Q2:Op2",
+                                      "_id": "58b9518115178543c184ffa5",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha3.jpg",
-                                      "_id": "58b669915f30ff160e88defa",
+                                      "_": "Chemistry:Q2:Op3",
+                                      "_id": "58b9518115178543c184ffa4",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha4.jpg",
-                                      "_id": "58b669915f30ff160e88def9",
+                                      "_": "Chemistry:Q2:Op4",
+                                      "_id": "58b9518115178543c184ffa3",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -835,13 +835,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q2h.jpg"
+                                "Chemistry:Q2"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88df03",
+                              "_id": "58b9518115178543c184ffad",
                               "Year": [
                                 2009,
                                 2011
@@ -865,38 +865,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88dee8",
+                          "_id": "58b9518115178543c184ff92",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88deef",
+                              "_id": "58b9518115178543c184ff99",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88def0",
+                                  "_id": "58b9518115178543c184ff9a",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q3a1.jpg",
-                                      "_id": "58b669915f30ff160e88def4",
+                                      "_": "Chemistry:Q3:Op1",
+                                      "_id": "58b9518115178543c184ff9e",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a2.jpg",
-                                      "_id": "58b669915f30ff160e88def3",
+                                      "_": "Chemistry:Q3:Op2",
+                                      "_id": "58b9518115178543c184ff9d",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a3.jpg",
-                                      "_id": "58b669915f30ff160e88def2",
+                                      "_": "Chemistry:Q3:Op3",
+                                      "_id": "58b9518115178543c184ff9c",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a4.jpg",
-                                      "_id": "58b669915f30ff160e88def1",
+                                      "_": "Chemistry:Q3:Op4",
+                                      "_id": "58b9518115178543c184ff9b",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -908,39 +908,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q3.jpg"
+                                "Chemistry:Q3"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88dee9",
+                              "_id": "58b9518115178543c184ff93",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88deea",
+                                  "_id": "58b9518115178543c184ff94",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q3ha1.jpg",
-                                      "_id": "58b669915f30ff160e88deee",
+                                      "_": "Chemistry:Q3:Op1",
+                                      "_id": "58b9518115178543c184ff98",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha2.jpg",
-                                      "_id": "58b669915f30ff160e88deed",
+                                      "_": "Chemistry:Q3:Op2",
+                                      "_id": "58b9518115178543c184ff97",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha3.jpg",
-                                      "_id": "58b669915f30ff160e88deec",
+                                      "_": "Chemistry:Q3:Op3",
+                                      "_id": "58b9518115178543c184ff96",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha4.jpg",
-                                      "_id": "58b669915f30ff160e88deeb",
+                                      "_": "Chemistry:Q3:Op4",
+                                      "_id": "58b9518115178543c184ff95",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -952,13 +952,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q3h.jpg"
+                                "Chemistry:Q3"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88def5",
+                              "_id": "58b9518115178543c184ff9f",
                               "Year": [
                                 2009,
                                 2011
@@ -982,38 +982,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88deda",
+                          "_id": "58b9518115178543c184ff84",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88dee1",
+                              "_id": "58b9518115178543c184ff8b",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88dee2",
+                                  "_id": "58b9518115178543c184ff8c",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q4a1.jpg",
-                                      "_id": "58b669915f30ff160e88dee6",
+                                      "_": "Chemistry:Q4:Op1",
+                                      "_id": "58b9518115178543c184ff90",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a2.jpg",
-                                      "_id": "58b669915f30ff160e88dee5",
+                                      "_": "Chemistry:Q4:Op2",
+                                      "_id": "58b9518115178543c184ff8f",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a3.jpg",
-                                      "_id": "58b669915f30ff160e88dee4",
+                                      "_": "Chemistry:Q4:Op3",
+                                      "_id": "58b9518115178543c184ff8e",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a4.jpg",
-                                      "_id": "58b669915f30ff160e88dee3",
+                                      "_": "Chemistry:Q4:Op4",
+                                      "_id": "58b9518115178543c184ff8d",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1025,39 +1025,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q4.jpg"
+                                "Chemistry:Q4"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88dedb",
+                              "_id": "58b9518115178543c184ff85",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88dedc",
+                                  "_id": "58b9518115178543c184ff86",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q4ha1.jpg",
-                                      "_id": "58b669915f30ff160e88dee0",
+                                      "_": "Chemistry:Q4:Op1",
+                                      "_id": "58b9518115178543c184ff8a",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha2.jpg",
-                                      "_id": "58b669915f30ff160e88dedf",
+                                      "_": "Chemistry:Q4:Op2",
+                                      "_id": "58b9518115178543c184ff89",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha3.jpg",
-                                      "_id": "58b669915f30ff160e88dede",
+                                      "_": "Chemistry:Q4:Op3",
+                                      "_id": "58b9518115178543c184ff88",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha4.jpg",
-                                      "_id": "58b669915f30ff160e88dedd",
+                                      "_": "Chemistry:Q4:Op4",
+                                      "_id": "58b9518115178543c184ff87",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1069,13 +1069,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q4h.jpg"
+                                "Chemistry:Q4"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88dee7",
+                              "_id": "58b9518115178543c184ff91",
                               "Year": [
                                 2009,
                                 2011
@@ -1099,38 +1099,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88decc",
+                          "_id": "58b9518115178543c184ff76",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88ded3",
+                              "_id": "58b9518115178543c184ff7d",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88ded4",
+                                  "_id": "58b9518115178543c184ff7e",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q5a1.jpg",
-                                      "_id": "58b669915f30ff160e88ded8",
+                                      "_": "Chemistry:Q5:Op1",
+                                      "_id": "58b9518115178543c184ff82",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a2.jpg",
-                                      "_id": "58b669915f30ff160e88ded7",
+                                      "_": "Chemistry:Q5:Op2",
+                                      "_id": "58b9518115178543c184ff81",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a3.jpg",
-                                      "_id": "58b669915f30ff160e88ded6",
+                                      "_": "Chemistry:Q5:Op3",
+                                      "_id": "58b9518115178543c184ff80",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a4.jpg",
-                                      "_id": "58b669915f30ff160e88ded5",
+                                      "_": "Chemistry:Q5:Op4",
+                                      "_id": "58b9518115178543c184ff7f",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1142,39 +1142,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q5.jpg"
+                                "Chemistry:Q5"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88decd",
+                              "_id": "58b9518115178543c184ff77",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88dece",
+                                  "_id": "58b9518115178543c184ff78",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q5ha1.jpg",
-                                      "_id": "58b669915f30ff160e88ded2",
+                                      "_": "Chemistry:Q5:Op1",
+                                      "_id": "58b9518115178543c184ff7c",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha2.jpg",
-                                      "_id": "58b669915f30ff160e88ded1",
+                                      "_": "Chemistry:Q5:Op2",
+                                      "_id": "58b9518115178543c184ff7b",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha3.jpg",
-                                      "_id": "58b669915f30ff160e88ded0",
+                                      "_": "Chemistry:Q5:Op3",
+                                      "_id": "58b9518115178543c184ff7a",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha4.jpg",
-                                      "_id": "58b669915f30ff160e88decf",
+                                      "_": "Chemistry:Q5:Op4",
+                                      "_id": "58b9518115178543c184ff79",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1186,13 +1186,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q5h.jpg"
+                                "Chemistry:Q5"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88ded9",
+                              "_id": "58b9518115178543c184ff83",
                               "Year": [
                                 2009,
                                 2011
@@ -1236,44 +1236,44 @@
                   ]
                 },
                 {
-                  "_id": "58b669915f30ff160e88de82",
+                  "_id": "58b9518115178543c184ff2c",
                   "SectionQuestions": [
                     {
-                      "_id": "58b669915f30ff160e88de83",
+                      "_id": "58b9518115178543c184ff2d",
                       "Question": [
                         {
-                          "_id": "58b669915f30ff160e88debc",
+                          "_id": "58b9518115178543c184ff66",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88dec3",
+                              "_id": "58b9518115178543c184ff6d",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88dec4",
+                                  "_id": "58b9518115178543c184ff6e",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q1a1.jpg",
-                                      "_id": "58b669915f30ff160e88dec8",
+                                      "_": "Physics:Q1:Op1",
+                                      "_id": "58b9518115178543c184ff72",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a2.jpg",
-                                      "_id": "58b669915f30ff160e88dec7",
+                                      "_": "Physics:Q1:Op2",
+                                      "_id": "58b9518115178543c184ff71",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a3.jpg",
-                                      "_id": "58b669915f30ff160e88dec6",
+                                      "_": "Physics:Q1:Op3",
+                                      "_id": "58b9518115178543c184ff70",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1a4.jpg",
-                                      "_id": "58b669915f30ff160e88dec5",
+                                      "_": "Physics:Q1:Op4",
+                                      "_id": "58b9518115178543c184ff6f",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1285,39 +1285,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q1.jpg"
+                                "Physics:Q1"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88debd",
+                              "_id": "58b9518115178543c184ff67",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88debe",
+                                  "_id": "58b9518115178543c184ff68",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q1ha1.jpg",
-                                      "_id": "58b669915f30ff160e88dec2",
+                                      "_": "Physics:Q1:Op1",
+                                      "_id": "58b9518115178543c184ff6c",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha2.jpg",
-                                      "_id": "58b669915f30ff160e88dec1",
+                                      "_": "Physics:Q1:Op2",
+                                      "_id": "58b9518115178543c184ff6b",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha3.jpg",
-                                      "_id": "58b669915f30ff160e88dec0",
+                                      "_": "Physics:Q1:Op3",
+                                      "_id": "58b9518115178543c184ff6a",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q1ha4.jpg",
-                                      "_id": "58b669915f30ff160e88debf",
+                                      "_": "Physics:Q1:Op4",
+                                      "_id": "58b9518115178543c184ff69",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1329,13 +1329,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q1h.jpg"
+                                "Physics:Q1"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88dec9",
+                              "_id": "58b9518115178543c184ff73",
                               "Year": [
                                 2009,
                                 2011
@@ -1359,38 +1359,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88deae",
+                          "_id": "58b9518115178543c184ff58",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88deb5",
+                              "_id": "58b9518115178543c184ff5f",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88deb6",
+                                  "_id": "58b9518115178543c184ff60",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q2a1.jpg",
-                                      "_id": "58b669915f30ff160e88deba",
+                                      "_": "Physics:Q2:Op1",
+                                      "_id": "58b9518115178543c184ff64",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a2.jpg",
-                                      "_id": "58b669915f30ff160e88deb9",
+                                      "_": "Physics:Q2:Op2",
+                                      "_id": "58b9518115178543c184ff63",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a3.jpg",
-                                      "_id": "58b669915f30ff160e88deb8",
+                                      "_": "Physics:Q2:Op3",
+                                      "_id": "58b9518115178543c184ff62",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2a4.jpg",
-                                      "_id": "58b669915f30ff160e88deb7",
+                                      "_": "Physics:Q2:Op4",
+                                      "_id": "58b9518115178543c184ff61",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1402,39 +1402,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q2.jpg"
+                                "Physics:Q2"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88deaf",
+                              "_id": "58b9518115178543c184ff59",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88deb0",
+                                  "_id": "58b9518115178543c184ff5a",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q2ha1.jpg",
-                                      "_id": "58b669915f30ff160e88deb4",
+                                      "_": "Physics:Q2:Op1",
+                                      "_id": "58b9518115178543c184ff5e",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha2.jpg",
-                                      "_id": "58b669915f30ff160e88deb3",
+                                      "_": "Physics:Q2:Op2",
+                                      "_id": "58b9518115178543c184ff5d",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha3.jpg",
-                                      "_id": "58b669915f30ff160e88deb2",
+                                      "_": "Physics:Q2:Op3",
+                                      "_id": "58b9518115178543c184ff5c",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q2ha4.jpg",
-                                      "_id": "58b669915f30ff160e88deb1",
+                                      "_": "Physics:Q2:Op4",
+                                      "_id": "58b9518115178543c184ff5b",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1446,13 +1446,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q2h.jpg"
+                                "Physics:Q2"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88debb",
+                              "_id": "58b9518115178543c184ff65",
                               "Year": [
                                 2009,
                                 2011
@@ -1476,38 +1476,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88dea0",
+                          "_id": "58b9518115178543c184ff4a",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88dea7",
+                              "_id": "58b9518115178543c184ff51",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88dea8",
+                                  "_id": "58b9518115178543c184ff52",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q3a1.jpg",
-                                      "_id": "58b669915f30ff160e88deac",
+                                      "_": "Physics:Q3:Op1",
+                                      "_id": "58b9518115178543c184ff56",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a2.jpg",
-                                      "_id": "58b669915f30ff160e88deab",
+                                      "_": "Physics:Q3:Op2",
+                                      "_id": "58b9518115178543c184ff55",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a3.jpg",
-                                      "_id": "58b669915f30ff160e88deaa",
+                                      "_": "Physics:Q3:Op3",
+                                      "_id": "58b9518115178543c184ff54",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3a4.jpg",
-                                      "_id": "58b669915f30ff160e88dea9",
+                                      "_": "Physics:Q3:Op4",
+                                      "_id": "58b9518115178543c184ff53",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1519,39 +1519,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q3.jpg"
+                                "Physics:Q3"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88dea1",
+                              "_id": "58b9518115178543c184ff4b",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88dea2",
+                                  "_id": "58b9518115178543c184ff4c",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q3ha1.jpg",
-                                      "_id": "58b669915f30ff160e88dea6",
+                                      "_": "Physics:Q3:Op1",
+                                      "_id": "58b9518115178543c184ff50",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha2.jpg",
-                                      "_id": "58b669915f30ff160e88dea5",
+                                      "_": "Physics:Q3:Op2",
+                                      "_id": "58b9518115178543c184ff4f",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha3.jpg",
-                                      "_id": "58b669915f30ff160e88dea4",
+                                      "_": "Physics:Q3:Op3",
+                                      "_id": "58b9518115178543c184ff4e",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q3ha4.jpg",
-                                      "_id": "58b669915f30ff160e88dea3",
+                                      "_": "Physics:Q3:Op4",
+                                      "_id": "58b9518115178543c184ff4d",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1563,13 +1563,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q3h.jpg"
+                                "Physics:Q3"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88dead",
+                              "_id": "58b9518115178543c184ff57",
                               "Year": [
                                 2009,
                                 2011
@@ -1593,38 +1593,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88de92",
+                          "_id": "58b9518115178543c184ff3c",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88de99",
+                              "_id": "58b9518115178543c184ff43",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88de9a",
+                                  "_id": "58b9518115178543c184ff44",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q4a1.jpg",
-                                      "_id": "58b669915f30ff160e88de9e",
+                                      "_": "Physics:Q4:Op1",
+                                      "_id": "58b9518115178543c184ff48",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a2.jpg",
-                                      "_id": "58b669915f30ff160e88de9d",
+                                      "_": "Physics:Q4:Op2",
+                                      "_id": "58b9518115178543c184ff47",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a3.jpg",
-                                      "_id": "58b669915f30ff160e88de9c",
+                                      "_": "Physics:Q4:Op3",
+                                      "_id": "58b9518115178543c184ff46",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4a4.jpg",
-                                      "_id": "58b669915f30ff160e88de9b",
+                                      "_": "Physics:Q4:Op4",
+                                      "_id": "58b9518115178543c184ff45",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1636,39 +1636,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q4.jpg"
+                                "Physics:Q4"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88de93",
+                              "_id": "58b9518115178543c184ff3d",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88de94",
+                                  "_id": "58b9518115178543c184ff3e",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q4ha1.jpg",
-                                      "_id": "58b669915f30ff160e88de98",
+                                      "_": "Physics:Q4:Op1",
+                                      "_id": "58b9518115178543c184ff42",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha2.jpg",
-                                      "_id": "58b669915f30ff160e88de97",
+                                      "_": "Physics:Q4:Op2",
+                                      "_id": "58b9518115178543c184ff41",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha3.jpg",
-                                      "_id": "58b669915f30ff160e88de96",
+                                      "_": "Physics:Q4:Op3",
+                                      "_id": "58b9518115178543c184ff40",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q4ha4.jpg",
-                                      "_id": "58b669915f30ff160e88de95",
+                                      "_": "Physics:Q4:Op4",
+                                      "_id": "58b9518115178543c184ff3f",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1680,13 +1680,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q4h.jpg"
+                                "Physics:Q4"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88de9f",
+                              "_id": "58b9518115178543c184ff49",
                               "Year": [
                                 2009,
                                 2011
@@ -1710,38 +1710,38 @@
                           }
                         },
                         {
-                          "_id": "58b669915f30ff160e88de84",
+                          "_id": "58b9518115178543c184ff2e",
                           "Language": [
                             {
-                              "_id": "58b669915f30ff160e88de8b",
+                              "_id": "58b9518115178543c184ff35",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88de8c",
+                                  "_id": "58b9518115178543c184ff36",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q5a1.jpg",
-                                      "_id": "58b669915f30ff160e88de90",
+                                      "_": "Physics:Q5:Op1",
+                                      "_id": "58b9518115178543c184ff3a",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a2.jpg",
-                                      "_id": "58b669915f30ff160e88de8f",
+                                      "_": "Physics:Q5:Op2",
+                                      "_id": "58b9518115178543c184ff39",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a3.jpg",
-                                      "_id": "58b669915f30ff160e88de8e",
+                                      "_": "Physics:Q5:Op3",
+                                      "_id": "58b9518115178543c184ff38",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5a4.jpg",
-                                      "_id": "58b669915f30ff160e88de8d",
+                                      "_": "Physics:Q5:Op4",
+                                      "_id": "58b9518115178543c184ff37",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1753,39 +1753,39 @@
                                 "Name": "English"
                               },
                               "QuestionText": [
-                                "\\Images\\q5.jpg"
+                                "Physics:Q5"
                               ]
                             },
                             {
-                              "_id": "58b669915f30ff160e88de85",
+                              "_id": "58b9518115178543c184ff2f",
                               "Options": [
                                 {
-                                  "_id": "58b669915f30ff160e88de86",
+                                  "_id": "58b9518115178543c184ff30",
                                   "Option": [
                                     {
-                                      "_": "\\Images\\q5ha1.jpg",
-                                      "_id": "58b669915f30ff160e88de8a",
+                                      "_": "Physics:Q5:Op1",
+                                      "_id": "58b9518115178543c184ff34",
                                       "Attributes": {
                                         "id": 1
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha2.jpg",
-                                      "_id": "58b669915f30ff160e88de89",
+                                      "_": "Physics:Q5:Op2",
+                                      "_id": "58b9518115178543c184ff33",
                                       "Attributes": {
                                         "id": 2
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha3.jpg",
-                                      "_id": "58b669915f30ff160e88de88",
+                                      "_": "Physics:Q5:Op3",
+                                      "_id": "58b9518115178543c184ff32",
                                       "Attributes": {
                                         "id": 3
                                       }
                                     },
                                     {
-                                      "_": "\\Images\\q5ha4.jpg",
-                                      "_id": "58b669915f30ff160e88de87",
+                                      "_": "Physics:Q5:Op4",
+                                      "_id": "58b9518115178543c184ff31",
                                       "Attributes": {
                                         "id": 4
                                       }
@@ -1797,13 +1797,13 @@
                                 "Name": "Hindi"
                               },
                               "QuestionText": [
-                                "\\Images\\q5h.jpg"
+                                "Physics:Q5"
                               ]
                             }
                           ],
                           "AskedIn": [
                             {
-                              "_id": "58b669915f30ff160e88de91",
+                              "_id": "58b9518115178543c184ff3b",
                               "Year": [
                                 2009,
                                 2011
@@ -1856,20 +1856,20 @@
       ],
       "AuthorDetails": [
         {
-          "_id": "58b669915f30ff160e88df5a",
+          "_id": "58b9518115178543c1850004",
           "Attributes": {
-            "id": "58ac0f867cb23847657cbb5b",
-            "Name": "jainam",
-            "Emailid": "jainam@gmail.com",
+            "id": "58b94b3815178543c184fa4b",
+            "Name": "shivangilm10",
+            "Emailid": "shivangilm10@gmail.com",
             "Contact": 9123456789,
             "Qualification": "",
-            "Location": "Vaikam"
+            "Location": "Vadodara"
           }
         }
       ],
       "Languages": [
         {
-          "_id": "58b669915f30ff160e88df5b",
+          "_id": "58b9518115178543c1850005",
           "Language": [
             "Hindi",
             "English"
@@ -1889,16 +1889,16 @@
         "03-00"
       ],
       "EndTime": [
-        "13-00"
+        "18-00"
       ],
       "StartTime": [
         "11-00"
       ],
       "EndDate": [
-        "3/2/2017"
+        "3/6/2017"
       ],
       "StartDate": [
-        "3/2/2017"
+        "3/3/2017"
       ],
       "MaximumMarks": [
         360
@@ -1907,9 +1907,514 @@
         "0001"
       ],
       "ExamName": [
-        "Database Systems"
+        "7-Exam"
+      ]
+    },
+    "answerKey": {
+      "_id": "58b959bbc42d584653b431fd",
+      "ExamId": "58b9518115178543c184ff29",
+      "__v": 0,
+      "answerKey": [
+        {
+          "rightAnswer": 3,
+          "sectionId": 1,
+          "questionId": 1,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b4320c"
+        },
+        {
+          "rightAnswer": 2,
+          "sectionId": 1,
+          "questionId": 2,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b4320b"
+        },
+        {
+          "rightAnswer": 4,
+          "sectionId": 1,
+          "questionId": 3,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b4320a"
+        },
+        {
+          "rightAnswer": 1,
+          "sectionId": 1,
+          "questionId": 4,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43209"
+        },
+        {
+          "rightAnswer": 2,
+          "sectionId": 1,
+          "questionId": 5,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43208"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 2,
+          "questionId": 1,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43207"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 2,
+          "questionId": 2,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43206"
+        },
+        {
+          "rightAnswer": 1,
+          "sectionId": 2,
+          "questionId": 3,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43205"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 2,
+          "questionId": 4,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43204"
+        },
+        {
+          "rightAnswer": 2,
+          "sectionId": 2,
+          "questionId": 5,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43203"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 3,
+          "questionId": 1,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43202"
+        },
+        {
+          "rightAnswer": 4,
+          "sectionId": 3,
+          "questionId": 2,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43201"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 3,
+          "questionId": 3,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b43200"
+        },
+        {
+          "rightAnswer": 2,
+          "sectionId": 3,
+          "questionId": 4,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b431ff"
+        },
+        {
+          "rightAnswer": 3,
+          "sectionId": 3,
+          "questionId": 5,
+          "correctMarks": 4,
+          "negativeMarks": -1,
+          "_id": "58b959bbc42d584653b431fe"
+        }
+      ]
+    },
+    "answerPaper": {
+      "_id": "58b957dec42d584653b431dd",
+      "ExamId": "58b9518115178543c184ff29",
+      "userId": "58b94cc215178543c184ff26",
+      "date": "3/3/2017",
+      "selectedLanguage": "English",
+      "__v": 0,
+      "answerPaper": [
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 1,
+          "timeSpent": 0,
+          "questionId": 1,
+          "_id": "58b957dec42d584653b431ec"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 1,
+          "timeSpent": 0,
+          "questionId": 2,
+          "_id": "58b957dec42d584653b431eb"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 1,
+          "timeSpent": 1,
+          "questionId": 3,
+          "_id": "58b957dec42d584653b431ea"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 1,
+          "timeSpent": 0,
+          "questionId": 4,
+          "_id": "58b957dec42d584653b431e9"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 1,
+          "timeSpent": 1,
+          "questionId": 5,
+          "_id": "58b957dec42d584653b431e8"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 2,
+          "timeSpent": 2,
+          "questionId": 1,
+          "_id": "58b957dec42d584653b431e7"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 2,
+          "timeSpent": 12,
+          "questionId": 2,
+          "_id": "58b957dec42d584653b431e6"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 2,
+          "timeSpent": 1,
+          "questionId": 3,
+          "_id": "58b957dec42d584653b431e5"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 2,
+          "timeSpent": 0,
+          "questionId": 4,
+          "_id": "58b957dec42d584653b431e4"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 1,
+          "finalAnswerId": -1,
+          "questionStatus": 3,
+          "sectionId": 2,
+          "timeSpent": 1,
+          "questionId": 5,
+          "_id": "58b957dec42d584653b431e3"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 0,
+          "finalAnswerId": -1,
+          "questionStatus": 4,
+          "sectionId": 3,
+          "timeSpent": 0,
+          "questionId": 1,
+          "_id": "58b957dec42d584653b431e2"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 0,
+          "finalAnswerId": -1,
+          "questionStatus": 4,
+          "sectionId": 3,
+          "timeSpent": 0,
+          "questionId": 2,
+          "_id": "58b957dec42d584653b431e1"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 0,
+          "finalAnswerId": -1,
+          "questionStatus": 4,
+          "sectionId": 3,
+          "timeSpent": 0,
+          "questionId": 3,
+          "_id": "58b957dec42d584653b431e0"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 0,
+          "finalAnswerId": -1,
+          "questionStatus": 4,
+          "sectionId": 3,
+          "timeSpent": 0,
+          "questionId": 4,
+          "_id": "58b957dec42d584653b431df"
+        },
+        {
+          "numberOfToggles": -1,
+          "readStatus": 0,
+          "finalAnswerId": -1,
+          "questionStatus": 4,
+          "sectionId": 3,
+          "timeSpent": 0,
+          "questionId": 5,
+          "_id": "58b957dec42d584653b431de"
+        }
+      ]
+    },
+    "endExamAnalytics": {
+      "_id": "58b959cec42d584653b43218",
+      "ExamId": "58b9518115178543c184ff29",
+      "bestScore": 0,
+      "avgScore": 0,
+      "totalStudents": 1,
+      "__v": 0,
+      "analytics": [
+        {
+          "sectionId": 1,
+          "questionId": 1,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b43228"
+        },
+        {
+          "sectionId": 1,
+          "questionId": 2,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b43227"
+        },
+        {
+          "sectionId": 1,
+          "questionId": 3,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 1,
+          "_id": "58b959cec42d584653b43226"
+        },
+        {
+          "sectionId": 1,
+          "questionId": 4,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b43225"
+        },
+        {
+          "sectionId": 1,
+          "questionId": 5,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 1,
+          "_id": "58b959cec42d584653b43224"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 1,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 2,
+          "_id": "58b959cec42d584653b43223"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 2,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 12,
+          "_id": "58b959cec42d584653b43222"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 3,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 1,
+          "_id": "58b959cec42d584653b43221"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 4,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b43220"
+        },
+        {
+          "sectionId": 2,
+          "questionId": 5,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 1,
+          "_id": "58b959cec42d584653b4321f"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 1,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b4321e"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 2,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b4321d"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 3,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b4321c"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 4,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b4321b"
+        },
+        {
+          "sectionId": 3,
+          "questionId": 5,
+          "rightAnsweredBy": 0,
+          "wrongAnsweredBy": 0,
+          "minimumTime": 0,
+          "maximumTime": 0,
+          "_id": "58b959cec42d584653b4321a"
+        }
+      ],
+      "sectionWiseAnalytics": [
+        {
+          "_id": "58b959cec42d584653b43219"
+        }
+      ]
+    },
+    "EndStudentAnalytics": {
+      "_id": "58b959cec42d584653b4320d",
+      "ExamId": "58b9518115178543c184ff29",
+      "userId": "58b94cc215178543c184ff26",
+      "__v": 0,
+      "analytics": [
+        {
+          "totalMarks": 0,
+          "totalTimeSpent": 18,
+          "totalAttemptedQuestions": 0,
+          "totalReadQuestions": 10,
+          "_id": "58b959cec42d584653b4320e",
+          "sectionWiseReadQuestions": [
+            {
+              "sectionId": 1,
+              "readQuestions": 5,
+              "_id": "58b959cec42d584653b43210"
+            },
+            {
+              "sectionId": 2,
+              "readQuestions": 5,
+              "_id": "58b959cec42d584653b4320f"
+            }
+          ],
+          "sectionWiseAttemptedQuestions": [
+            {
+              "attemptedQuestions": 0,
+              "_id": "58b959cec42d584653b43211"
+            }
+          ],
+          "sectionWiseTimeSpent": [
+            {
+              "sectionId": 1,
+              "timespent": 2,
+              "_id": "58b959cec42d584653b43214"
+            },
+            {
+              "sectionId": 2,
+              "timespent": 16,
+              "_id": "58b959cec42d584653b43213"
+            },
+            {
+              "sectionId": 3,
+              "timespent": 0,
+              "_id": "58b959cec42d584653b43212"
+            }
+          ],
+          "sectionWiseMarks": [
+            {
+              "sectionId": 1,
+              "sectionMarks": 0,
+              "_id": "58b959cec42d584653b43217"
+            },
+            {
+              "sectionId": 2,
+              "sectionMarks": 0,
+              "_id": "58b959cec42d584653b43216"
+            },
+            {
+              "sectionId": 3,
+              "sectionMarks": 0,
+              "_id": "58b959cec42d584653b43215"
+            }
+          ],
+          "sectionWiseQuestionStatus": []
+        }
       ]
     }
-  ],
+  },
   "success": "true"
 }

@@ -306,7 +306,7 @@ public class HomeFragment extends Fragment{
             public void onErrorResponse(VolleyError error) {
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 dialog.dismiss();
-//                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);

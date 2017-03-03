@@ -72,8 +72,8 @@ public class WebViewContentForAnswers {
         String content =
                 "<html>\n" +
                         "<body>\n" +
-                        "Question:\n" + formattedQuestion +
-                        "<br>\n" +
+                        "Question:\n<br>" + formattedQuestion +
+                        "<br><br>\n" +
                         "Options:<br>\n" +
                         "<form>\n" +
                         "<div>" + x + "</div>\n" +

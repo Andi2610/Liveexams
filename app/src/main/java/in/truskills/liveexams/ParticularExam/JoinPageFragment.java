@@ -50,7 +50,7 @@ public class JoinPageFragment extends Fragment {
 
     //Declare variables..
     JoinPageInterface ob;
-    TextView startDetailsJoinPage, endDetailsJoinPage, descriptionJoinPage;
+    TextView start_TimeJoinPage,end_TimeJoinPage,start_DateJoinPage,end_DateJoinPage, descriptionJoinPage,sponsorTextJoinPage;
     Spinner myLanguageJoinPage;
     String selectedLanguage, timestamp, examDetails, examId,Languages,examGiven;
     SharedPreferences prefs;
@@ -59,6 +59,7 @@ public class JoinPageFragment extends Fragment {
     HashMap<String,String> mapper;
     Bundle b;
     ViewFlipper viewFlipperJoinPage;
+    CustomSpinnerForDetailsAdapter customSpinnerForDetailsAdapter;
 
     public JoinPageFragment() {
         // Required empty public constructor
@@ -82,8 +83,11 @@ public class JoinPageFragment extends Fragment {
         ob = (JoinPageInterface) getActivity();
         ob.changeTitleForJoinPage();
 
-        startDetailsJoinPage = (TextView) getActivity().findViewById(R.id.startDetailsJoinPage);
-        endDetailsJoinPage = (TextView) getActivity().findViewById(R.id.endDetailsJoinPage);
+        start_DateJoinPage = (TextView) getActivity().findViewById(R.id.startDateJoinPage);
+        end_DateJoinPage = (TextView) getActivity().findViewById(R.id.endDateJoinPage);
+        start_TimeJoinPage = (TextView) getActivity().findViewById(R.id.startTimeJoinPage);
+        end_TimeJoinPage = (TextView) getActivity().findViewById(R.id.endTimeJoinPage);
+        sponsorTextJoinPage = (TextView) getActivity().findViewById(R.id.sponsorTextJoinPage);
         descriptionJoinPage = (TextView) getActivity().findViewById(R.id.descriptionJoinPage);
         myLanguageJoinPage = (Spinner) getActivity().findViewById(R.id.myLanguageJoinPage);
         join_button = (Button) getActivity().findViewById(R.id.join_button);
@@ -111,9 +115,12 @@ public class JoinPageFragment extends Fragment {
 
 
         Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
-        startDetailsJoinPage.setTypeface(tff);
-        endDetailsJoinPage.setTypeface(tff);
+        start_DateJoinPage.setTypeface(tff);
+        end_DateJoinPage.setTypeface(tff);
+        start_TimeJoinPage.setTypeface(tff);
+        end_TimeJoinPage.setTypeface(tff);
         descriptionJoinPage.setTypeface(tff);
+        sponsorTextJoinPage.setTypeface(tff);
         Typeface tff2=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
         join_button.setTypeface(tff2);
 
@@ -145,9 +152,10 @@ public class JoinPageFragment extends Fragment {
             String myEndTime= MiscellaneousParser.parseTimeForDetails(endTime);
             Languages=mapper.get("Languages");
 
-            startDetailsJoinPage.setText(myStartDate + "\n" + myStartTime);
-            endDetailsJoinPage.setText(myEndDate + "\n" + myEndTime);
-
+            start_DateJoinPage.setText(myStartDate);
+            start_TimeJoinPage.setText(myStartTime);
+            end_DateJoinPage.setText(myEndDate);
+            end_TimeJoinPage.setText(myEndTime);
 
 
         } catch (JSONException e) {
@@ -226,16 +234,20 @@ public class JoinPageFragment extends Fragment {
             e.printStackTrace();
         }
 
-        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
-        myLanguageJoinPage.setAdapter(adapterLanguage);
+        customSpinnerForDetailsAdapter=new CustomSpinnerForDetailsAdapter(getActivity(),listOfLanguages);
 
-        int index = adapterLanguage.getPosition(prefs.getString("language", "English"));
+//        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
+        myLanguageJoinPage.setAdapter(customSpinnerForDetailsAdapter);
+
+//        int index = customSpinnerForDetailsAdapter.getPosition(prefs.getString("language", "English"));
+//        myLanguageJoinPage.setSelection(index);
+        int index=customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
         myLanguageJoinPage.setSelection(index);
 
         myLanguageJoinPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedLanguage = adapterView.getItemAtPosition(i).toString();
+                selectedLanguage = adapterView.getSelectedItem().toString();
                 SharedPreferences.Editor e = prefs.edit();
                 e.putString("language", selectedLanguage);
                 e.apply();

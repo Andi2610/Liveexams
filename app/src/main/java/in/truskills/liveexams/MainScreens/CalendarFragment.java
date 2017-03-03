@@ -59,7 +59,7 @@ import in.truskills.liveexams.R;
 public class CalendarFragment extends Fragment {
 
     LinearLayoutManager linearLayoutManager;
-    MyExamsListAdapter myExamsListAdapter;
+    CalendarListAdapter calendarListAdapter;
     List<Values> valuesList;
     Values values;
     RecyclerView myExamsList;
@@ -218,7 +218,12 @@ public class CalendarFragment extends Fragment {
 
                             if(!(middle_date.before(start_date)||middle_date.after(end_date))){
                                 if(middle_date.equals(end_date)){
-                                    if(!middle_time.after(end_time)){
+                                    if(middle_date.equals(myCurrDate)){
+                                        if(!middle_time.after(end_time)){
+                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                            valuesList.add(values);
+                                        }
+                                    }else{
                                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                         valuesList.add(values);
                                     }
@@ -229,10 +234,9 @@ public class CalendarFragment extends Fragment {
                             }
                         }
                     }
-                    myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                    myExamsList.setAdapter(myExamsListAdapter);
-                    myExamsListAdapter.notifyDataSetChanged();
-//                    calendarView.refreshCalendar(currentCalendar);
+                    calendarListAdapter = new CalendarListAdapter(valuesList, getActivity());
+                    myExamsList.setAdapter(calendarListAdapter);
+                    calendarListAdapter.notifyDataSetChanged();
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
@@ -359,9 +363,9 @@ public class CalendarFragment extends Fragment {
                     populateListForCalendar(dd,mm,yy);
                 }else{
                     valuesList = new ArrayList<>();
-                    myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                    myExamsList.setAdapter(myExamsListAdapter);
-                    myExamsListAdapter.notifyDataSetChanged();
+                    calendarListAdapter = new CalendarListAdapter(valuesList, getActivity());
+                    myExamsList.setAdapter(calendarListAdapter);
+                    calendarListAdapter.notifyDataSetChanged();
                 }
             }
         });

@@ -17,20 +17,8 @@
         app:dayOfWeekTextColor="@color/black"
         app:selectedDayBackgroundColor="@color/colorPrimary"
         app:titleLayoutBackgroundColor="@color/white"
-        app:weekLayoutBackgroundColor="@color/light_grey">
+        app:weekLayoutBackgroundColor="@color/light_sea_blue">
     </com.stacktips.view.CustomCalendarView>
-
-    <!--<com.wang.avi.AVLoadingIndicatorView-->
-        <!--android:id="@+id/aviForCalendar"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:visibility="visible"-->
-        <!--style="@style/AVLoadingIndicatorView"-->
-        <!--app:indicatorName="LineScaleIndicator"-->
-        <!--android:layout_below="@+id/calendarView"-->
-        <!--app:indicatorColor="@color/colorPrimary"-->
-        <!--android:layout_marginTop="30dp"-->
-        <!--android:layout_centerHorizontal="true" />-->
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -40,6 +28,17 @@
         android:layout_below="@+id/calendarView">
 
     </android.support.v7.widget.RecyclerView>
+
+    <!--<com.wang.avi.AVLoadingIndicatorView-->
+        <!--android:id="@+id/aviForCalendar"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--style="@style/AVLoadingIndicatorView"-->
+        <!--app:indicatorName="LineScaleIndicator"-->
+        <!--android:layout_below="@+id/calendarView"-->
+        <!--app:indicatorColor="@color/colorPrimary"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
     <LinearLayout
         android:layout_width="wrap_content"

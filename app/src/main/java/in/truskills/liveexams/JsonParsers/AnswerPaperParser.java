@@ -24,6 +24,8 @@ public class AnswerPaperParser {
     private static final String sectionId="sectionId";
     private static final String timeSpent="timeSpent";
     private static final String questionId="questionId";
+    private static final String date="date";
+    private static final String selectedLanguage="selectedLanguage";
 
 
     public static HashMap<String,String> responseParser(String myResponse) throws JSONException {
@@ -33,6 +35,8 @@ public class AnswerPaperParser {
         map.put("examId",jsonObject.getString(examId));
         map.put("userId",jsonObject.getString(userId));
         map.put("__v",jsonObject.getString(__v));
+        map.put("selectedLanguage",jsonObject.getString(selectedLanguage));
+        map.put("date",jsonObject.getString(date));
         map.put("answerPaper",jsonObject.getJSONArray(answerPaper).toString());
         return map;
     }

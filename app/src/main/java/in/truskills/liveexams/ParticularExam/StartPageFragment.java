@@ -61,7 +61,7 @@ public class StartPageFragment extends Fragment {
 
     //Declare variables..
     StartPageInterface ob;
-    TextView startDetails, endDetails, descriptionStartPage;
+    TextView descriptionStartPage,start_Time,end_Time,start_Date,end_Date,sponsorText;
     Spinner myLanguage;
     String selectedLanguage, timestamp, examDetails, examId, name,Languages,examGiven;
     SharedPreferences prefs;
@@ -71,6 +71,7 @@ public class StartPageFragment extends Fragment {
     HashMap<String,String> mapper;
     ViewFlipper viewFlipper;
     QuizDatabase o;
+    CustomSpinnerForDetailsAdapter customSpinnerForDetailsAdapter;
 
     public StartPageFragment() {
         // Required empty public constructor
@@ -98,8 +99,11 @@ public class StartPageFragment extends Fragment {
 
         h=new Handler();
 
-        startDetails = (TextView) getActivity().findViewById(R.id.startDetails);
-        endDetails = (TextView) getActivity().findViewById(R.id.endDetails);
+        start_Date = (TextView) getActivity().findViewById(R.id.startDate);
+        end_Date = (TextView) getActivity().findViewById(R.id.endDate);
+        start_Time = (TextView) getActivity().findViewById(R.id.startTime);
+        end_Time = (TextView) getActivity().findViewById(R.id.endTime);
+        sponsorText = (TextView) getActivity().findViewById(R.id.sponsorText);
         descriptionStartPage = (TextView) getActivity().findViewById(R.id.descriptionStartPage);
         myLanguage = (Spinner) getActivity().findViewById(R.id.myLanguage);
         start_leave_button = (Button) getActivity().findViewById(R.id.start_leave_button);
@@ -125,8 +129,11 @@ public class StartPageFragment extends Fragment {
         viewFlipper.setFlipInterval(2000);
 
         Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
-        startDetails.setTypeface(tff);
-        endDetails.setTypeface(tff);
+        start_Date.setTypeface(tff);
+        end_Date.setTypeface(tff);
+        start_Time.setTypeface(tff);
+        end_Time.setTypeface(tff);
+        sponsorText.setTypeface(tff);
         descriptionStartPage.setTypeface(tff);
         Typeface tff2=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
         start_leave_button.setTypeface(tff2);
@@ -161,7 +168,6 @@ public class StartPageFragment extends Fragment {
             String startTime=mapper.get("StartTime");
             Languages=mapper.get("Languages");
 
-
             Log.d("timeDetails","dateInitially="+myStartDate+"**"+myEndDate);
 
             String myStartTime= MiscellaneousParser.parseTimeForDetails(startTime);
@@ -181,7 +187,6 @@ public class StartPageFragment extends Fragment {
             Log.d("timeDetails","timestampTimeInitially="+myTime);
 
 
-
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
             Date start_date=simpleDateFormat.parse(myStartDate);
             Date end_date=simpleDateFormat.parse(myEndDate);
@@ -195,27 +200,6 @@ public class StartPageFragment extends Fragment {
             Date middle_time=simpleDateFormat2.parse(myTime);
 
             Log.d("timeDetails","TimeFinally"+start_time+"**"+middle_time+"**"+end_time);
-
-//            if(middle_date.before(start_date)){
-//                Log.d("timeDetails","in1");
-//            }else{
-//                Log.d("timeDetails","in2");
-//            }
-//            if(middle_date.after(end_date)){
-//                Log.d("timeDetails","in1");
-//            }else{
-//                Log.d("timeDetails","in2");
-//            }
-//            if(middle_time.before(start_time)){
-//                Log.d("timeDetails","in1");
-//            }else{
-//                Log.d("timeDetails","in2");
-//            }
-//            if(middle_time.after(end_time)){
-//                Log.d("timeDetails","in1");
-//            }else{
-//                Log.d("timeDetails","in2");
-//            }
 
             if(examGiven.equals("true")){
                 start_leave_button.setText("EXAM IS OVER");
@@ -234,7 +218,8 @@ public class StartPageFragment extends Fragment {
                         if(!middle_time.after(end_time)){
                             start_leave_button.setText("START");
                             start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-                            endDetails.setTextColor(Color.parseColor("#f44336"));
+                            end_Date.setTextColor(Color.parseColor("#f44336"));
+                            end_Time.setTextColor(Color.parseColor("#f44336"));
                         }else{
                             start_leave_button.setText("EXAM IS OVER");
                             start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
@@ -257,8 +242,11 @@ public class StartPageFragment extends Fragment {
 
             Log.d("newTimestamp=",myTimestamp);
 
-            startDetails.setText(myStartDate + "\n" + myStartTime);
-            endDetails.setText(myEndDate + "\n" + myEndTime);
+            start_Date.setText(myStartDate);
+            start_Time.setText(myStartTime);
+            end_Date.setText(myEndDate);
+            end_Time.setText(myEndTime);
+
             name = mapper.get("ExamName");
 
 
@@ -275,16 +263,19 @@ public class StartPageFragment extends Fragment {
             e.printStackTrace();
         }
 
-        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
-        myLanguage.setAdapter(adapterLanguage);
+        customSpinnerForDetailsAdapter=new CustomSpinnerForDetailsAdapter(getActivity(),listOfLanguages);
+//        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
+        myLanguage.setAdapter(customSpinnerForDetailsAdapter);
 
-        int index = adapterLanguage.getPosition(prefs.getString("language", "English"));
+//        int index = adapterLanguage.getPosition(prefs.getString("language", "English"));
+//        myLanguage.setSelection(index);
+        int index=customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
         myLanguage.setSelection(index);
 
         myLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedLanguage = adapterView.getItemAtPosition(i).toString();
+                selectedLanguage = adapterView.getSelectedItem().toString();
             }
 
             @Override

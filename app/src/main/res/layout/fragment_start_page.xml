@@ -12,9 +12,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Sponsored By :"
+            android:id="@+id/sponsorText"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:gravity="center"/>
+
         <ViewFlipper
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:id="@+id/viewFlipper"
             android:layout_gravity="center"
             android:layout_marginTop="10dp">
@@ -27,26 +39,58 @@
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
             android:weightSum="100">
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:id="@+id/startDetails"
                 android:layout_weight="50"
-                android:textSize="15dp"
-                android:padding="10dp"
-                android:gravity="center"
-                android:background="@color/sea_blue"/>
-            <TextView
+                android:background="@color/sea_blue">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/startDate"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:padding="2dp"
+                    android:gravity="center" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/startTime"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:padding="2dp"
+                    android:gravity="center" />
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_gravity="center"
-                android:id="@+id/endDetails"
                 android:layout_weight="50"
-                android:textSize="15dp"
-                android:gravity="center"
-                android:background="@color/light_sea_blue"
-                android:padding="10dp"/>
+                android:background="@color/light_sea_blue">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/endDate"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:padding="2dp"
+                    android:gravity="center" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/endTime"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:padding="2dp"
+                    android:gravity="center" />
+            </LinearLayout>
         </LinearLayout>
 
         <Spinner
@@ -65,6 +109,8 @@
             android:layout_marginTop="20dp"
             android:id="@+id/descriptionStartPage"
             android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="15dp"
             android:gravity="center"
             />
 

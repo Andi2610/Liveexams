@@ -11,7 +11,7 @@
         android:id="@+id/myHeader">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/mySectionName"
             android:textSize="25dp"
@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/submittedQuestionsAllSummary"
                 android:textColor="@color/green"
+                android:textStyle="bold"
                 android:textSize="20dp"
                 android:layout_marginLeft="10dp"/>
             <TextView
@@ -36,6 +37,7 @@
                 android:id="@+id/reviewedTickedQuestionsAllSummary"
                 android:textColor="@color/orange"
                 android:textSize="20dp"
+                android:textStyle="bold"
                 android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -43,6 +45,7 @@
                 android:id="@+id/reviewedUntickedQuestionsAllSummary"
                 android:textColor="@color/purple"
                 android:textSize="20dp"
+                android:textStyle="bold"
                 android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -50,12 +53,14 @@
                 android:id="@+id/clearedQuestionsAllSummary"
                 android:textColor="@color/red"
                 android:textSize="20dp"
+                android:textStyle="bold"
                 android:layout_marginLeft="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/notAttemptedQuestionsAllSummary"
                 android:textSize="20dp"
+                android:textStyle="bold"
                 android:layout_marginLeft="10dp"/>
         </LinearLayout>
 

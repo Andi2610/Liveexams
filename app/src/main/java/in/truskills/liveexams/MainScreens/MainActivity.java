@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String selectedImagePath;
     private String filename;
     private final String CAMERA = "camera";
+    ActionBarDrawerToggle toggle;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +95,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportActionBar().setTitle("HOME");
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+//        toggle.setDrawerIndicatorEnabled(true);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -444,6 +447,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_calendar);
                 getSupportActionBar().setTitle("CALENDAR");
+//                toggle.setDrawerIndicatorEnabled(true);
             }
         } else if (id == R.id.nav_logout) {
             Answers.getInstance().logCustom(new CustomEvent("Logout button clicked")

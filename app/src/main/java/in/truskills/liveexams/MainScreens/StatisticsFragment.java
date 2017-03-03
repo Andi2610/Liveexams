@@ -184,7 +184,7 @@ public class StatisticsFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
                 Log.d("myError",error+"");
-//                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
                 noConnectionLayout.setVisibility(View.VISIBLE);
             }
         });

@@ -29,7 +29,7 @@
                 android:id="@+id/header">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/sectionNameForAnswers"
                     android:textSize="20dp"
@@ -48,6 +48,7 @@
                         android:id="@+id/submittedQuestionsForAnswers"
                         android:textColor="@color/green"
                         android:textSize="20dp"
+                        android:textStyle="bold"
                         android:layout_marginLeft="10dp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -55,6 +56,7 @@
                         android:id="@+id/reviewedTickedQuestionsForAnswers"
                         android:textColor="@color/orange"
                         android:textSize="20dp"
+                        android:textStyle="bold"
                         android:layout_marginLeft="10dp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -62,6 +64,7 @@
                         android:id="@+id/reviewedUntickedQuestionsForAnswers"
                         android:textColor="@color/purple"
                         android:textSize="20dp"
+                        android:textStyle="bold"
                         android:layout_marginLeft="10dp"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -69,12 +72,14 @@
                         android:id="@+id/clearedQuestionsForAnswers"
                         android:textColor="@color/red"
                         android:textSize="20dp"
+                        android:textStyle="bold"
                         android:layout_marginLeft="10dp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/notAttemptedQuestionsForAnswers"
                         android:textSize="20dp"
+                        android:textStyle="bold"
                         android:layout_marginLeft="10dp"/>
                 </LinearLayout>
 

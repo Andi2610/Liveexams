@@ -216,6 +216,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                 //Get no. of Exam names in which the question has been asked..
                                 noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
 
+                                Log.d("noOfExamName",noOfExamName+"");
+
                                 //Loop through the entire exam and year array..
                                 for (int k = 0; k < noOfExamName; ++k) {
                                     //Get exam name one by one..
