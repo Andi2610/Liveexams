@@ -111,9 +111,6 @@ public class AllSectionsSummary extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-
-                                QuizDatabase ob=new QuizDatabase(AllSectionsSummary.this);
-
 //                                JSONArray jsonArray1=ob.getResults(QuizDatabase.TABLE_PER_SECTION);
 //                                JSONArray jsonArray2=ob.getResults(QuizDatabase.TABLE_PER_QUESTION);
 //                                JSONArray jsonArray3=ob.getResults(QuizDatabase.TABLE_PER_OPTION);
@@ -175,12 +172,12 @@ public class AllSectionsSummary extends AppCompatActivity {
         });
     }
     public void afterResponse(String myDate){
+        ob.getAllValues();
         JSONArray jsonArray=ob.getQuizResult();
         final JSONObject jsonObject=new JSONObject();
         try {
             jsonObject.put("result",jsonArray);
             jsonObject.put("selectedLanguage",selectedLanguage);
-
             jsonObject.put("date",myDate);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -223,6 +220,12 @@ public class AllSectionsSummary extends AppCompatActivity {
                     String success=jsonObject1.getString("success");
                     String result=jsonObject1.getString("response");
                     if(success.equals("true")){
+                        String folder_main = "LiveExams";
+                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                        if (f.exists()) {
+                            deleteDir(f);
+                        }
+                        ob.deleteMyTable();
                         Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
@@ -262,5 +265,19 @@ public class AllSectionsSummary extends AppCompatActivity {
             }
         };
         requestQueue.add(stringRequest);
+    }
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
     }
 }

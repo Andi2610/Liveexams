@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -87,7 +88,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     //Public declaration of variables
 
-    ProgressDialog dialog;
     AuthCallback authCallback;
     LinearLayout locationField;
     Button loginPressed, registerHandleButton, loginHandleButton;
@@ -95,7 +95,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
     EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile;
-    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence,successfullRegister;
+    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence,successfullRegister,signupLanguageAlternate;
     Spinner signupLanguage, signupGender;
     LocationManager locationManager;
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -107,6 +107,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     ImageView app_logo;
     ArrayList<String> listOfLanguages;
     Animation slide_down;
+    Drawable dr;
+    ProgressDialog dialog,progress;
 
     //Called when the activity is created..
     @Override
@@ -136,6 +138,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         registerHandleButton = (Button) findViewById(R.id.registerHandleButton);
         loginHandleButton = (Button) findViewById(R.id.loginHandleButton);
         forgotPasswordPressed = (TextView) findViewById(R.id.forgotPasswordPressed);
+        signupLanguageAlternate = (TextView) findViewById(R.id.signupLanguageAlternate);
         termsAndConditionsPressed = (TextView) findViewById(R.id.termsAndConditionsPressed);
         signupLocation = (TextView) findViewById(R.id.signupLocation);
         sentence = (TextView) findViewById(R.id.sentence);
@@ -162,6 +165,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         loginHandleButton.setTypeface(tff1);
 
         listOfLanguages=new ArrayList<>();
+        dr = getResources().getDrawable(R.drawable.required_icon);
+        //add an error icon to yur drawable files
+        dr.setBounds(0, 0, 50, 50);
 
         Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         loginName.setTypeface(tff2);
@@ -177,6 +183,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupLocation.setTypeface(tff2);
         termsAndConditionsPressed.setTypeface(tff2);
         sentence.setTypeface(tff2);
+        signupLanguageAlternate.setTypeface(tff2);
 
 
         //Set OnClickListener on all buttons used
@@ -186,45 +193,49 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         termsAndConditionsPressed.setOnClickListener(this);
         locationField.setOnClickListener(this);
 
-
-        //Api to be connected to..
-        String url = ConstantsDefined.api+"beforeSignup";
-
-        dialog = new ProgressDialog(Signup_Login.this);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("Loading.. Please wait...");
-        dialog.setIndeterminate(true);
-        dialog.setCancelable(false);
-        dialog.show();
-
-        //Make a request..
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
+        signupLanguageAlternate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(String response) {
-                try {
-                    //Parse the signup response..
+            public void onClick(View v) {
+                //Api to be connected to..
+                String url = ConstantsDefined.api+"beforeSignup";
 
-                    Log.d("myResponse=",response);
-                    dialog.dismiss();
+                dialog = new ProgressDialog(Signup_Login.this);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("Fetching languages.. Please wait...");
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                dialog.show();
 
-                   listOfLanguages= MiscellaneousParser.beforeSignupParser(response);
-                    ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(Signup_Login.this, R.layout.spinner_item, listOfLanguages);
-                    signupLanguage.setAdapter(adapterLanguage);
+                //Make a request..
+                StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                        url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //Parse the signup response..
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //If connection could not be made..
-                dialog.dismiss();
-                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                            Log.d("myResponse=",response);
+                            dialog.dismiss();
+                            signupLanguageAlternate.setVisibility(View.GONE);
+                            signupLanguage.setVisibility(View.VISIBLE);
+                            listOfLanguages= MiscellaneousParser.beforeSignupParser(response);
+                            CustomSpinnerAdapter customAdapter=new CustomSpinnerAdapter(getApplicationContext(),listOfLanguages);
+                            signupLanguage.setAdapter(customAdapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //If connection could not be made..
+                        dialog.dismiss();
+                        Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                requestQueue.add(stringRequest);
             }
         });
-        requestQueue.add(stringRequest);
 
         //List of Gender
         ArrayList<String> listOfGender = new ArrayList<>();
@@ -232,14 +243,17 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         listOfGender.add("Male");
         listOfGender.add("Female");
 
-        //Set Adapter for Gender Spinner
-        ArrayAdapter<String> adapterGender = new ArrayAdapter<String>(this, R.layout.spinner_item, listOfGender);
-        signupGender.setAdapter(adapterGender);
+        CustomSpinnerAdapter customAdapter=new CustomSpinnerAdapter(getApplicationContext(),listOfGender);
+        signupGender.setAdapter(customAdapter);
+
+//        //Set Adapter for Gender Spinner
+//        ArrayAdapter<String> adapterGender = new ArrayAdapter<String>(this, R.layout.spinner_item, listOfGender);
+//        signupGender.setAdapter(adapterGender);
 
         signupLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedLanguage = adapterView.getItemAtPosition(i).toString();
+                selectedLanguage = adapterView.getSelectedItem().toString();
             }
 
             @Override
@@ -252,7 +266,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedGender = adapterView.getItemAtPosition(i).toString();
+                selectedGender = adapterView.getSelectedItem().toString();
             }
 
             @Override
@@ -273,6 +287,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //Hide the login drawer..
                 loginDrawer.setVisibility(View.GONE);
                 app_logo.setVisibility(View.GONE);
+                signupLanguageAlternate.setVisibility(View.VISIBLE);
+                signupLanguage.setVisibility(View.GONE);
 
                 //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
                 signupHandleImage.setImageResource(R.drawable.down_arrow);
@@ -291,7 +307,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 signupLocation.setText("LOCATION");
                 signupConfirmPassword.setText("");
                 signupGender.setSelection(0);
-                signupLanguage.setSelection(0);
+//                signupLanguage.setSelection(0);
 
                 //Add the text change listener on the required fields to show the validation error message to the user at appropriate times..
                 //signupName: userName field cannot be empty..
@@ -311,7 +327,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int l = signupName.getText().toString().length();
                         if (l < 1) {
-                            signupName.setError("Required");
+                            signupName.setError("Required",dr);
                         } else {
                             signupName.setError(null);
                         }
@@ -334,7 +350,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         if (!TextUtils.isEmpty(text) && android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
                             signupEmail.setError(null);
                         } else {
-                            signupEmail.setError("Enter valid Email");
+                            signupEmail.setError("Enter valid Email",dr);
                         }
                     }
 
@@ -353,7 +369,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int length = signupMobile.getText().toString().length();
                         if (length != 10)
-                            signupMobile.setError("Enter valid phone number");
+                            signupMobile.setError("Enter valid phone number",dr);
                         else
                             signupMobile.setError(null);
                     }
@@ -373,14 +389,14 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int length = signupPassword.getText().toString().length();
                         if (length < 6) {
-                            signupPassword.setError("Minimum 6 characters required");
+                            signupPassword.setError("Minimum 6 characters required",dr);
                         } else {
                             signupPassword.setError(null);
                             String confirm = signupConfirmPassword.getText().toString();
                             if (confirm.equals(signupPassword.getText().toString()))
                                 signupConfirmPassword.setError(null);
                             else
-                                signupConfirmPassword.setError("Do not match with Password");
+                                signupConfirmPassword.setError("Do not match with Password",dr);
                         }
                     }
 
@@ -400,7 +416,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         String text = signupConfirmPassword.getText().toString();
                         String passText = signupPassword.getText().toString();
                         if (!text.equals(passText))
-                            signupConfirmPassword.setError("Do not match with Password");
+                            signupConfirmPassword.setError("Do not match with Password",dr);
                         else
                             signupConfirmPassword.setError(null);
                     }
@@ -447,7 +463,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //Hide the signup drawer..
                 signupDrawer.setVisibility(View.GONE);
                 app_logo.setVisibility(View.GONE);
-                signupLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                signupLayout.setBackgroundColor(Color.parseColor("#E0E0E0"));
 
                 //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
                 loginHandleImage.setImageResource(R.drawable.down_arrow);
@@ -471,7 +487,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int l = loginName.getText().toString().length();
                         if (l < 1) {
-                            loginName.setError("Required");
+                            loginName.setError("Required",dr);
                         } else {
                             loginName.setError(null);
                         }
@@ -491,7 +507,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int l = loginPassword.getText().toString().length();
                         if (l < 1) {
-                            loginPassword.setError("Required");
+                            loginPassword.setError("Required",dr);
                         } else {
                             loginPassword.setError(null);
                         }
@@ -603,7 +619,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     }
 
     public void fetchLocation() {
-        final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
+        progress = new ProgressDialog(Signup_Login.this);
         progress.setMessage("Fetching your current location....");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progress.setIndeterminate(true);
@@ -615,6 +631,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 lat = location.getLatitude() + "";
                 lon = location.getLongitude() + "";
+                Log.d("addresses",lat+" "+lon);
                 Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
                 List<Address> addresses = null;
                 try {
@@ -674,26 +691,26 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         language = selectedLanguage;
 
         //If all valid.. signup..
-        if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && !language.equals("LANGUAGE") && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
+        if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && signupLanguageAlternate.getVisibility()==View.GONE && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             signupFunction();
         } else {
             //Else display desired error messages..
             if (name.equals(""))
-                signupName.setError("Required");
+                signupName.setError("Required",dr);
             if (!(!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()))
-                signupEmail.setError("Enter valid email");
+                signupEmail.setError("Enter valid email",dr);
             if (gender.equals("GENDER"))
                 Toast.makeText(this, "Choose your gender", Toast.LENGTH_SHORT).show();
             if (location.equals("LOCATION"))
                 Toast.makeText(this, "Choose your location", Toast.LENGTH_SHORT).show();
-            if (language.equals("LANGUAGE"))
+            if (signupLanguageAlternate.getVisibility()==View.VISIBLE)
                 Toast.makeText(this, "Choose your language", Toast.LENGTH_SHORT).show();
             if (mobile.length() != 10)
-                signupMobile.setError("Enter valid phone number");
+                signupMobile.setError("Enter valid phone number",dr);
             if (password.length() < 6)
-                signupPassword.setError("Minimum 6 characters required");
+                signupPassword.setError("Minimum 6 characters required",dr);
             if (!password.equals(confirmPassword))
-                signupConfirmPassword.setError("Do not match with Password");
+                signupConfirmPassword.setError("Do not match with Password",dr);
         }
     }
 
@@ -705,9 +722,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             loginFunction();
         else{
             if(login_name.equals(""))
-                loginName.setError("Required");
+                loginName.setError("Required",dr);
             if(login_password.equals(""))
-                loginPassword.setError("Required");
+                loginPassword.setError("Required",dr);
         }
     }
 

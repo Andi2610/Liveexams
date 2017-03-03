@@ -216,6 +216,7 @@ public class StartPageFragment extends Fragment {
 //            }else{
 //                Log.d("timeDetails","in2");
 //            }
+
             if(examGiven.equals("true")){
                 start_leave_button.setText("EXAM IS OVER");
                 start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
@@ -225,12 +226,18 @@ public class StartPageFragment extends Fragment {
                         if(!middle_time.before(start_time)){
                             start_leave_button.setText("START");
                             start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
+                        }else{
+                            start_leave_button.setText("LEAVE");
+                            start_leave_button.setBackgroundColor(Color.parseColor("#f44336"));
                         }
                     }else if(middle_date.equals(end_date)){
                         if(!middle_time.after(end_time)){
                             start_leave_button.setText("START");
                             start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
                             endDetails.setTextColor(Color.parseColor("#f44336"));
+                        }else{
+                            start_leave_button.setText("EXAM IS OVER");
+                            start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
                         }
                     }else{
                         start_leave_button.setText("START");

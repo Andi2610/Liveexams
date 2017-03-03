@@ -49,23 +49,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/signupContent"
-                android:background="@color/white"
+                android:background="@color/light_grey"
                 android:isScrollContainer="false">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:background="@color/white"
+                    android:background="@color/light_grey"
                     android:layout_gravity="center_vertical">
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColorHint="@color/light_grey"
                         android:lines="1"
                         android:inputType="text"
                         android:hint="USERNAME"
@@ -79,15 +79,15 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@color/colorPrimary" />
+                        android:background="@color/edit_text_color" />
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColorHint="@color/light_grey"
                         android:lines="1"
                         android:inputType="textEmailAddress"
                         android:hint="EMAIL ID"
@@ -100,9 +100,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColorHint="@color/light_grey"
                         android:lines="1"
                         android:inputType="phone"
                         android:hint="MOBILE NUMBER"
@@ -115,9 +115,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColorHint="@color/light_grey"
                         android:lines="1"
                         android:inputType="textPassword"
                         android:hint="PASSWORD"
@@ -130,9 +130,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColorHint="@color/light_grey"
                         android:lines="1"
                         android:inputType="textPassword"
                         android:hint="CONFIRM PASSWORD"
@@ -148,15 +148,15 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginRight="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         android:weightSum="100"
                         android:id="@+id/locationField">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
-                            android:background="@color/colorPrimary"
-                            android:textColor="@color/white"
+                            android:background="@color/edit_text_color"
+                            android:textColor="@color/light_grey"
                             android:text="LOCATION"
                             android:id="@+id/signupLocation"
                             android:layout_weight="90"
@@ -172,6 +172,9 @@
                             android:layout_gravity="center"/>
                     </LinearLayout>
 
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
                     <Spinner
                         android:id="@+id/signupLanguage"
                         android:layout_width="match_parent"
@@ -179,8 +182,23 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginBottom="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:background="@color/edit_text_color"
+                        android:textColor="@color/light_grey"
+                        android:text="LANGUAGE"
+                        android:id="@+id/signupLanguageAlternate"
+                        android:layout_weight="90"
+                        android:textSize="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="10dp"/>
+                    </RelativeLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -202,16 +220,22 @@
                             android:textSize="10dp"/>
                     </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:background="@color/grey"
+                    android:layout_margin="10dp">
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
                         android:id="@+id/signupPressed"
                         android:textSize="20dp"
                         android:text="REGISTER"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/light_black"
                         android:background="@color/light_grey"
                         android:padding="10dp"/>
+                    </LinearLayout>
 
                 </LinearLayout>
             </ScrollView>
@@ -259,12 +283,13 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/loginContent">
+                android:id="@+id/loginContent"
+                android:background="@color/light_grey">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:background="@color/white"
+                    android:background="@color/light_grey"
                     android:layout_gravity="center_vertical">
 
                     <TextView
@@ -283,9 +308,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColorHint="@color/light_grey"
                         android:lines="1"
                         android:inputType="text"
                         android:hint="USERNAME"
@@ -296,9 +321,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:background="@color/colorPrimary"
+                        android:background="@color/edit_text_color"
                         android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColorHint="@color/light_grey"
                         android:lines="1"
                         android:hint="PASSWORD"
                         android:id="@+id/loginPassword"
@@ -315,16 +340,23 @@
                         android:layout_margin="10dp"
                         android:id="@+id/forgotPasswordPressed"/>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="2dp"
+                        android:background="@color/grey"
+                        android:layout_margin="10dp">
                     <Button
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
                         android:id="@+id/loginPressed"
                         android:text="Login"
                         android:textSize="20dp"
-                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:textColor="@color/light_black"
                         android:background="@color/light_grey"
-                        android:padding="10dp"/>
+                        android:padding="10dp" />
+                    </LinearLayout>
 
                 </LinearLayout>
             </ScrollView>

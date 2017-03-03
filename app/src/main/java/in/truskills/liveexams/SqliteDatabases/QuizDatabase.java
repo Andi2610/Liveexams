@@ -613,4 +613,30 @@ public class QuizDatabase extends SQLiteOpenHelper {
         return resultSet;
     }
 
+    public void getAllValues(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT * FROM "+TABLE_PER_SECTION;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Log.d("dataGiven",cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(SectionId)));
+            }while(cursor.moveToNext());
+        }
+        query="SELECT * FROM "+TABLE_PER_QUESTION;
+        cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Log.d("dataGiven",cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId)));
+            }while(cursor.moveToNext());
+        }
+        query="SELECT * FROM "+RESULT_TABLE;
+        cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Log.d("dataGiven",cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(SectionId))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId)));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+    }
+
 }

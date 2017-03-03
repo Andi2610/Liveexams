@@ -192,7 +192,7 @@ public class AllExamsFragment extends Fragment {
                     String exams=map.get("exams");
                     String timestamp=map.get("timestamp");
                     HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(exams);
-                    Log.d("myExamName",mapper.get("ExamName").get(0)+"");
+//                    Log.d("myExamName",mapper.get("ExamName").get(0)+"");
                     JSONArray jsonArray=new JSONArray(exams);
                     int length=jsonArray.length();
                     if(length==0){
@@ -239,16 +239,11 @@ public class AllExamsFragment extends Fragment {
                             Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
                             Date middle_time=simpleDateFormat2.parse(myTime);
 
-
-                            Log.d("myDate=",myDateOfStart+" ****** "+myDateOfEnd+" **** "+myDurationTime);
-
-                            if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
-                                if(middle_date.equals(start_date)){
-                                    if(!middle_time.before(start_time)){
-                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-                                        filteredList.add(values);
-                                    }
-                                }else if(middle_date.equals(end_date)){
+                            if(middle_date.before(start_date)){
+                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                filteredList.add(values);
+                            }else if(middle_date.before(end_date)||middle_date.equals(end_date)){
+                                if(middle_date.equals(end_date)){
                                     if(!middle_time.after(end_time)){
                                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                         filteredList.add(values);
@@ -257,21 +252,14 @@ public class AllExamsFragment extends Fragment {
                                     values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                     filteredList.add(values);
                                 }
-                            }else if(middle_date.after(end_date)){
-                            }else {
-                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-                                filteredList.add(values);
                             }
-//                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-
-                            h.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    populateList(filteredList);
-                                }
-                            });
-
                         }
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateList(filteredList);
+                            }
+                        });
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

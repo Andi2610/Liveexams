@@ -144,6 +144,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         clearButton.setOnClickListener(this);
 
         ob = new QuizDatabase(QuizMainActivity.this);
+//        ob.getAllValues();
 
         /*
         * hidden element where student video will be loaded
@@ -552,28 +553,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         e.apply();
         //when activity will distroy student will be disconnected from session
         socketfromteacher.disconnectSession();
-        String folder_main = "LiveExams";
 
-        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-        if (f.exists()) {
-            deleteDir(f);
-        }
-
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // The directory is now empty so delete it
-        return dir.delete();
     }
 
     // in/truskills/liveexams/Quiz/QuizMainActivity.java:137
@@ -767,7 +747,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 }
             }).start();
         } else {
-            mAlertDialog.dismiss();
+            if(mAlertDialog!=null){
+                mAlertDialog.dismiss();
+            }
             start = System.currentTimeMillis();
             count = new CountDownTimer(timeUntil, 1000) { // adjust the milli seconds here
 

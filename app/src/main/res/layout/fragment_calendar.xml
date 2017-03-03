@@ -20,6 +20,17 @@
         app:weekLayoutBackgroundColor="@color/light_grey">
     </com.stacktips.view.CustomCalendarView>
 
+    <!--<com.wang.avi.AVLoadingIndicatorView-->
+        <!--android:id="@+id/aviForCalendar"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:visibility="visible"-->
+        <!--style="@style/AVLoadingIndicatorView"-->
+        <!--app:indicatorName="LineScaleIndicator"-->
+        <!--android:layout_below="@+id/calendarView"-->
+        <!--app:indicatorColor="@color/colorPrimary"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -29,5 +40,38 @@
         android:layout_below="@+id/calendarView">
 
     </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:id="@+id/noConnectionLayoutForCalendar">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/no_internet_connection"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Sorry! No internet connection"
+            android:id="@+id/noConnectionTextForCalendar"
+            android:textSize="20dp"
+            android:layout_margin="10dp" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:textColor="@color/light_black"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:text="Retry"
+            android:background="@color/light_grey"
+            android:id="@+id/retryButtonForCalendar"/>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -49,11 +49,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
+import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.RealPathUtil;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface{
 
     //Declare variables..
     NavigationView navigationView;
@@ -542,5 +543,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return rotate;
     }
-
 }

@@ -24,6 +24,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +65,9 @@ public class StatisticsFragment extends Fragment {
     SearchView searchView;
     String myStartDate,myEndDate,myDateOfStart,myDateOfEnd,myDuration,myDurationTime;
     SharedPreferences prefs;
-    TextView noExams;
+    TextView noExams,noConnectionText;
+    Button retryButton;
+    LinearLayout noConnectionLayout;
     ProgressDialog dialog;
 
     public StatisticsFragment() {
@@ -96,11 +100,27 @@ public class StatisticsFragment extends Fragment {
         statisticsList.setLayoutManager(linearLayoutManager);
         statisticsList.setItemAnimator(new DefaultItemAnimator());
 
+        retryButton = (Button) getActivity().findViewById(R.id.retryButtonForStatistics);
+        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayoutForStatistics);
+        noConnectionText=(TextView)getActivity().findViewById(R.id.noConnectionTextForStatistics);
+        Typeface tff1=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        retryButton.setTypeface(tff1);
+        noConnectionText.setTypeface(tff1);
+        noConnectionLayout.setVisibility(View.GONE);
+        noExams.setVisibility(View.GONE);
+
         setList();
+
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setList();
+            }
+        });
     }
+
     public void setList(){
         valuesList=new ArrayList<>();
-
         dialog = new ProgressDialog(getActivity());
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Loading. Please wait...");
@@ -114,6 +134,7 @@ public class StatisticsFragment extends Fragment {
 
             @Override
             public void onResponse(JSONObject response) {
+                noConnectionLayout.setVisibility(View.GONE);
                 try {
                     HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.analyzedExamsParser(response);
                     int length = response.getJSONArray("response").length();
@@ -163,7 +184,8 @@ public class StatisticsFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
                 Log.d("myError",error+"");
-                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                noConnectionLayout.setVisibility(View.VISIBLE);
             }
         });
         requestQueue.add(jsonObjectRequest);

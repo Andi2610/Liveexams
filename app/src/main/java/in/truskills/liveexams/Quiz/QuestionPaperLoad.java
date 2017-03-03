@@ -154,20 +154,21 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                             //Get it's variables..
                             name = map6.get("Name");
                             section_id=map6.get("id");
+                            Log.d("ID:",i+"-"+section_id);
 
                             //Set in database..
                             ob.setValuesPerSection(i);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
+//                            new Thread(new Runnable() {
+//                                @Override
+//                                public void run() {
                                     ob.updateValuesPerSection(iiii, QuizDatabase.SectionName,name);
                                     ob.updateValuesPerSection(iiii, QuizDatabase.SectionId,section_id);
                                     ob.updateValuesPerSection(iiii, QuizDatabase.SectionMaxMarks,section_max_marks);
                                     ob.updateValuesPerSection(iiii, QuizDatabase.SectionTime,section_time);
                                     ob.updateValuesPerSection(iiii, QuizDatabase.SectionDescription,section_description);
                                     ob.updateValuesPerSection(iiii, QuizDatabase.SectionRules,section_rules);
-                                }
-                            }).start();
+//                                }
+//                            }).start();
                             map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
 
                             //Get it's variables..
@@ -243,10 +244,12 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                 text = QuestionPaperParser.getQuestionText(myQuestionText);
 
                                 map12=QuestionPaperParser.getAttributesOfQuestion(questionAttributes);
+                                Log.d("QID:",i+"-"+j+"-"+section_id+"-"+map12.get("id"));
 
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
+
+//                                new Thread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
                                         ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionText,text);
                                         ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.CorrectAnswer,map12.get("CorrectAnswer"));
                                         ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionCorrectMarks,map12.get("QuestionCorrectMarks"));
@@ -259,9 +262,9 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                         ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionId,map12.get("id"));
                                         ob.updateValuesForResult(iiii,jjjj, QuizDatabase.SectionId,section_id);
                                         ob.updateValuesForResult(iiii,jjjj, QuizDatabase.QuestionId,map12.get("id"));
-
-                                    }
-                                }).start();
+//
+//                                    }
+//                                }).start();
                                 myOption = QuestionPaperParser.OptionsParser(myOptions);
 
                                 //Get length of option array..
@@ -288,13 +291,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                     myAttri = QuestionPaperParser.getAttributesOfOneOption(myAt);
                                     opText=map11.get("_");
 
-                                    new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
+//                                    new Thread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
                                             ob.updateValuesPerOption(iiii,jjjj,pppp, QuizDatabase.OptionText,opText);
                                             ob.updateValuesPerOption(iiii,jjjj,pppp, QuizDatabase.OptionId,myAttri);
-                                        }
-                                    }).start();
+//                                        }
+//                                    }).start();
 
                                 }
                             }
@@ -336,13 +339,11 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 //        If offline required..
         for(int i=0;i<noOfSections;++i){
             for(int j=0;j<questionArray[i];++j){
-                myCount++;
                 String mt=ob.getTextOfOneQuestion(i,j);
                 prepareForOfflineForQuestion(mt,i,j);
                 Log.d("textHere","OfQuestions"+mt);
                 int noo=ob.getNoOfOptionsInOneQuestion(i,j);
                 for(int k=0;k<noo;++k){
-                    myCount++;
                     String mo=ob.getTextOfOneOption(i,j,k);
                     Log.d("textHere","OfOptions"+mo);
                     prepareForOfflineForOption(mo,i,j,k);
@@ -452,6 +453,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         ob.updateValuesPerQuestion(ii,jj, QuizDatabase.QuestionText,result);
 
         while (matcher.find()){
+            myCount++;
             Log.d("messi","matcher.findInLoop");
             String group=matcher.group(2);
             String imageUrl = ConstantsDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
@@ -472,6 +474,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         ob.updateValuesPerOption(ii,jj,kk, QuizDatabase.OptionText,result);
 
         while (matcher.find()){
+            myCount++;
             Log.d("messi","matcher.findInLoop");
             String group=matcher.group(2);
             String imageUrl = ConstantsDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;

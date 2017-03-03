@@ -1,11 +1,13 @@
 package in.truskills.liveexams.MainScreens;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,16 +17,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.stacktips.view.CalendarListener;
 import com.stacktips.view.CustomCalendarView;
 import com.stacktips.view.DayDecorator;
 import com.stacktips.view.DayView;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +50,7 @@ import java.util.List;
 import java.util.Locale;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
 /**
@@ -48,13 +63,22 @@ public class CalendarFragment extends Fragment {
     List<Values> valuesList;
     Values values;
     RecyclerView myExamsList;
-    String joinedExams, myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime;
+    String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime,myStartTime,myEndTime,myJoinedExamssss="",timestampppp="";
     SimpleDateFormat simpleDateFormat;
-    int start_day, start_month, start_year, end_day, end_month, end_year,curr_day,curr_month,curr_year,cm;
+    int curr_day,curr_month,curr_year,cm;
     SharedPreferences prefs;
+    RequestQueue requestQueue;
     HashMap<String, ArrayList<String>> mapper;
     int i;
+    Date myCurrDate;
     Calendar currentCalendar;
+    Handler h;
+    CustomCalendarView calendarView;
+    Button retryButton;
+    LinearLayout noConnectionLayout;
+    TextView noConnectionText;
+    ProgressDialog dialog;
+    AVLoadingIndicatorView avLoadingIndicatorView;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -72,8 +96,19 @@ public class CalendarFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        joinedExams = prefs.getString("joinedExams", "noJoinedExams");
 
+        requestQueue = Volley.newRequestQueue(getActivity());
+        h=new Handler();
+//        avLoadingIndicatorView=(AVLoadingIndicatorView)getActivity().findViewById(R.id.aviForCalendar);
+//        avLoadingIndicatorView.setVisibility(View.GONE);
+
+        retryButton = (Button) getActivity().findViewById(R.id.retryButtonForCalendar);
+        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayoutForCalendar);
+        noConnectionText=(TextView)getActivity().findViewById(R.id.noConnectionTextForCalendar);
+        Typeface tff1=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        retryButton.setTypeface(tff1);
+        noConnectionText.setTypeface(tff1);
+        noConnectionLayout.setVisibility(View.GONE);
         Answers.getInstance().logCustom(new CustomEvent("Calendar page inspect")
                 .putCustomAttribute("userName", prefs.getString("userName", "")));
 
@@ -81,60 +116,18 @@ public class CalendarFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         myExamsList.setLayoutManager(linearLayoutManager);
         myExamsList.setItemAnimator(new DefaultItemAnimator());
-        CustomCalendarView calendarView = (CustomCalendarView) getActivity().findViewById(R.id.calendarView);
+        calendarView = (CustomCalendarView) getActivity().findViewById(R.id.calendarView);
 
-        //Initialize calendar with date
-        currentCalendar = Calendar.getInstance(Locale.getDefault());
-        curr_day=currentCalendar.get(Calendar.DAY_OF_MONTH);
-        cm=currentCalendar.get(Calendar.MONTH);
-        curr_year=currentCalendar.get(Calendar.YEAR);
+        calendarView.setVisibility(View.GONE);
 
-        curr_month=cm+1;
-        populateListForCalendar(curr_day,curr_month,curr_year);
+        populateFirstTime();
 
-//        Log.d("current",currentCalendar.get(Calendar.DAY_OF_MONTH)+"");
-
-
-        //Show Monday as first date of week
-        calendarView.setFirstDayOfWeek(Calendar.MONDAY);
-
-        //Show/hide overflow days of a month
-        calendarView.setShowOverflowDate(false);
-
-        //call refreshCalendar to update calendar the view
-        calendarView.refreshCalendar(currentCalendar);
-
-        //Handling custom calendar events
-        calendarView.setCalendarListener(new CalendarListener() {
+        retryButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDateSelected(Date date) {
-                simpleDateFormat=new SimpleDateFormat("dd");
-                int dd=Integer.parseInt(simpleDateFormat.format(date));
-                simpleDateFormat=new SimpleDateFormat("MM");
-                int mm=Integer.parseInt(simpleDateFormat.format(date));
-                simpleDateFormat=new SimpleDateFormat("yyyy");
-                int yy=Integer.parseInt(simpleDateFormat.format(date));
-                populateListForCalendar(dd,mm,yy);
-            }
-
-            @Override
-            public void onMonthChanged(Date date) {
+            public void onClick(View v) {
+                populateFirstTime();
             }
         });
-
-        //Setting custom font
-        final Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
-        if (null != typeface) {
-            calendarView.setCustomTypeface(typeface);
-            calendarView.refreshCalendar(currentCalendar);
-        }
-
-        //adding calendar day decorators
-        List decorators = new ArrayList<>();
-        decorators.add(new DisabledColorDecorator());
-        decorators.add(new SetExamsColorDecorator());
-        calendarView.setDecorators(decorators);
-        calendarView.refreshCalendar(currentCalendar);
     }
 
     private class DisabledColorDecorator implements DayDecorator {
@@ -159,128 +152,273 @@ public class CalendarFragment extends Fragment {
         @Override
         public void decorate(DayView dayView) {
             Date date=dayView.getDate();
-            getDurationOfEachExam(date,dayView);
-        }
-    }
-
-    private void populateListForCalendar(int d,int m,int y) {
-        valuesList = new ArrayList<>();
-        if (!joinedExams.equals("noJoinedExams")) {
             try {
-                mapper = MiscellaneousParser.myExamsParser(joinedExams);
-                JSONArray arr = new JSONArray(joinedExams);
-                int length = arr.length();
-                for (i = 0; i < length; ++i) {
-                    if (mapper.get("leftExam").get(i).equals("false")) {
-
-                        myStartDate = mapper.get("StartDate").get(i);
-                        myEndDate = mapper.get("EndDate").get(i);
-                        myDuration = mapper.get("ExamDuration").get(i);
-
-                        myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
-                        myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
-                        myDurationTime= MiscellaneousParser.parseDuration(myDuration);
-
-                        String array[]=myDateOfStart.split("/");
-                        start_day=Integer.parseInt(array[0]);
-                        start_month=Integer.parseInt(array[1]);
-                        start_year=Integer.parseInt(array[2]);
-
-                        array=myDateOfEnd.split("/");
-                        end_day=Integer.parseInt(array[0]);
-                        end_month=Integer.parseInt(array[1]);
-                        end_year=Integer.parseInt(array[2]);
-
-                        String myParsedDate = d + "/" + m + "/" + y;
-
-                        simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-                        Date start_date=simpleDateFormat.parse(myDateOfStart);
-                        Date end_date=simpleDateFormat.parse(myDateOfEnd);
-                        Date middle_date=simpleDateFormat.parse(myParsedDate);
-
-                        Log.d("calendarDetails",start_date+" "+middle_date+" "+end_date);
-
-                        if(!(middle_date.before(start_date) || middle_date.after(end_date))){
-                            Log.d("dates","inBetween");
-                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                            valuesList.add(values);
-                            myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                            myExamsList.setAdapter(myExamsListAdapter);
-                            myExamsListAdapter.notifyDataSetChanged();
-                        }else{
-                            Log.d("dates","NotBetween");
-                            if (valuesList.isEmpty()) {
-                                valuesList.clear();
-                                myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
-                                myExamsList.setAdapter(myExamsListAdapter);
-                                myExamsListAdapter.notifyDataSetChanged();
-                            }
-                        }
-
-                        Log.d("dates",myDateOfStart+" ** "+myParsedDate+" ** "+myDateOfEnd);
-                    }
-                }
-
-            } catch (JSONException | ParseException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void getDurationOfEachExam(Date date,DayView dayView) {
-        if (!joinedExams.equals("noJoinedExams")) {
-            try {
-                mapper = MiscellaneousParser.myExamsParser(joinedExams);
-                JSONArray arr = new JSONArray(joinedExams);
-                int length = arr.length();
-                ArrayList<Integer> list=new ArrayList<>();
-                for (i = 0; i < length; ++i) {
-                    if (mapper.get("leftExam").get(i).equals("false")) {
-                        myStartDate = mapper.get("StartDate").get(i);
-                        myEndDate = mapper.get("EndDate").get(i);
-
-                        myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
-                        myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
-
-                       String array[]=myDateOfStart.split("/");
-                        start_day=Integer.parseInt(array[0]);
-                        start_month=Integer.parseInt(array[1]);
-                        start_year=Integer.parseInt(array[2]);
-
-                        array=myDateOfEnd.split("/");
-                        end_day=Integer.parseInt(array[0]);
-                        end_month=Integer.parseInt(array[1]);
-                        end_year=Integer.parseInt(array[2]);
-
-                        String strDate=date.toString();
-                        simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                        Date date2 = simpleDateFormat.parse(strDate);
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(date2);
-                        int day2 = calendar.get(Calendar.DAY_OF_MONTH);
-                        int year2 = calendar.get(Calendar.YEAR);
-                        int month2 = calendar.get(Calendar.MONTH);
-                        month2++;
-                        String myParsedDate = day2 + "/" + month2 + "/" + year2;
-
-                        simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-                        Date start_date=simpleDateFormat.parse(myDateOfStart);
-                        Date end_date=simpleDateFormat.parse(myDateOfEnd);
-                        Date middle_date=simpleDateFormat.parse(myParsedDate);
-
-                        if(!(middle_date.before(start_date) || middle_date.after(end_date))){
-                            Log.d("dates","inBetween");
-                            dayView.setTextColor(Color.parseColor("#00B4A8"));
-                            list.add(1);
-                        }
-                    }
-                }
+                getDurationOfEachExam(date,dayView);
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
+    }
+
+    private void populateListForCalendar(final int d,final int m,final int y) {
+
+//        avLoadingIndicatorView.show();
+
+        valuesList = new ArrayList<>();
+        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId","");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+//                avLoadingIndicatorView.hide();
+                try {
+                    String myResponse=response.getJSONObject("response").toString();
+                    JSONObject jsonObject=new JSONObject(myResponse);
+                    String timestamp=jsonObject.getString("timestamp");
+                    String myJoinedExams=jsonObject.getJSONArray("joinedExams").toString();
+                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExams);
+                    JSONArray arr = new JSONArray(myJoinedExams);
+                    int length = arr.length();
+                    for (int i = 0; i < length; ++i) {
+
+                        //If user is still enrolled to this exam..
+                        if (mapper.get("leftExam").get(i).equals("false")) {
+
+                            myStartDate = mapper.get("StartDate").get(i);
+                            myEndDate = mapper.get("EndDate").get(i);
+                            myDuration = mapper.get("ExamDuration").get(i);
+                            myStartTime=mapper.get("StartTime").get(i);
+                            myEndTime=mapper.get("EndTime").get(i);
+
+                            myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                            myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                            myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+
+                            String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
+                            String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
+                            Log.d("myTimestamp=",timestamp);
+//                            String myTimestamp=MiscellaneousParser.parseTimestamp(timestamp);
+                            String myParsedDate = d + "/" + m + "/" + y;
+                            String myTime=MiscellaneousParser.parseTimestampForTime(timestamp);
+
+//                            Log.d("myTimestamp=",myTimestamp);
+
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+                            Date start_date=simpleDateFormat.parse(myDateOfStart);
+                            Date end_date=simpleDateFormat.parse(myDateOfEnd);
+                            Date middle_date=simpleDateFormat.parse(myParsedDate);
+
+                            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
+                            Date start_time=simpleDateFormat2.parse(myTimeOfStart);
+                            Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
+                            Date middle_time=simpleDateFormat2.parse(myTime);
+
+                            if(!(middle_date.before(start_date)||middle_date.after(end_date))){
+                                if(middle_date.equals(end_date)){
+                                    if(!middle_time.after(end_time)){
+                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                        valuesList.add(values);
+                                    }
+                                }else{
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                    valuesList.add(values);
+                                }
+                            }
+                        }
+                    }
+                    myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
+                    myExamsList.setAdapter(myExamsListAdapter);
+                    myExamsListAdapter.notifyDataSetChanged();
+//                    calendarView.refreshCalendar(currentCalendar);
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                avLoadingIndicatorView.hide();
+                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void getDurationOfEachExam(Date date,DayView dayView) throws JSONException, ParseException {
+
+        Log.d("joinedExamssss",myJoinedExamssss+""+timestampppp);
+        JSONArray arr = new JSONArray(myJoinedExamssss);
+        HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExamssss);
+        int length = arr.length();
+        for (int i = 0; i < length; ++i) {
+
+            //If user is still enrolled to this exam..
+            if (mapper.get("leftExam").get(i).equals("false")) {
+
+                myStartDate = mapper.get("StartDate").get(i);
+                myEndDate = mapper.get("EndDate").get(i);
+                myDuration = mapper.get("ExamDuration").get(i);
+                myStartTime=mapper.get("StartTime").get(i);
+                myEndTime=mapper.get("EndTime").get(i);
+
+                myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+
+                String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
+                String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
+
+                String myTime=MiscellaneousParser.parseTimestampForTime(timestampppp);
+
+                String strDate=date.toString();
+                simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                Date date2 = simpleDateFormat.parse(strDate);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date2);
+                int day2 = calendar.get(Calendar.DAY_OF_MONTH);
+                int year2 = calendar.get(Calendar.YEAR);
+                int month2 = calendar.get(Calendar.MONTH);
+                month2++;
+                String myParsedDate = day2 + "/" + month2 + "/" + year2;
+
+                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+                Date start_date=simpleDateFormat.parse(myDateOfStart);
+                Date end_date=simpleDateFormat.parse(myDateOfEnd);
+                Date middle_date=simpleDateFormat.parse(myParsedDate);
+
+                SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
+                Date start_time=simpleDateFormat2.parse(myTimeOfStart);
+                Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
+                Date middle_time=simpleDateFormat2.parse(myTime);
+
+                if(!(middle_date.before(start_date)||middle_date.after(end_date))){
+                    if(middle_date.equals(end_date)){
+                        if(middle_date.equals(myCurrDate)){
+                            if(!middle_time.after(end_time)){
+                                dayView.setTextColor(Color.parseColor("#00B4A8"));
+                            }
+                        }else{
+                            dayView.setTextColor(Color.parseColor("#00B4A8"));
+                        }
+                    }else{
+                        dayView.setTextColor(Color.parseColor("#00B4A8"));
+                    }
+                }
+            }
+        }
+    }
+
+    public void afterResponse() throws ParseException {
+        //Initialize calendar with date
+        String myTimestamp=MiscellaneousParser.parseTimestamp(timestampppp);
+        SimpleDateFormat simpleDateFormattt=new SimpleDateFormat("dd/MM/yyyy");
+        myCurrDate=simpleDateFormattt.parse(myTimestamp);
+        String parts[]=myTimestamp.split("/");
+        curr_day=Integer.parseInt(parts[0]);
+        curr_month=Integer.parseInt(parts[1]);
+        curr_year=Integer.parseInt(parts[2]);
+        currentCalendar=Calendar.getInstance();
+        currentCalendar.setTime(myCurrDate);
+
+        populateListForCalendar(curr_day,curr_month,curr_year);
+
+        calendarView.setFirstDayOfWeek(Calendar.MONDAY);
+
+        //Show/hide overflow days of a month
+        calendarView.setShowOverflowDate(false);
+
+        //call refreshCalendar to update calendar the view
+        calendarView.refreshCalendar(currentCalendar);
+
+        //Handling custom calendar events
+        calendarView.setCalendarListener(new CalendarListener() {
+            @Override
+            public void onDateSelected(Date date) {
+                simpleDateFormat=new SimpleDateFormat("dd");
+                int dd=Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat=new SimpleDateFormat("MM");
+                int mm=Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat=new SimpleDateFormat("yyyy");
+                int yy=Integer.parseInt(simpleDateFormat.format(date));
+                populateListForCalendar(dd,mm,yy);
+            }
+
+            @Override
+            public void onMonthChanged(Date date) {
+                simpleDateFormat=new SimpleDateFormat("dd");
+                int dd=Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat=new SimpleDateFormat("MM");
+                int mm=Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat=new SimpleDateFormat("yyyy");
+                int yy=Integer.parseInt(simpleDateFormat.format(date));
+                if(curr_day==dd&&curr_month==mm&&curr_year==yy){
+                    populateListForCalendar(dd,mm,yy);
+                }else{
+                    valuesList = new ArrayList<>();
+                    myExamsListAdapter = new MyExamsListAdapter(valuesList, getActivity());
+                    myExamsList.setAdapter(myExamsListAdapter);
+                    myExamsListAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        //Setting custom font
+        final Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        if (null != typeface) {
+            calendarView.setCustomTypeface(typeface);
+            calendarView.refreshCalendar(currentCalendar);
+        }
+
+        //adding calendar day decorators
+        List decorators = new ArrayList<>();
+        decorators.add(new DisabledColorDecorator());
+        decorators.add(new SetExamsColorDecorator());
+        calendarView.setDecorators(decorators);
+        calendarView.refreshCalendar(currentCalendar);
+    }
+
+    public void populateFirstTime(){
+
+        dialog = new ProgressDialog(getActivity());
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.show();
+
+        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId","");
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                noConnectionLayout.setVisibility(View.GONE);
+                calendarView.setVisibility(View.VISIBLE);
+                dialog.dismiss();
+                try {
+                    String myResponse=response.getJSONObject("response").toString();
+                    final JSONObject jsonObject=new JSONObject(myResponse);
+                    timestampppp=jsonObject.getString("timestamp");
+                    myJoinedExamssss=jsonObject.getJSONArray("joinedExams").toString();
+                    afterResponse();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                noConnectionLayout.setVisibility(View.VISIBLE);
+                dialog.dismiss();
+//                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 }

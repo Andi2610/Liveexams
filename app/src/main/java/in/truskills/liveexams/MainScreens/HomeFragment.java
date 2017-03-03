@@ -1,10 +1,12 @@
 package in.truskills.liveexams.MainScreens;
 
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -22,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -40,13 +44,15 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
 //This is the home fragment in which myExams list is loaded..
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
 
     //Declare variables..
     Button add;
@@ -56,10 +62,14 @@ public class HomeFragment extends Fragment {
     List<Values> valuesList, filteredList;
     Values values;
     HomeInterface ob;
-    String joinedExams, myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime,myStartTime,myEndTime;
+    String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime,myStartTime,myEndTime;
     SharedPreferences prefs;
     RequestQueue requestQueue;
     Handler h;
+    LinearLayout noConnectionLayout;
+    Button retryButton;
+    TextView noConnectionText;
+    ProgressDialog dialog;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -86,6 +96,14 @@ public class HomeFragment extends Fragment {
 
         //Initialise the variables..
         add = (Button) getActivity().findViewById(R.id.add);
+        retryButton = (Button) getActivity().findViewById(R.id.retryButton);
+        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayout);
+        noConnectionText=(TextView)getActivity().findViewById(R.id.noConnectionText);
+        Typeface tff1=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        retryButton.setTypeface(tff1);
+        noConnectionText.setTypeface(tff1);
+        noConnectionLayout.setVisibility(View.GONE);
+        add.setVisibility(View.GONE);
         myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsList);
 //        add.setVisibility(View.GONE);
         linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -98,6 +116,13 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 AllExamsFragment f = new AllExamsFragment();
                 ob.changeFragmentFromHome(f);
+            }
+        });
+
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setList();
             }
         });
     }
@@ -173,6 +198,11 @@ public class HomeFragment extends Fragment {
     public void setList(){
 
         //connect to joinedExams api..
+        dialog = new ProgressDialog(getActivity());
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Loading. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.show();
 
         String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId","");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -180,6 +210,8 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onResponse(JSONObject response) {
+                noConnectionLayout.setVisibility(View.GONE);
+                dialog.dismiss();
                 try {
                     String myResponse=response.getJSONObject("response").toString();
                     JSONObject jsonObject=new JSONObject(myResponse);
@@ -220,14 +252,33 @@ public class HomeFragment extends Fragment {
                             Date start_time=simpleDateFormat2.parse(myTimeOfStart);
                             Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
                             Date middle_time=simpleDateFormat2.parse(myTime);
-
-                            if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
-                                if(middle_date.equals(start_date)){
-                                    if(!middle_time.before(start_time)){
-                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-                                        valuesList.add(values);
-                                    }
-                                }else if(middle_date.equals(end_date)){
+//                            if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
+//                                if(middle_date.equals(start_date)){
+//                                    if(!middle_time.before(start_time)){
+//                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+//                                        valuesList.add(values);
+//                                    }
+//                                }else if(middle_date.equals(end_date)){
+//                                    if(!middle_time.after(end_time)){
+//                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+//                                        valuesList.add(values);
+//                                    }
+//                                }else{
+//                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+//                                    valuesList.add(values);
+//                                }
+//                            }else if(middle_date.after(end_date)){
+//                            }else {
+//                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+//                                valuesList.add(values);
+//                            }
+//                            java.sql.Timestamp timestampp = java.sql.Timestamp.valueOf(myDateOfStart+" "+myTimeOfStart);
+//                            Log.d("custom",timestampp+"");
+                            if(middle_date.before(start_date)){
+                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                valuesList.add(values);
+                            }else if(middle_date.before(end_date)||middle_date.equals(end_date)){
+                                if(middle_date.equals(end_date)){
                                     if(!middle_time.after(end_time)){
                                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                         valuesList.add(values);
@@ -236,19 +287,15 @@ public class HomeFragment extends Fragment {
                                     values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                     valuesList.add(values);
                                 }
-                            }else if(middle_date.after(end_date)){
-                            }else {
-                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-                                valuesList.add(values);
                             }
                         }
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                populateList(valuesList);
-                            }
-                        });
                     }
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            populateList(valuesList);
+                        }
+                    });
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
@@ -257,11 +304,14 @@ public class HomeFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                noConnectionLayout.setVisibility(View.VISIBLE);
+                dialog.dismiss();
+//                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
     }
+
     public void populateList(List<Values> list){
         myExamsListAdapter = new MyExamsListAdapter(list, getActivity());
         myExamsList.setLayoutManager(linearLayoutManager);
@@ -274,6 +324,11 @@ public class HomeFragment extends Fragment {
         } else {
             add.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
 
