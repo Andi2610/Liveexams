@@ -45,14 +45,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StatisticsFragment extends Fragment {
+public class StatisticsFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
 
 
     RecyclerView statisticsList;
@@ -253,6 +255,21 @@ public class StatisticsFragment extends Fragment {
             noExams.setVisibility(View.VISIBLE);
         } else {
             noExams.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyApplication.getInstance().setConnectivityListener(this);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected){
+            if(valuesList.isEmpty()){
+                setList();
+            }
         }
     }
 }

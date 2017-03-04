@@ -649,7 +649,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     if (progress.isShowing())
                         progress.dismiss();
                     String ans = addresses.get(0).getAddressLine(0);
-                    signupLocation.setText(addresses.get(0).getAddressLine(2));
+                    signupLocation.setText(addresses.get(0).getAddressLine(2)+"");
                 } else {
                     Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
                     progress.dismiss();

@@ -50,6 +50,7 @@ import java.io.IOException;
 
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
+import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.Miscellaneous.RealPathUtil;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
@@ -447,7 +448,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_calendar);
                 getSupportActionBar().setTitle("CALENDAR");
-//                toggle.setDrawerIndicatorEnabled(true);
             }
         } else if (id == R.id.nav_logout) {
             Answers.getInstance().logCustom(new CustomEvent("Logout button clicked")
@@ -547,4 +547,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return rotate;
     }
+
+
 }
