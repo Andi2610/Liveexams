@@ -47,7 +47,7 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 public class QuestionPaperLoad extends AppCompatActivity implements Handler.Callback,ConnectivityReciever.ConnectivityReceiverListener{
 
     //Declare the variables..
-    int languageArray[][], fragmentIndex[][];
+    int languageArray[][], fragmentIndex[][],found=0;
     HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11,map12;
     int noOfQuestions=0, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1,hour,minute,myTime,curCount = 0,myCount=0,questionArray[];
     RequestQueue requestQueue;
@@ -65,6 +65,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     ThreadPoolExecutor executor;
     int NUMBER_OF_CORES;
     com.wang.avi.AVLoadingIndicatorView avi;
+    String[] children;
+    int len;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,11 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
     public void afterResponse() throws InterruptedException {
 
+        String folder_main = "LiveExams";
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if(!f.exists())
+            f.mkdir();
+
 //        If offline required..
         for(int i=0;i<noOfSections;++i){
             for(int j=0;j<questionArray[i];++j){
@@ -114,88 +121,19 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         }
 
         if(urls.isEmpty()){
-            Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
-            intent.putExtra("examId", examId);
-            intent.putExtra("name", name);
-            intent.putExtra("language", selectedLanguage);
-            intent.putExtra("noOfSections",noOfSections);
-            intent.putExtra("questionArray",questionArray);
-            intent.putExtra("ExamDuration",myTime);
-            startActivity(intent);
-            finish();
+           startNewActivity();
         }else{
-            NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-            executor = new ThreadPoolExecutor(
-                    NUMBER_OF_CORES * 2,
-                    NUMBER_OF_CORES * 2,
-                    60L,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>()
-            );
-            for(int i=0;i<urls.size();++i){
-                String myImage=groups.get(i);
-                String folder_main = "LiveExams";
-                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                String pp=f.getAbsolutePath();
-                File file = new File(pp
-                        + File.separator + myImage);
-                if(!file.exists())
-                    executor.execute(new LongThread(i, urls.get(i), new Handler(QuestionPaperLoad.this),groups.get(i),QuestionPaperLoad.this,executor));
-            }
-
-            executor.shutdown();
-            executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
-
-            if(executor.isTerminated()==true){
-
-                String folder_main = "LiveExams";
-                Toast.makeText(this, "count="+myCount, Toast.LENGTH_SHORT).show();
-
-                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                if (f.exists()) {
-                    String[] children = f.list();
-                    int len=children.length;
-                    //TODO
-                    /*
-                    Write myCount instead of 25..
-                     */
-                    if(len==25){
-                        Log.d("termination","true");
-                        Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
-                        intent.putExtra("examId", examId);
-                        intent.putExtra("name", paperName);
-                        intent.putExtra("language", selectedLanguage);
-                        intent.putExtra("noOfSections",noOfSections);
-                        intent.putExtra("questionArray",questionArray);
-                        intent.putExtra("ExamDuration",myTime);
-                        startActivity(intent);
-                        finish();
-                    }else{
-                        Toast.makeText(this, "No internet connection.. Please try again..", Toast.LENGTH_SHORT).show();
-                        retryButtonForDownload.setVisibility(View.VISIBLE);
-                        myWaitMessage.setText("Couldn't download Question paper..");
-                        avi.hide();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }else{
-                    Toast.makeText(this, "No internet connection.. Please try again..", Toast.LENGTH_SHORT).show();
-                    retryButtonForDownload.setVisibility(View.VISIBLE);
-                    myWaitMessage.setText("Couldn't download Question paper..");
-                    avi.hide();
-                    progressBar.setVisibility(View.GONE);
-                }
-            }else{
-                Log.d("termination","false");
-            }
+            forDownload();
         }
-
-        progressBar.setVisibility(View.VISIBLE);
-
         retryButtonForDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            try {
                 afterConnection();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+        }
         });
 
 //        Else if Online..
@@ -312,7 +250,11 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         if(isConnected){
-            afterConnection();
+            try {
+                afterConnection();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }else{
             Toast.makeText(QuestionPaperLoad.this, "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
             retryButtonForDownload.setVisibility(View.VISIBLE);
@@ -329,6 +271,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     }
 
     public void downloadQP(){
+
+
+        retryButtonForDownload.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        avi.show();
+        myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
+
         //Api to be connected to get the question paper..
         url = ConstantsDefined.api + "questionPaper/" + examId;
         //Make the request..
@@ -584,36 +533,80 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         requestQueue.add(stringRequest);
     }
 
-    public void afterConnection(){
+    public void afterConnection() throws InterruptedException {
         if(noOfSections==0){
-            retryButtonForDownload.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            avi.show();
-            myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
             downloadQP();
         }else{
-            retryButtonForDownload.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
-            avi.show();
-            NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-            executor = new ThreadPoolExecutor(
-                    NUMBER_OF_CORES * 2,
-                    NUMBER_OF_CORES * 2,
-                    60L,
-                    TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>()
-            );
-            for(int i=0;i<urls.size();++i){
-                String myImage=groups.get(i);
-                String folder_main = "LiveExams";
-                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                String pp=f.getAbsolutePath();
-                File file = new File(pp
-                        + File.separator + myImage);
-                if(!file.exists())
-                    executor.execute(new LongThread(i, urls.get(i), new Handler(QuestionPaperLoad.this),groups.get(i),QuestionPaperLoad.this,executor));
+            forDownload();
+        }
+    }
+
+    public void forDownload() throws InterruptedException {
+
+        retryButtonForDownload.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+        avi.show();
+        myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
+
+
+        NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
+        executor = new ThreadPoolExecutor(
+                NUMBER_OF_CORES * 2,
+                NUMBER_OF_CORES * 2,
+                60L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<Runnable>()
+        );
+        String folder_main = "LiveExams";
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if(f.exists()) {
+            children = f.list();
+            len = children.length;
+            if(len==25){
+                Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
+                intent.putExtra("examId", examId);
+                intent.putExtra("name", paperName);
+                intent.putExtra("language", selectedLanguage);
+                intent.putExtra("noOfSections",noOfSections);
+                intent.putExtra("questionArray",questionArray);
+                intent.putExtra("ExamDuration",myTime);
+                startActivity(intent);
+                finish();
+            }else{
+                for(int i=0;i<urls.size();++i){
+                    String myImage=groups.get(i);
+                    String pp=f.getAbsolutePath();
+                    File file = new File(pp
+                            + File.separator + myImage);
+                    if(!file.exists())
+                        executor.execute(new LongThread(i, urls.get(i), new Handler(QuestionPaperLoad.this),groups.get(i),QuestionPaperLoad.this,executor));
+                }
+                executor.shutdown();
+                executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
+                if(executor.isTerminated()==true) {
+                    if(len==25){
+                        startNewActivity();
+                    }else{
+                        Toast.makeText(this, "No internet connection.. Please try again..", Toast.LENGTH_SHORT).show();
+                        retryButtonForDownload.setVisibility(View.VISIBLE);
+                        myWaitMessage.setText("Couldn't download Question paper..");
+                        avi.hide();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
             }
         }
+    }
+
+    public void startNewActivity(){
+        Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
+        intent.putExtra("examId", examId);
+        intent.putExtra("name", paperName);
+        intent.putExtra("language", selectedLanguage);
+        intent.putExtra("noOfSections",noOfSections);
+        intent.putExtra("questionArray",questionArray);
+        intent.putExtra("ExamDuration",myTime);
+        startActivity(intent);
+        finish();
     }
 }

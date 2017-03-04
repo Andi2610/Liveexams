@@ -16,10 +16,11 @@ import in.truskills.liveexams.R;
 
 public class InitialInfo extends AppCompatActivity {
 
-    String date,startTime,endTime,score,attempts,totalMarks,duration,examName;
+    String date,startTime,endTime,score,attempts,totalMarks,duration,examName,bestScore,averageScore,totalStudents;
     int noOfSections,questionArray[];
     Button answerKeyButton;
     TextView dateText,dateValue,startTimeText,startTimeValue,endTimeText,endTimeValue,totalMarksText,totalMarksValue;
+    TextView myRank,totalRank,rankText,myScore,totalScore,scoreText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,9 @@ public class InitialInfo extends AppCompatActivity {
         duration=getIntent().getStringExtra("duration");
         examName=getIntent().getStringExtra("examName");
         noOfSections=getIntent().getIntExtra("noOfSections",0);
+        bestScore=getIntent().getStringExtra("bestScore");
+        averageScore=getIntent().getStringExtra("averageScore");
+        totalStudents=getIntent().getStringExtra("totalStudents");
         questionArray=new int[noOfSections];
         questionArray=getIntent().getIntArrayExtra("questionArray");
         Log.d("myLengthInitialInfo=",questionArray.length+"");
@@ -55,6 +59,12 @@ public class InitialInfo extends AppCompatActivity {
         endTimeValue=(TextView)findViewById(R.id.endTimeValue);
         totalMarksText=(TextView)findViewById(R.id.totalMarksText);
         totalMarksValue=(TextView)findViewById(R.id.totalMarksValue);
+        rankText=(TextView)findViewById(R.id.rankText);
+        myRank=(TextView)findViewById(R.id.myRank);
+        totalRank=(TextView)findViewById(R.id.totalRank);
+        myScore=(TextView)findViewById(R.id.myScore);
+        totalScore=(TextView)findViewById(R.id.totalScore);
+        scoreText=(TextView)findViewById(R.id.scoreText);
 
         Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         dateText.setTypeface(tff1);
@@ -65,9 +75,15 @@ public class InitialInfo extends AppCompatActivity {
         endTimeValue.setTypeface(tff1);
         totalMarksText.setTypeface(tff1);
         totalMarksValue.setTypeface(tff1);
+        rankText.setTypeface(tff1);
+        totalRank.setTypeface(tff1);
+        totalScore.setTypeface(tff1);
+        scoreText.setTypeface(tff1);
 
         Typeface tff2=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         answerKeyButton.setTypeface(tff2);
+        myRank.setTypeface(tff2);
+        myScore.setTypeface(tff2);
 
         answerKeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,5 +96,15 @@ public class InitialInfo extends AppCompatActivity {
             }
         });
 
+        dateValue.setText(date);
+        startTimeValue.setText(startTime);
+        endTimeValue.setText(endTime);
+        totalMarksValue.setText(totalMarks);
+
+        myRank.setText(score);
+        totalRank.setText("/"+totalMarks);
+
+        myScore.setText(score);
+        totalScore.setText("/"+totalMarks);
     }
 }
