@@ -168,6 +168,7 @@ public class StartPageFragment extends Fragment {
             String startTime=mapper.get("StartTime");
             Languages=mapper.get("Languages");
 
+
             Log.d("timeDetails","dateInitially="+myStartDate+"**"+myEndDate);
 
             String myStartTime= MiscellaneousParser.parseTimeForDetails(startTime);
@@ -185,6 +186,7 @@ public class StartPageFragment extends Fragment {
             String myTime= MiscellaneousParser.parseTimestampForTime(timestamp);
 
             Log.d("timeDetails","timestampTimeInitially="+myTime);
+
 
 
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
@@ -447,7 +449,7 @@ public class StartPageFragment extends Fragment {
 }
 
 interface StartPageInterface {
-    public void changeFragmentFromStartPage(Fragment f, String title);
+    void changeFragmentFromStartPage(Fragment f, String title);
 
-    public void changeTitleForStartPage();
+    void changeTitleForStartPage();
 }

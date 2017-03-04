@@ -16,5 +16,9 @@ public class ConstantsDefined {
     public static final String STOPPEDSTREAMING = "stoppedStreaming";
     public static final String GETINFO = "getInfo";
     public static final String SETINFO = "setInfo";
+    public static final String RECONNECT = "reconnect";
+    public static final String DISCONNECT = "disconnect";
+    public static final String CONNECT = "connect";
+    public static final String STUDENTLEFT = "studentLeft";
     public static String FLASHPHONER="flashphoner";
 }
