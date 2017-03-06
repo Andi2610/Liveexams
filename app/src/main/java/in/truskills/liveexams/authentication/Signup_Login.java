@@ -623,6 +623,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         Log.d("check", "fetchLocation: ");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("check", "fetchLocation: inIf");
+
             return;
         }
 
