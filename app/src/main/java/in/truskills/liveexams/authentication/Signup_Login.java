@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -628,8 +629,14 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        try{
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }catch(Exception e){
+            Log.e("exception", "fetchLocation: "+e.toString());
+        }
 
     }
 
