@@ -80,7 +80,7 @@ import io.fabric.sdk.android.Fabric;
 
 //This activity includes the code for Signup and Login
 
-public class Signup_Login extends AppCompatActivity implements View.OnClickListener {
+public class Signup_Login extends AppCompatActivity implements View.OnClickListener, LocationListener {
 
 
     private static final String TWITTER_KEY = "fIx7W5i8xo9stQ8jhOHVLNdFB";
@@ -95,7 +95,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
     EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile;
-    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence,successfullRegister,signupLanguageAlternate;
+    TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence, successfullRegister, signupLanguageAlternate;
     Spinner signupLanguage, signupGender;
     LocationManager locationManager;
     private static final int PERMISSION_REQUEST_CODE = 1;
@@ -108,7 +108,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> listOfLanguages;
     Animation slide_down;
     Drawable dr;
-    ProgressDialog dialog,progress;
+    ProgressDialog dialog, progress;
 
     //Called when the activity is created..
     @Override
@@ -121,8 +121,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         //Shared Preferences for user's selected language
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-        SharedPreferences.Editor e=prefs.edit();
-        e.putInt("signup",0);
+        SharedPreferences.Editor e = prefs.edit();
+        e.putInt("signup", 0);
         e.apply();
 
         //Initialise the request for Volley connection
@@ -131,6 +131,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         slide_down = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.slide_down);
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         //Attach all the variables used in layout
         loginPressed = (Button) findViewById(R.id.loginPressed);
@@ -619,65 +620,14 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     }
 
     public void fetchLocation() {
-        progress = new ProgressDialog(Signup_Login.this);
-        progress.setMessage("Fetching your current location....");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
-        progress.setCancelable(false);
-        progress.show();
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
 
-                lat = location.getLatitude() + "";
-                lon = location.getLongitude() + "";
-                Log.d("addresses",lat+" "+lon);
-
-                getAddress(location.getLatitude(),location.getLongitude());
-
-
-//                Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
-//                List<Address> addresses = null;
-//                try {
-//                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-//                    Log.d("addresses",addresses+"");
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    if (!((Activity) Signup_Login.this).isFinishing()) {
-//                        if (progress.isShowing())
-//                            progress.dismiss();
-//                        Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//                if (addresses != null) {
-//                    if (progress.isShowing())
-//                        progress.dismiss();
-//                    String ans = addresses.get(0).getAddressLine(0);
-//                    signupLocation.setText(addresses.get(0).getAddressLine(2)+"");
-//                } else {
-//                    Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
-//                    progress.dismiss();
-//                }
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-
-            }
-        };
+        Log.d("check", "fetchLocation: ");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
     }
 
@@ -1094,6 +1044,31 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             }
         });
         requestQueue.add(stringRequest);
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d("check", "onLocationChanged: ");
+        Log.d("location",location.getLatitude()+" "+location.getLongitude());
+        getAddress(location.getLatitude(),location.getLongitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("check", "onStatusChanged: ");
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("check", "onProviderEnabled: ");
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("check", "onProviderDisabled: ");
 
     }
 }
