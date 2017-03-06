@@ -238,6 +238,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
             </ScrollView>
         </SlidingDrawer>
     </RelativeLayout>
@@ -362,7 +363,6 @@
             </ScrollView>
         </SlidingDrawer>
     </RelativeLayout>
-
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
