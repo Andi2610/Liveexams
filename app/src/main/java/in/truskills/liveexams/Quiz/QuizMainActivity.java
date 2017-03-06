@@ -744,7 +744,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     @Override
     public void onNetworkConnectionChanged(final boolean isConnected) {
-        Toast.makeText(this, isConnected + "", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, isConnected + "", Toast.LENGTH_SHORT).show();
         if (!isConnected) {
             builder = new android.support.v7.app.AlertDialog.Builder(QuizMainActivity.this, R.style.AppCompatAlertDialogStyle);
             builder.setTitle("Internet Connectivity Lost..");

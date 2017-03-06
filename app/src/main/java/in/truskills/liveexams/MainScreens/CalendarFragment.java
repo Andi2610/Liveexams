@@ -254,6 +254,12 @@ public class CalendarFragment extends Fragment {
 
     private void getDurationOfEachExam(Date date,DayView dayView) throws JSONException, ParseException {
 
+//        dialog = new ProgressDialog(getActivity());
+//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//        dialog.setMessage("Preparing your calendar. Please wait...");
+//        dialog.setIndeterminate(true);
+//        dialog.show();
+
         Log.d("joinedExamssss",myJoinedExamssss+""+timestampppp);
         JSONArray arr = new JSONArray(myJoinedExamssss);
         HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExamssss);
@@ -314,6 +320,8 @@ public class CalendarFragment extends Fragment {
                 }
             }
         }
+
+//        dialog.dismiss();
     }
 
     public void afterResponse() throws ParseException {

@@ -329,4 +329,12 @@ public class MiscellaneousParser {
         mapper.put("ExamId", ExamIdList);
         return mapper;
     }
+
+    public static String locationParser(String result) throws JSONException {
+        String ans="";
+        JSONObject jsonObject=new JSONObject(result);
+        JSONArray jsonArray=jsonObject.getJSONArray("results");
+        ans=jsonArray.getJSONObject(0).getString("formatted_address");
+        return ans;
+    }
 }

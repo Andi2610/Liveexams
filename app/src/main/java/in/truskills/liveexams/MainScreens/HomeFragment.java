@@ -52,7 +52,7 @@ import in.truskills.liveexams.R;
 
 //This is the home fragment in which myExams list is loaded..
 
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
 
     //Declare variables..
     Button add;
@@ -329,6 +329,16 @@ public class HomeFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        MyApplication.getInstance().setConnectivityListener(this);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected){
+            if(valuesList.isEmpty()){
+                setList();
+            }
+        }
     }
 }
 

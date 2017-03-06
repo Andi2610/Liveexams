@@ -17,183 +17,513 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></include>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-    <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:shrinkColumns="*"
-        android:stretchColumns="*"
-        android:id="@+id/tableLayout"
-        >
+                <TableLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:shrinkColumns="*"
+                    android:stretchColumns="*"
+                    android:id="@+id/tableLayout"
+                    android:layout_margin="5dp">
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+                    <TableRow
+                        android:id="@+id/tableRow1"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="left"
-                android:text="DATE"
-                android:layout_weight="1"
-                android:id="@+id/dateText"/>
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:layout_gravity="left"
+                            android:text="DATE"
+                            android:textStyle="bold"
+                            android:layout_weight="1"
+                            android:id="@+id/dateText"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:text=":"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:textStyle="bold"/>
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="right"
-                android:id="@+id/dateValue"
-                android:layout_weight="1" />
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:layout_gravity="right"
+                            android:textStyle="bold"
+                            android:id="@+id/dateValue"
+                            android:layout_weight="1" />
 
-        </TableRow>
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow2"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
 
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:layout_gravity="left"
+                            android:text="START TIME"
+                            android:textStyle="bold"
+                            android:layout_weight="1"
+                            android:id="@+id/startTimeText"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="left"
-                android:text="START TIME"
-                android:layout_weight="1"
-                android:id="@+id/startTimeText"/>
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:text=":"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:textStyle="bold"/>
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:layout_gravity="right"
+                            android:id="@+id/startTimeValue"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="right"
-                android:id="@+id/startTimeValue"
-                android:layout_weight="1"/>
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow3"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
 
-        </TableRow>
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_gravity="left"
+                            android:text="END TIME"
+                            android:layout_weight="1"
+                            android:id="@+id/endTimeText"/>
 
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="left"
-                android:text="END TIME"
-                android:layout_weight="1"
-                android:id="@+id/endTimeText"/>
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:layout_gravity="right"
+                            android:id="@+id/endTimeValue"
+                            android:textStyle="bold"
+                            android:layout_weight="1"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:text=":"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:textStyle="bold"/>
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow4"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="right"
-                android:id="@+id/endTimeValue"
-                android:layout_weight="1"/>
+                        <TextView
+                            android:textSize="10dp"
+                            android:layout_gravity="left"
+                            android:text=""
+                            android:layout_weight="1" />
 
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+                        <TextView
+                            android:textSize="10dp"
+                            android:text=""
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="left"
-                android:text=""
-                android:layout_weight="1" />
+                        <TextView
+                            android:textSize="10dp"
+                            android:layout_gravity="right"
+                            android:layout_weight="1"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:text=""
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:textStyle="bold"/>
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/tableRow5"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent">
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="right"
-                android:layout_weight="1"/>
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:layout_gravity="left"
+                            android:textStyle="bold"
+                            android:text="TOTAL MARKS"
+                            android:layout_weight="1"
+                            android:id="@+id/totalMarksText"/>
 
-        </TableRow>
-        <TableRow
-            android:id="@+id/tableRow5"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:text=":"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:textStyle="bold"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="left"
-                android:text="TOTAL MARKS"
-                android:layout_weight="1"
-                android:id="@+id/totalMarksText"/>
+                        <TextView
+                            android:textSize="19dp"
+                            android:textColor="@color/black"
+                            android:layout_gravity="right"
+                            android:textStyle="bold"
+                            android:id="@+id/totalMarksValue"
+                            android:layout_weight="1"/>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:text=":"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:textStyle="bold"/>
+                    </TableRow>
 
-            <TextView
-                android:padding="2dp"
-                android:textSize="20dp"
-                android:layout_gravity="right"
-                android:id="@+id/totalMarksValue"
-                android:layout_weight="1"/>
+        </TableLayout>
 
-        </TableRow>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tableLayout"
+                    android:background="@color/black"
+                    android:id="@+id/break1"
+                    android:layout_marginBottom="3dp"/>
 
-    </TableLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/break1"
+                    android:id="@+id/rankLayout"
+                    android:layout_centerHorizontal="true"
+                    android:weightSum="100">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/tableLayout"
-        android:background="@color/black"
-        android:id="@+id/break1"
-        android:layout_marginTop="10dp"/>
+                    <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_weight="50"
+                    android:src="@drawable/rank_icon"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="20dp"/>
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="50"
+                        android:layout_gravity="center">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="30dp"
+                            android:textColor="@color/black"
+                            android:id="@+id/myRank"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/totalRank"
+                            android:textSize="20dp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="RANK"
+                        android:id="@+id/rankText"
+                        android:textSize="15dp"/>
+
+                </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/rankLayout"
+                    android:background="@color/black"
+                    android:id="@+id/break2"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/break2"
+                    android:id="@+id/scoreLayout"
+                    android:layout_centerHorizontal="true"
+                    android:weightSum="100">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="50"
+                        android:src="@drawable/score_icon"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="50"
+                        android:layout_gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="30dp"
+                                android:id="@+id/myScore"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/totalScore"
+                                android:textSize="20dp"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="SCORE"
+                            android:id="@+id/scoreText"
+                            android:textSize="15dp"/>
+
+                    </LinearLayout>
+
+            </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/scoreLayout"
+                    android:background="@color/black"
+                    android:id="@+id/break4"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/break4"
+                    android:id="@+id/percentileLayout"
+                    android:layout_centerHorizontal="true"
+                    android:weightSum="100">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="50"
+                        android:src="@drawable/percentile_icon"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="50"
+                        android:layout_gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="30dp"
+                                android:id="@+id/myPercentile"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/totalPercentile"
+                                android:textSize="20dp"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="PERCENTILE"
+                            android:id="@+id/percentileText"
+                            android:textSize="15dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/percentileLayout"
+                    android:background="@color/black"
+                    android:id="@+id/break5"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/break5"
+                    android:id="@+id/attemptLayout"
+                    android:layout_centerHorizontal="true"
+                    android:weightSum="100">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_weight="50"
+                        android:src="@drawable/attempted_icon"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="50"
+                        android:layout_gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:textSize="30dp"
+                                android:id="@+id/myAttempt"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/totalAttempt"
+                                android:textSize="20dp"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="ATTEMPT"
+                            android:id="@+id/attemptText"
+                            android:textSize="15dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/attemptLayout"
+                    android:background="@color/black"
+                    android:id="@+id/break6"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/break6"
+                    android:id="@+id/bestScoreLayout"
+                    android:layout_centerHorizontal="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="30dp"
+                        android:id="@+id/bestScoreValue"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="BEST SCORE"
+                        android:id="@+id/bestScoreText"
+                        android:textSize="15dp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/bestScoreLayout"
+                    android:background="@color/black"
+                    android:id="@+id/break7"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@+id/break7"
+                    android:id="@+id/averageScoreLayout"
+                    android:layout_centerHorizontal="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="30dp"
+                        android:id="@+id/averageScoreValue"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="AVG. SCORE"
+                        android:id="@+id/averageScoreText"
+                        android:textSize="15dp"/>
+
+                </LinearLayout>
 
     </RelativeLayout>
+
     </ScrollView>
+
     </LinearLayout>
 
     <Button
@@ -206,7 +536,5 @@
         android:textSize="20dp"
         android:padding="10dp"
         android:id="@+id/answerKeyButton"/>
-
-
 
 </RelativeLayout>

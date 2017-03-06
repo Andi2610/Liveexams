@@ -22,12 +22,18 @@ public class EndExamAnalyticsParser {
     private static final String wrongAnsweredBy="wrongAnsweredBy";
     private static final String minimumTime="minimumTime";
     private static final String maximumTime="maximumTime";
+    private static final String bestScore="bestScore";
+    private static final String avgScore="avgScore";
+    private static final String totalStudents="totalStudents";
     private static final String sectionWiseAnalytics="sectionWiseAnalytics";
 
     public static HashMap<String,String> responseParser(String myResponse) throws JSONException {
         HashMap<String,String> map=new HashMap<>();
         JSONObject jsonObject=new JSONObject(myResponse);
         map.put("_id",jsonObject.getString(_id));
+        map.put("bestScore",jsonObject.getString(bestScore));
+        map.put("avgScore",jsonObject.getString(avgScore));
+        map.put("totalStudents",jsonObject.getString(totalStudents));
         map.put("examId",jsonObject.getString(examId));
         map.put("sectionWiseAnalytics",jsonObject.getJSONArray(sectionWiseAnalytics).toString());
         map.put("__v",jsonObject.getString(__v));

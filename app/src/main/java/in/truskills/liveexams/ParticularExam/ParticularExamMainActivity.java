@@ -1,6 +1,8 @@
 package in.truskills.liveexams.ParticularExam;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import in.truskills.liveexams.R;
 
@@ -21,6 +24,7 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
     FragmentManager manager;
     FragmentTransaction trans;
     String from;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,9 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
 
         //Get intent variables..
         b = getIntent().getBundleExtra("bundle");
@@ -105,7 +112,6 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
     @Override
     public void changeTitleForJoinPage() {
         getSupportActionBar().setTitle(name);
-
     }
 
     @Override
@@ -114,5 +120,30 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
             setResult(10,null);
         }
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        manager = getSupportFragmentManager();
+        trans = manager.beginTransaction();
+        RulesFragment f = (RulesFragment) manager.findFragmentByTag("RulesFragment");
+        RulesFragment ff=(RulesFragment)manager.findFragmentByTag("RulesFromJoin");
+        if(f!=null&&f.isVisible()){
+            StartPageFragment fragment = new StartPageFragment();
+            fragment.setArguments(b);
+            trans.replace(R.id.fragment, fragment, "StartPageFragment");
+            trans.commit();
+            getSupportActionBar().setTitle(name);
+        }else if(ff!=null&&ff.isVisible()){
+            JoinPageFragment fragment = new JoinPageFragment();
+            fragment.setArguments(b);
+            trans.replace(R.id.fragment, fragment, "JoinPageFragment");
+            trans.commit();
+            getSupportActionBar().setTitle(name);
+        }else{
+            Log.d("visible","notRules");
+            finish();
+        }
+        return true;
     }
 }

@@ -56,7 +56,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
     String url, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri,section_id,section_max_marks,section_time,section_description,section_rules;
     String questionAttributes,opText,examDuration,examId, name, selectedLanguage,myExamDuration,questionPaperResponse,answerKeyResponse,endStudentAnalyticsResponse,endExamAnalyticsResponse,answerPaperResponse;
-    String startTime,endTime,totalMarks,score,attempts,myStartTime,myEndTime,examName,date;
+    String startTime,endTime,totalMarks,score,attempts,myStartTime,myEndTime,examName,date,bestScore,averageScore,totalStudents;
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
     AnalyticsDatabase ob;
@@ -352,6 +352,9 @@ public class AnswerPaperLoad extends AppCompatActivity {
                             intent.putExtra("examName",examName);
                             intent.putExtra("noOfSections",noOfSections);
                             intent.putExtra("date",date);
+                            intent.putExtra("bestScore",bestScore);
+                            intent.putExtra("averageScore",averageScore);
+                            intent.putExtra("totalStudents",totalStudents);
                             Log.d("myLength=",questionArray.length+"");
                             intent.putExtra("questionArray",questionArray);
                             startActivity(intent);
@@ -409,6 +412,9 @@ public class AnswerPaperLoad extends AppCompatActivity {
 
     public void setEndExamAnalyticsResponse(String response) throws JSONException {
         HashMap<String,String> map= EndExamAnalyticsParser.responseParser(response);
+        bestScore=map.get("bestScore");
+        averageScore=map.get("avgScore");
+        totalStudents=map.get("totalStudents");
         String analytics=map.get("analytics");
         int si,qi;
         JSONArray jsonArray=new JSONArray(analytics);

@@ -21,4 +21,7 @@ public class ConstantsDefined {
     public static final String CONNECT = "connect";
     public static final String STUDENTLEFT = "studentLeft";
     public static String FLASHPHONER="flashphoner";
+
+    public static final String MAP_API_KEY = "AIzaSyDChC607te-i2CMIweUJcnhBMuoW9cq7W8";
+    public static final String urlForLocationFetch="https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 }

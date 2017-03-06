@@ -632,28 +632,32 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 lat = location.getLatitude() + "";
                 lon = location.getLongitude() + "";
                 Log.d("addresses",lat+" "+lon);
-                Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
-                List<Address> addresses = null;
-                try {
-                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    Log.d("addresses",addresses+"");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    if (!((Activity) Signup_Login.this).isFinishing()) {
-                        if (progress.isShowing())
-                            progress.dismiss();
-                        Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                if (addresses != null) {
-                    if (progress.isShowing())
-                        progress.dismiss();
-                    String ans = addresses.get(0).getAddressLine(0);
-                    signupLocation.setText(addresses.get(0).getAddressLine(2));
-                } else {
-                    Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
-                    progress.dismiss();
-                }
+
+                getAddress(location.getLatitude(),location.getLongitude());
+
+
+//                Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
+//                List<Address> addresses = null;
+//                try {
+//                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                    Log.d("addresses",addresses+"");
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    if (!((Activity) Signup_Login.this).isFinishing()) {
+//                        if (progress.isShowing())
+//                            progress.dismiss();
+//                        Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                if (addresses != null) {
+//                    if (progress.isShowing())
+//                        progress.dismiss();
+//                    String ans = addresses.get(0).getAddressLine(0);
+//                    signupLocation.setText(addresses.get(0).getAddressLine(2)+"");
+//                } else {
+//                    Toast.makeText(Signup_Login.this, "Sorry!! No internet connection", Toast.LENGTH_SHORT).show();
+//                    progress.dismiss();
+//                }
             }
 
             @Override
@@ -1049,5 +1053,47 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     public AuthCallback getAuthCallback(){
         return authCallback;
+    }
+
+    public void getAddress(double lat,double lon){
+
+        //Api to be connected to..
+        String url = ConstantsDefined.urlForLocationFetch+lat+","+lon+"&key="+ConstantsDefined.MAP_API_KEY;
+
+        dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Fetching your location.. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        //Make a request..
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //On getting the response..
+                dialog.dismiss();
+                Log.d("responseOfLocation",response);
+                try {
+                    String ans = MiscellaneousParser.locationParser(response);
+                    signupLocation.setText(ans);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    dialog.dismiss();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //In case the connection to the Api couldn't be established..
+                dialog.dismiss();
+                Log.d("error",error.toString()+"");
+                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest);
+
     }
 }
