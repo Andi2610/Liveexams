@@ -637,7 +637,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 try {
                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     Log.d("addresses",addresses+"");
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     if (!((Activity) Signup_Login.this).isFinishing()) {
                         if (progress.isShowing())

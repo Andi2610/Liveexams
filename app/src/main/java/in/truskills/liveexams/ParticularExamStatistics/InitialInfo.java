@@ -17,10 +17,10 @@ import in.truskills.liveexams.R;
 public class InitialInfo extends AppCompatActivity {
 
     String date,startTime,endTime,score,attempts,totalMarks,duration,examName,bestScore,averageScore,totalStudents;
-    int noOfSections,questionArray[];
+    int noOfSections,questionArray[],totalQuestions=0;
     Button answerKeyButton;
-    TextView dateText,dateValue,startTimeText,startTimeValue,endTimeText,endTimeValue,totalMarksText,totalMarksValue;
-    TextView myRank,totalRank,rankText,myScore,totalScore,scoreText;
+    TextView dateText,dateValue,startTimeText,startTimeValue,endTimeText,endTimeValue,totalMarksText,totalMarksValue,bestScoreValue,bestScoreText,averageScoreValue,averageScoreText;
+    TextView myRank,totalRank,rankText,myScore,totalScore,scoreText,myPercentile,totalPercentile,percentileText,myAttempt,totalAttempt,attemptText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,10 @@ public class InitialInfo extends AppCompatActivity {
         questionArray=getIntent().getIntArrayExtra("questionArray");
         Log.d("myLengthInitialInfo=",questionArray.length+"");
 
+        for(int i=0;i<noOfSections;++i){
+            totalQuestions=totalQuestions+questionArray[i];
+        }
+
 
         getSupportActionBar().setTitle(examName);
 
@@ -65,6 +69,16 @@ public class InitialInfo extends AppCompatActivity {
         myScore=(TextView)findViewById(R.id.myScore);
         totalScore=(TextView)findViewById(R.id.totalScore);
         scoreText=(TextView)findViewById(R.id.scoreText);
+        myPercentile=(TextView)findViewById(R.id.myPercentile);
+        totalPercentile=(TextView)findViewById(R.id.totalPercentile);
+        percentileText=(TextView)findViewById(R.id.percentileText);
+        myAttempt=(TextView)findViewById(R.id.myAttempt);
+        totalAttempt=(TextView)findViewById(R.id.totalAttempt);
+        attemptText =(TextView)findViewById(R.id.attemptText);
+        bestScoreValue =(TextView)findViewById(R.id.bestScoreValue);
+        bestScoreText =(TextView)findViewById(R.id.bestScoreText);
+        averageScoreText =(TextView)findViewById(R.id.averageScoreText);
+        averageScoreValue =(TextView)findViewById(R.id.averageScoreValue);
 
         Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         dateText.setTypeface(tff1);
@@ -79,11 +93,21 @@ public class InitialInfo extends AppCompatActivity {
         totalRank.setTypeface(tff1);
         totalScore.setTypeface(tff1);
         scoreText.setTypeface(tff1);
+        totalAttempt.setTypeface(tff1);
+        attemptText.setTypeface(tff1);
+        totalPercentile.setTypeface(tff1);
+        percentileText.setTypeface(tff1);
+        bestScoreText.setTypeface(tff1);
+        averageScoreText.setTypeface(tff1);
 
         Typeface tff2=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         answerKeyButton.setTypeface(tff2);
         myRank.setTypeface(tff2);
         myScore.setTypeface(tff2);
+        myAttempt.setTypeface(tff2);
+        myPercentile.setTypeface(tff2);
+        bestScoreValue.setTypeface(tff2);
+        averageScoreValue.setTypeface(tff2);
 
         answerKeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,10 +125,20 @@ public class InitialInfo extends AppCompatActivity {
         endTimeValue.setText(endTime);
         totalMarksValue.setText(totalMarks);
 
-        myRank.setText(score);
-        totalRank.setText("/"+totalMarks);
+        myRank.setText("2");
+        totalRank.setText("/"+totalStudents);
 
         myScore.setText(score);
         totalScore.setText("/"+totalMarks);
+
+        myPercentile.setText("99.2");
+        totalPercentile.setText("/100");
+
+        myAttempt.setText(attempts);
+        totalAttempt.setText("/"+totalQuestions);
+
+        bestScoreValue.setText(bestScore);
+
+        averageScoreValue.setText(averageScore);
     }
 }

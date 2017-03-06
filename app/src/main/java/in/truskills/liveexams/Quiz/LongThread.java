@@ -57,7 +57,7 @@ public class LongThread implements Runnable {
         Log.i(TAG, "Thread Completed " + threadNo);
     }
 
-    public static File savebitmap(Bitmap bmp,String gr) throws IOException {
+    public static File savebitmap(Bitmap bmp,String gr) throws Exception {
         Log.d("hereeeee","inSaveBitmap");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
@@ -77,7 +77,6 @@ public class LongThread implements Runnable {
         fo.close();
         return f;
     }
-
 
     public void sendMessage(int what, String msg) {
 

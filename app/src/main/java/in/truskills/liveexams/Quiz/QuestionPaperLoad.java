@@ -548,7 +548,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         avi.show();
         myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
 
-
         NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
         executor = new ThreadPoolExecutor(
                 NUMBER_OF_CORES * 2,
