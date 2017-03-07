@@ -50,13 +50,15 @@ import java.util.List;
 import java.util.Locale;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
 
     LinearLayoutManager linearLayoutManager;
     CalendarListAdapter calendarListAdapter;
@@ -428,9 +430,24 @@ public class CalendarFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 dialog.dismiss();
-//                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(jsonObjectRequest);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MyApplication.getInstance().setConnectivityListener(this);
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected){
+            if(valuesList.isEmpty()){
+                populateFirstTime();
+            }
+        }
     }
 }

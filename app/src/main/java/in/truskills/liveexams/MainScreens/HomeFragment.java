@@ -252,28 +252,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                             Date start_time=simpleDateFormat2.parse(myTimeOfStart);
                             Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
                             Date middle_time=simpleDateFormat2.parse(myTime);
-//                            if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
-//                                if(middle_date.equals(start_date)){
-//                                    if(!middle_time.before(start_time)){
-//                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-//                                        valuesList.add(values);
-//                                    }
-//                                }else if(middle_date.equals(end_date)){
-//                                    if(!middle_time.after(end_time)){
-//                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-//                                        valuesList.add(values);
-//                                    }
-//                                }else{
-//                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-//                                    valuesList.add(values);
-//                                }
-//                            }else if(middle_date.after(end_date)){
-//                            }else {
-//                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
-//                                valuesList.add(values);
-//                            }
-//                            java.sql.Timestamp timestampp = java.sql.Timestamp.valueOf(myDateOfStart+" "+myTimeOfStart);
-//                            Log.d("custom",timestampp+"");
+
                             if(middle_date.before(start_date)){
                                 values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
                                 valuesList.add(values);

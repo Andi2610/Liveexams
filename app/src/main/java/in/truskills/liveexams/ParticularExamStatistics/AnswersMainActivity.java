@@ -214,6 +214,12 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         allQuestionsInOneSectionAdapterForAnswers=new AllQuestionsInOneSectionAdapterForAnswers(listOfFi,AnswersMainActivity.this,qi,types);
         questionsList.setAdapter(allQuestionsInOneSectionAdapterForAnswers);
         allQuestionsInOneSectionAdapterForAnswers.notifyDataSetChanged();
+//        int myPosition = linearLayoutManager.findFirstVisibleItemPosition();
+//        Log.d("myPosition", "setQuestionsListAdapter: "+myPosition);
+        int myPosition = linearLayoutManager.findFirstVisibleItemPosition();
+        Log.d("myPosition", "setQuestionsListAdapter: "+myPosition);
+        linearLayoutManager.scrollToPositionWithOffset(qi, 0);
+
     }
 
     public void setValuesForTextViews(int fi){

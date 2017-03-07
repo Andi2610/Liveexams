@@ -510,6 +510,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
         questionsList.setAdapter(allQuestionsInOneSectionAdapter);
         allQuestionsInOneSectionAdapter.notifyDataSetChanged();
+        int myPosition = linearLayoutManager.findFirstVisibleItemPosition();
+        Log.d("myPosition", "setQuestionsListAdapter: "+myPosition);
+        linearLayoutManager.scrollToPositionWithOffset(sn, 0);
     }
 
     public void setDetailsForFinalAnswer(int si,int qi){
