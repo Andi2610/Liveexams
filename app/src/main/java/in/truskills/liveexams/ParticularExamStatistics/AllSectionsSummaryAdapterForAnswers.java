@@ -74,11 +74,19 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
 //        Display display = wm.getDefaultDisplay();
 //
 //        ViewGroup.LayoutParams param = holder.scoreSectionWise.getLayoutParams();
-//        double temp=Double.parseDouble(score)/Double.parseDouble(totalScore)*100;
+//        double temp=Double.parseDouble(score)/Double.parseDouble(totalScore);
+//
+//        Log.d("width", "onBindViewHolder: "+temp+" "+score+" "+totalScore);
+//
+//        temp=temp*display.getWidth();
+//
 //        Log.d("width", "onBindViewHolder: "+temp);
-//        param.width=display.getWidth()*(int)temp;
+//
+//        param.width=45;
 //
 //        Log.d("width", "onBindViewHolder: "+param.width);
+
+//        holder.scoreSectionWiseBackground.setLayoutParams(param);
 
         ArrayList<Integer> myTypes=ob.getTypes(sI);
 
@@ -144,6 +152,7 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
 
         TextView mySectionName,submittedQuestionsAllSummary,reviewedTickedQuestionsAllSummary,reviewedUntickedQuestionsAllSummary,clearedQuestionsAllSummary,notAttemptedQuestionsAllSummary;
         TextView scoreSectionWise,attemptedSectionWise,timeSectionWise,rankSectionWise;
+//        TextView scoreSectionWiseBackground;
         GridView gridView;
 
         public MyViewHolder(View itemView) {
@@ -155,6 +164,7 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
             clearedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.clearedQuestionsAllSummary);
             notAttemptedQuestionsAllSummary = (TextView) itemView.findViewById(R.id.notAttemptedQuestionsAllSummary);
             scoreSectionWise = (TextView) itemView.findViewById(R.id.scoreSectionWise);
+//            scoreSectionWiseBackground = (TextView) itemView.findViewById(R.id.scoreSectionWiseBackground);
             attemptedSectionWise = (TextView) itemView.findViewById(R.id.attemptedSectionWise);
             timeSectionWise = (TextView) itemView.findViewById(R.id.timeSectionWise);
             rankSectionWise = (TextView) itemView.findViewById(R.id.rankSectionWise);

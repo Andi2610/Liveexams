@@ -368,7 +368,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.rules_menu, menu);//Menu Resource, Menu
+        getMenuInflater().inflate(R.menu.all_sections_summary_menu, menu);//Menu Resource, Menu
         return true;
     }
 
