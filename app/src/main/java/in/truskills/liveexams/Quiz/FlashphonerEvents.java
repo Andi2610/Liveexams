@@ -7,6 +7,7 @@ import com.flashphoner.fpwcsapi.Flashphoner;
 import com.flashphoner.fpwcsapi.bean.Connection;
 import com.flashphoner.fpwcsapi.bean.Data;
 import com.flashphoner.fpwcsapi.bean.StreamStatus;
+import com.flashphoner.fpwcsapi.constraints.AudioConstraints;
 import com.flashphoner.fpwcsapi.constraints.Constraints;
 import com.flashphoner.fpwcsapi.constraints.VideoConstraints;
 import com.flashphoner.fpwcsapi.layout.PercentFrameLayout;
@@ -49,8 +50,8 @@ public class FlashphonerEvents implements socketFromTeacher {
                     try {
                         Log.d(ConstantsDefined.FLASHPHONER, "published");
                         socketfromstudent.startedStreaming(teacherId, studentId);
-                    }catch(Exception e){
-                        Log.d(ConstantsDefined.FLASHPHONER,e.toString());
+                    } catch (Exception e) {
+                        Log.d(ConstantsDefined.FLASHPHONER, e.toString());
                     }
                     break;
                 case "UNPUBLISHED":
@@ -71,12 +72,12 @@ public class FlashphonerEvents implements socketFromTeacher {
     private Stream studentStream;
 
     //in/truskills/liveexams/Quiz/QuizMainActivity.java:140
-    public FlashphonerEvents(QuizMainActivity context, SurfaceViewRenderer extraRender,PercentFrameLayout parentRender) {
+    public FlashphonerEvents(QuizMainActivity context, SurfaceViewRenderer extraRender, PercentFrameLayout parentRender) {
         Log.d(ConstantsDefined.FLASHPHONER, "constructor called");
         this.extraRender = extraRender;
         this.context = context;
         this.parentRender = parentRender;
-        socketfromstudent = (socketFromStudent) context;
+        socketfromstudent = context;
         Log.d(ConstantsDefined.FLASHPHONER, "initialization done");
         Flashphoner.init(context);
     }
@@ -115,7 +116,7 @@ public class FlashphonerEvents implements socketFromTeacher {
         session.connect(new Connection());
 
         try {
-            Log.d(ConstantsDefined.FLASHPHONER, "extra render started"+ extraRender.getId());
+            Log.d(ConstantsDefined.FLASHPHONER, "extra render started" + extraRender.getId());
 
             parentRender.setPosition(0, 0, 100, 100);
             extraRender.setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
@@ -131,15 +132,15 @@ public class FlashphonerEvents implements socketFromTeacher {
             Log.d(ConstantsDefined.FLASHPHONER, "student constraint started");
 
             studentVideoConstraints = new VideoConstraints();
-            studentVideoConstraints.setVideoFps(30);
-            studentVideoConstraints.setResolution(1770, 1000);
-            studentConstraints = new Constraints(true,true);
-
+            studentVideoConstraints.setVideoFps(15);
+            studentVideoConstraints.setCameraId(cameraID);
+            studentVideoConstraints.setResolution(320, 240);
+            studentConstraints = new Constraints(new AudioConstraints(), studentVideoConstraints);
             studentOptions = new StreamOptions(studentId);
             studentOptions.setRenderer(extraRender);
-            String streamId=studentId;
+            String streamId = studentId;
             studentOptions.setName(streamId);
-            Log.d(ConstantsDefined.FLASHPHONER,streamId);
+            Log.d(ConstantsDefined.FLASHPHONER, streamId);
             studentOptions.setConstraints(studentConstraints);
 
             Log.d(ConstantsDefined.FLASHPHONER, "student constraint set");
