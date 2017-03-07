@@ -77,7 +77,6 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         } else {
             //Load Rules fragment..
             trans.replace(R.id.fragment, f, "RulesFromJoin");
-            trans.addToBackStack(null);
             getSupportActionBar().setTitle(title);
         }
         trans.commit();
@@ -96,7 +95,6 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         } else {
             //Load Rules fragment..
             trans.replace(R.id.fragment, f, "RulesFragment");
-            trans.addToBackStack(null);
             getSupportActionBar().setTitle(title);
         }
         trans.commit();
@@ -116,10 +114,28 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
 
     @Override
     public void onBackPressed() {
-        if(from.equals("home")){
-            setResult(10,null);
+        manager = getSupportFragmentManager();
+        trans = manager.beginTransaction();
+        RulesFragment f = (RulesFragment) manager.findFragmentByTag("RulesFragment");
+        RulesFragment ff=(RulesFragment)manager.findFragmentByTag("RulesFromJoin");
+        if(f!=null&&f.isVisible()){
+            StartPageFragment fragment = new StartPageFragment();
+            fragment.setArguments(b);
+            trans.replace(R.id.fragment, fragment, "StartPageFragment");
+            trans.commit();
+            getSupportActionBar().setTitle(name);
+        }else if(ff!=null&&ff.isVisible()){
+            JoinPageFragment fragment = new JoinPageFragment();
+            fragment.setArguments(b);
+            trans.replace(R.id.fragment, fragment, "JoinPageFragment");
+            trans.commit();
+            getSupportActionBar().setTitle(name);
+        }else{
+            if(from.equals("home")){
+                setResult(10,null);
+            }
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
     @Override

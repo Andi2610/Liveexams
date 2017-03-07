@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:icon="@drawable/rules_icon"
-        android:title="Rules"
+        android:icon="@drawable/overall_exam_summary_icon_white"
+        android:title="All Sections Summary"
         android:orderInCategory="30"
         app:showAsAction="ifRoom"
-        android:id="@+id/rulesIcon"></item>
+        android:id="@+id/summaryIcon"></item>
 
 </menu>

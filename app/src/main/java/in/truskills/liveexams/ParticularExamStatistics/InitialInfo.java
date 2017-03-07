@@ -31,6 +31,7 @@ public class InitialInfo extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+
         date=getIntent().getStringExtra("date");
         startTime=getIntent().getStringExtra("startTime");
         endTime=getIntent().getStringExtra("endTime");
@@ -53,6 +54,11 @@ public class InitialInfo extends AppCompatActivity {
 
 
         getSupportActionBar().setTitle(examName);
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
 
         answerKeyButton=(Button)findViewById(R.id.answerKeyButton);
         dateText=(TextView)findViewById(R.id.dateText);
@@ -140,5 +146,11 @@ public class InitialInfo extends AppCompatActivity {
         bestScoreValue.setText(bestScore);
 
         averageScoreValue.setText(averageScore);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

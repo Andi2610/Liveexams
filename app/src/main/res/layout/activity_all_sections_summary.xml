@@ -6,22 +6,39 @@
     android:layout_height="match_parent"
     tools:context="in.truskills.liveexams.Quiz.AllSectionsSummary">
 
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/allSectionsList">
-    </android.support.v7.widget.RecyclerView>
+        android:orientation="vertical">
+        <include
+            layout="@layout/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></include>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/allSectionsList">
+            </android.support.v7.widget.RecyclerView>
 
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="10dp"
-        android:background="@color/green"
-        android:text="FINISH"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:id="@+id/finishButton"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:padding="10dp"
+                android:background="@color/green"
+                android:text="FINISH"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:id="@+id/finishButton"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

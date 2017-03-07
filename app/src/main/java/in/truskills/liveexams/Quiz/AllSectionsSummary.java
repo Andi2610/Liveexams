@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -12,7 +13,10 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -43,6 +47,7 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.ParticularExamStatistics.RulesInAnswers;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
@@ -63,6 +68,14 @@ public class AllSectionsSummary extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_sections_summary);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
+        getSupportActionBar().setTitle("SUMMARY");
 
         allSectionsList=(RecyclerView)findViewById(R.id.allSectionsList);
         finishButton=(Button)findViewById(R.id.finishButton);
@@ -171,6 +184,7 @@ public class AllSectionsSummary extends AppCompatActivity {
             }
         });
     }
+
     public void afterResponse(String myDate){
         ob.getAllValues();
         JSONArray jsonArray=ob.getQuizResult();
@@ -266,6 +280,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
+
     public static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
@@ -280,4 +295,28 @@ public class AllSectionsSummary extends AppCompatActivity {
         // The directory is now empty so delete it
         return dir.delete();
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.rules_menu, menu);//Menu Resource, Menu
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.rulesIcon:
+                Intent i =new Intent(this,RulesInAnswers.class);
+                startActivity(i);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

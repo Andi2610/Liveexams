@@ -56,7 +56,10 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
         examName=getIntent().getStringExtra("examName");
 
-        getSupportActionBar().setTitle(examName);
+        getSupportActionBar().setTitle("ANSWER KEY");
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
 
 
         fList=new ArrayList<>();
@@ -248,19 +251,25 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.rules_menu, menu);//Menu Resource, Menu
+        getMenuInflater().inflate(R.menu.all_sections_summary_menu, menu);//Menu Resource, Menu
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.rulesIcon:
+            case R.id.summaryIcon:
                 prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 Intent i=new Intent(AnswersMainActivity.this,AllSectionsSummaryForAnswers.class);
                 startActivityForResult(i,REQUEST_CODE_FOR_ALL_SUMMARY);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 }

@@ -203,8 +203,7 @@ public class StartPageFragment extends Fragment {
 
             Log.d("timeDetails","TimeFinally"+start_time+"**"+middle_time+"**"+end_time);
 
-            //if(examGiven.equals("false")){
-            if(false){
+            if(examGiven.equals("true")){
                 start_leave_button.setText("EXAM IS OVER");
                 start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
             }else{

@@ -2,11 +2,16 @@ package in.truskills.liveexams.ParticularExamStatistics;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -64,6 +69,16 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
         holder.attemptedSectionWise.setText("ATTEMPTED:  "+attempted+"/"+totalQuestions);
         holder.timeSectionWise.setText("TIME:  "+time+"/"+totalTime);
         holder.rankSectionWise.setText("RANK:  "+rank+"/"+totalRank);
+
+//        WindowManager wm = (WindowManager)    c.getSystemService(Context.WINDOW_SERVICE);
+//        Display display = wm.getDefaultDisplay();
+//
+//        ViewGroup.LayoutParams param = holder.scoreSectionWise.getLayoutParams();
+//        double temp=Double.parseDouble(score)/Double.parseDouble(totalScore)*100;
+//        Log.d("width", "onBindViewHolder: "+temp);
+//        param.width=display.getWidth()*(int)temp;
+//
+//        Log.d("width", "onBindViewHolder: "+param.width);
 
         ArrayList<Integer> myTypes=ob.getTypes(sI);
 

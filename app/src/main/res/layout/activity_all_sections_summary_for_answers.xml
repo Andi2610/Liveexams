@@ -6,10 +6,23 @@
     android:layout_height="match_parent"
     tools:context="in.truskills.liveexams.ParticularExamStatistics.AllSectionsSummaryForAnswers">
 
-    <android.support.v7.widget.RecyclerView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/allSectionsListForAnswers">
-    </android.support.v7.widget.RecyclerView>
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></include>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/allSectionsListForAnswers">
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
 
 </RelativeLayout>
