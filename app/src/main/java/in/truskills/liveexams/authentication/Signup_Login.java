@@ -57,6 +57,9 @@ import com.digits.sdk.android.AuthConfig;
 import com.digits.sdk.android.Digits;
 import com.digits.sdk.android.DigitsException;
 import com.digits.sdk.android.DigitsSession;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.LocationServices;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 
@@ -110,6 +113,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     Animation slide_down;
     Drawable dr;
     ProgressDialog dialog, progress;
+    private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
 
     //Called when the activity is created..
     @Override
@@ -537,6 +541,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 loginHandleImage.setImageResource(R.drawable.up_arrow);
             }
         });
+
     }
 
     //Called when a button in the activity screen is pressed..

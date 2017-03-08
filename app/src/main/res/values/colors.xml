@@ -21,4 +21,5 @@
     <color name="purple">#7B1FA2</color>
     <color name="very_light_grey">#EEEEEE</color>
     <color name="edit_text_color">#37474F</color>
+    <color name="light_colorPrimary">#263238</color>
 </resources>

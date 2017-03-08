@@ -35,6 +35,7 @@
                     android:id="@+id/sectionNameForAnswers"
                     android:textSize="20dp"
                     android:layout_gravity="center"
+                    android:textColor="@color/black"
                     android:textStyle="bold"/>
 
                 <LinearLayout
@@ -80,25 +81,61 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/notAttemptedQuestionsForAnswers"
                         android:textSize="20dp"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_marginLeft="10dp"/>
                 </LinearLayout>
 
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="wrap_content"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/questionsListForAnswers"
                 android:layout_below="@+id/header"
+                android:id="@+id/listLayoutForAnswers"
                 android:layout_centerHorizontal="true">
-            </android.support.v7.widget.RecyclerView>
+
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/left"
+                    android:background="@drawable/ic_chevron_left_black_24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/questionsListForAnswers"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginLeft="50dp">
+                </android.support.v7.widget.RecyclerView>
+
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/right"
+                    android:background="@drawable/ic_chevron_right_black_24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:id="@+id/breakLine"
+                android:layout_margin="5dp"
+                android:layout_below="@+id/listLayoutForAnswers"/>
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpagerForAnswers"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/questionsListForAnswers"
+                android:layout_below="@+id/breakLine"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="150dp"/>
 
@@ -125,7 +162,7 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="left"
@@ -134,7 +171,7 @@
                             android:id="@+id/yourTimeText"/>
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:text=":"
@@ -142,7 +179,7 @@
                             android:layout_weight="1" />
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="right"
@@ -156,7 +193,7 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="left"
@@ -165,7 +202,7 @@
                             android:id="@+id/minimumTimeText"/>
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:text=":"
@@ -173,7 +210,7 @@
                             android:layout_weight="1" />
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="right"
@@ -187,7 +224,7 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="left"
@@ -196,7 +233,7 @@
                             android:id="@+id/maximumTimeText"/>
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:text=":"
@@ -204,7 +241,7 @@
                             android:layout_weight="1" />
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="right"
@@ -218,7 +255,7 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="10dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="left"
@@ -226,7 +263,7 @@
                             android:layout_weight="1" />
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="10dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:text=""
@@ -234,7 +271,7 @@
                             android:layout_weight="1" />
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="10dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="right"
@@ -247,7 +284,7 @@
                         android:layout_width="match_parent">
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="left"
@@ -256,7 +293,7 @@
                             android:id="@+id/correctlyAnsweredText"/>
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:text=":"
@@ -264,7 +301,7 @@
                             android:layout_weight="1" />
 
                         <TextView
-                            android:textSize="20dp"
+                            android:textSize="15dp"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_gravity="right"

@@ -583,6 +583,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                 executor.shutdown();
                 executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
                 if(executor.isTerminated()==true) {
+                    Log.d("executor", "forDownload: len="+len);
                     if(len==25){
                         startNewActivity();
                     }else{

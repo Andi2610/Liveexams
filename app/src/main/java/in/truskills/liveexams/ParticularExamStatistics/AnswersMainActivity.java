@@ -28,7 +28,7 @@ import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.AnalyticsDatabase;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
-public class AnswersMainActivity extends AppCompatActivity implements setValueOfPager{
+public class AnswersMainActivity extends AppCompatActivity implements setValueOfPager,View.OnClickListener{
 
     MyPageAdapter pageAdapter;
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
@@ -45,6 +45,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
     String minimumTime,maximumTime,yourTime,correctlyAnsweredBy;
     int my_section, my_question, my_option, questionArray[], noOfSections, num;
     SharedPreferences prefs;
+    Button left,right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,23 +81,27 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         correctlyAnsweredText = (TextView) findViewById(R.id.correctlyAnsweredText);
         correctlyAnsweredValue = (TextView) findViewById(R.id.correctlyAnsweredValue);
 
+        left=(Button)findViewById(R.id.left);
+        right=(Button)findViewById(R.id.right);
+        left.setOnClickListener(this);
+        right.setOnClickListener(this);
 
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         sectionNameForAnswers.setTypeface(tff1);
-        Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
-        submittedQuestionsForAnswers.setTypeface(tff2);
-        reviewedTickedQuestionsForAnswers.setTypeface(tff2);
-        reviewedUntickedQuestionsForAnswers.setTypeface(tff2);
-        clearedQuestionsForAnswers.setTypeface(tff2);
-        notAttemptedQuestionsForAnswers.setTypeface(tff2);
-        yourTimeText.setTypeface(tff2);
-        yourTimeValue.setTypeface(tff2);
-        minimumTimeText.setTypeface(tff2);
-        minimumTimeValue.setTypeface(tff2);
-        maximumTimeText.setTypeface(tff2);
-        maximumTimeValue.setTypeface(tff2);
-        correctlyAnsweredValue.setTypeface(tff2);
-        correctlyAnsweredText.setTypeface(tff2);
+//        Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+        submittedQuestionsForAnswers.setTypeface(tff1);
+        reviewedTickedQuestionsForAnswers.setTypeface(tff1);
+        reviewedUntickedQuestionsForAnswers.setTypeface(tff1);
+        clearedQuestionsForAnswers.setTypeface(tff1);
+        notAttemptedQuestionsForAnswers.setTypeface(tff1);
+        yourTimeText.setTypeface(tff1);
+        yourTimeValue.setTypeface(tff1);
+        minimumTimeText.setTypeface(tff1);
+        minimumTimeValue.setTypeface(tff1);
+        maximumTimeText.setTypeface(tff1);
+        maximumTimeValue.setTypeface(tff1);
+        correctlyAnsweredValue.setTypeface(tff1);
+        correctlyAnsweredText.setTypeface(tff1);
 
         linearLayoutManager=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         questionsList.setLayoutManager(linearLayoutManager);
@@ -277,5 +282,39 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
     public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int cur,q,pos,ss,si,noOfQ;
+        switch(v.getId()){
+            case R.id.left:
+                cur=pager.getCurrentItem();
+                q=Integer.parseInt(ob.getValuesPerQuestionByFragmentIndex(cur,AnalyticsDatabase.QuestionIndex));
+                SectionIndex=ob.getValuesPerQuestionByFragmentIndex(cur,AnalyticsDatabase.SectionIndex);
+                si=Integer.parseInt(SectionIndex);
+                noOfQ=questionArray[si];
+                pos=0;
+                if(q<=noOfQ/2)
+                    pos=0;
+                else if(q>noOfQ/2)
+                    pos=noOfQ/2;
+                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
+                break;
+            case R.id.right:
+                cur=pager.getCurrentItem();
+                q=Integer.parseInt(ob.getValuesPerQuestionByFragmentIndex(cur,AnalyticsDatabase.QuestionIndex));
+                SectionIndex=ob.getValuesPerQuestionByFragmentIndex(cur,AnalyticsDatabase.SectionIndex);
+                si=Integer.parseInt(SectionIndex);
+                noOfQ=questionArray[si];
+                pos=0;
+                if(q<=noOfQ/2)
+                    pos=noOfQ/2;
+                else if(q>noOfQ/2)
+                    pos=noOfQ-1;
+                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
+
+                break;
+        }
     }
 }

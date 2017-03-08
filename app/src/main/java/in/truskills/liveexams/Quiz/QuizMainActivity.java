@@ -91,6 +91,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     android.support.v7.app.AlertDialog.Builder builder;
     AlertDialog mAlertDialog;
     long timeUntil;
+    Button left,right;
 
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
@@ -125,16 +126,18 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         reviewButton = (Button) findViewById(R.id.reviewButton);
         clearButton = (Button) findViewById(R.id.clearButton);
         questionsList = (RecyclerView) findViewById(R.id.questionsList);
+        left=(Button)findViewById(R.id.left);
+        right=(Button)findViewById(R.id.right);
 
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         sectionName.setTypeface(tff1);
         timer.setTypeface(tff1);
         Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
-        submittedQuestions.setTypeface(tff2);
-        reviewedTickedQuestions.setTypeface(tff2);
-        reviewedUntickedQuestions.setTypeface(tff2);
-        clearedQuestions.setTypeface(tff2);
-        notAttemptedQuestions.setTypeface(tff2);
+        submittedQuestions.setTypeface(tff1);
+        reviewedTickedQuestions.setTypeface(tff1);
+        reviewedUntickedQuestions.setTypeface(tff1);
+        clearedQuestions.setTypeface(tff1);
+        notAttemptedQuestions.setTypeface(tff1);
         submitButton.setTypeface(tff1);
         reviewButton.setTypeface(tff1);
         clearButton.setTypeface(tff1);
@@ -142,6 +145,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         submitButton.setOnClickListener(this);
         reviewButton.setOnClickListener(this);
         clearButton.setOnClickListener(this);
+        left.setOnClickListener(this);
+        right.setOnClickListener(this);
 
         ob = new QuizDatabase(QuizMainActivity.this);
 //        ob.getAllValues();
@@ -183,7 +188,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     public void forQuiz() {
 
-        ob.getAllValues();
+//        ob.getAllValues();
 
         //Set timer..
         count=new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
@@ -394,8 +399,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     @Override
     public void onClick(View v) {
-        int ss,qq,n;
-        String temp;
+        int ss,qq,n,sn,noOfQ,pos;
+        String temp,srNo;
         switch (v.getId()){
 
             case R.id.submitButton:
@@ -406,7 +411,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 setParticularQuestionStatus(ss,qq,0);
                 setTextViewsData(ss);
                 setQuestionsListAdapter(n,ss);
-                ob.getAllValues();
+//                ob.getAllValues();
                 break;
             case R.id.reviewButton:
                 n=pager.getCurrentItem();
@@ -423,7 +428,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     setTextViewsData(ss);
                     setQuestionsListAdapter(n,ss);
                 }
-                ob.getAllValues();
+//                ob.getAllValues();
                 break;
             case R.id.clearButton:
                 n=pager.getCurrentItem();
@@ -436,7 +441,33 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 setQuestionsListAdapter(n,ss);
                 MyFragment fragment= (MyFragment) pageAdapter.getItem(n);
                 fragment.update();
-                ob.getAllValues();
+//                ob.getAllValues();
+                break;
+            case R.id.left:
+                n=pager.getCurrentItem();
+                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n, QuizDatabase.SerialNumber);
+                sn=Integer.parseInt(srNo);
+                ss=ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
+                noOfQ=questionArray[ss];
+                pos=0;
+                if(sn<=noOfQ/2)
+                    pos=0;
+                else if(sn>noOfQ/2)
+                    pos=noOfQ/2;
+                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
+                break;
+            case R.id.right:
+                n=pager.getCurrentItem();
+                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n, QuizDatabase.SerialNumber);
+                sn=Integer.parseInt(srNo);
+                ss=ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
+                noOfQ=questionArray[ss];
+                pos=0;
+                if(sn<=noOfQ/2)
+                    pos=noOfQ/2;
+                else if(sn>noOfQ/2)
+                    pos=noOfQ-1;
+                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
                 break;
         }
     }
@@ -444,14 +475,14 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public void changeButtonStatus(boolean status){
         if(status){
             submitButton.setEnabled(true);
-            submitButton.setBackgroundColor(getResources().getColor(R.color.black));
+            submitButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             clearButton.setEnabled(true);
-            clearButton.setBackgroundColor(getResources().getColor(R.color.black));
+            clearButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
             submitButton.setEnabled(false);
-            submitButton.setBackgroundColor(getResources().getColor(R.color.light_black));
+            submitButton.setBackgroundColor(getResources().getColor(R.color.light_colorPrimary));
             clearButton.setEnabled(false);
-            clearButton.setBackgroundColor(getResources().getColor(R.color.light_black));
+            clearButton.setBackgroundColor(getResources().getColor(R.color.light_colorPrimary));
         }
     }
 
@@ -512,6 +543,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         allQuestionsInOneSectionAdapter.notifyDataSetChanged();
         int myPosition = linearLayoutManager.findFirstVisibleItemPosition();
         Log.d("myPosition", "setQuestionsListAdapter: "+myPosition);
+//        int noOfQ=questionArray[si];
+//        int pos=0;
+//        if(sn<=noOfQ/2)
+//            pos=noOfQ/2;
+//        else if(sn>noOfQ/2)
+//            pos=noOfQ-1;
+//        linearLayoutManager.scrollToPositionWithOffset(pos, 0);
         linearLayoutManager.scrollToPositionWithOffset(sn, 0);
     }
 

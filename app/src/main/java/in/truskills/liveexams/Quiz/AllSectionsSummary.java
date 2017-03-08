@@ -186,7 +186,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     }
 
     public void afterResponse(String myDate){
-        ob.getAllValues();
+//        ob.getAllValues();
         JSONArray jsonArray=ob.getQuizResult();
         final JSONObject jsonObject=new JSONObject();
         try {

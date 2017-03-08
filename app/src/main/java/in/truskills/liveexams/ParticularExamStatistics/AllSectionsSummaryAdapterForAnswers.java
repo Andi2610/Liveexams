@@ -99,11 +99,11 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
         Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.mySectionName.setTypeface(tff1);
         Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
-        holder.submittedQuestionsAllSummary.setTypeface(tff2);
-        holder.reviewedTickedQuestionsAllSummary.setTypeface(tff2);
-        holder.reviewedUntickedQuestionsAllSummary.setTypeface(tff2);
-        holder.clearedQuestionsAllSummary.setTypeface(tff2);
-        holder.notAttemptedQuestionsAllSummary.setTypeface(tff2);
+        holder.submittedQuestionsAllSummary.setTypeface(tff1);
+        holder.reviewedTickedQuestionsAllSummary.setTypeface(tff1);
+        holder.reviewedUntickedQuestionsAllSummary.setTypeface(tff1);
+        holder.clearedQuestionsAllSummary.setTypeface(tff1);
+        holder.notAttemptedQuestionsAllSummary.setTypeface(tff1);
         holder.scoreSectionWise.setTypeface(tff2);
         holder.attemptedSectionWise.setTypeface(tff2);
         holder.timeSectionWise.setTypeface(tff2);

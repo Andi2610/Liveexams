@@ -612,38 +612,38 @@ public class QuizDatabase extends SQLiteOpenHelper {
         cursor.close();
         return resultSet;
     }
-
-    public void getAllValues(){
-        SQLiteDatabase db=this.getReadableDatabase();
-        String query="SELECT * FROM "+TABLE_PER_SECTION;
-        Cursor cursor=db.rawQuery(query,null);
-        if(cursor.moveToFirst()){
-            do{
-                Log.d("sectionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(SectionId)));
-            }while(cursor.moveToNext());
-        }
-        query="SELECT * FROM "+TABLE_PER_QUESTION;
-        cursor=db.rawQuery(query,null);
-        if(cursor.moveToFirst()){
-            do{
-                Log.d("questionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId)));
-            }while(cursor.moveToNext());
-        }
-        query="SELECT * FROM "+TABLE_PER_OPTION;
-        cursor=db.rawQuery(query,null);
-        if(cursor.moveToFirst()){
-            do{
-                Log.d("questionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(OptionIndex))+"**"+cursor.getString(cursor.getColumnIndex(OptionId)));
-            }while(cursor.moveToNext());
-        }
-        query="SELECT * FROM "+RESULT_TABLE;
-        cursor=db.rawQuery(query,null);
-        if(cursor.moveToFirst()){
-            do{
-                Log.d("result",cursor.getString(cursor.getColumnIndex(SectionId))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(FinalAnswerId)));
-            }while(cursor.moveToNext());
-        }
-        cursor.close();
-    }
+//
+//    public void getAllValues(){
+//        SQLiteDatabase db=this.getReadableDatabase();
+//        String query="SELECT * FROM "+TABLE_PER_SECTION;
+//        Cursor cursor=db.rawQuery(query,null);
+//        if(cursor.moveToFirst()){
+//            do{
+//                Log.d("sectionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(SectionId)));
+//            }while(cursor.moveToNext());
+//        }
+//        query="SELECT * FROM "+TABLE_PER_QUESTION;
+//        cursor=db.rawQuery(query,null);
+//        if(cursor.moveToFirst()){
+//            do{
+//                Log.d("questionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId)));
+//            }while(cursor.moveToNext());
+//        }
+//        query="SELECT * FROM "+TABLE_PER_OPTION;
+//        cursor=db.rawQuery(query,null);
+//        if(cursor.moveToFirst()){
+//            do{
+//                Log.d("questionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(OptionIndex))+"**"+cursor.getString(cursor.getColumnIndex(OptionId)));
+//            }while(cursor.moveToNext());
+//        }
+//        query="SELECT * FROM "+RESULT_TABLE;
+//        cursor=db.rawQuery(query,null);
+//        if(cursor.moveToFirst()){
+//            do{
+//                Log.d("result",cursor.getString(cursor.getColumnIndex(SectionId))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(FinalAnswerId)));
+//            }while(cursor.moveToNext());
+//        }
+//        cursor.close();
+//    }
 
 }

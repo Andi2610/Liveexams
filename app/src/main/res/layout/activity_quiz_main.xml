@@ -35,6 +35,7 @@
                     android:id="@+id/sectionName"
                     android:textSize="20dp"
                     android:layout_gravity="center"
+                    android:textColor="@color/black"
                     android:textStyle="bold"/>
 
                 <LinearLayout
@@ -80,26 +81,62 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/notAttemptedQuestions"
                         android:textSize="20dp"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         android:layout_marginLeft="10dp"/>
                 </LinearLayout>
 
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/questionsList"
                 android:layout_below="@+id/header"
-                android:layout_centerHorizontal="true"
-                android:background="@color/white">
-            </android.support.v7.widget.RecyclerView>
+                android:id="@+id/listLayout"
+                android:layout_centerHorizontal="true">
+
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/left"
+                    android:background="@drawable/ic_chevron_left_black_24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/questionsList"
+                    android:background="@color/white"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_centerHorizontal="true">
+                </android.support.v7.widget.RecyclerView>
+
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/right"
+                    android:background="@drawable/ic_chevron_right_black_24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:id="@+id/breakLine"
+                android:layout_margin="5dp"
+                android:layout_below="@+id/listLayout"/>
+
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/questionsList"
+                android:layout_below="@+id/breakLine"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="80dp"
                 android:background="@color/white"/>
@@ -142,7 +179,7 @@
                         android:padding="5dp"
                         android:textSize="20dp"
                         android:textColor="@color/orange"
-                        android:background="@color/black"
+                        android:background="@color/colorPrimary"
                         android:id="@+id/reviewButton"
                         android:layout_weight="33"
                         android:layout_marginLeft="2dp"
@@ -165,6 +202,7 @@
         </RelativeLayout>
 
     </LinearLayout>
+
     <com.flashphoner.fpwcsapi.layout.PercentFrameLayout
         android:id="@+id/studentVideo"
         android:layout_width="match_parent"
@@ -180,4 +218,5 @@
             android:visibility="gone"/>
 
     </com.flashphoner.fpwcsapi.layout.PercentFrameLayout>
+
 </RelativeLayout>
