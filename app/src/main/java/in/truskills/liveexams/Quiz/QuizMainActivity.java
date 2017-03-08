@@ -305,6 +305,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     setDetailsForNotAnswered(SI,QI);
                 }
 
+                ArrayList<Integer> myType=ob.getTypesOfEachSection(SI);
+                for(int i=0;i<myType.size();++i){
+                    Log.d("check", "setQuestionsListAdapter: type="+myType.get(i));
+                }
+
                 SharedPreferences.Editor e=quizPrefs.edit();
                 e.putInt("previousIndex",position);
                 e.apply();
@@ -368,6 +373,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     @Override
     public void SetValue(int pos) {
+        Log.d("check", "SetValue: pos="+pos);
         pager.setCurrentItem(pos);
     }
 
@@ -444,30 +450,30 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //                ob.getAllValues();
                 break;
             case R.id.left:
-                n=pager.getCurrentItem();
-                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n, QuizDatabase.SerialNumber);
-                sn=Integer.parseInt(srNo);
-                ss=ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
-                noOfQ=questionArray[ss];
-                pos=0;
-                if(sn<=noOfQ/2)
-                    pos=0;
-                else if(sn>noOfQ/2)
-                    pos=noOfQ/2;
-                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
+//                n=pager.getCurrentItem();
+//                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n, QuizDatabase.SerialNumber);
+//                sn=Integer.parseInt(srNo);
+//                ss=ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
+//                noOfQ=questionArray[ss];
+//                pos=0;
+//                if(sn<=noOfQ/2)
+//                    pos=0;
+//                else if(sn>noOfQ/2)
+//                    pos=noOfQ/2;
+//                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
                 break;
             case R.id.right:
-                n=pager.getCurrentItem();
-                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n, QuizDatabase.SerialNumber);
-                sn=Integer.parseInt(srNo);
-                ss=ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
-                noOfQ=questionArray[ss];
-                pos=0;
-                if(sn<=noOfQ/2)
-                    pos=noOfQ/2;
-                else if(sn>noOfQ/2)
-                    pos=noOfQ-1;
-                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
+//                n=pager.getCurrentItem();
+//                srNo=ob.getStringValuesPerQuestionByFragmentIndex(n, QuizDatabase.SerialNumber);
+//                sn=Integer.parseInt(srNo);
+//                ss=ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
+//                noOfQ=questionArray[ss];
+//                pos=0;
+//                if(sn<=noOfQ/2)
+//                    pos=noOfQ/2;
+//                else if(sn>noOfQ/2)
+//                    pos=noOfQ-1;
+//                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
                 break;
         }
     }
@@ -537,7 +543,14 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         int sn=Integer.parseInt(srNo);
         HashMap<String,ArrayList<Integer>>  my_map=ob.getAllIntValuesPerQuestionBySectionIndex(si);
         ArrayList<Integer> my_fragment_index_list=my_map.get("FragmentIndexList");
+        for(int i=0;i<my_fragment_index_list.size();++i){
+            Log.d("check", "setQuestionsListAdapter: fragment="+my_fragment_index_list.get(i));
+        }
         ArrayList<Integer> myType=ob.getTypesOfEachSection(si);
+        for(int i=0;i<myType.size();++i){
+            Log.d("check", "setQuestionsListAdapter: type="+myType.get(i));
+        }
+//        Log.d("check", "setQuestionsListAdapter: srNo="+sn);
         allQuestionsInOneSectionAdapter=new AllQuestionsInOneSectionAdapter(my_fragment_index_list,QuizMainActivity.this,sn,myType);
         questionsList.setAdapter(allQuestionsInOneSectionAdapter);
         allQuestionsInOneSectionAdapter.notifyDataSetChanged();
@@ -589,7 +602,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public void stoppedStreaming() {
         socket.emit(ConstantsDefined.STOPPEDSTREAMING, "");
     }
-
 
     @Override
     protected void onDestroy() {
@@ -709,6 +721,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         });
     }
 
+
     public void formFragmentListForViewPager(){
         arrayForNoOfSections = new ArrayList<>();
 
@@ -750,7 +763,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 ob.updateValuesPerQuestion(my_section,my_question, QuizDatabase.SerialNumber,myQuestionCount+"");
                 ob.updateValuesPerQuestion(my_section,my_question, QuizDatabase.FragmentIndex,myFragmentCount+"");
                 ob.updateValuesForResult(my_section,my_question, QuizDatabase.SerialNumber,myQuestionCount+"");
-
+                ob.updateValuesForResult(my_section,my_question,QuizDatabase.FragmentIndex,myFragmentCount+"");
                 String my_text=ob.getTextOfOneQuestion(my_section,my_question);
 
                 int numOp=ob.getNoOfOptionsInOneQuestion(my_section,my_question);

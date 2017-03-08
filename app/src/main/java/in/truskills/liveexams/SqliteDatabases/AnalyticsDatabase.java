@@ -291,7 +291,7 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
     public ArrayList<Integer> getIntValuesOfEachSection(int si,String columnName){
         ArrayList<Integer> types=new ArrayList<>();
         SQLiteDatabase db=this.getReadableDatabase();
-        String query="SELECT "+columnName+" FROM "+TABLE_PER_QUESTION+" WHERE "+SectionIndex+"="+si+" ORDER BY "+QuestionIndex;
+        String query="SELECT "+columnName+" FROM "+TABLE_PER_QUESTION+" WHERE "+SectionIndex+"="+si+" ORDER BY "+FragmentIndex;
 
         Cursor cursor=db.rawQuery(query,null);
         if(cursor.moveToFirst()){
@@ -313,23 +313,26 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
 
         Cursor cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
+        cursor.close();
 
         query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=1 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
+        cursor.close();
 
         query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=2 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
+        cursor.close();
 
         query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=3 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
+        cursor.close();
 
         query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+QuestionStatus+"=4 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
-
         cursor.close();
 //        db.close();
 

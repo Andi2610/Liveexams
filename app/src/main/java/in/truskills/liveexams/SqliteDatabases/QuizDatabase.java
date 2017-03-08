@@ -113,6 +113,7 @@ public class QuizDatabase extends SQLiteOpenHelper {
             "CREATE TABLE " + RESULT_TABLE + "("
                     + SectionIndex + " INTEGER DEFAULT 0,"
                     + QuestionIndex + " INTEGER DEFAULT 0,"
+                    + FragmentIndex + " INTEGER DEFAULT 0,"
                     + SerialNumber + " TEXT DEFAULT '0',"
                     + FinalAnswerSerialNumber + " TEXT DEFAULT '-1',"
                     + TempAnswerSerialNumber + " TEXT DEFAULT '-1',"
@@ -246,28 +247,32 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
     public ArrayList<Integer> getTypes(int si){
         ArrayList<Integer> types=new ArrayList<>();
+        Cursor cursor;
         SQLiteDatabase db=this.getReadableDatabase();
         String query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=0 AND "+SectionIndex+"="+si;
 
-        Cursor cursor=db.rawQuery(query,null);
+        cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
+        cursor.close();
 
         query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=1 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
+        cursor.close();
 
         query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=2 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
+        cursor.close();
 
         query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=3 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
+        cursor.close();
 
         query="SELECT * FROM "+RESULT_TABLE+" WHERE "+QuestionStatus+"=4 AND "+SectionIndex+"="+si;
         cursor=db.rawQuery(query,null);
         types.add(cursor.getCount());
-
         cursor.close();
 //        db.close();
 
@@ -278,7 +283,7 @@ public class QuizDatabase extends SQLiteOpenHelper {
     public ArrayList<Integer> getTypesOfEachSection(int si){
         ArrayList<Integer> types=new ArrayList<>();
         SQLiteDatabase db=this.getReadableDatabase();
-        String query="SELECT "+QuestionStatus+" FROM "+RESULT_TABLE+" WHERE "+SectionIndex+"="+si+" ORDER BY "+SerialNumber;
+        String query="SELECT "+QuestionStatus+" FROM "+RESULT_TABLE+" WHERE "+SectionIndex+"="+si+" ORDER BY "+FragmentIndex;
 
         Cursor cursor=db.rawQuery(query,null);
         if(cursor.moveToFirst()){
@@ -379,7 +384,7 @@ public class QuizDatabase extends SQLiteOpenHelper {
         HashMap<String,ArrayList<Integer>> map=new HashMap<>();
         SQLiteDatabase db=this.getReadableDatabase();
         ArrayList<Integer> fI=new ArrayList<>();
-        String query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+SectionIndex+"="+si+" ORDER BY "+SerialNumber;
+        String query="SELECT * FROM "+TABLE_PER_QUESTION+" WHERE "+SectionIndex+"="+si+" ORDER BY "+FragmentIndex;
         Cursor cursor=db.rawQuery(query,null);
         if(cursor.moveToFirst()){
             do{

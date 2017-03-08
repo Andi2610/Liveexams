@@ -3,6 +3,7 @@ package in.truskills.liveexams.Quiz;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+        Log.d("check", "onBindViewHolder: holderPosition="+holder.getAdapterPosition()+" "+position);
             int cn=holder.getAdapterPosition();
             cn++;
             holder.questionNumber.setText(cn+"");
@@ -66,8 +68,10 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
             holder.parent.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("check", "onClick: position="+holder.getAdapterPosition());
                     ob=(setValueOfPager)c;
                     int jumpPosition=myListOfFragmentIndex.get(holder.getAdapterPosition());
+                    Log.d("check", "onClick: jumpPosition="+holder.getAdapterPosition());
                     ob.SetValue(jumpPosition);
                 }
             });

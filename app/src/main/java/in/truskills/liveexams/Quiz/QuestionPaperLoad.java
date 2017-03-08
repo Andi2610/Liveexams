@@ -176,7 +176,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
             myCount++;
             Log.d("messi","matcher.findInLoop");
             String group=matcher.group(2);
-            String imageUrl = ConstantsDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
+            String imageUrl = ConstantsDefined.imageUrl+examId+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
             urls.add(imageUrl);
             groups.add(group);
@@ -197,7 +197,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
             myCount++;
             Log.d("messi","matcher.findInLoop");
             String group=matcher.group(2);
-            String imageUrl = ConstantsDefined.imageUrl+"changeThisToExamId"+"/Images/"+group;
+            String imageUrl = ConstantsDefined.imageUrl+examId+"/Images/"+group;
             Log.d("imageDownload",imageUrl);
             urls.add(imageUrl);
             groups.add(group);
@@ -561,7 +561,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         if(f.exists()) {
             children = f.list();
             len = children.length;
-            if(len==25){
+            if(len==myCount){
                 Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
                 intent.putExtra("examId", examId);
                 intent.putExtra("name", paperName);
@@ -584,7 +584,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                 executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
                 if(executor.isTerminated()==true) {
                     Log.d("executor", "forDownload: len="+len);
-                    if(len==25){
+                    if(len==myCount){
                         startNewActivity();
                     }else{
                         Toast.makeText(this, "No internet connection.. Please try again..", Toast.LENGTH_SHORT).show();
