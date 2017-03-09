@@ -16,7 +16,8 @@ import in.truskills.liveexams.R;
 public class RulesFragment extends Fragment {
 
 
-    TextView tv1,tv2,tv3,tv4,tv5,tv6,tv7,tv8;
+    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
+
     public RulesFragment() {
         // Required empty public constructor
     }
@@ -32,16 +33,16 @@ public class RulesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        tv1=(TextView)getActivity().findViewById(R.id.tv1);
-        tv2=(TextView)getActivity().findViewById(R.id.tv2);
-        tv3=(TextView)getActivity().findViewById(R.id.tv3);
-        tv4=(TextView)getActivity().findViewById(R.id.tv4);
-        tv5=(TextView)getActivity().findViewById(R.id.tv5);
-        tv6=(TextView)getActivity().findViewById(R.id.tv6);
-        tv7=(TextView)getActivity().findViewById(R.id.tv7);
-        tv8=(TextView)getActivity().findViewById(R.id.tv8);
+        tv1 = (TextView) getActivity().findViewById(R.id.tv1);
+        tv2 = (TextView) getActivity().findViewById(R.id.tv2);
+        tv3 = (TextView) getActivity().findViewById(R.id.tv3);
+        tv4 = (TextView) getActivity().findViewById(R.id.tv4);
+        tv5 = (TextView) getActivity().findViewById(R.id.tv5);
+        tv6 = (TextView) getActivity().findViewById(R.id.tv6);
+        tv7 = (TextView) getActivity().findViewById(R.id.tv7);
+        tv8 = (TextView) getActivity().findViewById(R.id.tv8);
 
-        Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         tv1.setTypeface(tff);
         tv2.setTypeface(tff);
         tv3.setTypeface(tff);

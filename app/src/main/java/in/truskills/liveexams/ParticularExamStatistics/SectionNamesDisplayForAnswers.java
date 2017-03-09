@@ -27,21 +27,21 @@ public class SectionNamesDisplayForAnswers extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_section_names_display_for_answers);
 
-        int si=getIntent().getIntExtra("sectionIndex",0);
+        int si = getIntent().getIntExtra("sectionIndex", 0);
 
-        AnalyticsDatabase ob=new AnalyticsDatabase(this);
+        AnalyticsDatabase ob = new AnalyticsDatabase(this);
 
-        ArrayList<String> name=ob.getAllStringValuesPerSection(AnalyticsDatabase.SectionName);
+        ArrayList<String> name = ob.getAllStringValuesPerSection(AnalyticsDatabase.SectionName);
 
-        mySectionsListForAnswers=(RecyclerView) findViewById(R.id.mySectionsListForAnswers);
-        TextView sectionTextForAnswers=(TextView)findViewById(R.id.sectionTextForAnswers);
+        mySectionsListForAnswers = (RecyclerView) findViewById(R.id.mySectionsListForAnswers);
+        TextView sectionTextForAnswers = (TextView) findViewById(R.id.sectionTextForAnswers);
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         sectionTextForAnswers.setTypeface(tff1);
 
 
-        sectionNamesDisplayAdapterForAnswers =new SectionNamesdisplayAdapterForAnswers(name,SectionNamesDisplayForAnswers.this,si);
+        sectionNamesDisplayAdapterForAnswers = new SectionNamesdisplayAdapterForAnswers(name, SectionNamesDisplayForAnswers.this, si);
 
-        linearLayoutManager=new LinearLayoutManager(this);
+        linearLayoutManager = new LinearLayoutManager(this);
         mySectionsListForAnswers.setLayoutManager(linearLayoutManager);
         mySectionsListForAnswers.setItemAnimator(new DefaultItemAnimator());
         mySectionsListForAnswers.setAdapter(sectionNamesDisplayAdapterForAnswers);

@@ -45,7 +45,7 @@ public class CustomSpinnerForDetailsAdapter extends BaseAdapter {
         return 0;
     }
 
-    public int getIndex(String value){
+    public int getIndex(String value) {
         return names.indexOf(value);
     }
 

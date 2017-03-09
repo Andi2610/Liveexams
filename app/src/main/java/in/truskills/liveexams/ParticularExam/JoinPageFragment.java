@@ -50,13 +50,13 @@ public class JoinPageFragment extends Fragment {
 
     //Declare variables..
     JoinPageInterface ob;
-    TextView start_TimeJoinPage,end_TimeJoinPage,start_DateJoinPage,end_DateJoinPage, descriptionJoinPage,sponsorTextJoinPage;
+    TextView start_TimeJoinPage, end_TimeJoinPage, start_DateJoinPage, end_DateJoinPage, descriptionJoinPage, sponsorTextJoinPage;
     Spinner myLanguageJoinPage;
-    String selectedLanguage, timestamp, examDetails, examId,Languages,examGiven;
+    String selectedLanguage, timestamp, examDetails, examId, Languages, examGiven;
     SharedPreferences prefs;
     Button join_button;
     Handler h;
-    HashMap<String,String> mapper;
+    HashMap<String, String> mapper;
     Bundle b;
     ViewFlipper viewFlipperJoinPage;
     CustomSpinnerForDetailsAdapter customSpinnerForDetailsAdapter;
@@ -92,7 +92,7 @@ public class JoinPageFragment extends Fragment {
         myLanguageJoinPage = (Spinner) getActivity().findViewById(R.id.myLanguageJoinPage);
         join_button = (Button) getActivity().findViewById(R.id.join_button);
 
-        viewFlipperJoinPage=(ViewFlipper)getActivity().findViewById(R.id.viewFlipperJoinPage);
+        viewFlipperJoinPage = (ViewFlipper) getActivity().findViewById(R.id.viewFlipperJoinPage);
 
         int[] resources = {
                 R.drawable.first,
@@ -114,14 +114,14 @@ public class JoinPageFragment extends Fragment {
         viewFlipperJoinPage.setFlipInterval(2000);
 
 
-        Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         start_DateJoinPage.setTypeface(tff);
         end_DateJoinPage.setTypeface(tff);
         start_TimeJoinPage.setTypeface(tff);
         end_TimeJoinPage.setTypeface(tff);
         descriptionJoinPage.setTypeface(tff);
         sponsorTextJoinPage.setTypeface(tff);
-        Typeface tff2=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
         join_button.setTypeface(tff2);
 
         //Get arguments..
@@ -129,28 +129,28 @@ public class JoinPageFragment extends Fragment {
         timestamp = b.getString("timestamp");
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
-        examGiven=b.getString("examGiven");
+        examGiven = b.getString("examGiven");
 
         Answers.getInstance().logCustom(new CustomEvent("Join now page inspect")
-                .putCustomAttribute("userName",prefs.getString("userName",""))
-                .putCustomAttribute("examId",examId));
+                .putCustomAttribute("userName", prefs.getString("userName", ""))
+                .putCustomAttribute("examId", examId));
 
-        h=new Handler();
+        h = new Handler();
 
         //Parse the exam details..
         try {
-                HashMap<String, String> mapper = MiscellaneousParser.join_start_Parser(examDetails);
-                descriptionJoinPage.setText(mapper.get("Description"));
+            HashMap<String, String> mapper = MiscellaneousParser.join_start_Parser(examDetails);
+            descriptionJoinPage.setText(mapper.get("Description"));
 
-            String startDate=mapper.get("StartDate");
-            String myStartDate= MiscellaneousParser.parseDate(startDate);
-            String endDate=mapper.get("EndDate");
-            String myEndDate= MiscellaneousParser.parseDate(endDate);
-            String startTime=mapper.get("StartTime");
-            String myStartTime= MiscellaneousParser.parseTimeForDetails(startTime);
-            String endTime=mapper.get("EndTime");
-            String myEndTime= MiscellaneousParser.parseTimeForDetails(endTime);
-            Languages=mapper.get("Languages");
+            String startDate = mapper.get("StartDate");
+            String myStartDate = MiscellaneousParser.parseDate(startDate);
+            String endDate = mapper.get("EndDate");
+            String myEndDate = MiscellaneousParser.parseDate(endDate);
+            String startTime = mapper.get("StartTime");
+            String myStartTime = MiscellaneousParser.parseTimeForDetails(startTime);
+            String endTime = mapper.get("EndTime");
+            String myEndTime = MiscellaneousParser.parseTimeForDetails(endTime);
+            Languages = mapper.get("Languages");
 
             start_DateJoinPage.setText(myStartDate);
             start_TimeJoinPage.setText(myStartTime);
@@ -181,20 +181,20 @@ public class JoinPageFragment extends Fragment {
                             mapper = MiscellaneousParser.enrollUserParser(response);
                             String success = mapper.get("success");
                             if (success.equals("true")) {
-                                Log.e("messi", "onResponse: "+getActivity() );
+                                Log.e("messi", "onResponse: " + getActivity());
 
                                 h.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        String myJoinedExams= null;
+                                        String myJoinedExams = null;
                                         try {
                                             myJoinedExams = MiscellaneousParser.getJoinedExams(mapper.get("response"));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
 
-                                        SharedPreferences.Editor e=prefs.edit();
-                                        e.putString("joinedExams",myJoinedExams);
+                                        SharedPreferences.Editor e = prefs.edit();
+                                        e.putString("joinedExams", myJoinedExams);
                                         e.apply();
                                     }
                                 });
@@ -234,14 +234,14 @@ public class JoinPageFragment extends Fragment {
             e.printStackTrace();
         }
 
-        customSpinnerForDetailsAdapter=new CustomSpinnerForDetailsAdapter(getActivity(),listOfLanguages);
+        customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(getActivity(), listOfLanguages);
 
 //        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
         myLanguageJoinPage.setAdapter(customSpinnerForDetailsAdapter);
 
 //        int index = customSpinnerForDetailsAdapter.getPosition(prefs.getString("language", "English"));
 //        myLanguageJoinPage.setSelection(index);
-        int index=customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
+        int index = customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
         myLanguageJoinPage.setSelection(index);
 
         myLanguageJoinPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

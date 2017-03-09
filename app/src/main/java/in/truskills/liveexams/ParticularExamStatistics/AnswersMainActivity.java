@@ -28,24 +28,24 @@ import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.AnalyticsDatabase;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
-public class AnswersMainActivity extends AppCompatActivity implements setValueOfPager,View.OnClickListener{
+public class AnswersMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener {
 
     MyPageAdapter pageAdapter;
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
     String examName, SectionIndex;
     ArrayList<Fragment> fList;
-    TextView sectionNameForAnswers, submittedQuestionsForAnswers, reviewedTickedQuestionsForAnswers,reviewedUntickedQuestionsForAnswers, notAttemptedQuestionsForAnswers,clearedQuestionsForAnswers;
-    TextView yourTimeText,maximumTimeText,minimumTimeText,correctlyAnsweredText,yourTimeValue,maximumTimeValue,minimumTimeValue,correctlyAnsweredValue;
+    TextView sectionNameForAnswers, submittedQuestionsForAnswers, reviewedTickedQuestionsForAnswers, reviewedUntickedQuestionsForAnswers, notAttemptedQuestionsForAnswers, clearedQuestionsForAnswers;
+    TextView yourTimeText, maximumTimeText, minimumTimeText, correctlyAnsweredText, yourTimeValue, maximumTimeValue, minimumTimeValue, correctlyAnsweredValue;
     ViewPager pager;
     AnalyticsDatabase ob;
     RecyclerView questionsList;
     AllQuestionsInOneSectionAdapterForAnswers allQuestionsInOneSectionAdapterForAnswers;
     LinearLayoutManager linearLayoutManager;
     ArrayList<String> options;
-    String minimumTime,maximumTime,yourTime,correctlyAnsweredBy;
+    String minimumTime, maximumTime, yourTime, correctlyAnsweredBy;
     int my_section, my_question, my_option, questionArray[], noOfSections, num;
     SharedPreferences prefs;
-    Button left,right;
+    Button left, right;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        examName=getIntent().getStringExtra("examName");
+        examName = getIntent().getStringExtra("examName");
 
         getSupportActionBar().setTitle("ANSWER KEY");
 
@@ -63,14 +63,14 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
 
 
-        fList=new ArrayList<>();
+        fList = new ArrayList<>();
         sectionNameForAnswers = (TextView) findViewById(R.id.sectionNameForAnswers);
         submittedQuestionsForAnswers = (TextView) findViewById(R.id.submittedQuestionsForAnswers);
         reviewedTickedQuestionsForAnswers = (TextView) findViewById(R.id.reviewedTickedQuestionsForAnswers);
         reviewedUntickedQuestionsForAnswers = (TextView) findViewById(R.id.reviewedUntickedQuestionsForAnswers);
         notAttemptedQuestionsForAnswers = (TextView) findViewById(R.id.notAttemptedQuestionsForAnswers);
         clearedQuestionsForAnswers = (TextView) findViewById(R.id.clearedQuestionsForAnswers);
-        questionsList=(RecyclerView) findViewById(R.id.questionsListForAnswers);
+        questionsList = (RecyclerView) findViewById(R.id.questionsListForAnswers);
 
         yourTimeText = (TextView) findViewById(R.id.yourTimeText);
         yourTimeValue = (TextView) findViewById(R.id.yourTimeValue);
@@ -81,8 +81,8 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         correctlyAnsweredText = (TextView) findViewById(R.id.correctlyAnsweredText);
         correctlyAnsweredValue = (TextView) findViewById(R.id.correctlyAnsweredValue);
 
-        left=(Button)findViewById(R.id.left);
-        right=(Button)findViewById(R.id.right);
+        left = (Button) findViewById(R.id.left);
+        right = (Button) findViewById(R.id.right);
         left.setOnClickListener(this);
         right.setOnClickListener(this);
 
@@ -103,20 +103,20 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         correctlyAnsweredValue.setTypeface(tff1);
         correctlyAnsweredText.setTypeface(tff1);
 
-        linearLayoutManager=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         questionsList.setLayoutManager(linearLayoutManager);
         questionsList.setItemAnimator(new DefaultItemAnimator());
 
         noOfSections = getIntent().getIntExtra("noOfSections", 0);
         questionArray = getIntent().getIntArrayExtra("questionArray");
-        Log.d("myLength=",questionArray.length+"");
+        Log.d("myLength=", questionArray.length + "");
 
-        ob=new AnalyticsDatabase(this);
+        ob = new AnalyticsDatabase(this);
 
         formFragmentListForViewPager();
 
         //Set the view pager adapter..
-        pageAdapter= new MyPageAdapter(getSupportFragmentManager(),fList);
+        pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
         pager = (ViewPager) findViewById(R.id.viewpagerForAnswers);
         pager.setAdapter(pageAdapter);
 
@@ -124,7 +124,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
     }
 
-    public void forQuiz(){
+    public void forQuiz() {
 
 
         setValuesForHeader(0);
@@ -159,7 +159,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
             @Override
             public void onClick(View v) {
                 int num = pager.getCurrentItem();
-                int sI=Integer.parseInt(ob.getValuesPerQuestionByFragmentIndex(num,AnalyticsDatabase.SectionIndex));
+                int sI = Integer.parseInt(ob.getValuesPerQuestionByFragmentIndex(num, AnalyticsDatabase.SectionIndex));
                 Intent i = new Intent(AnswersMainActivity.this, SectionNamesDisplayForAnswers.class);
                 i.putExtra("sectionIndex", sI);
                 startActivityForResult(i, REQUEST_CODE);
@@ -168,74 +168,74 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
     }
 
-    public void formFragmentListForViewPager(){
+    public void formFragmentListForViewPager() {
 
         for (int i = 0; i < noOfSections; ++i) {
             my_section = i;
             num = questionArray[i];
             for (int k = 0; k < num; ++k) {
-                my_question=k;
-                String my_text=ob.getTextOfOneQuestion(my_section,my_question);
-                String myAnswer=ob.getStringValuesPerQuestion(my_section,my_question,AnalyticsDatabase.FinalAnswerId);
-                String correctAnswer=ob.getStringValuesPerQuestion(my_section,my_question,AnalyticsDatabase.RightAnswer);
+                my_question = k;
+                String my_text = ob.getTextOfOneQuestion(my_section, my_question);
+                String myAnswer = ob.getStringValuesPerQuestion(my_section, my_question, AnalyticsDatabase.FinalAnswerId);
+                String correctAnswer = ob.getStringValuesPerQuestion(my_section, my_question, AnalyticsDatabase.RightAnswer);
 
-                int numOp=ob.getNoOfOptionsInOneQuestion(my_section,my_question);
-                options=new ArrayList<>();
-                for (int s=0;s<numOp;++s){
-                    my_option=s;
-                    String my_option_text=ob.getTextOfOneOption(my_section,my_question,my_option);
+                int numOp = ob.getNoOfOptionsInOneQuestion(my_section, my_question);
+                options = new ArrayList<>();
+                for (int s = 0; s < numOp; ++s) {
+                    my_option = s;
+                    String my_option_text = ob.getTextOfOneOption(my_section, my_question, my_option);
                     options.add(my_option_text);
                 }
-                fList.add(MyFragmentForAnswers.newInstance(my_text, options,myAnswer,correctAnswer));
+                fList.add(MyFragmentForAnswers.newInstance(my_text, options, myAnswer, correctAnswer));
             }
         }
 
     }
 
-    public void setValuesForFooter(int fi){
-        minimumTime=ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.MinimumTime);
-        maximumTime=ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.MaximumTime);
-        yourTime=ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.TimeSpent);
-        correctlyAnsweredBy=ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.RightAnsweredBy);
+    public void setValuesForFooter(int fi) {
+        minimumTime = ob.getValuesPerQuestionByFragmentIndex(fi, AnalyticsDatabase.MinimumTime);
+        maximumTime = ob.getValuesPerQuestionByFragmentIndex(fi, AnalyticsDatabase.MaximumTime);
+        yourTime = ob.getValuesPerQuestionByFragmentIndex(fi, AnalyticsDatabase.TimeSpent);
+        correctlyAnsweredBy = ob.getValuesPerQuestionByFragmentIndex(fi, AnalyticsDatabase.RightAnsweredBy);
         minimumTimeValue.setText(minimumTime);
         maximumTimeValue.setText(maximumTime);
         yourTimeValue.setText(yourTime);
         correctlyAnsweredValue.setText(correctlyAnsweredBy);
     }
 
-    public void setValuesForHeader(int fi){
-        SectionIndex=ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.SectionIndex);
-        int si=Integer.parseInt(SectionIndex);
-        String name=ob.getValuesPerSection(si,AnalyticsDatabase.SectionName);
+    public void setValuesForHeader(int fi) {
+        SectionIndex = ob.getValuesPerQuestionByFragmentIndex(fi, AnalyticsDatabase.SectionIndex);
+        int si = Integer.parseInt(SectionIndex);
+        String name = ob.getValuesPerSection(si, AnalyticsDatabase.SectionName);
         sectionNameForAnswers.setText(name);
     }
 
-    public void setValuesForQuestionList(int fi){
-        SectionIndex=ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.SectionIndex);
-        int si=Integer.parseInt(SectionIndex);
-        int qi=Integer.parseInt(ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.QuestionIndex));
-        ArrayList<Integer> types=ob.getIntValuesOfEachSection(si,AnalyticsDatabase.QuestionStatus);
-        ArrayList<Integer> listOfFi=ob.getIntValuesOfEachSection(si,AnalyticsDatabase.FragmentIndex);
-        allQuestionsInOneSectionAdapterForAnswers=new AllQuestionsInOneSectionAdapterForAnswers(listOfFi,AnswersMainActivity.this,qi,types);
+    public void setValuesForQuestionList(int fi) {
+        SectionIndex = ob.getValuesPerQuestionByFragmentIndex(fi, AnalyticsDatabase.SectionIndex);
+        int si = Integer.parseInt(SectionIndex);
+        int qi = Integer.parseInt(ob.getValuesPerQuestionByFragmentIndex(fi, AnalyticsDatabase.QuestionIndex));
+        ArrayList<Integer> types = ob.getIntValuesOfEachSection(si, AnalyticsDatabase.QuestionStatus);
+        ArrayList<Integer> listOfFi = ob.getIntValuesOfEachSection(si, AnalyticsDatabase.FragmentIndex);
+        allQuestionsInOneSectionAdapterForAnswers = new AllQuestionsInOneSectionAdapterForAnswers(listOfFi, AnswersMainActivity.this, qi, types);
         questionsList.setAdapter(allQuestionsInOneSectionAdapterForAnswers);
         allQuestionsInOneSectionAdapterForAnswers.notifyDataSetChanged();
 //        int myPosition = linearLayoutManager.findFirstVisibleItemPosition();
 //        Log.d("myPosition", "setQuestionsListAdapter: "+myPosition);
         int myPosition = linearLayoutManager.findFirstVisibleItemPosition();
-        Log.d("myPosition", "setQuestionsListAdapter: "+myPosition);
+        Log.d("myPosition", "setQuestionsListAdapter: " + myPosition);
         linearLayoutManager.scrollToPositionWithOffset(qi, 0);
 
     }
 
-    public void setValuesForTextViews(int fi){
-        SectionIndex=ob.getValuesPerQuestionByFragmentIndex(fi,AnalyticsDatabase.SectionIndex);
-        int si=Integer.parseInt(SectionIndex);
-        ArrayList<Integer> types=ob.getTypes(si);
-        submittedQuestionsForAnswers.setText(types.get(0)+"");
-        reviewedTickedQuestionsForAnswers.setText(types.get(1)+"");
-        reviewedUntickedQuestionsForAnswers.setText(types.get(2)+"");
-        clearedQuestionsForAnswers.setText(types.get(3)+"");
-        notAttemptedQuestionsForAnswers.setText(types.get(4)+"");
+    public void setValuesForTextViews(int fi) {
+        SectionIndex = ob.getValuesPerQuestionByFragmentIndex(fi, AnalyticsDatabase.SectionIndex);
+        int si = Integer.parseInt(SectionIndex);
+        ArrayList<Integer> types = ob.getTypes(si);
+        submittedQuestionsForAnswers.setText(types.get(0) + "");
+        reviewedTickedQuestionsForAnswers.setText(types.get(1) + "");
+        reviewedUntickedQuestionsForAnswers.setText(types.get(2) + "");
+        clearedQuestionsForAnswers.setText(types.get(3) + "");
+        notAttemptedQuestionsForAnswers.setText(types.get(4) + "");
     }
 
     @Override
@@ -249,7 +249,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         if (requestCode == REQUEST_CODE) {
             if (data != null) {
                 int sI = data.getIntExtra("message", 0);
-                int fi=Integer.parseInt(ob.getStringValuesPerQuestion(sI,0,AnalyticsDatabase.FragmentIndex));
+                int fi = Integer.parseInt(ob.getStringValuesPerQuestion(sI, 0, AnalyticsDatabase.FragmentIndex));
                 pager.setCurrentItem(fi);
             }
         } else if (requestCode == REQUEST_CODE_FOR_ALL_SUMMARY) {
@@ -270,9 +270,9 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.summaryIcon:
-                prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                Intent i=new Intent(AnswersMainActivity.this,AllSectionsSummaryForAnswers.class);
-                startActivityForResult(i,REQUEST_CODE_FOR_ALL_SUMMARY);
+                prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                Intent i = new Intent(AnswersMainActivity.this, AllSectionsSummaryForAnswers.class);
+                startActivityForResult(i, REQUEST_CODE_FOR_ALL_SUMMARY);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -286,33 +286,17 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
     @Override
     public void onClick(View v) {
-        int cur,q,pos,ss,si,noOfQ;
-        switch(v.getId()){
+
+        switch (v.getId()) {
             case R.id.left:
-                cur=pager.getCurrentItem();
-                q=Integer.parseInt(ob.getValuesPerQuestionByFragmentIndex(cur,AnalyticsDatabase.QuestionIndex));
-                SectionIndex=ob.getValuesPerQuestionByFragmentIndex(cur,AnalyticsDatabase.SectionIndex);
-                si=Integer.parseInt(SectionIndex);
-                noOfQ=questionArray[si];
-                pos=0;
-                if(q<=noOfQ/2)
-                    pos=0;
-                else if(q>noOfQ/2)
-                    pos=noOfQ/2;
-                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
+                Log.d("checking", "onClick: first=" + linearLayoutManager.findFirstCompletelyVisibleItemPosition());
+                questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findFirstCompletelyVisibleItemPosition() - 5);
+
                 break;
             case R.id.right:
-                cur=pager.getCurrentItem();
-                q=Integer.parseInt(ob.getValuesPerQuestionByFragmentIndex(cur,AnalyticsDatabase.QuestionIndex));
-                SectionIndex=ob.getValuesPerQuestionByFragmentIndex(cur,AnalyticsDatabase.SectionIndex);
-                si=Integer.parseInt(SectionIndex);
-                noOfQ=questionArray[si];
-                pos=0;
-                if(q<=noOfQ/2)
-                    pos=noOfQ/2;
-                else if(q>noOfQ/2)
-                    pos=noOfQ-1;
-                linearLayoutManager.scrollToPositionWithOffset(pos, 0);
+                Log.d("checking", "onClick: last=" + linearLayoutManager.findLastCompletelyVisibleItemPosition());
+
+                questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 5);
 
                 break;
         }

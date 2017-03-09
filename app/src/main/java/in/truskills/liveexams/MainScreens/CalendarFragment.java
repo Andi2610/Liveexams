@@ -58,16 +58,16 @@ import in.truskills.liveexams.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CalendarFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
+public class CalendarFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener {
 
     LinearLayoutManager linearLayoutManager;
     CalendarListAdapter calendarListAdapter;
     List<Values> valuesList;
     Values values;
     RecyclerView myExamsList;
-    String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime,myStartTime,myEndTime,myJoinedExamssss="",timestampppp="";
+    String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime, myJoinedExamssss = "", timestampppp = "";
     SimpleDateFormat simpleDateFormat;
-    int curr_day,curr_month,curr_year,cm;
+    int curr_day, curr_month, curr_year, cm;
     SharedPreferences prefs;
     RequestQueue requestQueue;
     HashMap<String, ArrayList<String>> mapper;
@@ -100,14 +100,14 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
         requestQueue = Volley.newRequestQueue(getActivity());
-        h=new Handler();
+        h = new Handler();
 //        avLoadingIndicatorView=(AVLoadingIndicatorView)getActivity().findViewById(R.id.aviForCalendar);
 //        avLoadingIndicatorView.setVisibility(View.GONE);
 
         retryButton = (Button) getActivity().findViewById(R.id.retryButtonForCalendar);
-        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayoutForCalendar);
-        noConnectionText=(TextView)getActivity().findViewById(R.id.noConnectionTextForCalendar);
-        Typeface tff1=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        noConnectionLayout = (LinearLayout) getActivity().findViewById(R.id.noConnectionLayoutForCalendar);
+        noConnectionText = (TextView) getActivity().findViewById(R.id.noConnectionTextForCalendar);
+        Typeface tff1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         retryButton.setTypeface(tff1);
         noConnectionText.setTypeface(tff1);
         noConnectionLayout.setVisibility(View.GONE);
@@ -139,13 +139,13 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
 //                int color = Color.parseColor("#FFFFFF");
 //                dayView.setTextColor(color);
 //            }
-            simpleDateFormat=new SimpleDateFormat("dd");
-            int myD=Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
-            simpleDateFormat=new SimpleDateFormat("MM");
-            int myM=Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
-            simpleDateFormat=new SimpleDateFormat("yyyy");
-            int myY=Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
-            if(myD==curr_day&&myM==curr_month&&myY==curr_year)
+            simpleDateFormat = new SimpleDateFormat("dd");
+            int myD = Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
+            simpleDateFormat = new SimpleDateFormat("MM");
+            int myM = Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
+            simpleDateFormat = new SimpleDateFormat("yyyy");
+            int myY = Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
+            if (myD == curr_day && myM == curr_month && myY == curr_year)
                 dayView.setBackgroundColor(Color.parseColor("#E0E0E0"));
         }
     }
@@ -153,9 +153,9 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
     private class SetExamsColorDecorator implements DayDecorator {
         @Override
         public void decorate(DayView dayView) {
-            Date date=dayView.getDate();
+            Date date = dayView.getDate();
             try {
-                getDurationOfEachExam(date,dayView);
+                getDurationOfEachExam(date, dayView);
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
@@ -164,12 +164,12 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
         }
     }
 
-    private void populateListForCalendar(final int d,final int m,final int y) {
+    private void populateListForCalendar(final int d, final int m, final int y) {
 
 //        avLoadingIndicatorView.show();
 
         valuesList = new ArrayList<>();
-        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId","");
+        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
 
@@ -177,10 +177,10 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
             public void onResponse(JSONObject response) {
 //                avLoadingIndicatorView.hide();
                 try {
-                    String myResponse=response.getJSONObject("response").toString();
-                    JSONObject jsonObject=new JSONObject(myResponse);
-                    String timestamp=jsonObject.getString("timestamp");
-                    String myJoinedExams=jsonObject.getJSONArray("joinedExams").toString();
+                    String myResponse = response.getJSONObject("response").toString();
+                    JSONObject jsonObject = new JSONObject(myResponse);
+                    String timestamp = jsonObject.getString("timestamp");
+                    String myJoinedExams = jsonObject.getJSONArray("joinedExams").toString();
                     HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExams);
                     JSONArray arr = new JSONArray(myJoinedExams);
                     int length = arr.length();
@@ -192,45 +192,45 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
                             myStartDate = mapper.get("StartDate").get(i);
                             myEndDate = mapper.get("EndDate").get(i);
                             myDuration = mapper.get("ExamDuration").get(i);
-                            myStartTime=mapper.get("StartTime").get(i);
-                            myEndTime=mapper.get("EndTime").get(i);
+                            myStartTime = mapper.get("StartTime").get(i);
+                            myEndTime = mapper.get("EndTime").get(i);
 
                             myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
                             myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
-                            myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+                            myDurationTime = MiscellaneousParser.parseDuration(myDuration);
 
-                            String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
-                            String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
-                            Log.d("myTimestamp=",timestamp);
+                            String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
+                            String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
+                            Log.d("myTimestamp=", timestamp);
 //                            String myTimestamp=MiscellaneousParser.parseTimestamp(timestamp);
                             String myParsedDate = d + "/" + m + "/" + y;
-                            String myTime=MiscellaneousParser.parseTimestampForTime(timestamp);
+                            String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
 
 //                            Log.d("myTimestamp=",myTimestamp);
 
-                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-                            Date start_date=simpleDateFormat.parse(myDateOfStart);
-                            Date end_date=simpleDateFormat.parse(myDateOfEnd);
-                            Date middle_date=simpleDateFormat.parse(myParsedDate);
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            Date start_date = simpleDateFormat.parse(myDateOfStart);
+                            Date end_date = simpleDateFormat.parse(myDateOfEnd);
+                            Date middle_date = simpleDateFormat.parse(myParsedDate);
 
-                            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
-                            Date start_time=simpleDateFormat2.parse(myTimeOfStart);
-                            Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
-                            Date middle_time=simpleDateFormat2.parse(myTime);
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
+                            Date start_time = simpleDateFormat2.parse(myTimeOfStart);
+                            Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
+                            Date middle_time = simpleDateFormat2.parse(myTime);
 
-                            if(!(middle_date.before(start_date)||middle_date.after(end_date))){
-                                if(middle_date.equals(end_date)){
-                                    if(middle_date.equals(myCurrDate)){
-                                        if(!middle_time.after(end_time)){
-                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                            if (!(middle_date.before(start_date) || middle_date.after(end_date))) {
+                                if (middle_date.equals(end_date)) {
+                                    if (middle_date.equals(myCurrDate)) {
+                                        if (!middle_time.after(end_time)) {
+                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                             valuesList.add(values);
                                         }
-                                    }else{
-                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                    } else {
+                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                         valuesList.add(values);
                                     }
-                                }else{
-                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                } else {
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                     valuesList.add(values);
                                 }
                             }
@@ -254,15 +254,9 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void getDurationOfEachExam(Date date,DayView dayView) throws JSONException, ParseException {
+    private void getDurationOfEachExam(Date date, DayView dayView) throws JSONException, ParseException {
 
-//        dialog = new ProgressDialog(getActivity());
-//        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//        dialog.setMessage("Preparing your calendar. Please wait...");
-//        dialog.setIndeterminate(true);
-//        dialog.show();
-
-        Log.d("joinedExamssss",myJoinedExamssss+""+timestampppp);
+        Log.d("joinedExamssss", myJoinedExamssss + "" + timestampppp);
         JSONArray arr = new JSONArray(myJoinedExamssss);
         HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExamssss);
         int length = arr.length();
@@ -274,19 +268,19 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
                 myStartDate = mapper.get("StartDate").get(i);
                 myEndDate = mapper.get("EndDate").get(i);
                 myDuration = mapper.get("ExamDuration").get(i);
-                myStartTime=mapper.get("StartTime").get(i);
-                myEndTime=mapper.get("EndTime").get(i);
+                myStartTime = mapper.get("StartTime").get(i);
+                myEndTime = mapper.get("EndTime").get(i);
 
                 myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
                 myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
-                myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+                myDurationTime = MiscellaneousParser.parseDuration(myDuration);
 
-                String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
-                String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
+                String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
+                String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
 
-                String myTime=MiscellaneousParser.parseTimestampForTime(timestampppp);
+                String myTime = MiscellaneousParser.parseTimestampForTime(timestampppp);
 
-                String strDate=date.toString();
+                String strDate = date.toString();
                 simpleDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
                 Date date2 = simpleDateFormat.parse(strDate);
                 Calendar calendar = Calendar.getInstance();
@@ -297,48 +291,47 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
                 month2++;
                 String myParsedDate = day2 + "/" + month2 + "/" + year2;
 
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-                Date start_date=simpleDateFormat.parse(myDateOfStart);
-                Date end_date=simpleDateFormat.parse(myDateOfEnd);
-                Date middle_date=simpleDateFormat.parse(myParsedDate);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                Date start_date = simpleDateFormat.parse(myDateOfStart);
+                Date end_date = simpleDateFormat.parse(myDateOfEnd);
+                Date middle_date = simpleDateFormat.parse(myParsedDate);
 
-                SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
-                Date start_time=simpleDateFormat2.parse(myTimeOfStart);
-                Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
-                Date middle_time=simpleDateFormat2.parse(myTime);
+                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
+                Date start_time = simpleDateFormat2.parse(myTimeOfStart);
+                Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
+                Date middle_time = simpleDateFormat2.parse(myTime);
 
-                if(!(middle_date.before(start_date)||middle_date.after(end_date))){
-                    if(middle_date.equals(end_date)){
-                        if(middle_date.equals(myCurrDate)){
-                            if(!middle_time.after(end_time)){
+                if (!(middle_date.before(start_date) || middle_date.after(end_date))) {
+                    if (middle_date.equals(end_date)) {
+                        if (middle_date.equals(myCurrDate)) {
+                            if (!middle_time.after(end_time)) {
                                 dayView.setTextColor(Color.parseColor("#00B4A8"));
                             }
-                        }else{
+                        } else {
                             dayView.setTextColor(Color.parseColor("#00B4A8"));
                         }
-                    }else{
+                    } else {
                         dayView.setTextColor(Color.parseColor("#00B4A8"));
                     }
                 }
             }
         }
 
-//        dialog.dismiss();
     }
 
     public void afterResponse() throws ParseException {
         //Initialize calendar with date
-        String myTimestamp=MiscellaneousParser.parseTimestamp(timestampppp);
-        SimpleDateFormat simpleDateFormattt=new SimpleDateFormat("dd/MM/yyyy");
-        myCurrDate=simpleDateFormattt.parse(myTimestamp);
-        String parts[]=myTimestamp.split("/");
-        curr_day=Integer.parseInt(parts[0]);
-        curr_month=Integer.parseInt(parts[1]);
-        curr_year=Integer.parseInt(parts[2]);
-        currentCalendar=Calendar.getInstance();
+        String myTimestamp = MiscellaneousParser.parseTimestamp(timestampppp);
+        SimpleDateFormat simpleDateFormattt = new SimpleDateFormat("dd/MM/yyyy");
+        myCurrDate = simpleDateFormattt.parse(myTimestamp);
+        String parts[] = myTimestamp.split("/");
+        curr_day = Integer.parseInt(parts[0]);
+        curr_month = Integer.parseInt(parts[1]);
+        curr_year = Integer.parseInt(parts[2]);
+        currentCalendar = Calendar.getInstance();
         currentCalendar.setTime(myCurrDate);
 
-        populateListForCalendar(curr_day,curr_month,curr_year);
+        populateListForCalendar(curr_day, curr_month, curr_year);
 
         calendarView.setFirstDayOfWeek(Calendar.MONDAY);
 
@@ -352,26 +345,26 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
         calendarView.setCalendarListener(new CalendarListener() {
             @Override
             public void onDateSelected(Date date) {
-                simpleDateFormat=new SimpleDateFormat("dd");
-                int dd=Integer.parseInt(simpleDateFormat.format(date));
-                simpleDateFormat=new SimpleDateFormat("MM");
-                int mm=Integer.parseInt(simpleDateFormat.format(date));
-                simpleDateFormat=new SimpleDateFormat("yyyy");
-                int yy=Integer.parseInt(simpleDateFormat.format(date));
-                populateListForCalendar(dd,mm,yy);
+                simpleDateFormat = new SimpleDateFormat("dd");
+                int dd = Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat = new SimpleDateFormat("MM");
+                int mm = Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat = new SimpleDateFormat("yyyy");
+                int yy = Integer.parseInt(simpleDateFormat.format(date));
+                populateListForCalendar(dd, mm, yy);
             }
 
             @Override
             public void onMonthChanged(Date date) {
-                simpleDateFormat=new SimpleDateFormat("dd");
-                int dd=Integer.parseInt(simpleDateFormat.format(date));
-                simpleDateFormat=new SimpleDateFormat("MM");
-                int mm=Integer.parseInt(simpleDateFormat.format(date));
-                simpleDateFormat=new SimpleDateFormat("yyyy");
-                int yy=Integer.parseInt(simpleDateFormat.format(date));
-                if(curr_day==dd&&curr_month==mm&&curr_year==yy){
-                    populateListForCalendar(dd,mm,yy);
-                }else{
+                simpleDateFormat = new SimpleDateFormat("dd");
+                int dd = Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat = new SimpleDateFormat("MM");
+                int mm = Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat = new SimpleDateFormat("yyyy");
+                int yy = Integer.parseInt(simpleDateFormat.format(date));
+                if (curr_day == dd && curr_month == mm && curr_year == yy) {
+                    populateListForCalendar(dd, mm, yy);
+                } else {
                     valuesList = new ArrayList<>();
                     calendarListAdapter = new CalendarListAdapter(valuesList, getActivity());
                     myExamsList.setAdapter(calendarListAdapter);
@@ -395,15 +388,16 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
         calendarView.refreshCalendar(currentCalendar);
     }
 
-    public void populateFirstTime(){
+    public void populateFirstTime() {
 
         dialog = new ProgressDialog(getActivity());
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Loading. Please wait...");
         dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
         dialog.show();
 
-        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId","");
+        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
 
@@ -413,10 +407,10 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
                 calendarView.setVisibility(View.VISIBLE);
                 dialog.dismiss();
                 try {
-                    String myResponse=response.getJSONObject("response").toString();
-                    final JSONObject jsonObject=new JSONObject(myResponse);
-                    timestampppp=jsonObject.getString("timestamp");
-                    myJoinedExamssss=jsonObject.getJSONArray("joinedExams").toString();
+                    String myResponse = response.getJSONObject("response").toString();
+                    final JSONObject jsonObject = new JSONObject(myResponse);
+                    timestampppp = jsonObject.getString("timestamp");
+                    myJoinedExamssss = jsonObject.getJSONArray("joinedExams").toString();
                     afterResponse();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -444,8 +438,8 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected){
-            if(valuesList.isEmpty()){
+        if (isConnected) {
+            if (valuesList.isEmpty()) {
                 populateFirstTime();
             }
         }

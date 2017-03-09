@@ -41,7 +41,7 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         b = getIntent().getBundleExtra("bundle");
         name = b.getString("name");
         enrolled = b.getString("enrolled");
-        from=getIntent().getStringExtra("from");
+        from = getIntent().getStringExtra("from");
 
         getSupportActionBar().setTitle(name);
 
@@ -117,47 +117,47 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         manager = getSupportFragmentManager();
         trans = manager.beginTransaction();
         RulesFragment f = (RulesFragment) manager.findFragmentByTag("RulesFragment");
-        RulesFragment ff=(RulesFragment)manager.findFragmentByTag("RulesFromJoin");
-        if(f!=null&&f.isVisible()){
+        RulesFragment ff = (RulesFragment) manager.findFragmentByTag("RulesFromJoin");
+        if (f != null && f.isVisible()) {
             StartPageFragment fragment = new StartPageFragment();
             fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "StartPageFragment");
             trans.commit();
             getSupportActionBar().setTitle(name);
-        }else if(ff!=null&&ff.isVisible()){
+        } else if (ff != null && ff.isVisible()) {
             JoinPageFragment fragment = new JoinPageFragment();
             fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "JoinPageFragment");
             trans.commit();
             getSupportActionBar().setTitle(name);
-        }else{
-            if(from.equals("home")){
-                setResult(10,null);
+        } else {
+            if (from.equals("home")) {
+                setResult(10, null);
             }
             super.onBackPressed();
         }
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         manager = getSupportFragmentManager();
         trans = manager.beginTransaction();
         RulesFragment f = (RulesFragment) manager.findFragmentByTag("RulesFragment");
-        RulesFragment ff=(RulesFragment)manager.findFragmentByTag("RulesFromJoin");
-        if(f!=null&&f.isVisible()){
+        RulesFragment ff = (RulesFragment) manager.findFragmentByTag("RulesFromJoin");
+        if (f != null && f.isVisible()) {
             StartPageFragment fragment = new StartPageFragment();
             fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "StartPageFragment");
             trans.commit();
             getSupportActionBar().setTitle(name);
-        }else if(ff!=null&&ff.isVisible()){
+        } else if (ff != null && ff.isVisible()) {
             JoinPageFragment fragment = new JoinPageFragment();
             fragment.setArguments(b);
             trans.replace(R.id.fragment, fragment, "JoinPageFragment");
             trans.commit();
             getSupportActionBar().setTitle(name);
-        }else{
-            Log.d("visible","notRules");
+        } else {
+            Log.d("visible", "notRules");
             finish();
         }
         return true;

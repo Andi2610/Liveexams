@@ -66,29 +66,29 @@ public class ForgotPassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
-        reset=(Button)findViewById(R.id.reset);
-        newPassword=(EditText)findViewById(R.id.newPassword);
-        containerForgotPassword=(RelativeLayout)findViewById(R.id.containerForgotPassword);
+        reset = (Button) findViewById(R.id.reset);
+        newPassword = (EditText) findViewById(R.id.newPassword);
+        containerForgotPassword = (RelativeLayout) findViewById(R.id.containerForgotPassword);
         containerForgotPassword.setVisibility(View.INVISIBLE);
 
-        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         newPassword.setTypeface(tff1);
-        Typeface tff2=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         reset.setTypeface(tff2);
 
-        h=new Handler();
+        h = new Handler();
 
-        boolean result= CheckForPermissions.checkForSms(ForgotPassword.this);
-        if(result){
+        boolean result = CheckForPermissions.checkForSms(ForgotPassword.this);
+        if (result) {
             getVerified();
         }
     }
 
-    public AuthCallback getAuthCallback(){
+    public AuthCallback getAuthCallback() {
         return authCallback;
     }
 
-    public void successMethod(final String phoneNumber){
+    public void successMethod(final String phoneNumber) {
 
         Toast.makeText(ForgotPassword.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
         newPassword.addTextChangedListener(new TextWatcher() {
@@ -115,20 +115,21 @@ public class ForgotPassword extends AppCompatActivity {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                text=newPassword.getText().toString();
-                if(text.length()<6){
+                text = newPassword.getText().toString();
+                if (text.length() < 6) {
                     newPassword.setError("Minimum 6 characters required");
-                }else{
+                } else {
                     requestQueue = Volley.newRequestQueue(getApplicationContext());
 
                     //Call change password api..
                     //Api to be connected to..
-                    String url = ConstantsDefined.api+"changePassword";
+                    String url = ConstantsDefined.api + "changePassword";
 
                     dialog = new ProgressDialog(ForgotPassword.this);
                     dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     dialog.setMessage("Changing your password. Please wait...");
                     dialog.setIndeterminate(true);
+                    dialog.setCancelable(false);
                     dialog.show();
 
                     //Make a request..
@@ -136,13 +137,14 @@ public class ForgotPassword extends AppCompatActivity {
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            dialog.dismiss();
                             //On getting the response..
                             try {
                                 //Parse the login response..
-                                HashMap<String ,String> mapper= MiscellaneousParser.changePasswordParser(response);
-                                dialog.dismiss();
+                                HashMap<String, String> mapper = MiscellaneousParser.changePasswordParser(response);
+
                                 //If successfull signup.. save the desired info in shared preferences..
-                                if(mapper.get("success").equals("true")) {
+                                if (mapper.get("success").equals("true")) {
                                     Toast.makeText(ForgotPassword.this, mapper.get("message"), Toast.LENGTH_SHORT).show();
                                     finish();
                                 }
@@ -158,15 +160,15 @@ public class ForgotPassword extends AppCompatActivity {
                             dialog.dismiss();
                             Toast.makeText(ForgotPassword.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
-                    }){
+                    }) {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
 
                             //Put all the required parameters for the post request..
-                            Map<String,String> params = new HashMap<String, String>();
-                            Log.d("phone",phoneNumber+"");
-                            params.put("mobileNumber",phoneNumber.substring(3));
-                            params.put("newPassword",text);
+                            Map<String, String> params = new HashMap<String, String>();
+                            Log.d("phone", phoneNumber + "");
+                            params.put("mobileNumber", phoneNumber.substring(3));
+                            params.put("newPassword", text);
                             return params;
                         }
                     };
@@ -181,21 +183,21 @@ public class ForgotPassword extends AppCompatActivity {
         switch (requestCode) {
             case CheckForPermissions.SMS_PERMISSION_CODE:
                 //If permission is granted
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                }else{
+                } else {
                     //Displaying another toast if permission is not granted
-                    Toast.makeText(this,"Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
                 }
                 getVerified();
                 break;
         }
     }
 
-    public void getVerified(){
+    public void getVerified() {
 
         Toast.makeText(this, "Enter your registered mobile number", Toast.LENGTH_LONG).show();
-        TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
         authCallback = new AuthCallback() {
             @Override
@@ -207,9 +209,9 @@ public class ForgotPassword extends AppCompatActivity {
 
                         successMethod(phoneNumber);
                         containerForgotPassword.setVisibility(View.VISIBLE);
+
                     }
                 });
-
             }
 
             @Override

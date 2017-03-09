@@ -45,7 +45,7 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
     ProgressDialog dialog;
     Handler h;
     RequestQueue requestQueue;
-    String enrolled, timestamp, examDetails, examId,examGiven;
+    String enrolled, timestamp, examDetails, examId, examGiven;
 
     CalendarListAdapter(List<Values> myList, Context c) {
         this.myList = myList;
@@ -63,8 +63,8 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
         value = myList.get(position);
-        Typeface tff=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
-        Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.name.setText(value.getName());
         holder.name.setTypeface(tff2);
         holder.startDatevalue.setText(value.getStartDateValue());
@@ -97,6 +97,7 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        dialog.dismiss();
                         try {
                             //Parse Exam details..
                             HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
@@ -108,7 +109,6 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
                             examGiven = mapper.get("examGiven");
 
                             examId = value.getExamId();
-                            dialog.dismiss();
 
                             h = new Handler();
                             h.post(new Runnable() {
@@ -121,11 +121,11 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
                                     b.putString("examDetails", examDetails);
                                     b.putString("name", value.getName());
                                     b.putString("examId", examId);
-                                    b.putString("examGiven",examGiven);
+                                    b.putString("examGiven", examGiven);
                                     Intent i = new Intent(c, ParticularExamMainActivity.class);
                                     i.putExtra("bundle", b);
-                                    i.putExtra("from","calendar");
-                                    ((MainActivity)c).startActivity(i);
+                                    i.putExtra("from", "calendar");
+                                    ((MainActivity) c).startActivity(i);
 //                                    ((MainActivity)c).startActivityForResult(i,11);
                                 }
                             });
@@ -162,7 +162,7 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, startDatevalue, endDateValue, durationValue,startDateText,endDateText,durationText;
+        public TextView name, startDatevalue, endDateValue, durationValue, startDateText, endDateText, durationText;
         LinearLayout container;
 
         public MyViewHolder(View itemView) {

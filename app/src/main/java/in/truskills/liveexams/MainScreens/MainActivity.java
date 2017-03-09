@@ -55,7 +55,7 @@ import in.truskills.liveexams.Miscellaneous.RealPathUtil;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface {
 
     //Declare variables..
     NavigationView navigationView;
@@ -173,12 +173,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         boolean statusForCamera = CheckForPermissions.checkForCamera(MainActivity.this);
 //                        if (statusForCamera) {
 //                            Log.d(CAMERA, "permission granted for camera");
-                            cameraIntent();
+                        cameraIntent();
 //                        }
                     } else if (items[item].equals("Choose from Library")) {
 //                        boolean statusForGallery = CheckForPermissions.checkForGallery(MainActivity.this);
 //                        if (statusForGallery) {
-                            galleryIntent();
+                        galleryIntent();
 //                        }
                     } else if (items[item].equals("Remove Photo")) {
                         SharedPreferences.Editor e = prefs.edit();
@@ -458,7 +458,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent i = new Intent(MainActivity.this, Signup_Login.class);
             startActivity(i);
             finish();
-        }else if(id==R.id.nav_statistics){
+        } else if (id == R.id.nav_statistics) {
             StatisticsFragment f = (StatisticsFragment) manager.findFragmentByTag("StatisticsFragment");
             if (!(f != null && f.isVisible())) {
 

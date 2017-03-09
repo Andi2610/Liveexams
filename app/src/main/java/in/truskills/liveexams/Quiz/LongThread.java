@@ -37,19 +37,19 @@ public class LongThread implements Runnable {
         this.threadNo = threadNo;
         this.handler = handler;
         this.imageUrl = imageUrl;
-        this.group=group;
-        this.executor=executor;
-        this.c=c;
+        this.group = group;
+        this.executor = executor;
+        this.c = c;
     }
 
     @Override
     public void run() {
         Log.i(TAG, "Starting Thread : " + threadNo);
-        bmp=getBitmap(imageUrl);
+        bmp = getBitmap(imageUrl);
         try {
-            savebitmap(bmp,group);
+            savebitmap(bmp, group);
         } catch (Exception e) {
-            Log.e("in","exception:"+e.toString());
+            Log.e("in", "exception:" + e.toString());
             e.printStackTrace();
             return;
         }
@@ -57,8 +57,8 @@ public class LongThread implements Runnable {
         Log.i(TAG, "Thread Completed " + threadNo);
     }
 
-    public static File savebitmap(Bitmap bmp,String gr) throws Exception {
-        Log.d("hereeeee","inSaveBitmap");
+    public static File savebitmap(Bitmap bmp, String gr) throws Exception {
+        Log.d("hereeeee", "inSaveBitmap");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         String folder_main = "LiveExams";
@@ -68,7 +68,7 @@ public class LongThread implements Runnable {
             f.mkdirs();
         }
 
-        String pp=f.getAbsolutePath();
+        String pp = f.getAbsolutePath();
         File file = new File(pp
                 + File.separator + gr);
         file.createNewFile();
@@ -89,13 +89,13 @@ public class LongThread implements Runnable {
         try {
             // Download Image from URL
             InputStream input = new java.net.URL(url).openStream();
-                // Decode Bitmap
-                bitmap = BitmapFactory.decodeStream(input);
+            // Decode Bitmap
+            bitmap = BitmapFactory.decodeStream(input);
 
 
             // Do extra processing with the bitmap
         } catch (Exception e) {
-            Log.e("in","exception:"+e.toString());
+            Log.e("in", "exception:" + e.toString());
             e.printStackTrace();
             return null;
         }

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,16 +21,16 @@ import in.truskills.liveexams.R;
  * Created by Shivansh Gupta on 06-02-2017.
  */
 
-public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsSummaryAdapter.MyViewHolder>{
+public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsSummaryAdapter.MyViewHolder> {
 
     ArrayList<String> sectionName;
     ArrayList<ArrayList<Integer>> questionArray;
     Context c;
 
-    AllSectionsSummaryAdapter(ArrayList<String> sectionName,ArrayList<ArrayList<Integer>> questionArray,Context c){
-        this.sectionName=sectionName;
-        this.questionArray=questionArray;
-        this.c=c;
+    AllSectionsSummaryAdapter(ArrayList<String> sectionName, ArrayList<ArrayList<Integer>> questionArray, Context c) {
+        this.sectionName = sectionName;
+        this.questionArray = questionArray;
+        this.c = c;
     }
 
     @Override
@@ -44,58 +45,60 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
         holder.mySectionName.setText(sectionName.get(holder.getAdapterPosition()));
 
         ArrayList<Integer> types;
-        QuizDatabase ob=new QuizDatabase(c);
+        QuizDatabase ob = new QuizDatabase(c);
 
-        int sI=ob.getIntValuesPerSectionBySerialNumber(holder.getAdapterPosition(), QuizDatabase.SectionIndex);
+        int sI = ob.getIntValuesPerSectionBySerialNumber(holder.getAdapterPosition(), QuizDatabase.SectionIndex);
 
-        types=ob.getTypes(sI);
+        types = ob.getTypes(sI);
 
-        holder.submittedQuestionsAllSummary.setText(types.get(0)+"");
-        holder.reviewedTickedQuestionsAllSummary.setText(types.get(1)+"");
-        holder.reviewedUntickedQuestionsAllSummary.setText(types.get(2)+"");
-        holder.clearedQuestionsAllSummary.setText(types.get(3)+"");
-        holder.notAttemptedQuestionsAllSummary.setText(types.get(4)+"");
+        holder.submittedQuestionsAllSummary.setText(types.get(0) + "");
+        holder.reviewedTickedQuestionsAllSummary.setText(types.get(1) + "");
+        holder.reviewedUntickedQuestionsAllSummary.setText(types.get(2) + "");
+        holder.clearedQuestionsAllSummary.setText(types.get(3) + "");
+        holder.notAttemptedQuestionsAllSummary.setText(types.get(4) + "");
 
 
-        Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff1 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.mySectionName.setTypeface(tff1);
-        Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
         holder.submittedQuestionsAllSummary.setTypeface(tff1);
         holder.reviewedTickedQuestionsAllSummary.setTypeface(tff1);
         holder.reviewedUntickedQuestionsAllSummary.setTypeface(tff1);
         holder.clearedQuestionsAllSummary.setTypeface(tff1);
         holder.notAttemptedQuestionsAllSummary.setTypeface(tff1);
 
-        ArrayList<Integer> myType=ob.getTypesOfEachSection(sI);
+        ArrayList<Integer> myType = ob.getTypesOfEachSection(sI);
 
-        GridViewAdapter adapter=new GridViewAdapter(questionArray.get(holder.getAdapterPosition()),myType,c);
+        GridViewAdapter adapter = new GridViewAdapter(questionArray.get(holder.getAdapterPosition()), myType, c);
         holder.gridView.setAdapter(adapter);
         holder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int post, long id) {
 
-                Intent intentMessage=new Intent();
+                Intent intentMessage = new Intent();
                 // put the message in Intent
-                ArrayList<Integer> myFi=questionArray.get(holder.getAdapterPosition());
-                intentMessage.putExtra("jumpTo",myFi.get(post));
-                ((AllSectionsSummary)c).setResult(2,intentMessage);
-                ((AllSectionsSummary)c).finish();
+                ArrayList<Integer> myFi = questionArray.get(holder.getAdapterPosition());
+                intentMessage.putExtra("jumpTo", myFi.get(post));
+                ((AllSectionsSummary) c).setResult(2, intentMessage);
+                ((AllSectionsSummary) c).finish();
             }
         });
+
+        setDynamicHeight(holder.gridView);
 
         holder.mySectionName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentMessage=new Intent();
+                Intent intentMessage = new Intent();
                 // put the message in Intent
                 //message=serial number of a section..
-                int mySrNo=holder.getAdapterPosition();
-                QuizDatabase quizDatabase =new QuizDatabase(c);
-                int sI= quizDatabase.getIntValuesPerSectionBySerialNumber(mySrNo, QuizDatabase.SectionIndex);
-                int my_fi= quizDatabase.getIntValuesPerQuestionBySiAndSrno(sI,0, QuizDatabase.FragmentIndex);
-                intentMessage.putExtra("jumpTo",my_fi);
-                ((AllSectionsSummary)c).setResult(2,intentMessage);
-                ((AllSectionsSummary)c).finish();
+                int mySrNo = holder.getAdapterPosition();
+                QuizDatabase quizDatabase = new QuizDatabase(c);
+                int sI = quizDatabase.getIntValuesPerSectionBySerialNumber(mySrNo, QuizDatabase.SectionIndex);
+                int my_fi = quizDatabase.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
+                intentMessage.putExtra("jumpTo", my_fi);
+                ((AllSectionsSummary) c).setResult(2, intentMessage);
+                ((AllSectionsSummary) c).finish();
             }
         });
     }
@@ -107,7 +110,7 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mySectionName,submittedQuestionsAllSummary,reviewedTickedQuestionsAllSummary,reviewedUntickedQuestionsAllSummary,clearedQuestionsAllSummary,notAttemptedQuestionsAllSummary;
+        TextView mySectionName, submittedQuestionsAllSummary, reviewedTickedQuestionsAllSummary, reviewedUntickedQuestionsAllSummary, clearedQuestionsAllSummary, notAttemptedQuestionsAllSummary;
         GridView gridView;
 
         public MyViewHolder(View itemView) {
@@ -121,5 +124,32 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
 
             gridView = (GridView) itemView.findViewById(R.id.gridView);
         }
+    }
+
+    private void setDynamicHeight(GridView gridView) {
+        ListAdapter gridViewAdapter = gridView.getAdapter();
+        if (gridViewAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int items = gridViewAdapter.getCount();
+        int rows = 0;
+
+        View listItem = gridViewAdapter.getView(0, null, gridView);
+        listItem.measure(0, 0);
+        totalHeight = listItem.getMeasuredHeight();
+
+        float x = 1;
+        if (items > 5) {
+            x = items / 5;
+            rows = (int) (x + 1);
+            totalHeight *= rows;
+        }
+
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.height = totalHeight;
+        gridView.setLayoutParams(params);
     }
 }

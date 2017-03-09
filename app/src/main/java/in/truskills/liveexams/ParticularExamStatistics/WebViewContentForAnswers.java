@@ -15,54 +15,54 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class WebViewContentForAnswers {
 
-    public void contentGenerator(final String question, final ArrayList<String> optionsList,WebView webView,String myAnswer,String correctAnswer) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, WebView webView, String myAnswer, String correctAnswer) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
-        int myAnswerId=Integer.parseInt(myAnswer);
+        int myAnswerId = Integer.parseInt(myAnswer);
         --myAnswerId;
-        int correctanswerId=Integer.parseInt(correctAnswer);
+        int correctanswerId = Integer.parseInt(correctAnswer);
         --correctanswerId;
         //Design proper format of the question..
-        String formattedQuestion="";
-        ArrayList<String> formattedOptions= new ArrayList<>();
-        formattedQuestion=question;
-        Log.d("text",formattedQuestion);
+        String formattedQuestion = "";
+        ArrayList<String> formattedOptions = new ArrayList<>();
+        formattedQuestion = question;
+        Log.d("text", formattedQuestion);
         for (int i = 0; i < optionsListSize; ++i) {
             //Design proper format of the options..
             String formattedOption = optionsList.get(i);
-            Log.d("text",formattedOption);
+            Log.d("text", formattedOption);
             formattedOptions.add(formattedOption);
         }
 
         String x = "";
 
         //Dynamic radio buttons added depending upon the options list size..
-        for (int i = 0; i <optionsListSize; ++i) {
-            if(i==correctanswerId){
-                x=x+"<div>\n" +
+        for (int i = 0; i < optionsListSize; ++i) {
+            if (i == correctanswerId) {
+                x = x + "<div>\n" +
                         "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
-                        "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
+                        "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
                         "</div>\n" +
                         "<br>";
-            }else if(i==myAnswerId){
-                if(myAnswerId==correctanswerId){
-                    x=x+"<div>\n" +
+            } else if (i == myAnswerId) {
+                if (myAnswerId == correctanswerId) {
+                    x = x + "<div>\n" +
                             "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
-                            "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
+                            "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
                             "</div>\n" +
                             "<br>";
-                }else{
-                    x=x+"<div>\n" +
+                } else {
+                    x = x + "<div>\n" +
                             "\t<span><img src=\"https://uploads.wishloop.com/uploads/img_f4325850c9cbe4473e780daa08bffa4b3656b8f6.png\" height=30 width=30/></span>\n" +
-                            "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
+                            "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
                             "</div>\n" +
                             "<br>";
                 }
-            }else{
-                x=x+"<div>\n" +
+            } else {
+                x = x + "<div>\n" +
                         "\t<span><img src=\"https://data.unhcr.org/horn-of-africa/images/circle_grey.png\" height=30 width=30/></span>\n" +
-                        "\t<span style=\"margin-left:20px\">"+formattedOptions.get(i)+"</span>\n" +
+                        "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
                         "</div>\n" +
                         "<br>";
             }

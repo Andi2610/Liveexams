@@ -25,18 +25,15 @@ import in.truskills.liveexams.SqliteDatabases.AnalyticsDatabase;
  * Created by 6155dx on 22-01-2017.
  */
 
-public class StatisticsListAdapter extends RecyclerView.Adapter<StatisticsListAdapter.MyViewHolder>{
+public class StatisticsListAdapter extends RecyclerView.Adapter<StatisticsListAdapter.MyViewHolder> {
 
     List<Values> myList;
     Context c;
-    SharedPreferences prefs;
-    Handler h;
-    ProgressDialog dialog;
     Values value;
 
-    StatisticsListAdapter(List<Values> myList,Context c){
-        this.myList=myList;
-        this.c=c;
+    StatisticsListAdapter(List<Values> myList, Context c) {
+        this.myList = myList;
+        this.c = c;
         setHasStableIds(true);
     }
 
@@ -50,9 +47,9 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<StatisticsListAd
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        value=myList.get(position);
-        Typeface tff=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
-        Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        value = myList.get(position);
+        Typeface tff = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.name.setText(value.getName());
         holder.name.setTypeface(tff2);
         holder.startDatevalue.setText(value.getStartDateValue());
@@ -65,12 +62,12 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<StatisticsListAd
             @Override
             public void onClick(View view) {
 
-                value=myList.get(holder.getAdapterPosition());
-                AnalyticsDatabase ob=new AnalyticsDatabase(c);
+                value = myList.get(holder.getAdapterPosition());
+                AnalyticsDatabase ob = new AnalyticsDatabase(c);
                 ob.deleteMyTable();
-                Intent i =new Intent(c,AnswerPaperLoad.class);
+                Intent i = new Intent(c, AnswerPaperLoad.class);
                 i.putExtra("examId", value.getExamId());
-                i.putExtra("examName",value.getName());
+                i.putExtra("examName", value.getName());
                 c.startActivity(i);
             }
         });
@@ -91,32 +88,32 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<StatisticsListAd
         return position;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name,startDatevalue,endDateValue,durationValue;
+        public TextView name, startDatevalue, endDateValue, durationValue;
         LinearLayout container;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            name=(TextView)itemView.findViewById(R.id.name);
-            startDatevalue=(TextView)itemView.findViewById(R.id.startDateValue);
-            endDateValue=(TextView)itemView.findViewById(R.id.endDateValue);
-            durationValue=(TextView)itemView.findViewById(R.id.durationValue);
-            container=(LinearLayout)itemView.findViewById(R.id.container);
+            name = (TextView) itemView.findViewById(R.id.name);
+            startDatevalue = (TextView) itemView.findViewById(R.id.startDateValue);
+            endDateValue = (TextView) itemView.findViewById(R.id.endDateValue);
+            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
+            container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }
 
-    public void startMyActivity(String enrolled,String timestamp,String examDetails,String name,String examId){
+    public void startMyActivity(String enrolled, String timestamp, String examDetails, String name, String examId) {
 
-        Bundle b=new Bundle();
-        b.putString("enrolled",enrolled);
-        b.putString("timestamp",timestamp);
-        b.putString("examDetails",examDetails);
-        b.putString("name",name);
-        b.putString("examId",examId);
-        Intent i=new Intent(c,InitialInfo.class);
-        i.putExtra("bundle",b);
-        i.putExtra("from","allExams");
+        Bundle b = new Bundle();
+        b.putString("enrolled", enrolled);
+        b.putString("timestamp", timestamp);
+        b.putString("examDetails", examDetails);
+        b.putString("name", name);
+        b.putString("examId", examId);
+        Intent i = new Intent(c, InitialInfo.class);
+        i.putExtra("bundle", b);
+        i.putExtra("from", "allExams");
         c.startActivity(i);
     }
 }

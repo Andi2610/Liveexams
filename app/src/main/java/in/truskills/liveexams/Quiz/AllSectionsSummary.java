@@ -60,7 +60,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     ArrayList<ArrayList<Integer>> questionArray;
     QuizDatabase ob;
     Button finishButton;
-    String examId,userId,selectedLanguage;
+    String examId, userId, selectedLanguage;
     RequestQueue requestQueue;
     Handler h;
 
@@ -77,40 +77,40 @@ public class AllSectionsSummary extends AppCompatActivity {
 
         getSupportActionBar().setTitle("SUMMARY");
 
-        allSectionsList=(RecyclerView)findViewById(R.id.allSectionsList);
-        finishButton=(Button)findViewById(R.id.finishButton);
-        h=new Handler();
+        allSectionsList = (RecyclerView) findViewById(R.id.allSectionsList);
+        finishButton = (Button) findViewById(R.id.finishButton);
+        h = new Handler();
 
-        examId=getIntent().getStringExtra("examId");
-        userId=getIntent().getStringExtra("userId");
-        selectedLanguage=getIntent().getStringExtra("selectedLanguage");
+        examId = getIntent().getStringExtra("examId");
+        userId = getIntent().getStringExtra("userId");
+        selectedLanguage = getIntent().getStringExtra("selectedLanguage");
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
 
-        ob=new QuizDatabase(AllSectionsSummary.this);
-        sectionName=new ArrayList<>();
-        questionArray=new ArrayList<>();
+        ob = new QuizDatabase(AllSectionsSummary.this);
+        sectionName = new ArrayList<>();
+        questionArray = new ArrayList<>();
 
-        HashMap<String,ArrayList<String>> map=ob.getAllStringValuesPerSection();
-        sectionName=map.get("SectionNameList");
+        HashMap<String, ArrayList<String>> map = ob.getAllStringValuesPerSection();
+        sectionName = map.get("SectionNameList");
 
-        for(int i=0;i<sectionName.size();++i){
-            int sI=ob.getIntValuesPerSectionBySerialNumber(i, QuizDatabase.SectionIndex);
-            HashMap<String,ArrayList<Integer>> my_map=ob.getAllIntValuesPerQuestionBySectionIndex(sI);
-            ArrayList<Integer> my_fragment_index_list=new ArrayList<>();
-            my_fragment_index_list=my_map.get("FragmentIndexList");
+        for (int i = 0; i < sectionName.size(); ++i) {
+            int sI = ob.getIntValuesPerSectionBySerialNumber(i, QuizDatabase.SectionIndex);
+            HashMap<String, ArrayList<Integer>> my_map = ob.getAllIntValuesPerQuestionBySectionIndex(sI);
+            ArrayList<Integer> my_fragment_index_list = new ArrayList<>();
+            my_fragment_index_list = my_map.get("FragmentIndexList");
             questionArray.add(my_fragment_index_list);
         }
 
-        allSectionsSummaryAdapter =new AllSectionsSummaryAdapter(sectionName,questionArray,AllSectionsSummary.this);
+        allSectionsSummaryAdapter = new AllSectionsSummaryAdapter(sectionName, questionArray, AllSectionsSummary.this);
 
-        linearLayoutManager=new LinearLayoutManager(this);
+        linearLayoutManager = new LinearLayoutManager(this);
         allSectionsList.setLayoutManager(linearLayoutManager);
         allSectionsList.setItemAnimator(new DefaultItemAnimator());
         allSectionsList.setAdapter(allSectionsSummaryAdapter);
         allSectionsSummaryAdapter.notifyDataSetChanged();
 
-        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         finishButton.setTypeface(tff1);
 
         finishButton.setOnClickListener(new View.OnClickListener() {
@@ -136,10 +136,10 @@ public class AllSectionsSummary extends AppCompatActivity {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
-                                            String myResponse=response.getJSONObject("response").toString();
-                                            JSONObject jsonObject=new JSONObject(myResponse);
-                                            String timestamp=jsonObject.getString("timestamp");
-                                            final String myDate= MiscellaneousParser.parseTimestamp(timestamp);
+                                            String myResponse = response.getJSONObject("response").toString();
+                                            JSONObject jsonObject = new JSONObject(myResponse);
+                                            String timestamp = jsonObject.getString("timestamp");
+                                            final String myDate = MiscellaneousParser.parseTimestamp(timestamp);
                                             h.post(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -185,14 +185,14 @@ public class AllSectionsSummary extends AppCompatActivity {
         });
     }
 
-    public void afterResponse(String myDate){
+    public void afterResponse(String myDate) {
 //        ob.getAllValues();
-        JSONArray jsonArray=ob.getQuizResult();
-        final JSONObject jsonObject=new JSONObject();
+        JSONArray jsonArray = ob.getQuizResult();
+        final JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("result",jsonArray);
-            jsonObject.put("selectedLanguage",selectedLanguage);
-            jsonObject.put("date",myDate);
+            jsonObject.put("result", jsonArray);
+            jsonObject.put("selectedLanguage", selectedLanguage);
+            jsonObject.put("date", myDate);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -213,7 +213,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         }
 
         //Api to be connected to..
-        String myurl = ConstantsDefined.api+"answerPaper";
+        String myurl = ConstantsDefined.api + "answerPaper";
 
         final ProgressDialog progressDialog = new ProgressDialog(AllSectionsSummary.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -230,10 +230,10 @@ public class AllSectionsSummary extends AppCompatActivity {
                 //On getting the response..
                 progressDialog.dismiss();
                 try {
-                    JSONObject jsonObject1=new JSONObject(response);
-                    String success=jsonObject1.getString("success");
-                    String result=jsonObject1.getString("response");
-                    if(success.equals("true")){
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    String success = jsonObject1.getString("success");
+                    String result = jsonObject1.getString("response");
+                    if (success.equals("true")) {
                         String folder_main = "LiveExams";
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
@@ -244,9 +244,9 @@ public class AllSectionsSummary extends AppCompatActivity {
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
-                    }else{
-                        JSONObject jsonObject2=new JSONObject(result);
-                        Toast.makeText(AllSectionsSummary.this, jsonObject2.getString("errmsg")+"", Toast.LENGTH_SHORT).show();
+                    } else {
+                        JSONObject jsonObject2 = new JSONObject(result);
+                        Toast.makeText(AllSectionsSummary.this, jsonObject2.getString("errmsg") + "", Toast.LENGTH_SHORT).show();
 //                                                Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
@@ -263,18 +263,18 @@ public class AllSectionsSummary extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
                 progressDialog.dismiss();
-                Log.d("error",error.toString()+"");
+                Log.d("error", error.toString() + "");
                 Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 //Put all the required parameters for the post request..
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("userId",userId);
-                params.put("examId",examId);
-                params.put("answerPaper",jsonObject.toString());
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userId", userId);
+                params.put("examId", examId);
+                params.put("answerPaper", jsonObject.toString());
                 return params;
             }
         };
@@ -312,7 +312,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.rulesIcon:
-                Intent i =new Intent(this,RulesInAnswers.class);
+                Intent i = new Intent(this, RulesInAnswers.class);
                 startActivity(i);
                 break;
         }

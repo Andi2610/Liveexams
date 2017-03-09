@@ -37,7 +37,7 @@ import in.truskills.liveexams.R;
  * Created by 6155dx on 22-01-2017.
  */
 
-public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapter.MyViewHolder>{
+public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapter.MyViewHolder> {
 
     List<Values> myList;
     Context c;
@@ -46,9 +46,9 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
     ProgressDialog dialog;
     Values value;
 
-    AllExamsListAdapter(List<Values> myList,Context c){
-        this.myList=myList;
-        this.c=c;
+    AllExamsListAdapter(List<Values> myList, Context c) {
+        this.myList = myList;
+        this.c = c;
         setHasStableIds(true);
     }
 
@@ -62,9 +62,9 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        value=myList.get(position);
-        Typeface tff=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
-        Typeface tff2=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        value = myList.get(position);
+        Typeface tff = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.name.setText(value.getName());
         holder.name.setTypeface(tff2);
         holder.startDatevalue.setText(value.getStartDateValue());
@@ -80,10 +80,10 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
             @Override
             public void onClick(View view) {
 
-                value=myList.get(holder.getAdapterPosition());
+                value = myList.get(holder.getAdapterPosition());
 
-                final RequestQueue requestQueue= Volley.newRequestQueue(c);
-                prefs=c.getSharedPreferences("prefs",Context.MODE_PRIVATE);
+                final RequestQueue requestQueue = Volley.newRequestQueue(c);
+                prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
                 dialog = new ProgressDialog(c);
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -92,24 +92,24 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                 dialog.setCancelable(false);
                 dialog.show();
 
-                String url= ConstantsDefined.api+"examDetails";
+                String url = ConstantsDefined.api + "examDetails";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST,
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        dialog.dismiss();
                         try {
-                            HashMap<String,String> mapper= MiscellaneousParser.examDetailsParser(response);
-                            final String enrolled=mapper.get("enrolled");
-                            final String timestamp=mapper.get("timestamp");
-                            final String examDetails=mapper.get("examDetails");
-                            final String examGiven=mapper.get("examGiven");
-                            dialog.dismiss();
-                            final String examId=value.getExamId();
-                            h=new Handler();
+                            HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
+                            final String enrolled = mapper.get("enrolled");
+                            final String timestamp = mapper.get("timestamp");
+                            final String examDetails = mapper.get("examDetails");
+                            final String examGiven = mapper.get("examGiven");
+                            final String examId = value.getExamId();
+                            h = new Handler();
                             h.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    startMyActivity(enrolled,timestamp,examDetails,value.getName(),examId,examGiven);
+                                    startMyActivity(enrolled, timestamp, examDetails, value.getName(), examId, examGiven);
                                 }
                             });
                         } catch (JSONException e) {
@@ -122,12 +122,12 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                         dialog.dismiss();
                         Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
-                }){
+                }) {
                     @Override
-                    protected Map<String,String> getParams(){
-                        Map<String,String> params = new HashMap<String, String>();
-                        params.put("userId",prefs.getString("userId","abc"));
-                        params.put("examId",value.getExamId());
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("userId", prefs.getString("userId", "abc"));
+                        params.put("examId", value.getExamId());
                         return params;
                     }
                 };
@@ -151,36 +151,36 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
         return position;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name,startDatevalue,endDateValue,durationValue,startDateText,endDateText,durationText;
+        public TextView name, startDatevalue, endDateValue, durationValue, startDateText, endDateText, durationText;
         LinearLayout container;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            name=(TextView)itemView.findViewById(R.id.name);
-            startDatevalue=(TextView)itemView.findViewById(R.id.startDateValue);
-            endDateValue=(TextView)itemView.findViewById(R.id.endDateValue);
-            durationValue=(TextView)itemView.findViewById(R.id.durationValue);
+            name = (TextView) itemView.findViewById(R.id.name);
+            startDatevalue = (TextView) itemView.findViewById(R.id.startDateValue);
+            endDateValue = (TextView) itemView.findViewById(R.id.endDateValue);
+            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
             startDateText = (TextView) itemView.findViewById(R.id.startDateText);
             endDateText = (TextView) itemView.findViewById(R.id.endDateText);
             durationText = (TextView) itemView.findViewById(R.id.durationText);
-            container=(LinearLayout)itemView.findViewById(R.id.container);
+            container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }
 
-    public void startMyActivity(String enrolled,String timestamp,String examDetails,String name,String examId,String examGiven){
+    public void startMyActivity(String enrolled, String timestamp, String examDetails, String name, String examId, String examGiven) {
 
-        Bundle b=new Bundle();
-        b.putString("enrolled",enrolled);
-        b.putString("timestamp",timestamp);
-        b.putString("examDetails",examDetails);
-        b.putString("name",name);
-        b.putString("examId",examId);
-        b.putString("examGiven",examGiven);
-        Intent i=new Intent(c,ParticularExamMainActivity.class);
-        i.putExtra("bundle",b);
-        i.putExtra("from","allExams");
+        Bundle b = new Bundle();
+        b.putString("enrolled", enrolled);
+        b.putString("timestamp", timestamp);
+        b.putString("examDetails", examDetails);
+        b.putString("name", name);
+        b.putString("examId", examId);
+        b.putString("examGiven", examGiven);
+        Intent i = new Intent(c, ParticularExamMainActivity.class);
+        i.putExtra("bundle", b);
+        i.putExtra("from", "allExams");
         c.startActivity(i);
     }
 }

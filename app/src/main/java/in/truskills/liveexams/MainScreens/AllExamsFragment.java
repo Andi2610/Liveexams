@@ -52,12 +52,12 @@ public class AllExamsFragment extends Fragment {
     RecyclerView allExamsList;
     LinearLayoutManager linearLayoutManager;
     AllExamsListAdapter allExamsListAdapter;
-    List<Values> valuesList,filteredList;
+    List<Values> valuesList, filteredList;
     Values values;
     RequestQueue requestQueue;
     Handler h;
     SearchView searchView;
-    String myStartDate,myEndDate,myDateOfStart,myDateOfEnd,myDuration,myDurationTime,myStartTime,myEndTime;
+    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
     TextView searchExams;
 
     public AllExamsFragment() {
@@ -74,18 +74,17 @@ public class AllExamsFragment extends Fragment {
     }
 
 
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        allExamsList=(RecyclerView)getActivity().findViewById(R.id.allExamsList);
+        allExamsList = (RecyclerView) getActivity().findViewById(R.id.allExamsList);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         requestQueue = Volley.newRequestQueue(getActivity());
-        h=new Handler();
+        h = new Handler();
 
-        searchExams=(TextView)getActivity().findViewById(R.id.searchExams);
-        Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        searchExams = (TextView) getActivity().findViewById(R.id.searchExams);
+        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         searchExams.setTypeface(tff);
         searchExams.setVisibility(View.VISIBLE);
 
@@ -99,8 +98,8 @@ public class AllExamsFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.all_exams_menu, menu);
-        SearchManager searchManager = (SearchManager)getActivity().getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem=menu.findItem(R.id.searchAllExams);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        MenuItem menuItem = menu.findItem(R.id.searchAllExams);
         menuItem.expandActionView();
         searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         MenuItemCompat.setOnActionExpandListener(menuItem,
@@ -111,6 +110,7 @@ public class AllExamsFragment extends Fragment {
                         searchView.requestFocus();
                         return true;
                     }
+
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                         // When the action view is collapsed, reset the query
@@ -121,7 +121,7 @@ public class AllExamsFragment extends Fragment {
                     }
                 });
         searchView.setIconifiedByDefault(true);
-        if(searchView!=null) {
+        if (searchView != null) {
             searchView.onActionViewExpanded();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
             searchView.setQueryHint("Type here..");
@@ -138,12 +138,12 @@ public class AllExamsFragment extends Fragment {
 
                     filteredList = new ArrayList<>();
 
-                    if(s.equals("")){
-                        allExamsListAdapter=new AllExamsListAdapter(filteredList,getActivity());
+                    if (s.equals("")) {
+                        allExamsListAdapter = new AllExamsListAdapter(filteredList, getActivity());
                         allExamsList.setAdapter(allExamsListAdapter);
                         allExamsListAdapter.notifyDataSetChanged();
                         searchExams.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         connectToApi(s);
                     }
                     return true;
@@ -152,16 +152,16 @@ public class AllExamsFragment extends Fragment {
         }
     }
 
-    public void setList(){
-        valuesList=new ArrayList<>();
-        allExamsListAdapter=new AllExamsListAdapter(valuesList,getActivity());
+    public void setList() {
+        valuesList = new ArrayList<>();
+        allExamsListAdapter = new AllExamsListAdapter(valuesList, getActivity());
         allExamsList.setAdapter(allExamsListAdapter);
         allExamsListAdapter.notifyDataSetChanged();
         searchExams.setVisibility(View.VISIBLE);
     }
 
-    public void populateList(List<Values> list){
-        allExamsListAdapter=new AllExamsListAdapter(list,getActivity());
+    public void populateList(List<Values> list) {
+        allExamsListAdapter = new AllExamsListAdapter(list, getActivity());
         allExamsList.setAdapter(allExamsListAdapter);
         allExamsListAdapter.notifyDataSetChanged();
     }
@@ -169,18 +169,18 @@ public class AllExamsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        filteredList=new ArrayList<>();
+        filteredList = new ArrayList<>();
 
-        if(searchView==null){
-            allExamsListAdapter=new AllExamsListAdapter(filteredList,getActivity());
+        if (searchView == null) {
+            allExamsListAdapter = new AllExamsListAdapter(filteredList, getActivity());
             allExamsList.setAdapter(allExamsListAdapter);
             allExamsListAdapter.notifyDataSetChanged();
-        }else{
-            connectToApi(searchView.getQuery()+"");
+        } else {
+            connectToApi(searchView.getQuery() + "");
         }
     }
 
-    public void connectToApi(String s){
+    public void connectToApi(String s) {
         String url = ConstantsDefined.api + "searchExams/" + s;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
@@ -188,14 +188,14 @@ public class AllExamsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    HashMap<String,String> map=MiscellaneousParser.allExamsApiParser(response);
-                    String exams=map.get("exams");
-                    String timestamp=map.get("timestamp");
+                    HashMap<String, String> map = MiscellaneousParser.allExamsApiParser(response);
+                    String exams = map.get("exams");
+                    String timestamp = map.get("timestamp");
                     HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(exams);
 //                    Log.d("myExamName",mapper.get("ExamName").get(0)+"");
-                    JSONArray jsonArray=new JSONArray(exams);
-                    int length=jsonArray.length();
-                    if(length==0){
+                    JSONArray jsonArray = new JSONArray(exams);
+                    int length = jsonArray.length();
+                    if (length == 0) {
                         filteredList.clear();
                         h.post(new Runnable() {
                             @Override
@@ -204,52 +204,51 @@ public class AllExamsFragment extends Fragment {
                                 populateList(filteredList);
                             }
                         });
-                    }
-                    else{
+                    } else {
                         searchExams.setVisibility(View.GONE);
-                        filteredList=new ArrayList<Values>();
+                        filteredList = new ArrayList<Values>();
                         for (int i = 0; i < length; ++i) {
-                            myStartDate=mapper.get("StartDate").get(i);
-                            myEndDate=mapper.get("EndDate").get(i);
-                            myDuration=mapper.get("ExamDuration").get(i);
-                            myStartTime=mapper.get("StartTime").get(i);
-                            myEndTime=mapper.get("EndTime").get(i);
+                            myStartDate = mapper.get("StartDate").get(i);
+                            myEndDate = mapper.get("EndDate").get(i);
+                            myDuration = mapper.get("ExamDuration").get(i);
+                            myStartTime = mapper.get("StartTime").get(i);
+                            myEndTime = mapper.get("EndTime").get(i);
 
-                            Log.d("myDate=",myStartDate+" ****** "+myEndDate+" **** "+myDuration);
+                            Log.d("myDate=", myStartDate + " ****** " + myEndDate + " **** " + myDuration);
 
-                            myDateOfStart= MiscellaneousParser.parseDate(myStartDate);
-                            myDateOfEnd= MiscellaneousParser.parseDate(myEndDate);
-                            myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+                            myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                            myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                            myDurationTime = MiscellaneousParser.parseDuration(myDuration);
 
-                            String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
-                            String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
-                            Log.d("myTimestamp=",timestamp);
-                            String myTimestamp=MiscellaneousParser.parseTimestamp(timestamp);
-                            String myTime=MiscellaneousParser.parseTimestampForTime(timestamp);
+                            String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
+                            String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
+                            Log.d("myTimestamp=", timestamp);
+                            String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
+                            String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
 
-                            Log.d("myTimestamp=",myTimestamp);
+                            Log.d("myTimestamp=", myTimestamp);
 
-                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-                            Date start_date=simpleDateFormat.parse(myDateOfStart);
-                            Date end_date=simpleDateFormat.parse(myDateOfEnd);
-                            Date middle_date=simpleDateFormat.parse(myTimestamp);
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            Date start_date = simpleDateFormat.parse(myDateOfStart);
+                            Date end_date = simpleDateFormat.parse(myDateOfEnd);
+                            Date middle_date = simpleDateFormat.parse(myTimestamp);
 
-                            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
-                            Date start_time=simpleDateFormat2.parse(myTimeOfStart);
-                            Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
-                            Date middle_time=simpleDateFormat2.parse(myTime);
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
+                            Date start_time = simpleDateFormat2.parse(myTimeOfStart);
+                            Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
+                            Date middle_time = simpleDateFormat2.parse(myTime);
 
-                            if(middle_date.before(start_date)){
-                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                            if (middle_date.before(start_date)) {
+                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                 filteredList.add(values);
-                            }else if(middle_date.before(end_date)||middle_date.equals(end_date)){
-                                if(middle_date.equals(end_date)){
-                                    if(!middle_time.after(end_time)){
-                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                            } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
+                                if (middle_date.equals(end_date)) {
+                                    if (!middle_time.after(end_time)) {
+                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                         filteredList.add(values);
                                     }
-                                }else{
-                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                } else {
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                     filteredList.add(values);
                                 }
                             }

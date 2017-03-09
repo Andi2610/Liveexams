@@ -20,16 +20,16 @@ import in.truskills.liveexams.R;
 
 public class AllQuestionsInOneSectionAdapterForAnswers extends RecyclerView.Adapter<AllQuestionsInOneSectionAdapterForAnswers.MyViewHolder> {
 
-    ArrayList<Integer> myListOfFragmentIndex,myType;
+    ArrayList<Integer> myListOfFragmentIndex, myType;
     Context c;
     int pos;
     setValueOfPager ob;
 
-    AllQuestionsInOneSectionAdapterForAnswers(ArrayList<Integer> myListOfFragmentIndex,Context c,int pos,ArrayList<Integer> myType){
+    AllQuestionsInOneSectionAdapterForAnswers(ArrayList<Integer> myListOfFragmentIndex, Context c, int pos, ArrayList<Integer> myType) {
         this.myListOfFragmentIndex = myListOfFragmentIndex;
-        this.myType=myType;
+        this.myType = myType;
         this.c = c;
-        this.pos=pos;
+        this.pos = pos;
     }
 
     @Override
@@ -41,33 +41,38 @@ public class AllQuestionsInOneSectionAdapterForAnswers extends RecyclerView.Adap
 
     @Override
     public void onBindViewHolder(final AllQuestionsInOneSectionAdapterForAnswers.MyViewHolder holder, int position) {
-        int cn=holder.getAdapterPosition();
+        int cn = holder.getAdapterPosition();
         cn++;
-        holder.questionNumber.setText(cn+"");
-        Typeface tff1= Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        holder.questionNumber.setText(cn + "");
+        Typeface tff1 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.questionNumber.setTypeface(tff1);
-        switch (myType.get(holder.getAdapterPosition())){
-            case 0:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.green));
+        switch (myType.get(holder.getAdapterPosition())) {
+            case 0:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.green));
                 break;
-            case 1:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.orange));
+            case 1:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.orange));
                 break;
-            case 2:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.purple));
+            case 2:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.purple));
                 break;
-            case 3:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.red));
+            case 3:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.red));
                 break;
-            case 4:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.black));
+            case 4:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.black));
                 break;
         }
-        if(holder.getAdapterPosition()==pos){
+        if (holder.getAdapterPosition() == pos) {
             holder.downArrow.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             holder.downArrow.setVisibility(View.INVISIBLE);
         }
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ob=(setValueOfPager)c;
-                int jumpPosition=myListOfFragmentIndex.get(holder.getAdapterPosition());
+                ob = (setValueOfPager) c;
+                int jumpPosition = myListOfFragmentIndex.get(holder.getAdapterPosition());
                 ob.SetValue(jumpPosition);
             }
         });
@@ -77,6 +82,7 @@ public class AllQuestionsInOneSectionAdapterForAnswers extends RecyclerView.Adap
     public int getItemCount() {
         return myListOfFragmentIndex.size();
     }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView questionNumber;
@@ -87,10 +93,11 @@ public class AllQuestionsInOneSectionAdapterForAnswers extends RecyclerView.Adap
             super(itemView);
             questionNumber = (TextView) itemView.findViewById(R.id.questionNumber);
             parent = (LinearLayout) itemView.findViewById(R.id.parent);
-            downArrow=(ImageView) itemView.findViewById(R.id.downArrow);
+            downArrow = (ImageView) itemView.findViewById(R.id.downArrow);
         }
     }
 }
+
 interface setValueOfPager {
     public void SetValue(int pos);
 }

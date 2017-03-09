@@ -51,6 +51,7 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Quiz.MyQuestionPaperLoad;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.R;
@@ -61,14 +62,14 @@ public class StartPageFragment extends Fragment {
 
     //Declare variables..
     StartPageInterface ob;
-    TextView descriptionStartPage,start_Time,end_Time,start_Date,end_Date,sponsorText;
+    TextView descriptionStartPage, start_Time, end_Time, start_Date, end_Date, sponsorText;
     Spinner myLanguage;
-    String selectedLanguage, timestamp, examDetails, examId, name,Languages,examGiven;
+    String selectedLanguage, timestamp, examDetails, examId, name, Languages, examGiven;
     SharedPreferences prefs;
     Button start_leave_button;
     Bundle b;
     Handler h;
-    HashMap<String,String> mapper;
+    HashMap<String, String> mapper;
     ViewFlipper viewFlipper;
     QuizDatabase o;
     CustomSpinnerForDetailsAdapter customSpinnerForDetailsAdapter;
@@ -89,7 +90,7 @@ public class StartPageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        o=new QuizDatabase(getActivity());
+        o = new QuizDatabase(getActivity());
 
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -97,7 +98,7 @@ public class StartPageFragment extends Fragment {
         ob = (StartPageInterface) getActivity();
         ob.changeTitleForStartPage();
 
-        h=new Handler();
+        h = new Handler();
 
         start_Date = (TextView) getActivity().findViewById(R.id.startDate);
         end_Date = (TextView) getActivity().findViewById(R.id.endDate);
@@ -107,7 +108,7 @@ public class StartPageFragment extends Fragment {
         descriptionStartPage = (TextView) getActivity().findViewById(R.id.descriptionStartPage);
         myLanguage = (Spinner) getActivity().findViewById(R.id.myLanguage);
         start_leave_button = (Button) getActivity().findViewById(R.id.start_leave_button);
-        viewFlipper=(ViewFlipper)getActivity().findViewById(R.id.viewFlipper);
+        viewFlipper = (ViewFlipper) getActivity().findViewById(R.id.viewFlipper);
 
         int[] resources = {
                 R.drawable.first,
@@ -128,14 +129,14 @@ public class StartPageFragment extends Fragment {
         viewFlipper.setAutoStart(true);
         viewFlipper.setFlipInterval(2000);
 
-        Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         start_Date.setTypeface(tff);
         end_Date.setTypeface(tff);
         start_Time.setTypeface(tff);
         end_Time.setTypeface(tff);
         sponsorText.setTypeface(tff);
         descriptionStartPage.setTypeface(tff);
-        Typeface tff2=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
         start_leave_button.setTypeface(tff2);
 
 //
@@ -148,92 +149,91 @@ public class StartPageFragment extends Fragment {
 
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
-        examGiven=b.getString("examGiven");
+        examGiven = b.getString("examGiven");
 
-        Log.d("examGiven",examGiven+"");
+        Log.d("examGiven", examGiven + "");
 
         Answers.getInstance().logCustom(new CustomEvent("Start page inspect")
-                .putCustomAttribute("userName",prefs.getString("userName",""))
-                .putCustomAttribute("examId",examId));
+                .putCustomAttribute("userName", prefs.getString("userName", ""))
+                .putCustomAttribute("examId", examId));
 
 
         //Parse the exam details..
         try {
             HashMap<String, String> mapper = MiscellaneousParser.join_start_Parser(examDetails);
             descriptionStartPage.setText(mapper.get("Description"));
-            String startDate=mapper.get("StartDate");
-            String myStartDate= MiscellaneousParser.parseDate(startDate);
-            String endDate=mapper.get("EndDate");
-            String myEndDate= MiscellaneousParser.parseDate(endDate);
-            String startTime=mapper.get("StartTime");
-            Languages=mapper.get("Languages");
+            String startDate = mapper.get("StartDate");
+            String myStartDate = MiscellaneousParser.parseDate(startDate);
+            String endDate = mapper.get("EndDate");
+            String myEndDate = MiscellaneousParser.parseDate(endDate);
+            String startTime = mapper.get("StartTime");
+            Languages = mapper.get("Languages");
 
 
-            Log.d("timeDetails","dateInitially="+myStartDate+"**"+myEndDate);
+            Log.d("timeDetails", "dateInitially=" + myStartDate + "**" + myEndDate);
 
-            String myStartTime= MiscellaneousParser.parseTimeForDetails(startTime);
-            String endTime=mapper.get("EndTime");
-            String myEndTime= MiscellaneousParser.parseTimeForDetails(endTime);
+            String myStartTime = MiscellaneousParser.parseTimeForDetails(startTime);
+            String endTime = mapper.get("EndTime");
+            String myEndTime = MiscellaneousParser.parseTimeForDetails(endTime);
 
-            Log.d("timeDetails","timeInitially="+myStartTime+"**"+myEndTime);
-
-
-            String myTimestamp= MiscellaneousParser.parseTimestamp(timestamp);
-
-            Log.d("timeDetails","timestampDateInitially="+myTimestamp);
+            Log.d("timeDetails", "timeInitially=" + myStartTime + "**" + myEndTime);
 
 
-            String myTime= MiscellaneousParser.parseTimestampForTime(timestamp);
+            String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
 
-            Log.d("timeDetails","timestampTimeInitially="+myTime);
+            Log.d("timeDetails", "timestampDateInitially=" + myTimestamp);
 
 
+            String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
 
-            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-            Date start_date=simpleDateFormat.parse(myStartDate);
-            Date end_date=simpleDateFormat.parse(myEndDate);
-            Date middle_date=simpleDateFormat.parse(myTimestamp);
+            Log.d("timeDetails", "timestampTimeInitially=" + myTime);
 
-            Log.d("timeDetails","DateFinally"+start_date+"**"+middle_date+"**"+end_date);
 
-            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
-            Date start_time=simpleDateFormat2.parse(myStartTime);
-            Date end_time=simpleDateFormat2.parse(myEndTime);
-            Date middle_time=simpleDateFormat2.parse(myTime);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date start_date = simpleDateFormat.parse(myStartDate);
+            Date end_date = simpleDateFormat.parse(myEndDate);
+            Date middle_date = simpleDateFormat.parse(myTimestamp);
 
-            Log.d("timeDetails","TimeFinally"+start_time+"**"+middle_time+"**"+end_time);
+            Log.d("timeDetails", "DateFinally" + start_date + "**" + middle_date + "**" + end_date);
 
-            if(examGiven.equals("true")){
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
+            Date start_time = simpleDateFormat2.parse(myStartTime);
+            Date end_time = simpleDateFormat2.parse(myEndTime);
+            Date middle_time = simpleDateFormat2.parse(myTime);
+
+            Log.d("timeDetails", "TimeFinally" + start_time + "**" + middle_time + "**" + end_time);
+
+            if (examGiven.equals("true")) {
                 start_leave_button.setText("EXAM IS OVER");
                 start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
-            }else{
-                if(!((middle_date.before(start_date) || middle_date.after(end_date)))){
-                    if(middle_date.equals(start_date)){
-                        if(!middle_time.before(start_time)){
+            } else {
+                if (!((middle_date.before(start_date) || middle_date.after(end_date)))) {
+                    if (middle_date.equals(start_date)) {
+                        if (!middle_time.before(start_time)) {
                             start_leave_button.setText("START");
                             start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-                        }else{
+                        } else {
                             start_leave_button.setText("LEAVE");
                             start_leave_button.setBackgroundColor(Color.parseColor("#f44336"));
                         }
-                    }else if(middle_date.equals(end_date)){
-                        if(!middle_time.after(end_time)){
+                    } else if (middle_date.equals(end_date)) {
+                        if (!middle_time.after(end_time)) {
                             start_leave_button.setText("START");
                             start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
                             end_Date.setTextColor(Color.parseColor("#f44336"));
                             end_Time.setTextColor(Color.parseColor("#f44336"));
-                        }else{
+                        } else {
                             start_leave_button.setText("EXAM IS OVER");
                             start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
                         }
-                    }else{
+                    } else {
                         start_leave_button.setText("START");
                         start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
                     }
-                }else if(middle_date.after(end_date)){
+                } else if (middle_date.after(end_date)) {
                     start_leave_button.setText("EXAM IS OVER");
                     start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
-                }else {
+                } else {
                     start_leave_button.setText("LEAVE");
                     start_leave_button.setBackgroundColor(Color.parseColor("#f44336"));
                 }
@@ -242,7 +242,7 @@ public class StartPageFragment extends Fragment {
 //            start_leave_button.setText("START");
 //            start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
 
-            Log.d("newTimestamp=",myTimestamp);
+            Log.d("newTimestamp=", myTimestamp);
 
             start_Date.setText(myStartDate);
             start_Time.setText(myStartTime);
@@ -258,20 +258,20 @@ public class StartPageFragment extends Fragment {
             e.printStackTrace();
         }
 
-        ArrayList<String> listOfLanguages =new ArrayList<>();
+        ArrayList<String> listOfLanguages = new ArrayList<>();
         try {
             listOfLanguages = MiscellaneousParser.getLanguagesPerExam(Languages);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        customSpinnerForDetailsAdapter=new CustomSpinnerForDetailsAdapter(getActivity(),listOfLanguages);
+        customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(getActivity(), listOfLanguages);
 //        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
         myLanguage.setAdapter(customSpinnerForDetailsAdapter);
 
 //        int index = adapterLanguage.getPosition(prefs.getString("language", "English"));
 //        myLanguage.setSelection(index);
-        int index=customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
+        int index = customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
         myLanguage.setSelection(index);
 
         myLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -293,8 +293,8 @@ public class StartPageFragment extends Fragment {
                 //If start time of quiz hasn't reached..
                 if (start_leave_button.getText().equals("LEAVE")) {
                     Answers.getInstance().logCustom(new CustomEvent("Leave button clicked")
-                            .putCustomAttribute("userName",prefs.getString("userName",""))
-                            .putCustomAttribute("examId",examId));
+                            .putCustomAttribute("userName", prefs.getString("userName", ""))
+                            .putCustomAttribute("examId", examId));
                     //Unenroll user
                     final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     String url = ConstantsDefined.api + "unenrollUser/" + prefs.getString("userId", "abc");
@@ -303,29 +303,29 @@ public class StartPageFragment extends Fragment {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                    mapper = MiscellaneousParser.unenrollUserParser(response);
-                                    String success = mapper.get("success");
-                                    if (success.equals("true")) {
-                                        //Get Joined Exams Result
-                                        h.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                String myJoinedExams= null;
-                                                try {
-                                                    myJoinedExams = MiscellaneousParser.getJoinedExams(mapper.get("response"));
-                                                    SharedPreferences.Editor e=prefs.edit();
-                                                    e.putString("joinedExams",myJoinedExams);
-                                                    e.apply();
-                                                    ob = (StartPageInterface) getActivity();
-                                                    JoinPageFragment f = new JoinPageFragment();
-                                                    f.setArguments(b);
-                                                    ob.changeFragmentFromStartPage(f, "name");
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
+                                mapper = MiscellaneousParser.unenrollUserParser(response);
+                                String success = mapper.get("success");
+                                if (success.equals("true")) {
+                                    //Get Joined Exams Result
+                                    h.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            String myJoinedExams = null;
+                                            try {
+                                                myJoinedExams = MiscellaneousParser.getJoinedExams(mapper.get("response"));
+                                                SharedPreferences.Editor e = prefs.edit();
+                                                e.putString("joinedExams", myJoinedExams);
+                                                e.apply();
+                                                ob = (StartPageInterface) getActivity();
+                                                JoinPageFragment f = new JoinPageFragment();
+                                                f.setArguments(b);
+                                                ob.changeFragmentFromStartPage(f, "name");
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
-                                        });
-                                    }
+                                        }
+                                    });
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -346,15 +346,15 @@ public class StartPageFragment extends Fragment {
                         }
                     };
                     requestQueue.add(stringRequest);
-                } else if(start_leave_button.getText().equals("START")){
+                } else if (start_leave_button.getText().equals("START")) {
 
                     boolean statusForWriteStorage = CheckForPermissions.checkForWriteStorage(getActivity());
                     if (statusForWriteStorage) {
                         //Check if a valid language has been chosen from the list..
-                        if(selectedLanguage.equals("LANGUAGE"))
+                        if (selectedLanguage.equals("LANGUAGE"))
                             //If not chosen..
                             Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
-                        else{
+                        else {
                             //Else if chosen..
                             //Start Quiz
                             String folder_main = "LiveExams";
@@ -364,7 +364,7 @@ public class StartPageFragment extends Fragment {
                                 deleteDir(f);
                             }
 
-                            Intent i=new Intent(getActivity(), QuestionPaperLoad.class);
+                            Intent i = new Intent(getActivity(), QuestionPaperLoad.class);
                             i.putExtra("examId", examId);
                             i.putExtra("name", name);
                             i.putExtra("language", selectedLanguage);
@@ -375,10 +375,10 @@ public class StartPageFragment extends Fragment {
                     }
 
                     Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
-                            .putCustomAttribute("userName",prefs.getString("userName",""))
-                            .putCustomAttribute("examId",examId));
+                            .putCustomAttribute("userName", prefs.getString("userName", ""))
+                            .putCustomAttribute("examId", examId));
 
-                }else{
+                } else {
                     Toast.makeText(getActivity(), "This exam is over", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -427,13 +427,13 @@ public class StartPageFragment extends Fragment {
                 //If permission is granted
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Check if a valid language has been chosen from the list..
-                    if(selectedLanguage.equals("LANGUAGE"))
+                    if (selectedLanguage.equals("LANGUAGE"))
                         //If not chosen..
                         Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
-                    else{
+                    else {
                         //Else if chosen..
                         //Start Quiz
-                        Intent i=new Intent(getActivity(), QuestionPaperLoad.class);
+                        Intent i = new Intent(getActivity(), QuestionPaperLoad.class);
                         i.putExtra("examId", examId);
                         i.putExtra("name", name);
                         i.putExtra("language", selectedLanguage);

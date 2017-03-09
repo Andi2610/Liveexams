@@ -22,14 +22,14 @@ import in.truskills.liveexams.R;
 public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionNamesDisplayAdapter.MyViewHolder> {
 
 
-   ArrayList<String> myList;
+    ArrayList<String> myList;
     Context c;
     int pos;
 
-    SectionNamesDisplayAdapter(ArrayList<String> myList, Context c, int pos){
+    SectionNamesDisplayAdapter(ArrayList<String> myList, Context c, int pos) {
         this.myList = myList;
         this.c = c;
-        this.pos=pos;
+        this.pos = pos;
     }
 
     @Override
@@ -42,11 +42,11 @@ public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionName
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.textView.setText(myList.get(position));
-        Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff1 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.textView.setTypeface(tff1);
-        if(holder.getAdapterPosition()==pos){
+        if (holder.getAdapterPosition() == pos) {
             holder.textView.setTextColor(c.getResources().getColor(R.color.black));
-        }else{
+        } else {
             holder.textView.setTextColor(c.getResources().getColor(R.color.very_light_black));
             holder.leftArrow.setVisibility(View.INVISIBLE);
             holder.rightArrow.setVisibility(View.INVISIBLE);
@@ -54,12 +54,12 @@ public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionName
         holder.containerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentMessage=new Intent();
+                Intent intentMessage = new Intent();
                 // put the message in Intent
                 //message=serial number of a section..
-                intentMessage.putExtra("message",holder.getAdapterPosition());
-                ((SectionNamesDisplay)c).setResult(1,intentMessage);
-                ((SectionNamesDisplay)c).finish();
+                intentMessage.putExtra("message", holder.getAdapterPosition());
+                ((SectionNamesDisplay) c).setResult(1, intentMessage);
+                ((SectionNamesDisplay) c).finish();
             }
         });
     }
@@ -73,14 +73,14 @@ public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionName
 
         public TextView textView;
         LinearLayout containerLayout;
-        ImageView leftArrow,rightArrow;
+        ImageView leftArrow, rightArrow;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.textView);
             containerLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
-            rightArrow=(ImageView) itemView.findViewById(R.id.rightArrow);
-            leftArrow=(ImageView) itemView.findViewById(R.id.leftArrow);
+            rightArrow = (ImageView) itemView.findViewById(R.id.rightArrow);
+            leftArrow = (ImageView) itemView.findViewById(R.id.leftArrow);
         }
     }
 }

@@ -54,20 +54,20 @@ import in.truskills.liveexams.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StatisticsFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
+public class StatisticsFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener {
 
 
     RecyclerView statisticsList;
     LinearLayoutManager linearLayoutManager;
     StatisticsListAdapter statisticsListAdapter;
-    List<Values> valuesList,filteredList;
+    List<Values> valuesList, filteredList;
     Values values;
     RequestQueue requestQueue;
     Handler h;
     SearchView searchView;
-    String myStartDate,myEndDate,myDateOfStart,myDateOfEnd,myDuration,myDurationTime;
+    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime;
     SharedPreferences prefs;
-    TextView noExams,noConnectionText;
+    TextView noExams, noConnectionText;
     Button retryButton;
     LinearLayout noConnectionLayout;
     ProgressDialog dialog;
@@ -88,24 +88,24 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        statisticsList=(RecyclerView)getActivity().findViewById(R.id.statisticsList);
+        statisticsList = (RecyclerView) getActivity().findViewById(R.id.statisticsList);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         requestQueue = Volley.newRequestQueue(getActivity());
-        h=new Handler();
+        h = new Handler();
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-        noExams=(TextView)getActivity().findViewById(R.id.noExams);
-        Typeface tff=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        noExams = (TextView) getActivity().findViewById(R.id.noExams);
+        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         noExams.setTypeface(tff);
 
         statisticsList.setLayoutManager(linearLayoutManager);
         statisticsList.setItemAnimator(new DefaultItemAnimator());
 
         retryButton = (Button) getActivity().findViewById(R.id.retryButtonForStatistics);
-        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayoutForStatistics);
-        noConnectionText=(TextView)getActivity().findViewById(R.id.noConnectionTextForStatistics);
-        Typeface tff1=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        noConnectionLayout = (LinearLayout) getActivity().findViewById(R.id.noConnectionLayoutForStatistics);
+        noConnectionText = (TextView) getActivity().findViewById(R.id.noConnectionTextForStatistics);
+        Typeface tff1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         retryButton.setTypeface(tff1);
         noConnectionText.setTypeface(tff1);
         noConnectionLayout.setVisibility(View.GONE);
@@ -121,27 +121,30 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
         });
     }
 
-    public void setList(){
-        valuesList=new ArrayList<>();
+    public void setList() {
+        valuesList = new ArrayList<>();
         dialog = new ProgressDialog(getActivity());
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Loading. Please wait...");
         dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
         dialog.show();
 
         //Get data for list populate..
-        String url = ConstantsDefined.api + "getAnalyzedExams/" + prefs.getString("userId","");
+        String url = ConstantsDefined.api + "getAnalyzedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
+
+                dialog.dismiss();
+
                 noConnectionLayout.setVisibility(View.GONE);
                 try {
                     HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.analyzedExamsParser(response);
                     int length = response.getJSONArray("response").length();
-                    Log.d("analyzed",response+"");
-                    dialog.dismiss();
+                    Log.d("analyzed", response + "");
                     if (length == 0) {
                         h.post(new Runnable() {
                             @Override
@@ -177,15 +180,14 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.d("myError",e+"");
-                    dialog.dismiss();
+                    Log.d("myError", e + "");
                 }
             }
-            }, new Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 dialog.dismiss();
-                Log.d("myError",error+"");
+                Log.d("myError", error + "");
                 Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
                 noConnectionLayout.setVisibility(View.VISIBLE);
             }
@@ -208,6 +210,7 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
                         searchView.requestFocus();
                         return true;
                     }
+
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                         // When the action view is collapsed, reset the query
@@ -247,8 +250,8 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
         }
     }
 
-    public void populateList(List<Values> list){
-        statisticsListAdapter=new StatisticsListAdapter(list,getActivity());
+    public void populateList(List<Values> list) {
+        statisticsListAdapter = new StatisticsListAdapter(list, getActivity());
         statisticsList.setAdapter(statisticsListAdapter);
         statisticsListAdapter.notifyDataSetChanged();
         if (list.isEmpty()) {
@@ -266,8 +269,8 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected){
-            if(valuesList.isEmpty()){
+        if (isConnected) {
+            if (valuesList.isEmpty()) {
                 setList();
             }
         }

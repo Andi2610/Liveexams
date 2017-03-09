@@ -21,8 +21,8 @@ public class SectionNamesDisplay extends Activity {
     RecyclerView mySectionsList;
     int mySrno;
     String srNo;
-    String myName="";
-    HashMap<String,String> map;
+    String myName = "";
+    HashMap<String, String> map;
     LinearLayoutManager linearLayoutManager;
     SectionNamesDisplayAdapter sectionNamesDisplayAdapter;
     QuizDatabase ob;
@@ -33,26 +33,26 @@ public class SectionNamesDisplay extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_section_names_display);
 
-        srNo=getIntent().getStringExtra("serialNumber");
-        mySrno=Integer.parseInt(srNo);
+        srNo = getIntent().getStringExtra("serialNumber");
+        mySrno = Integer.parseInt(srNo);
 
 
-        mySectionsList=(RecyclerView) findViewById(R.id.mySectionsList);
-        TextView sectionText=(TextView)findViewById(R.id.sectionText);
+        mySectionsList = (RecyclerView) findViewById(R.id.mySectionsList);
+        TextView sectionText = (TextView) findViewById(R.id.sectionText);
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         sectionText.setTypeface(tff1);
 
-        name=new ArrayList<>();
-        map=new HashMap<>();
+        name = new ArrayList<>();
+        map = new HashMap<>();
 
-        ob=new QuizDatabase(SectionNamesDisplay.this);
+        ob = new QuizDatabase(SectionNamesDisplay.this);
 
-        HashMap<String,ArrayList<String>> map=ob.getAllStringValuesPerSection();
-        name=map.get("SectionNameList");
+        HashMap<String, ArrayList<String>> map = ob.getAllStringValuesPerSection();
+        name = map.get("SectionNameList");
 
-        sectionNamesDisplayAdapter =new SectionNamesDisplayAdapter(name,SectionNamesDisplay.this,mySrno);
+        sectionNamesDisplayAdapter = new SectionNamesDisplayAdapter(name, SectionNamesDisplay.this, mySrno);
 
-        linearLayoutManager=new LinearLayoutManager(this);
+        linearLayoutManager = new LinearLayoutManager(this);
         mySectionsList.setLayoutManager(linearLayoutManager);
         mySectionsList.setItemAnimator(new DefaultItemAnimator());
         mySectionsList.setAdapter(sectionNamesDisplayAdapter);

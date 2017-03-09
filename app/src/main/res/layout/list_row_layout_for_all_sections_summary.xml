@@ -71,10 +71,10 @@
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:columnWidth="50dp"
+        android:columnWidth="60dp"
         android:gravity="center"
         android:layout_gravity="center"
-        android:numColumns="auto_fit"
+        android:numColumns="5"
         android:stretchMode="columnWidth"
         android:layout_margin="5dp">
 

@@ -19,10 +19,10 @@ public class MyFragmentForAnswers extends Fragment {
 
 
     WebView webView;
-    String myQuestion,myAnswer,correctAnswer;
+    String myQuestion, myAnswer, correctAnswer;
     ArrayList<String> myOptions;
 
-    public static final MyFragmentForAnswers newInstance(String question, ArrayList<String> options,String myAnswer,String correctAnswer) {
+    public static final MyFragmentForAnswers newInstance(String question, ArrayList<String> options, String myAnswer, String correctAnswer) {
         MyFragmentForAnswers f = new MyFragmentForAnswers();
         Bundle bundle = new Bundle();
         bundle.putString("Question", question);
@@ -38,7 +38,7 @@ public class MyFragmentForAnswers extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =inflater.inflate(R.layout.fragment_my_fragment_for_answers, container, false);
+        View v = inflater.inflate(R.layout.fragment_my_fragment_for_answers, container, false);
 
         myQuestion = getArguments().getString("Question");
         myOptions = getArguments().getStringArrayList("Options");
@@ -46,13 +46,13 @@ public class MyFragmentForAnswers extends Fragment {
         correctAnswer = getArguments().getString("correctAnswer");
 
         //Initialise web view variable..
-        webView=(WebView)v.findViewById(R.id.webViewForAnswers);
+        webView = (WebView) v.findViewById(R.id.webViewForAnswers);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setDisplayZoomControls(false);
 
-        WebViewContentForAnswers obj=new WebViewContentForAnswers();
-        obj.contentGenerator(myQuestion,myOptions,webView,myAnswer,correctAnswer);
+        WebViewContentForAnswers obj = new WebViewContentForAnswers();
+        obj.contentGenerator(myQuestion, myOptions, webView, myAnswer, correctAnswer);
 
         return v;
     }

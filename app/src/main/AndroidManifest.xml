@@ -126,9 +126,13 @@
         <activity
             android:name=".ParticularExamStatistics.AllSectionsSummaryForAnswers"
             android:screenOrientation="portrait" />
-        <activity android:name=".ParticularExamStatistics.RulesInAnswers"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Quiz.RulesInQuiz"
+        <activity
+            android:name=".ParticularExamStatistics.RulesInAnswers"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Quiz.RulesInQuiz"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Quiz.MyQuestionPaperLoad"
             android:screenOrientation="portrait"></activity>
     </application>
 

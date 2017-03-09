@@ -20,16 +20,16 @@ import in.truskills.liveexams.R;
  * Created by Shivansh Gupta on 27-02-2017.
  */
 
-public class SectionNamesdisplayAdapterForAnswers extends RecyclerView.Adapter<SectionNamesdisplayAdapterForAnswers.MyViewHolder>  {
+public class SectionNamesdisplayAdapterForAnswers extends RecyclerView.Adapter<SectionNamesdisplayAdapterForAnswers.MyViewHolder> {
 
     ArrayList<String> myList;
     Context c;
     int pos;
 
-    SectionNamesdisplayAdapterForAnswers(ArrayList<String> myList, Context c, int pos){
+    SectionNamesdisplayAdapterForAnswers(ArrayList<String> myList, Context c, int pos) {
         this.myList = myList;
         this.c = c;
-        this.pos=pos;
+        this.pos = pos;
     }
 
 
@@ -43,11 +43,11 @@ public class SectionNamesdisplayAdapterForAnswers extends RecyclerView.Adapter<S
     @Override
     public void onBindViewHolder(final SectionNamesdisplayAdapterForAnswers.MyViewHolder holder, int position) {
         holder.textView.setText(myList.get(position));
-        Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff1 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.textView.setTypeface(tff1);
-        if(holder.getAdapterPosition()==pos){
+        if (holder.getAdapterPosition() == pos) {
             holder.textView.setTextColor(c.getResources().getColor(R.color.black));
-        }else{
+        } else {
             holder.textView.setTextColor(c.getResources().getColor(R.color.very_light_black));
             holder.leftArrow.setVisibility(View.INVISIBLE);
             holder.rightArrow.setVisibility(View.INVISIBLE);
@@ -55,12 +55,12 @@ public class SectionNamesdisplayAdapterForAnswers extends RecyclerView.Adapter<S
         holder.containerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentMessage=new Intent();
+                Intent intentMessage = new Intent();
                 // put the message in Intent
                 //message=serial number of a section..
-                intentMessage.putExtra("message",holder.getAdapterPosition());
-                ((SectionNamesDisplayForAnswers)c).setResult(1,intentMessage);
-                ((SectionNamesDisplayForAnswers)c).finish();
+                intentMessage.putExtra("message", holder.getAdapterPosition());
+                ((SectionNamesDisplayForAnswers) c).setResult(1, intentMessage);
+                ((SectionNamesDisplayForAnswers) c).finish();
             }
         });
     }
@@ -74,14 +74,14 @@ public class SectionNamesdisplayAdapterForAnswers extends RecyclerView.Adapter<S
 
         public TextView textView;
         LinearLayout containerLayout;
-        ImageView leftArrow,rightArrow;
+        ImageView leftArrow, rightArrow;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.textView);
             containerLayout = (LinearLayout) itemView.findViewById(R.id.containerLayout);
-            rightArrow=(ImageView) itemView.findViewById(R.id.rightArrow);
-            leftArrow=(ImageView) itemView.findViewById(R.id.leftArrow);
+            rightArrow = (ImageView) itemView.findViewById(R.id.rightArrow);
+            leftArrow = (ImageView) itemView.findViewById(R.id.leftArrow);
         }
     }
 }

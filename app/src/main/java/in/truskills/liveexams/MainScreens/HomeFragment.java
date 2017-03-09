@@ -52,7 +52,7 @@ import in.truskills.liveexams.R;
 
 //This is the home fragment in which myExams list is loaded..
 
-public class HomeFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
+public class HomeFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener {
 
     //Declare variables..
     Button add;
@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     List<Values> valuesList, filteredList;
     Values values;
     HomeInterface ob;
-    String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime,myStartTime,myEndTime;
+    String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
     SharedPreferences prefs;
     RequestQueue requestQueue;
     Handler h;
@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
-        View v= inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
         return v;
     }
 
@@ -91,15 +91,15 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         requestQueue = Volley.newRequestQueue(getActivity());
-        h=new Handler();
-        valuesList=new ArrayList<>();
+        h = new Handler();
+        valuesList = new ArrayList<>();
 
         //Initialise the variables..
         add = (Button) getActivity().findViewById(R.id.add);
         retryButton = (Button) getActivity().findViewById(R.id.retryButton);
-        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayout);
-        noConnectionText=(TextView)getActivity().findViewById(R.id.noConnectionText);
-        Typeface tff1=Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        noConnectionLayout = (LinearLayout) getActivity().findViewById(R.id.noConnectionLayout);
+        noConnectionText = (TextView) getActivity().findViewById(R.id.noConnectionText);
+        Typeface tff1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         retryButton.setTypeface(tff1);
         noConnectionText.setTypeface(tff1);
         noConnectionLayout.setVisibility(View.GONE);
@@ -142,6 +142,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                         searchView.requestFocus();
                         return true;
                     }
+
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                         // When the action view is collapsed, reset the query
@@ -195,16 +196,17 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
 
     }
 
-    public void setList(){
+    public void setList() {
 
         //connect to joinedExams api..
         dialog = new ProgressDialog(getActivity());
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Loading. Please wait...");
         dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
         dialog.show();
 
-        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId","");
+        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
 
@@ -213,10 +215,10 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                 noConnectionLayout.setVisibility(View.GONE);
                 dialog.dismiss();
                 try {
-                    String myResponse=response.getJSONObject("response").toString();
-                    JSONObject jsonObject=new JSONObject(myResponse);
-                    String timestamp=jsonObject.getString("timestamp");
-                    String myJoinedExams=jsonObject.getJSONArray("joinedExams").toString();
+                    String myResponse = response.getJSONObject("response").toString();
+                    JSONObject jsonObject = new JSONObject(myResponse);
+                    String timestamp = jsonObject.getString("timestamp");
+                    String myJoinedExams = jsonObject.getJSONArray("joinedExams").toString();
                     HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExams);
                     JSONArray arr = new JSONArray(myJoinedExams);
                     int length = arr.length();
@@ -228,42 +230,42 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                             myStartDate = mapper.get("StartDate").get(i);
                             myEndDate = mapper.get("EndDate").get(i);
                             myDuration = mapper.get("ExamDuration").get(i);
-                            myStartTime=mapper.get("StartTime").get(i);
-                            myEndTime=mapper.get("EndTime").get(i);
+                            myStartTime = mapper.get("StartTime").get(i);
+                            myEndTime = mapper.get("EndTime").get(i);
 
                             myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
                             myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
-                            myDurationTime= MiscellaneousParser.parseDuration(myDuration);
+                            myDurationTime = MiscellaneousParser.parseDuration(myDuration);
 
-                            String myTimeOfStart=MiscellaneousParser.parseTimeForDetails(myStartTime);
-                            String myTimeOfEnd=MiscellaneousParser.parseTimeForDetails(myEndTime);
-                            Log.d("myTimestamp=",timestamp);
-                            String myTimestamp=MiscellaneousParser.parseTimestamp(timestamp);
-                            String myTime=MiscellaneousParser.parseTimestampForTime(timestamp);
+                            String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
+                            String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
+                            Log.d("myTimestamp=", timestamp);
+                            String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
+                            String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
 
-                            Log.d("myTimestamp=",myTimestamp);
+                            Log.d("myTimestamp=", myTimestamp);
 
-                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-                            Date start_date=simpleDateFormat.parse(myDateOfStart);
-                            Date end_date=simpleDateFormat.parse(myDateOfEnd);
-                            Date middle_date=simpleDateFormat.parse(myTimestamp);
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            Date start_date = simpleDateFormat.parse(myDateOfStart);
+                            Date end_date = simpleDateFormat.parse(myDateOfEnd);
+                            Date middle_date = simpleDateFormat.parse(myTimestamp);
 
-                            SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("h-mm a");
-                            Date start_time=simpleDateFormat2.parse(myTimeOfStart);
-                            Date end_time=simpleDateFormat2.parse(myTimeOfEnd);
-                            Date middle_time=simpleDateFormat2.parse(myTime);
+                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
+                            Date start_time = simpleDateFormat2.parse(myTimeOfStart);
+                            Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
+                            Date middle_time = simpleDateFormat2.parse(myTime);
 
-                            if(middle_date.before(start_date)){
-                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                            if (middle_date.before(start_date)) {
+                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                 valuesList.add(values);
-                            }else if(middle_date.before(end_date)||middle_date.equals(end_date)){
-                                if(middle_date.equals(end_date)){
-                                    if(!middle_time.after(end_time)){
-                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                            } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
+                                if (middle_date.equals(end_date)) {
+                                    if (!middle_time.after(end_time)) {
+                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                         valuesList.add(values);
                                     }
-                                }else{
-                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime,mapper.get("ExamId").get(i));
+                                } else {
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                     valuesList.add(values);
                                 }
                             }
@@ -291,7 +293,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void populateList(List<Values> list){
+    public void populateList(List<Values> list) {
         myExamsListAdapter = new MyExamsListAdapter(list, getActivity());
         myExamsList.setLayoutManager(linearLayoutManager);
         myExamsList.setItemAnimator(new DefaultItemAnimator());
@@ -313,8 +315,8 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected){
-            if(valuesList.isEmpty()){
+        if (isConnected) {
+            if (valuesList.isEmpty()) {
                 setList();
             }
         }

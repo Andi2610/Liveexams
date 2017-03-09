@@ -244,16 +244,17 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        dialog.dismiss();
                         try {
                             //Parse the signup response..
 
                             Log.d("myResponse=", response);
-                            dialog.dismiss();
                             signupLanguageAlternate.setVisibility(View.GONE);
                             signupLanguage.setVisibility(View.VISIBLE);
                             listOfLanguages = MiscellaneousParser.beforeSignupParser(response);
                             CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(getApplicationContext(), listOfLanguages);
                             signupLanguage.setAdapter(customAdapter);
+                            signupLanguage.performClick();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -316,7 +317,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 SharedPreferences.Editor e = prefs.edit();
                 e.putInt("signup", 0);
                 e.apply();
-                mGoogleApiClient.connect();
 
                 //Hide the login drawer..
                 loginDrawer.setVisibility(View.GONE);
@@ -471,8 +471,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //Show the login drawer..
                 loginDrawer.setVisibility(View.VISIBLE);
                 app_logo.setVisibility(View.VISIBLE);
-                mGoogleApiClient.disconnect();
-
 
                 //Rechange the arrow button: from down to up again..
                 signupHandleImage.setImageResource(R.drawable.up_arrow);
@@ -612,6 +610,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
             //If location icon is pressed..Call the getCurrentLocation method..
             case R.id.locationField:
+                mGoogleApiClient.connect();
                 getCurrentLocation();
                 break;
         }
@@ -641,7 +640,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
                 //If it is off, ask the user to enable it..
-                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+                AlertDialog.Builder builder = new AlertDialog.Builder(Signup_Login.this, R.style.AppCompatAlertDialogStyle);
                 builder.setTitle("NETWORK PROVIDER NOT ENABLED");  // GPS not found
                 builder.setMessage("Want to enable?"); // Want to enable?
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -696,54 +695,54 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         language = selectedLanguage;
 
         //If all valid.. signup..
-        if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && signupLanguageAlternate.getVisibility()==View.GONE && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
+        if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && signupLanguageAlternate.getVisibility() == View.GONE && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             signupFunction();
         } else {
             //Else display desired error messages..
             if (name.equals(""))
-                signupName.setError("Required",dr);
+                signupName.setError("Required", dr);
             if (!(!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()))
-                signupEmail.setError("Enter valid email",dr);
+                signupEmail.setError("Enter valid email", dr);
             if (gender.equals("GENDER"))
                 Toast.makeText(this, "Choose your gender", Toast.LENGTH_SHORT).show();
             if (location.equals("LOCATION"))
                 Toast.makeText(this, "Choose your location", Toast.LENGTH_SHORT).show();
-            if (signupLanguageAlternate.getVisibility()==View.VISIBLE)
+            if (signupLanguageAlternate.getVisibility() == View.VISIBLE)
                 Toast.makeText(this, "Choose your language", Toast.LENGTH_SHORT).show();
             if (mobile.length() != 10)
-                signupMobile.setError("Enter valid phone number",dr);
+                signupMobile.setError("Enter valid phone number", dr);
             if (password.length() < 6)
-                signupPassword.setError("Minimum 6 characters required",dr);
+                signupPassword.setError("Minimum 6 characters required", dr);
             if (!password.equals(confirmPassword))
-                signupConfirmPassword.setError("Do not match with Password",dr);
+                signupConfirmPassword.setError("Do not match with Password", dr);
         }
     }
 
     //This method is for validating the user's entered login info before it is given for logging in..
     public void loginValidation() {
         login_name = loginName.getText().toString();
-        login_password=loginPassword.getText().toString();
-        if(!login_name.equals("")&&!login_password.equals(""))
+        login_password = loginPassword.getText().toString();
+        if (!login_name.equals("") && !login_password.equals(""))
             loginFunction();
-        else{
-            if(login_name.equals(""))
-                loginName.setError("Required",dr);
-            if(login_password.equals(""))
-                loginPassword.setError("Required",dr);
+        else {
+            if (login_name.equals(""))
+                loginName.setError("Required", dr);
+            if (login_password.equals(""))
+                loginPassword.setError("Required", dr);
         }
     }
 
     //This method is for signing up i.e calling signup api..
     public void signupFunction() {
 
-        boolean result=CheckForPermissions.checkForSms(Signup_Login.this);
-        if(result){
+        boolean result = CheckForPermissions.checkForSms(Signup_Login.this);
+        if (result) {
             getVerified();
         }
     }
 
-    public void getVerified(){
-        TwitterAuthConfig authConfig =  new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+    public void getVerified() {
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new TwitterCore(authConfig), new Digits.Builder().build());
         authCallback = new AuthCallback() {
             @Override
@@ -752,7 +751,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(Signup_Login.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
 
                 //Api to be connected to..
-                String url = ConstantsDefined.api+"signup";
+                String url = ConstantsDefined.api + "signup";
 
                 dialog = new ProgressDialog(Signup_Login.this);
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -766,28 +765,28 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        dialog.dismiss();
                         try {
                             //Parse the signup response..
 
-                            Log.d("myResponse=",response);
-                            dialog.dismiss();
+                            Log.d("myResponse=", response);
 
-                            HashMap<String ,String> mapper= MiscellaneousParser.signupParser(response);
+                            HashMap<String, String> mapper = MiscellaneousParser.signupParser(response);
 //                            Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
-                            Log.d("response",mapper.get("response"));
-                            if(mapper.get("success").equals("true")){
+                            Log.d("response", mapper.get("response"));
+                            if (mapper.get("success").equals("true")) {
 //                                Toast.makeText(Signup_Login.this, "Signup Successfull", Toast.LENGTH_SHORT).show();
-                                SharedPreferences.Editor e=prefs.edit();
-                                e.putInt("signup",1);
+                                SharedPreferences.Editor e = prefs.edit();
+                                e.putInt("signup", 1);
                                 e.apply();
                                 Answers.getInstance().logCustom(new CustomEvent("Signup successfull")
-                                        .putCustomAttribute("userName",name));
+                                        .putCustomAttribute("userName", name));
                                 signupDrawer.close();
                                 loginDrawer.open();
-                            }else{
-                                JSONObject jo=new JSONObject(mapper.get("response"));
-                                String errmsg=jo.getString("errmsg");
-                                Toast.makeText(Signup_Login.this, "Couldn't Signup: "+errmsg, Toast.LENGTH_SHORT).show();
+                            } else {
+                                JSONObject jo = new JSONObject(mapper.get("response"));
+                                String errmsg = jo.getString("errmsg");
+                                Toast.makeText(Signup_Login.this, "Couldn't Signup: " + errmsg, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -800,30 +799,30 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         dialog.dismiss();
                         Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
-                }){
+                }) {
                     @Override
-                    protected Map<String,String> getParams(){
+                    protected Map<String, String> getParams() {
 
                         //Attach parameters required..
-                        Map<String,String> params = new HashMap<String, String>();
+                        Map<String, String> params = new HashMap<String, String>();
 
                         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                                 R.drawable.camera);
 
-                        String defaultImage=BitmapToString(icon);
+                        String defaultImage = BitmapToString(icon);
 
-                        SharedPreferences prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
-                        SharedPreferences.Editor e=prefs.edit();
-                        e.putString("navImage",defaultImage);
+                        SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor e = prefs.edit();
+                        e.putString("navImage", defaultImage);
                         e.apply();
-                        params.put("userName",name);
-                        params.put("gender",gender);
-                        params.put("password",password);
-                        params.put("emailAddress",email);
-                        params.put("mobileNumber",mobile);
-                        params.put("language",language);
-                        params.put("latitude",lat);
-                        params.put("longitude",lon);
+                        params.put("userName", name);
+                        params.put("gender", gender);
+                        params.put("password", password);
+                        params.put("emailAddress", email);
+                        params.put("mobileNumber", mobile);
+                        params.put("language", language);
+                        params.put("latitude", lat);
+                        params.put("longitude", lon);
 //                params.put("profileImageUrl",defaultImage);
                         return params;
                     }
@@ -846,7 +845,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         AuthConfig.Builder authConfigBuilder = new AuthConfig.Builder()
                 .withAuthCallBack(authCallback)
-                .withPhoneNumber("+91"+mobile);
+                .withPhoneNumber("+91" + mobile);
 
         Digits.authenticate(authConfigBuilder.build());
     }
@@ -855,7 +854,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     public void loginFunction() {
 
         //Api to be connected to..
-        String url = ConstantsDefined.api+"login";
+        String url = ConstantsDefined.api + "login";
 
         dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -871,35 +870,35 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             public void onResponse(String response) {
                 //On getting the response..
                 Intent i = null;
+                dialog.dismiss();
                 try {
                     //Parse the login response..
-                    HashMap<String ,String> mapper= MiscellaneousParser.loginParser(response);
-                    dialog.dismiss();
+                    HashMap<String, String> mapper = MiscellaneousParser.loginParser(response);
                     //If successfull signup.. save the desired info in shared preferences..
-                    if(mapper.get("success").equals("true")) {
+                    if (mapper.get("success").equals("true")) {
 
                         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                                 R.drawable.ic_add_a_photo_white_24dp);
 
                         String defaultImage = BitmapToString(icon);
 
-                        SharedPreferences.Editor e=prefs.edit();
-                        e.putString("userId",mapper.get("id"));
-                        e.putString("userName",mapper.get("userName"));
-                        e.putString("emailAddress",mapper.get("emailAddress"));
-                        e.putString("language",mapper.get("language"));
-                        e.putString("profileImageUrl",mapper.get("profileImageUrl"));
-                        e.putString("joinedExams",mapper.get("joinedExams"));
-                        e.putString("login","true");
-                        e.putString("navImage",defaultImage);
+                        SharedPreferences.Editor e = prefs.edit();
+                        e.putString("userId", mapper.get("id"));
+                        e.putString("userName", mapper.get("userName"));
+                        e.putString("emailAddress", mapper.get("emailAddress"));
+                        e.putString("language", mapper.get("language"));
+                        e.putString("profileImageUrl", mapper.get("profileImageUrl"));
+                        e.putString("joinedExams", mapper.get("joinedExams"));
+                        e.putString("login", "true");
+                        e.putString("navImage", defaultImage);
                         e.apply();
                         Answers.getInstance().logCustom(new CustomEvent("Login successfull")
-                        .putCustomAttribute("userName",mapper.get("userName")));
+                                .putCustomAttribute("userName", mapper.get("userName")));
                         Toast.makeText(Signup_Login.this, "Welcome to Live Exams", Toast.LENGTH_SHORT).show();
                         i = new Intent(Signup_Login.this, MainActivity.class);
                         startActivity(i);
                         finish();
-                    }else{
+                    } else {
                         //Display error message..
                         Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                     }
@@ -913,17 +912,17 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
                 dialog.dismiss();
-                Log.d("error",error.toString()+"");
+                Log.d("error", error.toString() + "");
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 //Put all the required parameters for the post request..
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("userName",loginName.getText().toString());
-                params.put("password",loginPassword.getText().toString());
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userName", loginName.getText().toString());
+                params.put("password", loginPassword.getText().toString());
                 return params;
             }
         };
@@ -931,11 +930,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     }
 
     //This method is use whenever a bitmap is to be converted into string..
-    public String BitmapToString(Bitmap bitmap){
-        ByteArrayOutputStream baos=new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
-        byte[] b=baos.toByteArray();
-        String temp= Base64.encodeToString(b,Base64.DEFAULT);
+    public String BitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] b = baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
     }
 
@@ -944,12 +943,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         switch (requestCode) {
             case CheckForPermissions.LOCATION_PERMISSION_CODE:
                 //If permission is granted
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Check if the device's GPS is on or not..
                     if (!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 
                         //If it is off, ask the user to enable it..
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Signup_Login.this, R.style.AppCompatAlertDialogStyle);
                         builder.setTitle("NETWORK PROVIDER NOT ENABLED");  // GPS not found
                         builder.setMessage("Want to enable?"); // Want to enable?
                         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -966,18 +965,18 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     } else {
                         fetchLocation();
                     }
-                }else{
+                } else {
                     //Displaying another toast if permission is not granted
-                    Toast.makeText(this,"Oops you have denied the permission for location\nGo to settings and grant them", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Oops you have denied the permission for location\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
                 break;
             case CheckForPermissions.SMS_PERMISSION_CODE:
                 //If permission is granted
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                }else{
+                } else {
                     //Displaying another toast if permission is not granted
-                    Toast.makeText(this,"Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
                 }
                 getVerified();
                 break;
@@ -990,81 +989,23 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //If the request code is same..
         if (requestCode == code) {
-//            //If gps is on..
-//            if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-//
-//                //Check for explicit permissions in android versions starting from Marshmallow..
-//                if (ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Signup_Login.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//
-//                    //If permission is not granted..Request for permission..and check for user's response in onRequestPermissions method..
-//                    ActivityCompat.requestPermissions(Signup_Login.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
-//                } else {
-//
-//                    //If permissions are granted already, fetch the current location..
-//                    final ProgressDialog progress = new ProgressDialog(Signup_Login.this);
-//                    progress.setMessage("Fetching your current location....");
-//                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//                    progress.setIndeterminate(true);
-//                    progress.setCancelable(false);
-//                    progress.show();
-//                    LocationListener locationListener = new LocationListener() {
-//                        @Override
-//                        public void onLocationChanged(Location location) {
-//
-//                            lat = location.getLatitude() + "";
-//                            lon = location.getLongitude() + "";
-//                            Geocoder geocoder = new Geocoder(Signup_Login.this, Locale.getDefault());
-//                            List<Address> addresses = null;
-//                            try {
-//                                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                            if (addresses != null) {
-//                                if (progress.isShowing())
-//                                    progress.dismiss();
-//                                String ans = addresses.get(0).getAddressLine(0);
-//                                signupLocation.setText(addresses.get(0).getAddressLine(2));
-//                            } else {
-//                                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onStatusChanged(String s, int i, Bundle bundle) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onProviderEnabled(String s) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onProviderDisabled(String s) {
-//
-//                        }
-//                    };
-//                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-//                }
-//            }
             fetchLocation();
         }
     }
 
-    public AuthCallback getAuthCallback(){
+    public AuthCallback getAuthCallback() {
         return authCallback;
     }
 
-    public void getAddress(double lati,double longi){
+    public void getAddress(double lati, double longi) {
 
-        lat=lati+"";
-        lon=longi+"";
+        lat = lati + "";
+        lon = longi + "";
 
         //Api to be connected to..
         String url = ConstantsDefined.urlForLocationFetch + lat + "," + lon + "&key=" + ConstantsDefined.MAP_API_KEY;
 
-        dialog = new ProgressDialog(this);
+        dialog = new ProgressDialog(Signup_Login.this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Fetching your location.. Please wait...");
         dialog.setIndeterminate(true);
@@ -1078,14 +1019,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             public void onResponse(String response) {
                 //On getting the response..
                 dialog.dismiss();
-                Log.d("responseOfLocation",response);
+                Log.d("responseOfLocation", response);
                 try {
                     String ans = MiscellaneousParser.locationParser(response);
-                    String []part=ans.split(",");
-                    signupLocation.setText(part[4]+","+part[5]);
+                    String[] part = ans.split(",");
+                    signupLocation.setText(part[2] + "," + part[3]);
+                    stopLocationUpdates();
+                    mGoogleApiClient.disconnect();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    dialog.dismiss();
                 }
 
             }
@@ -1094,7 +1036,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
                 dialog.dismiss();
-                Log.d("error",error.toString()+"");
+                Log.d("error", error.toString() + "");
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -1191,7 +1133,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 //                    "Longitude: " + lng + "\n" +
 //                    "Accuracy: " + mCurrentLocation.getAccuracy() + "\n" +
 //                    "Provider: " + mCurrentLocation.getProvider());
-            getAddress(Double.parseDouble(lati),Double.parseDouble(lng));
+            getAddress(Double.parseDouble(lati), Double.parseDouble(lng));
         } else {
             Log.d(TAG, "location is null ...............");
         }
@@ -1200,7 +1142,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-        stopLocationUpdates();
+//        stopLocationUpdates();
     }
 
     protected void stopLocationUpdates() {

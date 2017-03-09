@@ -16,11 +16,11 @@ import in.truskills.liveexams.R;
 
 public class InitialInfo extends AppCompatActivity {
 
-    String date,startTime,endTime,score,attempts,totalMarks,duration,examName,bestScore,averageScore,totalStudents;
-    int noOfSections,questionArray[],totalQuestions=0;
+    String date, startTime, endTime, score, attempts, totalMarks, duration, examName, bestScore, averageScore, totalStudents;
+    int noOfSections, questionArray[], totalQuestions = 0;
     Button answerKeyButton;
-    TextView dateText,dateValue,startTimeText,startTimeValue,endTimeText,endTimeValue,totalMarksText,totalMarksValue,bestScoreValue,bestScoreText,averageScoreValue,averageScoreText;
-    TextView myRank,totalRank,rankText,myScore,totalScore,scoreText,myPercentile,totalPercentile,percentileText,myAttempt,totalAttempt,attemptText;
+    TextView dateText, dateValue, startTimeText, startTimeValue, endTimeText, endTimeValue, totalMarksText, totalMarksValue, bestScoreValue, bestScoreText, averageScoreValue, averageScoreText;
+    TextView myRank, totalRank, rankText, myScore, totalScore, scoreText, myPercentile, totalPercentile, percentileText, myAttempt, totalAttempt, attemptText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,25 +31,24 @@ public class InitialInfo extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
+        date = getIntent().getStringExtra("date");
+        startTime = getIntent().getStringExtra("startTime");
+        endTime = getIntent().getStringExtra("endTime");
+        score = getIntent().getStringExtra("score");
+        attempts = getIntent().getStringExtra("attempts");
+        totalMarks = getIntent().getStringExtra("totalMarks");
+        duration = getIntent().getStringExtra("duration");
+        examName = getIntent().getStringExtra("examName");
+        noOfSections = getIntent().getIntExtra("noOfSections", 0);
+        bestScore = getIntent().getStringExtra("bestScore");
+        averageScore = getIntent().getStringExtra("averageScore");
+        totalStudents = getIntent().getStringExtra("totalStudents");
+        questionArray = new int[noOfSections];
+        questionArray = getIntent().getIntArrayExtra("questionArray");
+        Log.d("myLengthInitialInfo=", questionArray.length + "");
 
-        date=getIntent().getStringExtra("date");
-        startTime=getIntent().getStringExtra("startTime");
-        endTime=getIntent().getStringExtra("endTime");
-        score=getIntent().getStringExtra("score");
-        attempts=getIntent().getStringExtra("attempts");
-        totalMarks=getIntent().getStringExtra("totalMarks");
-        duration=getIntent().getStringExtra("duration");
-        examName=getIntent().getStringExtra("examName");
-        noOfSections=getIntent().getIntExtra("noOfSections",0);
-        bestScore=getIntent().getStringExtra("bestScore");
-        averageScore=getIntent().getStringExtra("averageScore");
-        totalStudents=getIntent().getStringExtra("totalStudents");
-        questionArray=new int[noOfSections];
-        questionArray=getIntent().getIntArrayExtra("questionArray");
-        Log.d("myLengthInitialInfo=",questionArray.length+"");
-
-        for(int i=0;i<noOfSections;++i){
-            totalQuestions=totalQuestions+questionArray[i];
+        for (int i = 0; i < noOfSections; ++i) {
+            totalQuestions = totalQuestions + questionArray[i];
         }
 
 
@@ -60,33 +59,33 @@ public class InitialInfo extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
 
 
-        answerKeyButton=(Button)findViewById(R.id.answerKeyButton);
-        dateText=(TextView)findViewById(R.id.dateText);
-        dateValue=(TextView)findViewById(R.id.dateValue);
-        startTimeText=(TextView)findViewById(R.id.startTimeText);
-        startTimeValue=(TextView)findViewById(R.id.startTimeValue);
-        endTimeText=(TextView)findViewById(R.id.endTimeText);
-        endTimeValue=(TextView)findViewById(R.id.endTimeValue);
-        totalMarksText=(TextView)findViewById(R.id.totalMarksText);
-        totalMarksValue=(TextView)findViewById(R.id.totalMarksValue);
-        rankText=(TextView)findViewById(R.id.rankText);
-        myRank=(TextView)findViewById(R.id.myRank);
-        totalRank=(TextView)findViewById(R.id.totalRank);
-        myScore=(TextView)findViewById(R.id.myScore);
-        totalScore=(TextView)findViewById(R.id.totalScore);
-        scoreText=(TextView)findViewById(R.id.scoreText);
-        myPercentile=(TextView)findViewById(R.id.myPercentile);
-        totalPercentile=(TextView)findViewById(R.id.totalPercentile);
-        percentileText=(TextView)findViewById(R.id.percentileText);
-        myAttempt=(TextView)findViewById(R.id.myAttempt);
-        totalAttempt=(TextView)findViewById(R.id.totalAttempt);
-        attemptText =(TextView)findViewById(R.id.attemptText);
-        bestScoreValue =(TextView)findViewById(R.id.bestScoreValue);
-        bestScoreText =(TextView)findViewById(R.id.bestScoreText);
-        averageScoreText =(TextView)findViewById(R.id.averageScoreText);
-        averageScoreValue =(TextView)findViewById(R.id.averageScoreValue);
+        answerKeyButton = (Button) findViewById(R.id.answerKeyButton);
+        dateText = (TextView) findViewById(R.id.dateText);
+        dateValue = (TextView) findViewById(R.id.dateValue);
+        startTimeText = (TextView) findViewById(R.id.startTimeText);
+        startTimeValue = (TextView) findViewById(R.id.startTimeValue);
+        endTimeText = (TextView) findViewById(R.id.endTimeText);
+        endTimeValue = (TextView) findViewById(R.id.endTimeValue);
+        totalMarksText = (TextView) findViewById(R.id.totalMarksText);
+        totalMarksValue = (TextView) findViewById(R.id.totalMarksValue);
+        rankText = (TextView) findViewById(R.id.rankText);
+        myRank = (TextView) findViewById(R.id.myRank);
+        totalRank = (TextView) findViewById(R.id.totalRank);
+        myScore = (TextView) findViewById(R.id.myScore);
+        totalScore = (TextView) findViewById(R.id.totalScore);
+        scoreText = (TextView) findViewById(R.id.scoreText);
+        myPercentile = (TextView) findViewById(R.id.myPercentile);
+        totalPercentile = (TextView) findViewById(R.id.totalPercentile);
+        percentileText = (TextView) findViewById(R.id.percentileText);
+        myAttempt = (TextView) findViewById(R.id.myAttempt);
+        totalAttempt = (TextView) findViewById(R.id.totalAttempt);
+        attemptText = (TextView) findViewById(R.id.attemptText);
+        bestScoreValue = (TextView) findViewById(R.id.bestScoreValue);
+        bestScoreText = (TextView) findViewById(R.id.bestScoreText);
+        averageScoreText = (TextView) findViewById(R.id.averageScoreText);
+        averageScoreValue = (TextView) findViewById(R.id.averageScoreValue);
 
-        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         dateText.setTypeface(tff1);
         dateValue.setTypeface(tff1);
         startTimeText.setTypeface(tff1);
@@ -106,7 +105,7 @@ public class InitialInfo extends AppCompatActivity {
         bestScoreText.setTypeface(tff1);
         averageScoreText.setTypeface(tff1);
 
-        Typeface tff2=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         answerKeyButton.setTypeface(tff2);
         myRank.setTypeface(tff2);
         myScore.setTypeface(tff2);
@@ -118,10 +117,10 @@ public class InitialInfo extends AppCompatActivity {
         answerKeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(InitialInfo.this,AnswersMainActivity.class);
-                intent.putExtra("examName",examName);
-                intent.putExtra("noOfSections",noOfSections);
-                intent.putExtra("questionArray",questionArray);
+                Intent intent = new Intent(InitialInfo.this, AnswersMainActivity.class);
+                intent.putExtra("examName", examName);
+                intent.putExtra("noOfSections", noOfSections);
+                intent.putExtra("questionArray", questionArray);
                 startActivity(intent);
             }
         });
@@ -132,16 +131,16 @@ public class InitialInfo extends AppCompatActivity {
         totalMarksValue.setText(totalMarks);
 
         myRank.setText("2");
-        totalRank.setText("/"+totalStudents);
+        totalRank.setText("/" + totalStudents);
 
         myScore.setText(score);
-        totalScore.setText("/"+totalMarks);
+        totalScore.setText("/" + totalMarks);
 
         myPercentile.setText("99.2");
         totalPercentile.setText("/100");
 
         myAttempt.setText(attempts);
-        totalAttempt.setText("/"+totalQuestions);
+        totalAttempt.setText("/" + totalQuestions);
 
         bestScoreValue.setText(bestScore);
 

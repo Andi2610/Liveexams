@@ -21,16 +21,16 @@ import in.truskills.liveexams.R;
 
 public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQuestionsInOneSectionAdapter.MyViewHolder> {
 
-    ArrayList<Integer> myListOfFragmentIndex,myType;
+    ArrayList<Integer> myListOfFragmentIndex, myType;
     Context c;
     int pos;
     setValueOfPager ob;
 
-    AllQuestionsInOneSectionAdapter(ArrayList<Integer> myListOfFragmentIndex,Context c,int pos,ArrayList<Integer> myType){
+    AllQuestionsInOneSectionAdapter(ArrayList<Integer> myListOfFragmentIndex, Context c, int pos, ArrayList<Integer> myType) {
         this.myListOfFragmentIndex = myListOfFragmentIndex;
-        this.myType=myType;
+        this.myType = myType;
         this.c = c;
-        this.pos=pos;
+        this.pos = pos;
     }
 
     @Override
@@ -42,39 +42,44 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Log.d("check", "onBindViewHolder: holderPosition="+holder.getAdapterPosition()+" "+position);
-            int cn=holder.getAdapterPosition();
-            cn++;
-            holder.questionNumber.setText(cn+"");
-            Typeface tff1=Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
-            holder.questionNumber.setTypeface(tff1);
-            switch (myType.get(holder.getAdapterPosition())){
-                case 0:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.green));
-                    break;
-                case 1:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.orange));
-                    break;
-                case 2:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.purple));
-                    break;
-                case 3:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.red));
-                    break;
-                case 4:holder.questionNumber.setTextColor(c.getResources().getColor(R.color.black));
-                    break;
+        Log.d("check", "onBindViewHolder: holderPosition=" + holder.getAdapterPosition() + " " + position);
+        int cn = holder.getAdapterPosition();
+        cn++;
+        holder.questionNumber.setText(cn + "");
+        Typeface tff1 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        holder.questionNumber.setTypeface(tff1);
+        switch (myType.get(holder.getAdapterPosition())) {
+            case 0:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.green));
+                break;
+            case 1:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.orange));
+                break;
+            case 2:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.purple));
+                break;
+            case 3:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.red));
+                break;
+            case 4:
+                holder.questionNumber.setTextColor(c.getResources().getColor(R.color.black));
+                break;
+        }
+        if (holder.getAdapterPosition() == pos) {
+            holder.downArrow.setVisibility(View.VISIBLE);
+        } else {
+            holder.downArrow.setVisibility(View.INVISIBLE);
+        }
+        holder.parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("check", "onClick: position=" + holder.getAdapterPosition());
+                ob = (setValueOfPager) c;
+                int jumpPosition = myListOfFragmentIndex.get(holder.getAdapterPosition());
+                Log.d("check", "onClick: jumpPosition=" + holder.getAdapterPosition());
+                ob.SetValue(jumpPosition);
             }
-            if(holder.getAdapterPosition()==pos){
-                holder.downArrow.setVisibility(View.VISIBLE);
-            }else{
-                holder.downArrow.setVisibility(View.INVISIBLE);
-            }
-            holder.parent.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("check", "onClick: position="+holder.getAdapterPosition());
-                    ob=(setValueOfPager)c;
-                    int jumpPosition=myListOfFragmentIndex.get(holder.getAdapterPosition());
-                    Log.d("check", "onClick: jumpPosition="+holder.getAdapterPosition());
-                    ob.SetValue(jumpPosition);
-                }
-            });
+        });
     }
 
     @Override
@@ -93,10 +98,11 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
             super(itemView);
             questionNumber = (TextView) itemView.findViewById(R.id.questionNumber);
             parent = (LinearLayout) itemView.findViewById(R.id.parent);
-            downArrow=(ImageView) itemView.findViewById(R.id.downArrow);
+            downArrow = (ImageView) itemView.findViewById(R.id.downArrow);
         }
     }
 }
+
 interface setValueOfPager {
     public void SetValue(int pos);
 }

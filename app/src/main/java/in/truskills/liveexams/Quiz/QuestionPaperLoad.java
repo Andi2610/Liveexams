@@ -44,22 +44,22 @@ import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
-public class QuestionPaperLoad extends AppCompatActivity implements Handler.Callback,ConnectivityReciever.ConnectivityReceiverListener{
+public class QuestionPaperLoad extends AppCompatActivity implements Handler.Callback, ConnectivityReciever.ConnectivityReceiverListener {
 
     //Declare the variables..
-    int languageArray[][], fragmentIndex[][],found=0;
-    HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11,map12;
-    int noOfQuestions=0, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1,hour,minute,myTime,curCount = 0,myCount=0,questionArray[];
+    int languageArray[][], fragmentIndex[][], found = 0;
+    HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12;
+    int noOfQuestions = 0, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1, hour, minute, myTime, curCount = 0, myCount = 0, questionArray[];
     RequestQueue requestQueue;
     String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
-    String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri,section_id,section_max_marks,section_time,section_description,section_rules;
-    String questionAttributes,opText,examDuration,examId, name, selectedLanguage,myExamDuration,paperName;
+    String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri, section_id, section_max_marks, section_time, section_description, section_rules;
+    String questionAttributes, opText, examDuration, examId, name, selectedLanguage, myExamDuration, paperName;
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
     float per;
     QuizDatabase ob;
     ProgressBar progressBar;
-    ArrayList<String> urls,groups;
+    ArrayList<String> urls, groups;
     SharedPreferences prefs;
     Button retryButtonForDownload;
     ThreadPoolExecutor executor;
@@ -71,16 +71,18 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_question_paper_load);
-        avi=(AVLoadingIndicatorView)findViewById(R.id.avi);
+
+        avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
         avi.show();
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
-        retryButtonForDownload=(Button)findViewById(R.id.retryButtonForDownload);
+        prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        retryButtonForDownload = (Button) findViewById(R.id.retryButtonForDownload);
 
-        myWaitMessage=(TextView)findViewById(R.id.myWaitMessage);
-        Typeface tff1=Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
+        myWaitMessage = (TextView) findViewById(R.id.myWaitMessage);
+        Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         myWaitMessage.setTypeface(tff1);
         retryButtonForDownload.setTypeface(tff1);
 
@@ -91,9 +93,9 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         selectedLanguage = getIntent().getStringExtra("language");
 
         fList = new ArrayList<>();
-        urls=new ArrayList<>();
-        groups=new ArrayList<>();
-        ob=new QuizDatabase(this);
+        urls = new ArrayList<>();
+        groups = new ArrayList<>();
+        ob = new QuizDatabase(this);
 
         downloadQP();
     }
@@ -102,38 +104,38 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
         String folder_main = "LiveExams";
         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-        if(!f.exists())
+        if (!f.exists())
             f.mkdir();
 
 //        If offline required..
-        for(int i=0;i<noOfSections;++i){
-            for(int j=0;j<questionArray[i];++j){
-                String mt=ob.getTextOfOneQuestion(i,j);
-                prepareForOfflineForQuestion(mt,i,j);
-                Log.d("textHere","OfQuestions"+mt);
-                int noo=ob.getNoOfOptionsInOneQuestion(i,j);
-                for(int k=0;k<noo;++k){
-                    String mo=ob.getTextOfOneOption(i,j,k);
-                    Log.d("textHere","OfOptions"+mo);
-                    prepareForOfflineForOption(mo,i,j,k);
+        for (int i = 0; i < noOfSections; ++i) {
+            for (int j = 0; j < questionArray[i]; ++j) {
+                String mt = ob.getTextOfOneQuestion(i, j);
+                prepareForOfflineForQuestion(mt, i, j);
+                Log.d("textHere", "OfQuestions" + mt);
+                int noo = ob.getNoOfOptionsInOneQuestion(i, j);
+                for (int k = 0; k < noo; ++k) {
+                    String mo = ob.getTextOfOneOption(i, j, k);
+                    Log.d("textHere", "OfOptions" + mo);
+                    prepareForOfflineForOption(mo, i, j, k);
                 }
             }
         }
 
-        if(urls.isEmpty()){
-           startNewActivity();
-        }else{
+        if (urls.isEmpty()) {
+            startNewActivity();
+        } else {
             forDownload();
         }
         retryButtonForDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            try {
-                afterConnection();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    afterConnection();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        }
         });
 
 //        Else if Online..
@@ -162,43 +164,43 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
     }
 
-    public void prepareForOfflineForQuestion(String text,int ii,int jj) throws InterruptedException {
+    public void prepareForOfflineForQuestion(String text, int ii, int jj) throws InterruptedException {
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
-        final Matcher matcher1= pattern.matcher(text);
+        final Matcher matcher1 = pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst="<img src=\"file://"+base+"/LiveExams/$2\"/>";
-        String result=matcher1.replaceAll(subst);
-        ob.updateValuesPerQuestion(ii,jj, QuizDatabase.QuestionText,result);
+        String subst = "<img src=\"file://" + base + "/LiveExams/$2\"/>";
+        String result = matcher1.replaceAll(subst);
+        ob.updateValuesPerQuestion(ii, jj, QuizDatabase.QuestionText, result);
 
-        while (matcher.find()){
+        while (matcher.find()) {
             myCount++;
-            Log.d("messi","matcher.findInLoop");
-            String group=matcher.group(2);
-            String imageUrl = ConstantsDefined.imageUrl+examId+"/Images/"+group;
-            Log.d("imageDownload",imageUrl);
+            Log.d("messi", "matcher.findInLoop");
+            String group = matcher.group(2);
+            String imageUrl = ConstantsDefined.imageUrl + examId + "/Images/" + group;
+            Log.d("imageDownload", imageUrl);
             urls.add(imageUrl);
             groups.add(group);
         }
     }
 
-    public void prepareForOfflineForOption(String text,int ii,int jj,int kk) throws InterruptedException {
+    public void prepareForOfflineForOption(String text, int ii, int jj, int kk) throws InterruptedException {
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
-        final Matcher matcher1= pattern.matcher(text);
+        final Matcher matcher1 = pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst="<img src=\"file://"+base+"/LiveExams/$2\"/>";
-        String result=matcher1.replaceAll(subst);
-        ob.updateValuesPerOption(ii,jj,kk, QuizDatabase.OptionText,result);
+        String subst = "<img src=\"file://" + base + "/LiveExams/$2\"/>";
+        String result = matcher1.replaceAll(subst);
+        ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, result);
 
-        while (matcher.find()){
+        while (matcher.find()) {
             myCount++;
-            Log.d("messi","matcher.findInLoop");
-            String group=matcher.group(2);
-            String imageUrl = ConstantsDefined.imageUrl+examId+"/Images/"+group;
-            Log.d("imageDownload",imageUrl);
+            Log.d("messi", "matcher.findInLoop");
+            String group = matcher.group(2);
+            String imageUrl = ConstantsDefined.imageUrl + examId + "/Images/" + group;
+            Log.d("imageDownload", imageUrl);
             urls.add(imageUrl);
             groups.add(group);
         }
@@ -208,8 +210,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     public boolean handleMessage(Message msg) {
 
         curCount++;
-        Log.d("count",curCount+" "+myCount);
-        per = (curCount / (float)myCount) * 100;
+        Log.d("count", curCount + " " + myCount);
+        per = (curCount / (float) myCount) * 100;
         progressBar.setProgress((int) per);
 //        Log.d("myPer=",per+"");
 //        runOnUiThread(new Runnable() {
@@ -223,39 +225,39 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
     public static String format(String str, String examId) {
 
-        examId="changeThisToExamId";
+        examId = "changeThisToExamId";
 
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final String subst = "<img src=\""+ ConstantsDefined.imageUrl+""+examId+"/Images/$2\"/>";
+        final String subst = "<img src=\"" + ConstantsDefined.imageUrl + "" + examId + "/Images/$2\"/>";
 
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(str);
 
 // The substituted value will be contained in the result variable
-        String result=matcher.replaceAll(subst);
+        String result = matcher.replaceAll(subst);
 
         return result;
     }
 
-    public void prepareForOnlineForQuestion(int ii,int jj,String text){
-        String myText=format(text,examId);
-        ob.updateValuesPerQuestion(ii,jj, QuizDatabase.QuestionText,myText);
+    public void prepareForOnlineForQuestion(int ii, int jj, String text) {
+        String myText = format(text, examId);
+        ob.updateValuesPerQuestion(ii, jj, QuizDatabase.QuestionText, myText);
     }
 
-    public void prepareForOnlineForOption(int ii,int jj,int kk,String text){
-        String myText=format(text,examId);
-        ob.updateValuesPerOption(ii,jj,kk, QuizDatabase.OptionText,myText);
+    public void prepareForOnlineForOption(int ii, int jj, int kk, String text) {
+        String myText = format(text, examId);
+        ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, myText);
     }
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        if(isConnected){
+        if (isConnected) {
             try {
                 afterConnection();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             Toast.makeText(QuestionPaperLoad.this, "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
             retryButtonForDownload.setVisibility(View.VISIBLE);
             avi.hide();
@@ -270,7 +272,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         MyApplication.getInstance().setConnectivityListener(QuestionPaperLoad.this);
     }
 
-    public void downloadQP(){
+    public void downloadQP() {
 
 
         retryButtonForDownload.setVisibility(View.GONE);
@@ -299,13 +301,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
                         //Parse response..
                         map2 = QuestionPaperParser.responseParser(response);
-                        examDuration=map2.get("ExamDuration");
-                        myExamDuration=QuestionPaperParser.getExamDuration(examDuration);
+                        examDuration = map2.get("ExamDuration");
+                        myExamDuration = QuestionPaperParser.getExamDuration(examDuration);
                         String[] parts = myExamDuration.split("-");
                         hour = Integer.parseInt(parts[0]);
                         minute = Integer.parseInt(parts[1]);
-                        myTime=hour*60*60*1000+minute*60*1000;
-                        Log.d("myTime",myTime+"");
+                        myTime = hour * 60 * 60 * 1000 + minute * 60 * 1000;
+                        Log.d("myTime", myTime + "");
 
                         //Get Paperset..
                         Paperset = map2.get("Paperset");
@@ -332,7 +334,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                         //Loop through all the sections..
                         for (int i = 0; i < noOfSections; ++i) {
 
-                            final int iiii=i;
+                            final int iiii = i;
 
                             //Parse one section..
                             map5 = QuestionPaperParser.SectionParser(Section, i);
@@ -340,30 +342,30 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                             //Get it's variables..
                             SectionQuestions = map5.get("SectionQuestions");
                             AttributesOfSection = map5.get("Attributes");
-                            section_max_marks=map5.get("SectionMaxMarks");
-                            section_time=map5.get("SectionTime");
-                            section_description=map5.get("SectionDescription");
-                            section_rules=map5.get("SectionRules");
+                            section_max_marks = map5.get("SectionMaxMarks");
+                            section_time = map5.get("SectionTime");
+                            section_description = map5.get("SectionDescription");
+                            section_rules = map5.get("SectionRules");
 
                             //Parse one section attributes..
                             map6 = QuestionPaperParser.getAttributesOfSection(AttributesOfSection);
 
                             //Get it's variables..
                             name = map6.get("Name");
-                            section_id=map6.get("id");
-                            Log.d("ID:",i+"-"+section_id);
+                            section_id = map6.get("id");
+                            Log.d("ID:", i + "-" + section_id);
 
                             //Set in database..
                             ob.setValuesPerSection(i);
 //                            new Thread(new Runnable() {
 //                                @Override
 //                                public void run() {
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionName,name);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionId,section_id);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionMaxMarks,section_max_marks);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionTime,section_time);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionDescription,section_description);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionRules,section_rules);
+                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionName, name);
+                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionId, section_id);
+                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionMaxMarks, section_max_marks);
+                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionTime, section_time);
+                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionDescription, section_description);
+                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionRules, section_rules);
 //                                }
 //                            }).start();
                             map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
@@ -374,14 +376,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                             //Get no. of questions in one section..
                             noOfQuestions = QuestionPaperParser.getNoOfQuestionInOneSection(Question);
 
-                            questionArray[i]=noOfQuestions;
+                            questionArray[i] = noOfQuestions;
 
                             fragmentIndex[i] = new int[noOfQuestions];
 
                             //Loop through all the questions of one section..
                             for (int j = 0; j < noOfQuestions; ++j) {
 
-                                final int jjjj=j;
+                                final int jjjj = j;
 
                                 //Increment fragment index..
                                 fi++;
@@ -389,8 +391,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                 fragmentIndex[i][j] = fi;
 
                                 //Set in database..
-                                ob.setValuesPerQuestion(i,j);
-                                ob.setValuesForResult(i,j);
+                                ob.setValuesPerQuestion(i, j);
+                                ob.setValuesForResult(i, j);
 
                                 //Initialise languageArray[i][] as noOfQuestions in section i.
                                 languageArray[i] = new int[noOfQuestions];
@@ -401,7 +403,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                 //Get it's variables..
                                 myAskedIn = map8.get("AskedIn");
                                 myLanguage = map8.get("Language");
-                                questionAttributes=map8.get("Attributes");
+                                questionAttributes = map8.get("Attributes");
 
                                 //Parse one section one question askedIn..
                                 map9 = QuestionPaperParser.AskedInParser(myAskedIn);
@@ -413,7 +415,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                 //Get no. of Exam names in which the question has been asked..
                                 noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
 
-                                Log.d("noOfExamName",noOfExamName+"");
+                                Log.d("noOfExamName", noOfExamName + "");
 
                                 //Loop through the entire exam and year array..
                                 for (int k = 0; k < noOfExamName; ++k) {
@@ -442,23 +444,23 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                 //Get question text to be displayed..
                                 text = QuestionPaperParser.getQuestionText(myQuestionText);
 
-                                map12=QuestionPaperParser.getAttributesOfQuestion(questionAttributes);
-                                Log.d("QID:",i+"-"+j+"-"+section_id+"-"+map12.get("id"));
+                                map12 = QuestionPaperParser.getAttributesOfQuestion(questionAttributes);
+                                Log.d("QID:", i + "-" + j + "-" + section_id + "-" + map12.get("id"));
 //                                new Thread(new Runnable() {
 //                                    @Override
 //                                    public void run() {
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionText,text);
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.CorrectAnswer,map12.get("CorrectAnswer"));
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionCorrectMarks,map12.get("QuestionCorrectMarks"));
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionIncorrectMarks,map12.get("QuestionIncorrectMarks"));
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.PassageID,map12.get("PassageID"));
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionType,map12.get("QuestionType"));
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionTime,map12.get("QuestionTime"));
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionDifficultyLevel,map12.get("QuestionDifficultyLevel"));
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionRelativeTopic,map12.get("QuestionRelativeTopic"));
-                                ob.updateValuesPerQuestion(iiii,jjjj, QuizDatabase.QuestionId,map12.get("id"));
-                                ob.updateValuesForResult(iiii,jjjj, QuizDatabase.SectionId,section_id);
-                                ob.updateValuesForResult(iiii,jjjj, QuizDatabase.QuestionId,map12.get("id"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionText, text);
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.CorrectAnswer, map12.get("CorrectAnswer"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionCorrectMarks, map12.get("QuestionCorrectMarks"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionIncorrectMarks, map12.get("QuestionIncorrectMarks"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.PassageID, map12.get("PassageID"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionType, map12.get("QuestionType"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionTime, map12.get("QuestionTime"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionDifficultyLevel, map12.get("QuestionDifficultyLevel"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionRelativeTopic, map12.get("QuestionRelativeTopic"));
+                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionId, map12.get("id"));
+                                ob.updateValuesForResult(iiii, jjjj, QuizDatabase.SectionId, section_id);
+                                ob.updateValuesForResult(iiii, jjjj, QuizDatabase.QuestionId, map12.get("id"));
 //
 //                                    }
 //                                }).start();
@@ -470,10 +472,10 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
                                 //Loop through entire option array..
                                 for (int p = 0; p < noOfOption; ++p) {
 
-                                    final int pppp=p;
+                                    final int pppp = p;
 
                                     //Set in database..
-                                    ob.setValuesPerOption(i,j,p);
+                                    ob.setValuesPerOption(i, j, p);
 
                                     //Parse Option Array at the desirex index to get one option..
                                     myOp = QuestionPaperParser.OptionParser(myOption, p);
@@ -486,13 +488,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
                                     //Parse Attributes of one option..
                                     myAttri = QuestionPaperParser.getAttributesOfOneOption(myAt);
-                                    opText=map11.get("_");
+                                    opText = map11.get("_");
 
 //                                    new Thread(new Runnable() {
 //                                        @Override
 //                                        public void run() {
-                                    ob.updateValuesPerOption(iiii,jjjj,pppp, QuizDatabase.OptionText,opText);
-                                    ob.updateValuesPerOption(iiii,jjjj,pppp, QuizDatabase.OptionId,myAttri);
+                                    ob.updateValuesPerOption(iiii, jjjj, pppp, QuizDatabase.OptionText, opText);
+                                    ob.updateValuesPerOption(iiii, jjjj, pppp, QuizDatabase.OptionId, myAttri);
 //                                        }
 //                                    }).start();
 
@@ -534,9 +536,9 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
     }
 
     public void afterConnection() throws InterruptedException {
-        if(noOfSections==0){
+        if (noOfSections == 0) {
             downloadQP();
-        }else{
+        } else {
             forDownload();
         }
     }
@@ -558,35 +560,35 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         );
         String folder_main = "LiveExams";
         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-        if(f.exists()) {
+        if (f.exists()) {
             children = f.list();
             len = children.length;
-            if(len==myCount){
-                Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
+            if (len == myCount) {
+                Intent intent = new Intent(QuestionPaperLoad.this, QuizMainActivity.class);
                 intent.putExtra("examId", examId);
                 intent.putExtra("name", paperName);
                 intent.putExtra("language", selectedLanguage);
-                intent.putExtra("noOfSections",noOfSections);
-                intent.putExtra("questionArray",questionArray);
-                intent.putExtra("ExamDuration",myTime);
+                intent.putExtra("noOfSections", noOfSections);
+                intent.putExtra("questionArray", questionArray);
+                intent.putExtra("ExamDuration", myTime);
                 startActivity(intent);
                 finish();
-            }else{
-                for(int i=0;i<urls.size();++i){
-                    String myImage=groups.get(i);
-                    String pp=f.getAbsolutePath();
+            } else {
+                for (int i = 0; i < urls.size(); ++i) {
+                    String myImage = groups.get(i);
+                    String pp = f.getAbsolutePath();
                     File file = new File(pp
                             + File.separator + myImage);
-                    if(!file.exists())
-                        executor.execute(new LongThread(i, urls.get(i), new Handler(QuestionPaperLoad.this),groups.get(i),QuestionPaperLoad.this,executor));
+                    if (!file.exists())
+                        executor.execute(new LongThread(i, urls.get(i), new Handler(QuestionPaperLoad.this), groups.get(i), QuestionPaperLoad.this, executor));
                 }
                 executor.shutdown();
                 executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
-                if(executor.isTerminated()==true) {
-                    Log.d("executor", "forDownload: len="+len);
-                    if(len==myCount){
+                if (executor.isTerminated() == true) {
+                    Log.d("executor", "forDownload: len=" + len);
+                    if (len == myCount) {
                         startNewActivity();
-                    }else{
+                    } else {
                         Toast.makeText(this, "No internet connection.. Please try again..", Toast.LENGTH_SHORT).show();
                         retryButtonForDownload.setVisibility(View.VISIBLE);
                         myWaitMessage.setText("Couldn't download Question paper..");
@@ -598,14 +600,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
         }
     }
 
-    public void startNewActivity(){
-        Intent intent=new Intent(QuestionPaperLoad.this,QuizMainActivity.class);
+    public void startNewActivity() {
+        Intent intent = new Intent(QuestionPaperLoad.this, QuizMainActivity.class);
         intent.putExtra("examId", examId);
         intent.putExtra("name", paperName);
         intent.putExtra("language", selectedLanguage);
-        intent.putExtra("noOfSections",noOfSections);
-        intent.putExtra("questionArray",questionArray);
-        intent.putExtra("ExamDuration",myTime);
+        intent.putExtra("noOfSections", noOfSections);
+        intent.putExtra("questionArray", questionArray);
+        intent.putExtra("ExamDuration", myTime);
         startActivity(intent);
         finish();
     }

@@ -38,21 +38,21 @@ public class AllSectionsSummaryForAnswers extends AppCompatActivity {
         getSupportActionBar().setTitle("SUMMARY");
 
 
-        allSectionsListForanswers=(RecyclerView)findViewById(R.id.allSectionsListForAnswers);
+        allSectionsListForanswers = (RecyclerView) findViewById(R.id.allSectionsListForAnswers);
 
-        AnalyticsDatabase ob=new AnalyticsDatabase(this);
-        ArrayList<String> name=ob.getAllStringValuesPerSection(AnalyticsDatabase.SectionName);
+        AnalyticsDatabase ob = new AnalyticsDatabase(this);
+        ArrayList<String> name = ob.getAllStringValuesPerSection(AnalyticsDatabase.SectionName);
 
-        questionArray=new ArrayList<>();
+        questionArray = new ArrayList<>();
 
-        for(int i=0;i<name.size();++i){
-            ArrayList<Integer> listOfFi=ob.getIntValuesOfEachSection(i,AnalyticsDatabase.FragmentIndex);
+        for (int i = 0; i < name.size(); ++i) {
+            ArrayList<Integer> listOfFi = ob.getIntValuesOfEachSection(i, AnalyticsDatabase.FragmentIndex);
             questionArray.add(listOfFi);
         }
 
-        allSectionsSummaryAdapterForAnswers =new AllSectionsSummaryAdapterForAnswers(name,questionArray,AllSectionsSummaryForAnswers.this);
+        allSectionsSummaryAdapterForAnswers = new AllSectionsSummaryAdapterForAnswers(name, questionArray, AllSectionsSummaryForAnswers.this);
 
-        linearLayoutManager=new LinearLayoutManager(this);
+        linearLayoutManager = new LinearLayoutManager(this);
         allSectionsListForanswers.setLayoutManager(linearLayoutManager);
         allSectionsListForanswers.setItemAnimator(new DefaultItemAnimator());
         allSectionsListForanswers.setAdapter(allSectionsSummaryAdapterForAnswers);
@@ -75,7 +75,7 @@ public class AllSectionsSummaryForAnswers extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.rulesIcon:
-                Intent i =new Intent(this,RulesInAnswers.class);
+                Intent i = new Intent(this, RulesInAnswers.class);
                 startActivity(i);
                 break;
         }
