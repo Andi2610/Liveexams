@@ -43,7 +43,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
     LinearLayoutManager linearLayoutManager;
     ArrayList<String> options;
     String minimumTime, maximumTime, yourTime, correctlyAnsweredBy;
-    int my_section, my_question, my_option, questionArray[], noOfSections, num;
+    int my_section, my_question, my_option, questionArray[], noOfSections, num,myFragmentCount=0;
     SharedPreferences prefs;
     Button left, right;
 
@@ -175,6 +175,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
             num = questionArray[i];
             for (int k = 0; k < num; ++k) {
                 my_question = k;
+                myFragmentCount++;
                 String my_text = ob.getTextOfOneQuestion(my_section, my_question);
                 String myAnswer = ob.getStringValuesPerQuestion(my_section, my_question, AnalyticsDatabase.FinalAnswerId);
                 String correctAnswer = ob.getStringValuesPerQuestion(my_section, my_question, AnalyticsDatabase.RightAnswer);
@@ -286,18 +287,25 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
     @Override
     public void onClick(View v) {
-
+        int position;
         switch (v.getId()) {
             case R.id.left:
                 Log.d("checking", "onClick: first=" + linearLayoutManager.findFirstCompletelyVisibleItemPosition());
-                questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findFirstCompletelyVisibleItemPosition() - 5);
-
+                position=linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                if(position<5){
+                    questionsList.getLayoutManager().scrollToPosition(0);
+                }else{
+                    questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findFirstCompletelyVisibleItemPosition() - 5);
+                }
                 break;
             case R.id.right:
                 Log.d("checking", "onClick: last=" + linearLayoutManager.findLastCompletelyVisibleItemPosition());
-
-                questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 5);
-
+                position=linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                if(position>(myFragmentCount-5)){
+                    questionsList.getLayoutManager().scrollToPosition(myFragmentCount);
+                }else{
+                    questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 5);
+                }
                 break;
         }
     }

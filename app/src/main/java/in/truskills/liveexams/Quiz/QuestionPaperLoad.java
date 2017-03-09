@@ -225,8 +225,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Handler.Call
 
     public static String format(String str, String examId) {
 
-        examId = "changeThisToExamId";
-
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
         final String subst = "<img src=\"" + ConstantsDefined.imageUrl + "" + examId + "/Images/$2\"/>";
 

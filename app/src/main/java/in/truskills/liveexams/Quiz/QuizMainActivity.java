@@ -407,8 +407,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     @Override
     public void onClick(View v) {
-        int ss, qq, n, sn, noOfQ, pos;
-        String temp, srNo;
+        int ss, qq, n, position;
+        String temp;
         switch (v.getId()) {
 
             case R.id.submitButton:
@@ -453,14 +453,21 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 break;
             case R.id.left:
                 Log.d("checking", "onClick: first=" + linearLayoutManager.findFirstCompletelyVisibleItemPosition());
-                questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findFirstCompletelyVisibleItemPosition() - 5);
-
+                position=linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                if(position<5){
+                    questionsList.getLayoutManager().scrollToPosition(0);
+                }else{
+                    questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findFirstCompletelyVisibleItemPosition() - 5);
+                }
                 break;
             case R.id.right:
                 Log.d("checking", "onClick: last=" + linearLayoutManager.findLastCompletelyVisibleItemPosition());
-
-                questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 5);
-
+                position=linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                if(position>(myFragmentCount-5)){
+                    questionsList.getLayoutManager().scrollToPosition(myFragmentCount);
+                }else{
+                    questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 5);
+                }
                 break;
         }
     }

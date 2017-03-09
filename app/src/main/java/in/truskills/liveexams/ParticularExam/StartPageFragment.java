@@ -364,7 +364,7 @@ public class StartPageFragment extends Fragment {
                                 deleteDir(f);
                             }
 
-                            Intent i = new Intent(getActivity(), QuestionPaperLoad.class);
+                            Intent i = new Intent(getActivity(), MyQuestionPaperLoad.class);
                             i.putExtra("examId", examId);
                             i.putExtra("name", name);
                             i.putExtra("language", selectedLanguage);
