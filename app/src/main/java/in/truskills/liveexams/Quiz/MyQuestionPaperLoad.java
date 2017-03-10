@@ -265,7 +265,7 @@ public class MyQuestionPaperLoad extends AppCompatActivity implements Connectivi
     }
 
     public void downloadImages() throws Exception {
-        Log.d("MyQP", "downloadImages: ");
+        Log.d("heree", "downloadImages: ");
         NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
         executor = new ThreadPoolExecutor(
                 NUMBER_OF_CORES * 2,
@@ -316,6 +316,9 @@ public class MyQuestionPaperLoad extends AppCompatActivity implements Connectivi
     }
 
     public void downloadQP() {
+
+        Log.d("heree", "downloadQP: ");
+
         retryButtonForDownload.setVisibility(View.INVISIBLE);
         exitButton.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
@@ -564,13 +567,13 @@ public class MyQuestionPaperLoad extends AppCompatActivity implements Connectivi
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        if (isConnected) {
-            try {
-                checkFunction();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        if (isConnected) {
+//            try {
+//                checkFunction();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void checkFunction() throws Exception {
