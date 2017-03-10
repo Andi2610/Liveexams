@@ -55,7 +55,6 @@ import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Quiz.MyQuestionPaperLoad;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
-import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.R;
 
 //This is Start Fragment where a user can unenroll from an exam or start the quiz of the exam..

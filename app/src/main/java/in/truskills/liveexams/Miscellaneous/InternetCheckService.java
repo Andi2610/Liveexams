@@ -43,10 +43,12 @@ public class InternetCheckService extends BroadcastReceiver {
         else{
             Toast.makeText(context, "Internet Connected", Toast.LENGTH_LONG).show();
             QuizDatabase ob=new QuizDatabase(context);
-            JSONArray jsonArray = ob.getQuizResult();
-            if(jsonArray.length()==0){
+            boolean ans=ob.getStatusOfResultTable();
+            Log.d("status", "onReceive: "+ans);
+            if(ans){
                 Toast.makeText(context, "Table empty", Toast.LENGTH_LONG).show();
             }else{
+                JSONArray jsonArray = ob.getQuizResult();
                 Toast.makeText(context, "Table exists", Toast.LENGTH_LONG).show();
                 final JSONObject jsonObject = new JSONObject();
                 String selectedLanguage=ob.getDataFromDataTable(QuizDatabase.selectedLanguage);
@@ -137,6 +139,7 @@ public class InternetCheckService extends BroadcastReceiver {
                 ;
         requestQueue.add(stringRequest);
     }
+
     public static boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();

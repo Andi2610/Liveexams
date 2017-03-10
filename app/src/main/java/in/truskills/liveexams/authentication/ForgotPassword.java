@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -55,6 +57,7 @@ public class ForgotPassword extends AppCompatActivity {
     EditText newPassword;
     ProgressDialog dialog;
     RequestQueue requestQueue;
+    TextView heading;
 
     //Public declaration of variables
 
@@ -66,13 +69,24 @@ public class ForgotPassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
+        getSupportActionBar().setTitle("FORGOT PASSWORD");
+
         reset = (Button) findViewById(R.id.reset);
         newPassword = (EditText) findViewById(R.id.newPassword);
         containerForgotPassword = (RelativeLayout) findViewById(R.id.containerForgotPassword);
+        heading = (TextView) findViewById(R.id.heading);
         containerForgotPassword.setVisibility(View.INVISIBLE);
 
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         newPassword.setTypeface(tff1);
+        heading.setTypeface(tff1);
         Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         reset.setTypeface(tff2);
 
@@ -232,5 +246,11 @@ public class ForgotPassword extends AppCompatActivity {
                 .withPhoneNumber("+91");
 
         Digits.authenticate(authConfigBuilder.build());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 }

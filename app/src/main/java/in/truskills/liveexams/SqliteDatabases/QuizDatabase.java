@@ -672,4 +672,23 @@ public class QuizDatabase extends SQLiteOpenHelper {
 //        cursor.close();
 //    }
 
+    public boolean getStatusOfResultTable(){
+        boolean ans=true;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + userId + " FROM " + DATA_TABLE;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                String text = cursor.getString(cursor.getColumnIndex(userId));
+                Log.d("status", "getStatusOfResultTable: "+text);
+                if(text==null)
+                    ans=false;
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+//        db.close();
+        return ans;
+    }
+
 }
