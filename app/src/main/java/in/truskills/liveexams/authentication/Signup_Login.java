@@ -610,7 +610,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
             //If location icon is pressed..Call the getCurrentLocation method..
             case R.id.locationField:
-                mGoogleApiClient.connect();
                 getCurrentLocation();
                 break;
         }
@@ -656,30 +655,31 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 builder.create().show();
             } else {
 //                fetchLocation();
+                mGoogleApiClient.connect();
                 updateUI();
             }
         }
     }
 
-    public void fetchLocation() {
-
-        Log.d("check", "fetchLocation: ");
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.d("check", "fetchLocation: inIf");
-
-            return;
-        }
-
-//        try{
-//            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-//            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-//            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//            locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//        }catch(Exception e){
-//            Log.e("exception", "fetchLocation: "+e.toString());
+//    public void fetchLocation() {
+//
+//        Log.d("check", "fetchLocation: ");
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            Log.d("check", "fetchLocation: inIf");
+//
+//            return;
 //        }
-
-    }
+//
+////        try{
+////            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+////            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+////            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+////            locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+////        }catch(Exception e){
+////            Log.e("exception", "fetchLocation: "+e.toString());
+////        }
+//
+//    }
 
     //This method is for validating the user's entered signup info before it is given for registering..
     public void signupValidation() {
@@ -963,7 +963,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         builder.setNegativeButton("NO", null);
                         builder.create().show();
                     } else {
-                        fetchLocation();
+//                        fetchLocation();
+                        mGoogleApiClient.connect();
+                        updateUI();
                     }
                 } else {
                     //Displaying another toast if permission is not granted
@@ -989,7 +991,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //If the request code is same..
         if (requestCode == code) {
-            fetchLocation();
+            mGoogleApiClient.connect();
+            updateUI();
+//            fetchLocation();
         }
     }
 
@@ -1022,8 +1026,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 Log.d("responseOfLocation", response);
                 try {
                     String ans = MiscellaneousParser.locationParser(response);
-                    String[] part = ans.split(",");
-                    signupLocation.setText(part[2] + "," + part[3]);
+//                    String[] part = ans.split(",");
+//                    signupLocation.setText(part[2] + "," + part[3]);
+                    signupLocation.setText(ans);
                     stopLocationUpdates();
                     mGoogleApiClient.disconnect();
                 } catch (JSONException e) {
