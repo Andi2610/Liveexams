@@ -33,12 +33,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.ParseException;
@@ -64,13 +66,14 @@ public class StartPageFragment extends Fragment {
     StartPageInterface ob;
     TextView descriptionStartPage, start_Time, end_Time, start_Date, end_Date, sponsorText;
     Spinner myLanguage;
-    String selectedLanguage, timestamp, examDetails, examId, name, Languages, examGiven;
+    String selectedLanguage, timestamp, examDetails, examId, name, Languages, examGiven,myDate;
     SharedPreferences prefs;
     Button start_leave_button;
     Bundle b;
     Handler h;
     HashMap<String, String> mapper;
     ViewFlipper viewFlipper;
+    RequestQueue requestQueue;
     QuizDatabase o;
     CustomSpinnerForDetailsAdapter customSpinnerForDetailsAdapter;
 
@@ -364,11 +367,7 @@ public class StartPageFragment extends Fragment {
                                 deleteDir(f);
                             }
 
-                            Intent i = new Intent(getActivity(), MyQuestionPaperLoad.class);
-                            i.putExtra("examId", examId);
-                            i.putExtra("name", name);
-                            i.putExtra("language", selectedLanguage);
-                            startActivity(i);
+                            getDate();
                         }
 
                         o.deleteMyTable();
@@ -427,24 +426,77 @@ public class StartPageFragment extends Fragment {
                 //If permission is granted
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Check if a valid language has been chosen from the list..
-                    if (selectedLanguage.equals("LANGUAGE"))
-                        //If not chosen..
-                        Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
-                    else {
-                        //Else if chosen..
-                        //Start Quiz
-                        Intent i = new Intent(getActivity(), QuestionPaperLoad.class);
-                        i.putExtra("examId", examId);
-                        i.putExtra("name", name);
-                        i.putExtra("language", selectedLanguage);
-                        startActivity(i);
-                    }
+                        if (selectedLanguage.equals("LANGUAGE"))
+                            //If not chosen..
+                            Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
+                        else {
+                            //Else if chosen..
+                            //Start Quiz
+                            String folder_main = "LiveExams";
+
+                            File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                            if (f.exists()) {
+                                deleteDir(f);
+                            }
+
+                            getDate();
+                        }
+                        o.deleteMyTable();
                 } else {
                     //Displaying another toast if permission is not granted
                     Toast.makeText(getActivity(), "Oops you have denied the permission for write to storage\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
                 break;
         }
+    }
+
+    public void getDate(){
+        Log.d("myDateeeee", "getDate: ");
+        requestQueue = Volley.newRequestQueue(getActivity());
+        String url = ConstantsDefined.api + "getTimeStamp";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    final String myResponse = response.getJSONObject("response").toString();
+                    JSONObject jsonObject = new JSONObject(myResponse);
+                    String timestamp = jsonObject.getString("timestamp");
+                    myDate = MiscellaneousParser.parseTimestamp(timestamp);
+                    Log.d("myDateeeee", "run: "+myDate);
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("dateeeee", "run: "+myDate);
+                            afterResponse(myDate);
+
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void afterResponse(String myDate){
+//        Toast.makeText(getActivity(), "date="+myDate, Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(getActivity(), MyQuestionPaperLoad.class);
+        i.putExtra("examId", examId);
+        i.putExtra("name", name);
+        i.putExtra("language", selectedLanguage);
+        i.putExtra("date",myDate);
+        startActivity(i);
     }
 
 }

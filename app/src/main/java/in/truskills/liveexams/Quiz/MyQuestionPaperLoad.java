@@ -53,7 +53,7 @@ public class MyQuestionPaperLoad extends AppCompatActivity implements Connectivi
     RequestQueue requestQueue;
     String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri, section_id, section_max_marks, section_time, section_description, section_rules;
-    String questionAttributes, opText, examDuration, examId, name, selectedLanguage, myExamDuration, paperName;
+    String questionAttributes, opText, examDuration, examId, name, selectedLanguage, myExamDuration, paperName,myDate;
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
     float per;
@@ -90,6 +90,7 @@ public class MyQuestionPaperLoad extends AppCompatActivity implements Connectivi
         examId = getIntent().getStringExtra("examId");
         paperName = getIntent().getStringExtra("name");
         selectedLanguage = getIntent().getStringExtra("language");
+        myDate = getIntent().getStringExtra("date");
 
         fList = new ArrayList<>();
         urls = new ArrayList<>();
@@ -258,6 +259,7 @@ public class MyQuestionPaperLoad extends AppCompatActivity implements Connectivi
         intent.putExtra("noOfSections", noOfSections);
         intent.putExtra("questionArray", questionArray);
         intent.putExtra("ExamDuration", myTime);
+        intent.putExtra("date", myDate);
         startActivity(intent);
         finish();
     }
@@ -279,6 +281,7 @@ public class MyQuestionPaperLoad extends AppCompatActivity implements Connectivi
         if (len == myCount) {
             startNewActivity();
         }else{
+            Log.d("heree", "downloadImages: heree");
             retryButtonForDownload.setVisibility(View.INVISIBLE);
             exitButton.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.VISIBLE);

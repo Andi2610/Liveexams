@@ -92,6 +92,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     CountDownTimer count;
     android.support.v7.app.AlertDialog.Builder builder;
     AlertDialog mAlertDialog;
+    String myDate;
     long timeUntil;
     Button left, right;
 
@@ -105,6 +106,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         setContentView(R.layout.activity_quiz_main);
 
         quizPrefs = getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
+        prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -113,6 +115,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         examId = getIntent().getStringExtra("examId");
         paperName = getIntent().getStringExtra("name");
         selectedLanguage = getIntent().getStringExtra("language");
+        myDate = getIntent().getStringExtra("date");
+
+//        Toast.makeText(this, "date:"+myDate, Toast.LENGTH_SHORT).show();
 
         getSupportActionBar().setTitle(paperName);
 
@@ -151,6 +156,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         right.setOnClickListener(this);
 
         ob = new QuizDatabase(QuizMainActivity.this);
+
+        ob.setValuesForData(selectedLanguage,myDate,prefs.getString("userId",""),examId);
 //        ob.getAllValues();
 
         /*
@@ -394,6 +401,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 i.putExtra("examId", examId);
                 i.putExtra("userId", prefs.getString("userId", ""));
                 i.putExtra("selectedLanguage", selectedLanguage);
+                i.putExtra("date", myDate);
                 startActivityForResult(i, REQUEST_CODE_FOR_ALL_SUMMARY);
                 break;
         }
@@ -600,7 +608,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ob.deleteMyTable();
+//        ob.deleteMyTable();
         SharedPreferences.Editor e = quizPrefs.edit();
         e.clear();
         e.apply();

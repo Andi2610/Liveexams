@@ -60,7 +60,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     ArrayList<ArrayList<Integer>> questionArray;
     QuizDatabase ob;
     Button finishButton;
-    String examId, userId, selectedLanguage;
+    String examId, userId, selectedLanguage,myDate;
     RequestQueue requestQueue;
     Handler h;
 
@@ -71,6 +71,8 @@ public class AllSectionsSummary extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -84,8 +86,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         examId = getIntent().getStringExtra("examId");
         userId = getIntent().getStringExtra("userId");
         selectedLanguage = getIntent().getStringExtra("selectedLanguage");
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-
+        myDate = getIntent().getStringExtra("date");
 
         ob = new QuizDatabase(AllSectionsSummary.this);
         sectionName = new ArrayList<>();
@@ -123,55 +124,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                         .setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
-//                                JSONArray jsonArray1=ob.getResults(QuizDatabase.TABLE_PER_SECTION);
-//                                JSONArray jsonArray2=ob.getResults(QuizDatabase.TABLE_PER_QUESTION);
-//                                JSONArray jsonArray3=ob.getResults(QuizDatabase.TABLE_PER_OPTION);
-//                                JSONArray jsonArray4=ob.getResults(QuizDatabase.RESULT_TABLE);
-
-                                String url = ConstantsDefined.api + "getTimeStamp";
-                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                                        url, new Response.Listener<JSONObject>() {
-
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        try {
-                                            String myResponse = response.getJSONObject("response").toString();
-                                            JSONObject jsonObject = new JSONObject(myResponse);
-                                            String timestamp = jsonObject.getString("timestamp");
-                                            final String myDate = MiscellaneousParser.parseTimestamp(timestamp);
-                                            h.post(new Runnable() {
-                                                @Override
-                                                public void run() {
-
-                                                    afterResponse(myDate);
-
-                                                }
-                                            });
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                requestQueue.add(jsonObjectRequest);
-
-//                                JSONObject jsonObject=new JSONObject();
-//                                try {
-//                                    jsonObject.put("sectionDetails",jsonArray1);
-//                                    jsonObject.put("questionDetails",jsonArray2);
-//                                    jsonObject.put("optionDetails",jsonArray3);
-//                                    jsonObject.put("resultDetails",jsonArray4);
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
+                                submit();
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -185,7 +138,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         });
     }
 
-    public void afterResponse(String myDate) {
+    public void submit() {
 //        ob.getAllValues();
         JSONArray jsonArray = ob.getQuizResult();
         final JSONObject jsonObject = new JSONObject();
@@ -197,23 +150,24 @@ public class AllSectionsSummary extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        try {
-            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
-            if (!root.exists()) {
-                root.mkdirs();
-            }
-            File gpxfile = new File(root, "databaseFile");
-            FileWriter writer = new FileWriter(gpxfile);
-            writer.append(jsonObject.toString());
-            writer.flush();
-            writer.close();
-//                                    Toast.makeText(AllSectionsSummary.this, "Saved", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            File root = new File(Environment.getExternalStorageDirectory(), "MyResult");
+//            if (!root.exists()) {
+//                root.mkdirs();
+//            }
+//            File gpxfile = new File(root, "MyResult");
+//            FileWriter writer = new FileWriter(gpxfile);
+//            writer.append(jsonObject.toString());
+//            writer.flush();
+//            writer.close();
+////                                    Toast.makeText(AllSectionsSummary.this, "Saved", Toast.LENGTH_SHORT).show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         //Api to be connected to..
         String myurl = ConstantsDefined.api + "answerPaper";
+        Log.d("myurl", "submit: "+myurl);
 
         final ProgressDialog progressDialog = new ProgressDialog(AllSectionsSummary.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -246,8 +200,13 @@ public class AllSectionsSummary extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         JSONObject jsonObject2 = new JSONObject(result);
+                        ob.deleteMyTable();
+                        String folder_main = "LiveExams";
+                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                        if (f.exists()) {
+                            deleteDir(f);
+                        }
                         Toast.makeText(AllSectionsSummary.this, jsonObject2.getString("errmsg") + "", Toast.LENGTH_SHORT).show();
-//                                                Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
@@ -264,7 +223,15 @@ public class AllSectionsSummary extends AppCompatActivity {
                 //In case the connection to the Api couldn't be established..
                 progressDialog.dismiss();
                 Log.d("error", error.toString() + "");
-                Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
+                String folder_main = "LiveExams";
+                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                if (f.exists()) {
+                    deleteDir(f);
+                }
+                Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                startActivity(intent);
             }
         }) {
             @Override
