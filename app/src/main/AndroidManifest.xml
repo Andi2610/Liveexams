@@ -88,10 +88,6 @@
             android:name="io.fabric.ApiKey"
             android:value="392f8a786ac85c7b9899687155b01647d8538cbc" />
 
-        <activity
-            android:name=".Quiz.QuestionPaperLoad"
-            android:screenOrientation="portrait" />
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="in.truskills.liveexams.fileprovider"
@@ -133,7 +129,7 @@
             android:name=".Quiz.RulesInQuiz"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Quiz.MyQuestionPaperLoad"
+            android:name=".Quiz.QuestionPaperLoad"
             android:screenOrientation="portrait" />
 
         <receiver

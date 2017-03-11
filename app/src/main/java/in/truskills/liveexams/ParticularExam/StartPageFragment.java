@@ -54,6 +54,7 @@ import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Quiz.MyQuestionPaperLoad;
+import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 import in.truskills.liveexams.R;
 
@@ -490,7 +491,7 @@ public class StartPageFragment extends Fragment {
 
     public void afterResponse(String myDate){
 //        Toast.makeText(getActivity(), "date="+myDate, Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(getActivity(), MyQuestionPaperLoad.class);
+        Intent i = new Intent(getActivity(), QuestionPaperLoad.class);
         i.putExtra("examId", examId);
         i.putExtra("name", name);
         i.putExtra("language", selectedLanguage);

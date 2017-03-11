@@ -45,7 +45,7 @@ public class InternetCheckService extends BroadcastReceiver {
             QuizDatabase ob=new QuizDatabase(context);
             boolean ans=ob.getStatusOfResultTable();
             Log.d("status", "onReceive: "+ans);
-            if(ans){
+            if(!ans){
                 Toast.makeText(context, "Table empty", Toast.LENGTH_LONG).show();
             }else{
                 JSONArray jsonArray = ob.getQuizResult();
