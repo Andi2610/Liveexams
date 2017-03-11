@@ -48,7 +48,7 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 public class QuestionPaperLoad extends AppCompatActivity implements ConnectivityReciever.ConnectivityReceiverListener {
 
     //Declare the variables..
-    int languageArray[][], fragmentIndex[][], found = 0,ii=0;
+    int languageArray[][], fragmentIndex[][];
     LinkedList ll = new LinkedList();
     LinkedList llGroup = new LinkedList();
     ImageRequest ir;
@@ -57,16 +57,15 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     RequestQueue requestQueue;
     String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri, section_id, section_max_marks, section_time, section_description, section_rules;
-    String questionAttributes, opText, examDuration, examId, name, selectedLanguage, myExamDuration, paperName,myDate;
+    String questionAttributes, opText, examDuration, examId, name, selectedLanguage, myExamDuration, paperName,myDate,myUrl;
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
     float per;
     QuizDatabase ob;
     ProgressBar progressBar;
     ArrayList<String> urls, groups;
-    SharedPreferences prefs;
+    SharedPreferences prefs,dataPrefs;
     Button retryButtonForDownload, exitButton;
-    ThreadPoolExecutor executor;
     com.wang.avi.AVLoadingIndicatorView avi;
 
     @Override
@@ -78,6 +77,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         avi.show();
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+        dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -94,6 +94,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         paperName = getIntent().getStringExtra("name");
         selectedLanguage = getIntent().getStringExtra("language");
         myDate = getIntent().getStringExtra("date");
+        myUrl = getIntent().getStringExtra("url");
 
         fList = new ArrayList<>();
         urls = new ArrayList<>();
@@ -399,11 +400,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             @Override
             public void onClick(View v) {
                 String folder_main = "LiveExams";
-                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                if (f.exists()) {
-                    deleteDir(f);
-                }
+//                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+//                if (f.exists()) {
+//                    deleteDir(f);
+//                }
                 ob.deleteMyTable();
+                SharedPreferences.Editor e=dataPrefs.edit();
+                e.clear();
+                e.apply();
                 finish();
             }
         });
@@ -424,7 +428,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             myCount++;
             Log.d("messi", "matcher.findInLoop");
             String group = matcher.group(2);
-            String imageUrl = ConstantsDefined.imageUrl + examId + "/Images/" + group;
+            String imageUrl = myUrl + examId + "/Images/" + group;
             Log.d("imageDownload", imageUrl);
             urls.add(imageUrl);
             groups.add(group);
@@ -447,7 +451,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             myCount++;
             Log.d("messi", "matcher.findInLoop");
             String group = matcher.group(2);
-            String imageUrl = ConstantsDefined.imageUrl + examId + "/Images/" + group;
+            String imageUrl = myUrl + examId + "/Images/" + group;
             Log.d("imageDownload", imageUrl);
             urls.add(imageUrl);
             groups.add(group);
@@ -456,10 +460,10 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         }
     }
 
-    public static String format(String str, String examId) {
+    public String format(String str, String examId) {
 
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final String subst = "<img src=\"" + ConstantsDefined.imageUrl + "" + examId + "/Images/$2\"/>";
+        final String subst = "<img src=\"" + myUrl + "" + examId + "/Images/$2\"/>";
 
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(str);
@@ -497,12 +501,16 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     @Override
     public void onBackPressed() {
+//        Log.d("place", "onBackPressed: of QPL");
         String folder_main = "LiveExams";
         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
         if (f.exists()) {
             deleteDir(f);
         }
         ob.deleteMyTable();
+        SharedPreferences.Editor e=dataPrefs.edit();
+        e.clear();
+        e.apply();
         finish();
     }
 

@@ -42,7 +42,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
     AllQuestionsInOneSectionAdapterForAnswers allQuestionsInOneSectionAdapterForAnswers;
     LinearLayoutManager linearLayoutManager;
     ArrayList<String> options;
-    String minimumTime, maximumTime, yourTime, correctlyAnsweredBy;
+    String minimumTime, maximumTime, yourTime, correctlyAnsweredBy,myUrl;
     int my_section, my_question, my_option, questionArray[], noOfSections, num,myFragmentCount=0;
     SharedPreferences prefs;
     Button left, right;
@@ -109,6 +109,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
         noOfSections = getIntent().getIntExtra("noOfSections", 0);
         questionArray = getIntent().getIntArrayExtra("questionArray");
+        myUrl = getIntent().getStringExtra("url");
         Log.d("myLength=", questionArray.length + "");
 
         ob = new AnalyticsDatabase(this);
@@ -187,7 +188,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
                     String my_option_text = ob.getTextOfOneOption(my_section, my_question, my_option);
                     options.add(my_option_text);
                 }
-                fList.add(MyFragmentForAnswers.newInstance(my_text, options, myAnswer, correctAnswer));
+                fList.add(MyFragmentForAnswers.newInstance(my_text, options, myAnswer, correctAnswer,myUrl));
             }
         }
 
@@ -292,19 +293,19 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
             case R.id.left:
                 Log.d("checking", "onClick: first=" + linearLayoutManager.findFirstCompletelyVisibleItemPosition());
                 position=linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                if(position<5){
+                if(position<4){
                     questionsList.getLayoutManager().scrollToPosition(0);
                 }else{
-                    questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findFirstCompletelyVisibleItemPosition() - 5);
+                    questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findFirstCompletelyVisibleItemPosition() - 4);
                 }
                 break;
             case R.id.right:
                 Log.d("checking", "onClick: last=" + linearLayoutManager.findLastCompletelyVisibleItemPosition());
                 position=linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                if(position>(myFragmentCount-5)){
+                if(position>(myFragmentCount-4)){
                     questionsList.getLayoutManager().scrollToPosition(myFragmentCount);
                 }else{
-                    questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 5);
+                    questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 4);
                 }
                 break;
         }

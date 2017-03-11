@@ -2,6 +2,7 @@ package in.truskills.liveexams.ParticularExamStatistics;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,18 +10,31 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.webrtc.DataChannel;
 
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
 public class InitialInfo extends AppCompatActivity {
 
-    String date, startTime, endTime, score, attempts, totalMarks, duration, examName, bestScore, averageScore, totalStudents;
+    String date, startTime, endTime, score, attempts, totalMarks, duration, examName, bestScore, averageScore, totalStudents,myUrl;
     int noOfSections, questionArray[], totalQuestions = 0;
     Button answerKeyButton;
     TextView dateText, dateValue, startTimeText, startTimeValue, endTimeText, endTimeValue, totalMarksText, totalMarksValue, bestScoreValue, bestScoreText, averageScoreValue, averageScoreText;
     TextView myRank, totalRank, rankText, myScore, totalScore, scoreText, myPercentile, totalPercentile, percentileText, myAttempt, totalAttempt, attemptText;
+    RequestQueue requestQueue;
+    Handler h;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +43,10 @@ public class InitialInfo extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        h=new Handler();
 
 
         date = getIntent().getStringExtra("date");
@@ -43,6 +61,7 @@ public class InitialInfo extends AppCompatActivity {
         bestScore = getIntent().getStringExtra("bestScore");
         averageScore = getIntent().getStringExtra("averageScore");
         totalStudents = getIntent().getStringExtra("totalStudents");
+        myUrl = getIntent().getStringExtra("url");
         questionArray = new int[noOfSections];
         questionArray = getIntent().getIntArrayExtra("questionArray");
         Log.d("myLengthInitialInfo=", questionArray.length + "");
@@ -117,11 +136,8 @@ public class InitialInfo extends AppCompatActivity {
         answerKeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(InitialInfo.this, AnswersMainActivity.class);
-                intent.putExtra("examName", examName);
-                intent.putExtra("noOfSections", noOfSections);
-                intent.putExtra("questionArray", questionArray);
-                startActivity(intent);
+
+                startMyActivity();
             }
         });
 
@@ -151,5 +167,14 @@ public class InitialInfo extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    public void startMyActivity(){
+        Intent intent = new Intent(InitialInfo.this, AnswersMainActivity.class);
+        intent.putExtra("examName", examName);
+        intent.putExtra("noOfSections", noOfSections);
+        intent.putExtra("questionArray", questionArray);
+        intent.putExtra("url", myUrl);
+        startActivity(intent);
     }
 }

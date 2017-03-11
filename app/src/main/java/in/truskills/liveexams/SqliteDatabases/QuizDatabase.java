@@ -32,7 +32,7 @@ public class QuizDatabase extends SQLiteOpenHelper {
     public static final String TABLE_PER_QUESTION = "PerQuestionDetails";
     public static final String TABLE_PER_OPTION = "PerOptionDetails";
     public static final String RESULT_TABLE = "ResultTable";
-    public static final String DATA_TABLE = "DataTable";
+//    public static final String DATA_TABLE = "DataTable";
 
     // Table Columns names
     public static final String SectionIndex = "sectionIndex";
@@ -69,15 +69,17 @@ public class QuizDatabase extends SQLiteOpenHelper {
     public static final String date = "date";
     public static final String userId = "userId";
     public static final String examId = "examId";
+    public static final String submit = "submit";
 
 
-    String CREATE_MY_TABLE_FOR_DATA =
-            "CREATE TABLE " + DATA_TABLE + "("
-                    + selectedLanguage + " TEXT,"
-                    + date + " TEXT,"
-                    + userId + " TEXT,"
-                    + examId + " TEXT"
-                    + ")";
+//    String CREATE_MY_TABLE_FOR_DATA =
+//            "CREATE TABLE " + DATA_TABLE + "("
+//                    + selectedLanguage + " TEXT,"
+//                    + date + " TEXT,"
+//                    + userId + " TEXT,"
+//                    + submit + " TEXT DEFAULT '0',"
+//                    + examId + " TEXT"
+//                    + ")";
 
     String CREATE_MY_TABLE_PER_SECTION =
             "CREATE TABLE " + TABLE_PER_SECTION + "("
@@ -152,7 +154,7 @@ public class QuizDatabase extends SQLiteOpenHelper {
         db.execSQL(CREATE_MY_TABLE_PER_SECTION);
         db.execSQL(CREATE_MY_TABLE_PER_OPTION);
         db.execSQL(CREATE_MY_RESULT_TABLE);
-        db.execSQL(CREATE_MY_TABLE_FOR_DATA);
+//        db.execSQL(CREATE_MY_TABLE_FOR_DATA);
     }
 
     @Override
@@ -166,12 +168,13 @@ public class QuizDatabase extends SQLiteOpenHelper {
     }
 
     public void deleteMyTable() {
+        Log.d("place", "deleteMyTable: ");
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DELETE FROM " + TABLE_PER_SECTION);
         db.execSQL("DELETE FROM " + TABLE_PER_QUESTION);
         db.execSQL("DELETE FROM " + TABLE_PER_OPTION);
         db.execSQL("DELETE FROM " + RESULT_TABLE);
-        db.execSQL("DELETE FROM " + DATA_TABLE);
+//        db.execSQL("DELETE FROM " + DATA_TABLE);
     }
 
     public void setValuesPerSection(int si) {
@@ -210,15 +213,22 @@ public class QuizDatabase extends SQLiteOpenHelper {
 //        db.close(); // Closing database connection
     }
 
-    public void setValuesForData(String language,String myDate,String ui,String ei){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(selectedLanguage, language);
-        values.put(date, myDate);
-        values.put(userId, ui);
-        values.put(examId, ei);
-        db.insert(DATA_TABLE, null, values);
-    }
+//    public void setValuesForData(String language,String myDate,String ui,String ei){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(selectedLanguage, language);
+//        values.put(date, myDate);
+//        values.put(userId, ui);
+//        values.put(examId, ei);
+//        db.insert(DATA_TABLE, null, values);
+//    }
+
+//    public void setSubmitTrue(){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(submit, 1+"");
+//        db.insert(DATA_TABLE, null, values);
+//    }
 
     public void updateValuesPerSection(int si, String columnName, String value) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -358,20 +368,20 @@ public class QuizDatabase extends SQLiteOpenHelper {
         return map;
     }
 
-    public String getDataFromDataTable(String columnName){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String ans = "";
-        String query = "SELECT " + columnName + " FROM " + DATA_TABLE ;
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ans = cursor.getString(cursor.getColumnIndex(columnName));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-//        db.close();
-        return ans;
-    }
+//    public String getDataFromDataTable(String columnName){
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        String ans = "";
+//        String query = "SELECT " + columnName + " FROM " + DATA_TABLE ;
+//        Cursor cursor = db.rawQuery(query, null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                ans = cursor.getString(cursor.getColumnIndex(columnName));
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+////        db.close();
+//        return ans;
+//    }
 
     public String getStringValuesPerQuestionByFragmentIndex(int fI, String columnName) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -672,23 +682,23 @@ public class QuizDatabase extends SQLiteOpenHelper {
 //        cursor.close();
 //    }
 
-    public boolean getStatusOfResultTable(){
-        boolean ans=true;
-        SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT " + userId + " FROM " + DATA_TABLE;
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                String text = cursor.getString(cursor.getColumnIndex(userId));
-                Log.d("status", "getStatusOfResultTable: "+text);
-                if(text==null)
-                    ans=false;
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-//        db.close();
-        return ans;
-    }
+//    public boolean getStatusOfResultTable(){
+//        boolean ans=false;
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        String query = "SELECT " + submit + " FROM " + DATA_TABLE;
+//        Cursor cursor = db.rawQuery(query, null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                String text = cursor.getString(cursor.getColumnIndex(submit));
+//                Log.d("status", "getStatusOfResultTable: "+text);
+//                if(text.equals("1"))
+//                    ans=true;
+//            } while (cursor.moveToNext());
+//        }
+//
+//        cursor.close();
+////        db.close();
+//        return ans;
+//    }
 
 }

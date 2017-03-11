@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.os.Handler;
@@ -62,6 +63,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     Button finishButton;
     String examId, userId, selectedLanguage,myDate;
     RequestQueue requestQueue;
+    SharedPreferences prefs,dataPrefs;
     Handler h;
 
     @Override
@@ -73,6 +75,9 @@ public class AllSectionsSummary extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
+        dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -150,6 +155,12 @@ public class AllSectionsSummary extends AppCompatActivity {
             e.printStackTrace();
         }
 
+//        ob.setSubmitTrue();
+
+        SharedPreferences.Editor e=dataPrefs.edit();
+        e.putInt("submit",1);
+        e.apply();
+
 //        try {
 //            File root = new File(Environment.getExternalStorageDirectory(), "MyResult");
 //            if (!root.exists()) {
@@ -194,6 +205,9 @@ public class AllSectionsSummary extends AppCompatActivity {
                             deleteDir(f);
                         }
                         ob.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
                         Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
@@ -201,6 +215,9 @@ public class AllSectionsSummary extends AppCompatActivity {
                     } else {
                         JSONObject jsonObject2 = new JSONObject(result);
                         ob.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
                         String folder_main = "LiveExams";
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {

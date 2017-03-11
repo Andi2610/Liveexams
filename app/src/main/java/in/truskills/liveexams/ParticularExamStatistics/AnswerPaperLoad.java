@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -58,10 +59,12 @@ public class AnswerPaperLoad extends AppCompatActivity {
     String questionAttributes, opText, examDuration, examId, name, selectedLanguage, myExamDuration, questionPaperResponse, answerKeyResponse, endStudentAnalyticsResponse, endExamAnalyticsResponse, answerPaperResponse;
     String startTime, endTime, totalMarks, score, attempts, myStartTime, myEndTime, examName, date, bestScore, averageScore, totalStudents;
     ArrayList<Fragment> fList;
+    String myUrl;
     TextView myWaitMessage;
     AnalyticsDatabase ob;
     ArrayList<String> urls, groups;
     SharedPreferences prefs;
+    Handler h;
     //myExamDuration,myStartTime,myEndTime,
 
     @Override
@@ -77,6 +80,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
 
         examId = getIntent().getStringExtra("examId");
         examName = getIntent().getStringExtra("examName");
+        h=new Handler();
 //        selectedLanguage="English";
 
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -86,59 +90,11 @@ public class AnswerPaperLoad extends AppCompatActivity {
         groups = new ArrayList<>();
         ob = new AnalyticsDatabase(this);
 
-        //Api to be connected to get the question paper..
-        url = ConstantsDefined.api + "getAnswerAnalytics";
-        //Make the request..
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String result) {
+        getUrl();
 
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    String response = jsonObject.getString("response");
-                    String success = jsonObject.getString("success");
-                    if (success.equals("true")) {
-                        JSONObject jsonObject1 = new JSONObject(response);
-                        questionPaperResponse = jsonObject1.getString("questionPaper");
-                        answerKeyResponse = jsonObject1.getString("answerKey");
-                        answerPaperResponse = jsonObject1.getString("answerPaper");
-                        endExamAnalyticsResponse = jsonObject1.getString("endExamAnalytics");
-                        endStudentAnalyticsResponse = jsonObject1.getString("EndStudentAnalytics");
-                        HashMap<String, String> map = AnswerPaperParser.responseParser(answerPaperResponse);
-                        date = map.get("date");
-                        selectedLanguage = map.get("selectedLanguage");
-                        setQuestionPaperResponse(questionPaperResponse, selectedLanguage);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                //If connection couldn't be made..
-                Toast.makeText(AnswerPaperLoad.this, "Sorry! No internet connection\nPlease try again later..", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                //Put all the required parameters for the post request..
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("userId", prefs.getString("userId", ""));
-                params.put("examId", examId);
-                return params;
-            }
-        };
-        requestQueue.add(stringRequest);
     }
 
-    public void setQuestionPaperResponse(String response, String language) {
+    public void setQuestionPaperResponse(String response, String language,final String myUrl) {
 
         try {
             //Parse response..
@@ -355,6 +311,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                         intent.putExtra("bestScore", bestScore);
                         intent.putExtra("averageScore", averageScore);
                         intent.putExtra("totalStudents", totalStudents);
+                        intent.putExtra("url", myUrl);
                         Log.d("myLength=", questionArray.length + "");
                         intent.putExtra("questionArray", questionArray);
                         startActivity(intent);
@@ -491,10 +448,10 @@ public class AnswerPaperLoad extends AppCompatActivity {
         ob.updateValuesPerOption(ii, jj, kk, AnalyticsDatabase.OptionText, myText);
     }
 
-    public static String format(String str, String examId) {
+    public  String format(String str, String examId) {
 
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
-        final String subst = "<img src=\"" + ConstantsDefined.imageUrl + "" + examId + "/Images/$2\"/>";
+        final String subst = "<img src=\"" + myUrl + "" + examId + "/Images/$2\"/>";
 
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(str);
@@ -503,5 +460,94 @@ public class AnswerPaperLoad extends AppCompatActivity {
         String result = matcher.replaceAll(subst);
 
         return result;
+    }
+
+    public void getUrl(){
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        String url = ConstantsDefined.api + "getS3Url";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    myUrl=response.getString("response");
+                    Log.d("myDateeeee", "run: "+myUrl);
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+//                            Log.d("dateeeee", "run: "+myDate);
+//                            afterResponse(myDate);
+
+                            afterConnect(myUrl);
+
+
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AnswerPaperLoad.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public void afterConnect(final String myUrl){
+        //Api to be connected to get the question paper..
+        url = ConstantsDefined.api + "getAnswerAnalytics";
+        //Make the request..
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String result) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String response = jsonObject.getString("response");
+                    String success = jsonObject.getString("success");
+                    if (success.equals("true")) {
+                        JSONObject jsonObject1 = new JSONObject(response);
+                        questionPaperResponse = jsonObject1.getString("questionPaper");
+                        answerKeyResponse = jsonObject1.getString("answerKey");
+                        answerPaperResponse = jsonObject1.getString("answerPaper");
+                        endExamAnalyticsResponse = jsonObject1.getString("endExamAnalytics");
+                        endStudentAnalyticsResponse = jsonObject1.getString("EndStudentAnalytics");
+                        HashMap<String, String> map = AnswerPaperParser.responseParser(answerPaperResponse);
+                        date = map.get("date");
+                        selectedLanguage = map.get("selectedLanguage");
+                        setQuestionPaperResponse(questionPaperResponse, selectedLanguage,myUrl);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                //If connection couldn't be made..
+                Toast.makeText(AnswerPaperLoad.this, "Sorry! No internet connection\nPlease try again later..", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                //Put all the required parameters for the post request..
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userId", prefs.getString("userId", ""));
+                params.put("examId", examId);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 }

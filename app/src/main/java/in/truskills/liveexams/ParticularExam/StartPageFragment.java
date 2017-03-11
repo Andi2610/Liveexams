@@ -53,7 +53,6 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.Quiz.MyQuestionPaperLoad;
 import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 import in.truskills.liveexams.R;
@@ -66,8 +65,8 @@ public class StartPageFragment extends Fragment {
     StartPageInterface ob;
     TextView descriptionStartPage, start_Time, end_Time, start_Date, end_Date, sponsorText;
     Spinner myLanguage;
-    String selectedLanguage, timestamp, examDetails, examId, name, Languages, examGiven,myDate;
-    SharedPreferences prefs;
+    String selectedLanguage, timestamp, examDetails, examId, name, Languages, examGiven,myDate,myUrl;
+    SharedPreferences prefs,dataPrefs;
     Button start_leave_button;
     Bundle b;
     Handler h;
@@ -97,6 +96,7 @@ public class StartPageFragment extends Fragment {
 
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        dataPrefs = getActivity().getSharedPreferences("dataPrefs", Context.MODE_PRIVATE);
 
         ob = (StartPageInterface) getActivity();
         ob.changeTitleForStartPage();
@@ -371,6 +371,10 @@ public class StartPageFragment extends Fragment {
                         }
 
                         o.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
+
                     }
 
                     Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
@@ -442,6 +446,9 @@ public class StartPageFragment extends Fragment {
                             getDate();
                         }
                         o.deleteMyTable();
+                    SharedPreferences.Editor e=dataPrefs.edit();
+                    e.clear();
+                    e.apply();
                 } else {
                     //Displaying another toast if permission is not granted
                     Toast.makeText(getActivity(), "Oops you have denied the permission for write to storage\nGo to settings and grant them", Toast.LENGTH_LONG).show();
@@ -489,13 +496,53 @@ public class StartPageFragment extends Fragment {
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void afterResponse(String myDate){
+    public void afterResponse(final String myDate){
+
+        requestQueue = Volley.newRequestQueue(getActivity());
+        String url = ConstantsDefined.api + "getS3Url";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    myUrl=response.getString("response");
+                    Log.d("myDateeeee", "run: "+myUrl);
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+//                            Log.d("dateeeee", "run: "+myDate);
+//                            afterResponse(myDate);
+
+                            afterConnect(myDate,myUrl);
+
+
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+
+
 //        Toast.makeText(getActivity(), "date="+myDate, Toast.LENGTH_SHORT).show();
+    }
+
+    public void afterConnect(String myDate,String myUrl){
         Intent i = new Intent(getActivity(), QuestionPaperLoad.class);
         i.putExtra("examId", examId);
         i.putExtra("name", name);
         i.putExtra("language", selectedLanguage);
         i.putExtra("date",myDate);
+        i.putExtra("url",myUrl);
         startActivity(i);
     }
 

@@ -15,7 +15,7 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class WebViewContentForAnswers {
 
-    public void contentGenerator(final String question, final ArrayList<String> optionsList, WebView webView, String myAnswer, String correctAnswer) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, WebView webView, String myAnswer, String correctAnswer,String myUrl) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();

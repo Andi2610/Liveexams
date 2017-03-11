@@ -3,6 +3,7 @@ package in.truskills.liveexams.Miscellaneous;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Environment;
 import android.util.Log;
@@ -34,6 +35,8 @@ public class InternetCheckService extends BroadcastReceiver {
     public InternetCheckService() {
     }
 
+    SharedPreferences dataPrefs;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         boolean isConnected = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
@@ -43,18 +46,33 @@ public class InternetCheckService extends BroadcastReceiver {
         else{
             Toast.makeText(context, "Internet Connected", Toast.LENGTH_LONG).show();
             QuizDatabase ob=new QuizDatabase(context);
-            boolean ans=ob.getStatusOfResultTable();
+            dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
+            Log.d("status", "onReceive: "+dataPrefs.getInt("submit",0));
+            int ans=dataPrefs.getInt("submit",0);
+            if(ob==null){
+                Log.d("status", "onReceive: null");
+            }else{
+                Log.d("status", "onReceive: notNull");
+            }
+//            boolean ans=ob.getStatusOfResultTable();
             Log.d("status", "onReceive: "+ans);
-            if(!ans){
+            if(ans==0){
                 Toast.makeText(context, "Table empty", Toast.LENGTH_LONG).show();
             }else{
                 JSONArray jsonArray = ob.getQuizResult();
                 Toast.makeText(context, "Table exists", Toast.LENGTH_LONG).show();
                 final JSONObject jsonObject = new JSONObject();
-                String selectedLanguage=ob.getDataFromDataTable(QuizDatabase.selectedLanguage);
-                String myDate=ob.getDataFromDataTable(QuizDatabase.date);
-                String userId=ob.getDataFromDataTable(QuizDatabase.userId);
-                String examId=ob.getDataFromDataTable(QuizDatabase.examId);
+//                String selectedLanguage=ob.getDataFromDataTable(QuizDatabase.selectedLanguage);
+//                String myDate=ob.getDataFromDataTable(QuizDatabase.date);
+//                String userId=ob.getDataFromDataTable(QuizDatabase.userId);
+//                String examId=ob.getDataFromDataTable(QuizDatabase.examId);
+
+                String selectedLanguage=dataPrefs.getString("selectedLanguage","");
+                String myDate=dataPrefs.getString("date","");
+                String userId=dataPrefs.getString("userId","");
+                String examId=dataPrefs.getString("examId","");
+
+                Log.d("dataInCheck", "onCreate: "+selectedLanguage+" "+myDate+" "+userId+" "+examId);
                 try {
                     jsonObject.put("result", jsonArray);
                     jsonObject.put("selectedLanguage", selectedLanguage);
@@ -98,9 +116,15 @@ public class InternetCheckService extends BroadcastReceiver {
                             deleteDir(f);
                         }
                         ob.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
 
                     } else {
                         ob.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
                         String folder_main = "LiveExams";
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {

@@ -19,16 +19,17 @@ public class MyFragmentForAnswers extends Fragment {
 
 
     WebView webView;
-    String myQuestion, myAnswer, correctAnswer;
+    String myQuestion, myAnswer, correctAnswer,myUrll;
     ArrayList<String> myOptions;
 
-    public static final MyFragmentForAnswers newInstance(String question, ArrayList<String> options, String myAnswer, String correctAnswer) {
+    public static final MyFragmentForAnswers newInstance(String question, ArrayList<String> options, String myAnswer, String correctAnswer,String myUrl) {
         MyFragmentForAnswers f = new MyFragmentForAnswers();
         Bundle bundle = new Bundle();
         bundle.putString("Question", question);
         bundle.putStringArrayList("Options", options);
         bundle.putString("myAnswer", myAnswer);
         bundle.putString("correctAnswer", correctAnswer);
+        bundle.putString("url", myUrl);
         f.setArguments(bundle);
         return f;
     }
@@ -44,6 +45,7 @@ public class MyFragmentForAnswers extends Fragment {
         myOptions = getArguments().getStringArrayList("Options");
         myAnswer = getArguments().getString("myAnswer");
         correctAnswer = getArguments().getString("correctAnswer");
+        myUrll = getArguments().getString("url");
 
         //Initialise web view variable..
         webView = (WebView) v.findViewById(R.id.webViewForAnswers);
@@ -52,7 +54,7 @@ public class MyFragmentForAnswers extends Fragment {
         webView.getSettings().setDisplayZoomControls(false);
 
         WebViewContentForAnswers obj = new WebViewContentForAnswers();
-        obj.contentGenerator(myQuestion, myOptions, webView, myAnswer, correctAnswer);
+        obj.contentGenerator(myQuestion, myOptions, webView, myAnswer, correctAnswer,myUrll);
 
         return v;
     }
