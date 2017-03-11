@@ -57,10 +57,10 @@ public class InternetCheckService extends BroadcastReceiver {
 //            boolean ans=ob.getStatusOfResultTable();
             Log.d("status", "onReceive: "+ans);
             if(ans==0){
-                Toast.makeText(context, "Table empty", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "Table empty", Toast.LENGTH_LONG).show();
             }else{
                 JSONArray jsonArray = ob.getQuizResult();
-                Toast.makeText(context, "Table exists", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "Table exists", Toast.LENGTH_LONG).show();
                 final JSONObject jsonObject = new JSONObject();
 //                String selectedLanguage=ob.getDataFromDataTable(QuizDatabase.selectedLanguage);
 //                String myDate=ob.getDataFromDataTable(QuizDatabase.date);
@@ -77,7 +77,7 @@ public class InternetCheckService extends BroadcastReceiver {
                     jsonObject.put("result", jsonArray);
                     jsonObject.put("selectedLanguage", selectedLanguage);
                     jsonObject.put("date", myDate);
-                    Toast.makeText(context, "user:"+userId+" exam:"+examId, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "user:"+userId+" exam:"+examId, Toast.LENGTH_SHORT).show();
                     Log.d("response", "onReceive: "+userId+" "+examId);
                     submit(ob,context,jsonObject.toString(),userId,examId);
                 } catch (JSONException e) {
@@ -110,7 +110,7 @@ public class InternetCheckService extends BroadcastReceiver {
                     String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
                         String folder_main = "LiveExams";
-                        Toast.makeText(context, "submitted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Your answer paper has been submitted..", Toast.LENGTH_SHORT).show();
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
                             deleteDir(f);
