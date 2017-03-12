@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -80,6 +81,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        Drawable customDrawable= getResources().getDrawable(R.drawable.custom_progressbar);
+
+        // set the drawable as progress drawavle
+
+        progressBar.setProgressDrawable(customDrawable);
+
+
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
         retryButtonForDownload = (Button) findViewById(R.id.retryButtonForDownload);
         exitButton = (Button) findViewById(R.id.exitButton);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
     String examName, SectionIndex;
     ArrayList<Fragment> fList;
+    int fi,jumpTo;
     TextView sectionNameForAnswers, submittedQuestionsForAnswers, reviewedTickedQuestionsForAnswers, reviewedUntickedQuestionsForAnswers, notAttemptedQuestionsForAnswers, clearedQuestionsForAnswers;
     TextView yourTimeText, maximumTimeText, minimumTimeText, correctlyAnsweredText, yourTimeValue, maximumTimeValue, minimumTimeValue, correctlyAnsweredValue;
     ViewPager pager;
@@ -241,8 +243,13 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
     }
 
     @Override
-    public void SetValue(int pos) {
-        pager.setCurrentItem(pos);
+    public void SetValue(final int pos) {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                pager.setCurrentItem(pos,true);
+            }
+        });
     }
 
     @Override
@@ -251,13 +258,23 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         if (requestCode == REQUEST_CODE) {
             if (data != null) {
                 int sI = data.getIntExtra("message", 0);
-                int fi = Integer.parseInt(ob.getStringValuesPerQuestion(sI, 0, AnalyticsDatabase.FragmentIndex));
-                pager.setCurrentItem(fi);
+                fi = Integer.parseInt(ob.getStringValuesPerQuestion(sI, 0, AnalyticsDatabase.FragmentIndex));
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        pager.setCurrentItem(fi,true);
+                    }
+                });
             }
         } else if (requestCode == REQUEST_CODE_FOR_ALL_SUMMARY) {
             if (data != null) {
-                int jumpTo = data.getIntExtra("jumpTo", 0);
-                pager.setCurrentItem(jumpTo);
+                jumpTo = data.getIntExtra("jumpTo", 0);
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        pager.setCurrentItem(jumpTo,true);
+                    }
+                });
             }
         }
     }

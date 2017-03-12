@@ -400,7 +400,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        pager.setCurrentItem(jumpTo);
+                        pager.setCurrentItem(jumpTo,true);
                     }
                 });
             }
@@ -921,4 +921,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //            count.start();
 //        }
     }
+
+
 }
