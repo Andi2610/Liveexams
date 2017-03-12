@@ -121,7 +121,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     ArrayList<String> listOfLanguages;
     Animation slide_down;
     Drawable dr;
-    ProgressDialog dialog, progress;
+    ProgressDialog dialog;
     private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
 
 
@@ -244,6 +244,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        if(dialog!=null)
                         dialog.dismiss();
                         try {
                             //Parse the signup response..
@@ -263,6 +264,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection could not be made..
+                        if(dialog!=null)
                         dialog.dismiss();
                         Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
@@ -765,6 +767,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        if(dialog!=null)
                         dialog.dismiss();
                         try {
                             //Parse the signup response..
@@ -796,6 +799,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection could not be made..
+                        if(dialog!=null)
                         dialog.dismiss();
                         Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
@@ -870,6 +874,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             public void onResponse(String response) {
                 //On getting the response..
                 Intent i = null;
+                if(dialog!=null)
                 dialog.dismiss();
                 try {
                     //Parse the login response..
@@ -911,6 +916,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
+                if(dialog!=null)
                 dialog.dismiss();
                 Log.d("error", error.toString() + "");
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
@@ -1022,6 +1028,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 //On getting the response..
+                if(dialog!=null)
                 dialog.dismiss();
                 Log.d("responseOfLocation", response);
                 try {
@@ -1040,6 +1047,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
+                if(dialog!=null)
                 dialog.dismiss();
                 Log.d("error", error.toString() + "");
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();

@@ -199,12 +199,14 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     public void setList() {
 
         //connect to joinedExams api..
-        dialog = new ProgressDialog(getActivity());
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("Loading. Please wait...");
-        dialog.setIndeterminate(true);
-        dialog.setCancelable(false);
-        dialog.show();
+        if(getActivity()!=null){
+            dialog = new ProgressDialog(getActivity());
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("Loading. Please wait...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
 
         String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -213,6 +215,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
             @Override
             public void onResponse(JSONObject response) {
                 noConnectionLayout.setVisibility(View.GONE);
+                if(dialog!=null)
                 dialog.dismiss();
                 try {
                     String myResponse = response.getJSONObject("response").toString();
@@ -286,6 +289,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
             @Override
             public void onErrorResponse(VolleyError error) {
                 noConnectionLayout.setVisibility(View.VISIBLE);
+                if(dialog!=null)
                 dialog.dismiss();
                 Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
             }

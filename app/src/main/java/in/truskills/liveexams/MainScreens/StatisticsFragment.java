@@ -123,12 +123,15 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
 
     public void setList() {
         valuesList = new ArrayList<>();
-        dialog = new ProgressDialog(getActivity());
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("Loading. Please wait...");
-        dialog.setIndeterminate(true);
-        dialog.setCancelable(false);
-        dialog.show();
+
+        if(getActivity()!=null){
+            dialog = new ProgressDialog(getActivity());
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("Loading. Please wait...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+        }
 
         //Get data for list populate..
         String url = ConstantsDefined.api + "getAnalyzedExams/" + prefs.getString("userId", "");
@@ -137,7 +140,7 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
 
             @Override
             public void onResponse(JSONObject response) {
-
+                if(dialog!=null)
                 dialog.dismiss();
 
                 noConnectionLayout.setVisibility(View.GONE);
@@ -186,6 +189,7 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if(dialog!=null)
                 dialog.dismiss();
                 Log.d("myError", error + "");
                 Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();

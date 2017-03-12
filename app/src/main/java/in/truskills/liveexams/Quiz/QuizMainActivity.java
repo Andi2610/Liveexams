@@ -73,6 +73,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
     SharedPreferences quizPrefs,dataPrefs;
     long start, end, diff;
+    int my_fi,jumpTo;
     String examId, paperName, selectedLanguage, sectionTitle;
     ArrayList<Fragment> fList;
     TextView sectionName, submittedQuestions, reviewedTickedQuestions, reviewedUntickedQuestions, notAttemptedQuestions, timer, clearedQuestions;
@@ -384,21 +385,37 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 int sI = ob.getIntValuesPerSectionBySerialNumber(mySrNo, QuizDatabase.SectionIndex);
 
                 //Get fragment index with section index= sI and serial number=0 from PerQuestionDetails..
-                int my_fi = ob.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
-                pager.setCurrentItem(my_fi);
+                my_fi = ob.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        pager.setCurrentItem(my_fi,true);
+
+                    }
+                });
             }
         } else if (requestCode == REQUEST_CODE_FOR_ALL_SUMMARY) {
             if (data != null) {
-                int jumpTo = data.getIntExtra("jumpTo", 0);
-                pager.setCurrentItem(jumpTo);
+                jumpTo = data.getIntExtra("jumpTo", 0);
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        pager.setCurrentItem(jumpTo);
+                    }
+                });
             }
         }
     }
 
     @Override
-    public void SetValue(int pos) {
+    public void SetValue(final int pos) {
         Log.d("check", "SetValue: pos=" + pos);
-        pager.setCurrentItem(pos);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                pager.setCurrentItem(pos,true);
+            }
+        });
     }
 
     @Override

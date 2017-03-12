@@ -85,18 +85,21 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                 final RequestQueue requestQueue = Volley.newRequestQueue(c);
                 prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-                dialog = new ProgressDialog(c);
-                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                dialog.setMessage("Loading. Please wait...");
-                dialog.setIndeterminate(true);
-                dialog.setCancelable(false);
-                dialog.show();
+                if(c!=null){
+                    dialog = new ProgressDialog(c);
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setMessage("Loading. Please wait...");
+                    dialog.setIndeterminate(true);
+                    dialog.setCancelable(false);
+                    dialog.show();
+                }
 
                 String url = ConstantsDefined.api + "examDetails";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST,
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        if(dialog!=null)
                         dialog.dismiss();
                         try {
                             HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
@@ -119,6 +122,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        if(dialog!=null)
                         dialog.dismiss();
                         Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }

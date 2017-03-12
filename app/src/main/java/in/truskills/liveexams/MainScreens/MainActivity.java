@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         e.apply();
                         navImage.setImageBitmap(icon);
                     } else if (items[item].equals("Cancel")) {
+                        if(dialog!=null)
                         dialog.dismiss();
                     }
                 }

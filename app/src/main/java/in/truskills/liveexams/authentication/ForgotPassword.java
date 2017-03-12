@@ -151,7 +151,8 @@ public class ForgotPassword extends AppCompatActivity {
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            dialog.dismiss();
+                            if(dialog!=null)
+                                dialog.dismiss();
                             //On getting the response..
                             try {
                                 //Parse the login response..
@@ -171,7 +172,8 @@ public class ForgotPassword extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //In case the connection to the Api couldn't be established..
-                            dialog.dismiss();
+                            if(dialog!=null)
+                                dialog.dismiss();
                             Toast.makeText(ForgotPassword.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
                     }) {

@@ -84,12 +84,14 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                 requestQueue = Volley.newRequestQueue(c);
                 prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-                dialog = new ProgressDialog(c);
-                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                dialog.setMessage("Loading. Please wait...");
-                dialog.setIndeterminate(true);
-                dialog.setCancelable(false);
-                dialog.show();
+                if(c!=null){
+                    dialog = new ProgressDialog(c);
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setMessage("Loading. Please wait...");
+                    dialog.setIndeterminate(true);
+                    dialog.setCancelable(false);
+                    dialog.show();
+                }
 
                 //Get exam details of the exam on which the user has clicked..
                 String url = ConstantsDefined.api + "examDetails";
@@ -97,6 +99,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        if(dialog!=null)
                         dialog.dismiss();
 
                         try {
@@ -137,6 +140,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection couldn't be made..
+                        if(dialog!=null)
                         dialog.dismiss();
                         Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
