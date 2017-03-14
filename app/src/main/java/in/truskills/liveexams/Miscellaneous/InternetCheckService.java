@@ -1,5 +1,6 @@
 package in.truskills.liveexams.Miscellaneous;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -60,26 +61,21 @@ public class InternetCheckService extends BroadcastReceiver {
 //                Toast.makeText(context, "Table empty", Toast.LENGTH_LONG).show();
             }else{
                 JSONArray jsonArray = ob.getQuizResult();
-//                Toast.makeText(context, "Table exists", Toast.LENGTH_LONG).show();
                 final JSONObject jsonObject = new JSONObject();
-//                String selectedLanguage=ob.getDataFromDataTable(QuizDatabase.selectedLanguage);
-//                String myDate=ob.getDataFromDataTable(QuizDatabase.date);
-//                String userId=ob.getDataFromDataTable(QuizDatabase.userId);
-//                String examId=ob.getDataFromDataTable(QuizDatabase.examId);
-
                 String selectedLanguage=dataPrefs.getString("selectedLanguage","");
                 String myDate=dataPrefs.getString("date","");
                 String userId=dataPrefs.getString("userId","");
                 String examId=dataPrefs.getString("examId","");
 
-                Log.d("dataInCheck", "onCreate: "+selectedLanguage+" "+myDate+" "+userId+" "+examId);
                 try {
                     jsonObject.put("result", jsonArray);
                     jsonObject.put("selectedLanguage", selectedLanguage);
                     jsonObject.put("date", myDate);
 //                    Toast.makeText(context, "user:"+userId+" exam:"+examId, Toast.LENGTH_SHORT).show();
                     Log.d("response", "onReceive: "+userId+" "+examId);
-                    submit(ob,context,jsonObject.toString(),userId,examId);
+                    SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
+                    submitAnswerPaper.submit(ob,context,jsonObject.toString(),userId,examId);
+//                    submit(ob,context,jsonObject.toString(),userId,examId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -88,80 +84,85 @@ public class InternetCheckService extends BroadcastReceiver {
     }
 
     public void submit(final QuizDatabase ob,final Context context,final String result,final String userId,final String examId){
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        String myurl = ConstantsDefined.api + "answerPaper";
-        Map<String, String> params = new HashMap<String, String>();
-        Log.d("params", "getParams: "+userId+" "+examId+" "+result);
-        params.put("userId", userId);
-        params.put("examId", examId);
-        params.put("answerPaper", result);
-        JSONObject parameters = new JSONObject(params);
-        //Make a request..
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST,
-                myurl, parameters,new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                //On getting the response..
-                try {
-//                    JSONObject jsonObject1 = new JSONObject(response);
-                    JSONObject jsonObject1=response;
-                    Log.d("response", "onResponse: "+response);
-                    String success = jsonObject1.getString("success");
-                    String result = jsonObject1.getString("response");
-                    if (success.equals("true")) {
-                        String folder_main = "LiveExams";
-                        Toast.makeText(context, "Your answer paper has been submitted..", Toast.LENGTH_SHORT).show();
-                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                        if (f.exists()) {
-                            deleteDir(f);
-                        }
-                        ob.deleteMyTable();
-                        SharedPreferences.Editor e=dataPrefs.edit();
-                        e.clear();
-                        e.apply();
-
-                    } else {
-                        ob.deleteMyTable();
-                        SharedPreferences.Editor e=dataPrefs.edit();
-                        e.clear();
-                        e.apply();
-                        String folder_main = "LiveExams";
-                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                        if (f.exists()) {
-                            deleteDir(f);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("errors", "onErrorResponse: "+error);
-                String folder_main = "LiveExams";
-                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                if (f.exists()) {
-                    deleteDir(f);
-                }
-            }
-        })
-//        {
+//        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        String myurl = ConstantsDefined.api + "answerPaper";
+//        Map<String, String> params = new HashMap<String, String>();
+//        Log.d("params", "getParams: "+userId+" "+examId+" "+result);
+//        params.put("userId", userId);
+//        params.put("examId", examId);
+//        params.put("answerPaper", result);
+//        JSONObject parameters = new JSONObject(params);
+//        //Make a request..
+//        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST,
+//                myurl, parameters,new Response.Listener<JSONObject>() {
 //            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
+//            public void onResponse(JSONObject response) {
+//                //On getting the response..
+//                try {
+////                    JSONObject jsonObject1 = new JSONObject(response);
+//                    JSONObject jsonObject1=response;
+//                    Log.d("response", "onResponse: "+response);
+//                    String success = jsonObject1.getString("success");
+//                    String result = jsonObject1.getString("response");
+//                    if (success.equals("true")) {
+//                        String folder_main = "LiveExams";
+//                        Toast.makeText(context, "Your answer paper has been submitted..", Toast.LENGTH_LONG).show();
+//                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+//                        if (f.exists()) {
+//                            deleteDir(f);
+//                        }
+//                        ob.deleteMyTable();
+//                        SharedPreferences.Editor e=dataPrefs.edit();
+//                        e.clear();
+//                        e.apply();
 //
-//                //Put all the required parameters for the post request..
-//                Map<String, String> params = new HashMap<String, String>();
-//                Log.d("params", "getParams: "+userId+" "+examId);
-//                params.put("userId", userId);
-//                params.put("examId", examId);
-//                params.put("answerPaper", result);
-//                return params;
+//                        ((Activity)context).finish();
+//                        Intent intent = new Intent(context, SplashScreen.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        context.startActivity(intent);
+//
+//                    } else {
+//                        ob.deleteMyTable();
+//                        SharedPreferences.Editor e=dataPrefs.edit();
+//                        e.clear();
+//                        e.apply();
+//                        String folder_main = "LiveExams";
+//                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+//                        if (f.exists()) {
+//                            deleteDir(f);
+//                        }
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
 //            }
-//        }
-                ;
-        requestQueue.add(stringRequest);
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("errors", "onErrorResponse: "+error);
+//                String folder_main = "LiveExams";
+//                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+//                if (f.exists()) {
+//                    deleteDir(f);
+//                }
+//            }
+//        })
+////        {
+////            @Override
+////            protected Map<String, String> getParams() throws AuthFailureError {
+////
+////                //Put all the required parameters for the post request..
+////                Map<String, String> params = new HashMap<String, String>();
+////                Log.d("params", "getParams: "+userId+" "+examId);
+////                params.put("userId", userId);
+////                params.put("examId", examId);
+////                params.put("answerPaper", result);
+////                return params;
+////            }
+////        }
+//                ;
+//        requestQueue.add(stringRequest);
     }
 
     public static boolean deleteDir(File dir) {

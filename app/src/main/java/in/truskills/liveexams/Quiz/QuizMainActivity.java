@@ -1,5 +1,6 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.SurfaceViewRenderer;
@@ -52,6 +54,8 @@ import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.MyApplication;
+import in.truskills.liveexams.Miscellaneous.SplashScreen;
+import in.truskills.liveexams.Miscellaneous.SubmitAnswerPaper;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
@@ -72,6 +76,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     private static final String SOCKET = "socket";
     private static final String TAG = "checkkkkk-InQuiz" ;
+    public static boolean visible=true;
+    Handler h;
     MyPageAdapter pageAdapter;
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
     SharedPreferences quizPrefs,dataPrefs;
@@ -108,6 +114,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_main);
+        h=new Handler();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -842,6 +849,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         SharedPreferences.Editor e=quizPrefs.edit();
         e.putInt("exit",1);
         e.apply();
+        visible=true;
     }
 
     @Override
@@ -936,7 +944,48 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         if(quizPrefs.getInt("exit",0)==0){
             Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this, "submitQuiz", Toast.LENGTH_SHORT).show();
+            visible=false;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(ConstantsDefined.time);
+                    }catch (Exception e){
+
+                    }finally {
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(visible){
+
+                                }else{
+                                    JSONArray jsonArray = ob.getQuizResult();
+                                    final JSONObject jsonObject = new JSONObject();
+                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
+                                    String myDate=dataPrefs.getString("date","");
+                                    String userId=dataPrefs.getString("userId","");
+                                    String examId=dataPrefs.getString("examId","");
+
+                                    try {
+                                        jsonObject.put("result", jsonArray);
+                                        jsonObject.put("selectedLanguage", selectedLanguage);
+                                        jsonObject.put("date", myDate);
+
+                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
+                                        submitAnswerPaper.submit(ob,QuizMainActivity.this,jsonObject.toString(),userId,examId);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    ((Activity)QuizMainActivity.this).finish();
+                                    Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
         }
 
     }

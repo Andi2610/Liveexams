@@ -1,5 +1,6 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -50,6 +51,8 @@ import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.MyApplication;
+import in.truskills.liveexams.Miscellaneous.SplashScreen;
+import in.truskills.liveexams.Miscellaneous.SubmitAnswerPaper;
 import in.truskills.liveexams.ParticularExamStatistics.RulesInAnswers;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
@@ -68,6 +71,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     RequestQueue requestQueue;
     SharedPreferences prefs,dataPrefs,quizPrefs;
     Handler h;
+    public static boolean visible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -321,9 +325,50 @@ public class AllSectionsSummary extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause: ");
         if(quizPrefs.getInt("exit",0)==0){
-            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this, "submitQuiz", Toast.LENGTH_SHORT).show();
+            visible=false;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(ConstantsDefined.time);
+                    }catch (Exception e){
+
+                    }finally {
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(visible){
+
+                                }else{
+                                    JSONArray jsonArray = ob.getQuizResult();
+                                    final JSONObject jsonObject = new JSONObject();
+                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
+                                    String myDate=dataPrefs.getString("date","");
+                                    String userId=dataPrefs.getString("userId","");
+                                    String examId=dataPrefs.getString("examId","");
+
+                                    try {
+                                        jsonObject.put("result", jsonArray);
+                                        jsonObject.put("selectedLanguage", selectedLanguage);
+                                        jsonObject.put("date", myDate);
+
+                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
+                                        submitAnswerPaper.submit(ob,AllSectionsSummary.this,jsonObject.toString(),userId,examId);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    ((Activity)AllSectionsSummary.this).finish();
+                                    Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
         }
 
     }
@@ -334,6 +379,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         SharedPreferences.Editor e=quizPrefs.edit();
         e.putInt("exit",1);
         e.apply();
+        visible=true;
     }
 
     @Override

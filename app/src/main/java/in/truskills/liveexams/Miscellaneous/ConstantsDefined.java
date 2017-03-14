@@ -24,4 +24,6 @@ public class ConstantsDefined {
 
     public static final String MAP_API_KEY = "AIzaSyDChC607te-i2CMIweUJcnhBMuoW9cq7W8";
     public static final String urlForLocationFetch="https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+
+    public static final long time=60000;
 }

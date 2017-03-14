@@ -1,8 +1,11 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,13 +14,24 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Miscellaneous.SplashScreen;
+import in.truskills.liveexams.Miscellaneous.SubmitAnswerPaper;
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class RulesInQuiz extends AppCompatActivity {
 
     private static final String TAG = "checkkkkk-InRules";
     TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
-    SharedPreferences quizPrefs;
+    SharedPreferences quizPrefs,dataPrefs;
+    QuizDatabase ob;
+    public static boolean visible;
+    Handler h;
 
 
     @Override
@@ -30,7 +44,11 @@ public class RulesInQuiz extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         quizPrefs=getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
+        dataPrefs=getSharedPreferences("dataPrefs", Context.MODE_PRIVATE);
 
+        h=new Handler();
+
+        ob=new QuizDatabase(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -71,9 +89,50 @@ public class RulesInQuiz extends AppCompatActivity {
         super.onPause();
         Log.d(TAG, "onPause: ");
         if(quizPrefs.getInt("exit",0)==0){
-            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this, "submitQuiz", Toast.LENGTH_SHORT).show();
+            visible=false;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(ConstantsDefined.time);
+                    }catch (Exception e){
+
+                    }finally {
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(visible){
+
+                                }else{
+                                    JSONArray jsonArray = ob.getQuizResult();
+                                    final JSONObject jsonObject = new JSONObject();
+                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
+                                    String myDate=dataPrefs.getString("date","");
+                                    String userId=dataPrefs.getString("userId","");
+                                    String examId=dataPrefs.getString("examId","");
+
+                                    try {
+                                        jsonObject.put("result", jsonArray);
+                                        jsonObject.put("selectedLanguage", selectedLanguage);
+                                        jsonObject.put("date", myDate);
+
+                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
+                                        submitAnswerPaper.submit(ob,RulesInQuiz.this,jsonObject.toString(),userId,examId);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    ((Activity)RulesInQuiz.this).finish();
+                                    Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
         }
     }
 
@@ -94,5 +153,6 @@ public class RulesInQuiz extends AppCompatActivity {
         SharedPreferences.Editor e=quizPrefs.edit();
         e.putInt("exit",1);
         e.apply();
+        visible=true;
     }
 }
