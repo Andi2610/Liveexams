@@ -305,7 +305,8 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
     @Override
     public void onClick(View v) {
-        int position;
+        int position,num,si,noOfQ;
+        String sectionIndex;
         switch (v.getId()) {
             case R.id.left:
                 Log.d("checking", "onClick: first=" + linearLayoutManager.findFirstCompletelyVisibleItemPosition());
@@ -317,10 +318,14 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
                 }
                 break;
             case R.id.right:
+                num=pager.getCurrentItem();
+                sectionIndex = ob.getValuesPerQuestionByFragmentIndex(num, AnalyticsDatabase.SectionIndex);
+                si = Integer.parseInt(sectionIndex);
+                noOfQ=ob.getNoOfQinOneSec(si);
                 Log.d("checking", "onClick: last=" + linearLayoutManager.findLastCompletelyVisibleItemPosition());
                 position=linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                if(position>(myFragmentCount-4)){
-                    questionsList.getLayoutManager().scrollToPosition(myFragmentCount);
+                if(position>(noOfQ-4)){
+                    questionsList.getLayoutManager().scrollToPosition(noOfQ-1);
                 }else{
                     questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 4);
                 }

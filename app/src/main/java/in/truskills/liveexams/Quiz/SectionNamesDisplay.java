@@ -1,6 +1,8 @@
 package in.truskills.liveexams.Quiz;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +29,7 @@ public class SectionNamesDisplay extends Activity {
     LinearLayoutManager linearLayoutManager;
     SectionNamesDisplayAdapter sectionNamesDisplayAdapter;
     QuizDatabase ob;
+    SharedPreferences quizPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +37,12 @@ public class SectionNamesDisplay extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_section_names_display);
 
+        this.setFinishOnTouchOutside(false);
+
         srNo = getIntent().getStringExtra("serialNumber");
         mySrno = Integer.parseInt(srNo);
 
+        quizPrefs=getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
 
         mySectionsList = (RecyclerView) findViewById(R.id.mySectionsList);
         TextView sectionText = (TextView) findViewById(R.id.sectionText);
@@ -58,6 +65,31 @@ public class SectionNamesDisplay extends Activity {
         mySectionsList.setAdapter(sectionNamesDisplayAdapter);
         sectionNamesDisplayAdapter.notifyDataSetChanged();
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",0);
+        e.apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",1);
+        e.apply();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(quizPrefs.getInt("exit",0)==0){
+            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "submitQuiz", Toast.LENGTH_SHORT).show();
+        }
     }
 }

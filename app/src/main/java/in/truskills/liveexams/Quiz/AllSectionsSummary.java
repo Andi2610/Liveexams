@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -48,12 +49,14 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.ParticularExamStatistics.RulesInAnswers;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class AllSectionsSummary extends AppCompatActivity {
 
+    private static final String TAG = "checkkkkk-InSummary";
     LinearLayoutManager linearLayoutManager;
     AllSectionsSummaryAdapter allSectionsSummaryAdapter;
     RecyclerView allSectionsList;
@@ -63,7 +66,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     Button finishButton;
     String examId, userId, selectedLanguage,myDate;
     RequestQueue requestQueue;
-    SharedPreferences prefs,dataPrefs;
+    SharedPreferences prefs,dataPrefs,quizPrefs;
     Handler h;
 
     @Override
@@ -74,10 +77,14 @@ public class AllSectionsSummary extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
         dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
+        quizPrefs=getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -283,6 +290,9 @@ public class AllSectionsSummary extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         super.onBackPressed();
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",0);
+        e.apply();
         return true;
     }
 
@@ -296,11 +306,41 @@ public class AllSectionsSummary extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.rulesIcon:
-                Intent i = new Intent(this, RulesInAnswers.class);
+                SharedPreferences.Editor e=quizPrefs.edit();
+                e.putInt("exit",0);
+                e.apply();
+                Intent i = new Intent(this, RulesInQuiz.class);
                 startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+        if(quizPrefs.getInt("exit",0)==0){
+            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "submitQuiz", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",1);
+        e.apply();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",0);
+        e.apply();
+    }
 }

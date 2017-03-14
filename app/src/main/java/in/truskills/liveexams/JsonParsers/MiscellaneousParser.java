@@ -334,10 +334,13 @@ public class MiscellaneousParser {
         String ans="";
         JSONObject jsonObject=new JSONObject(result);
         JSONArray jsonArray=jsonObject.getJSONArray("results");
-//        ans=jsonArray.getJSONObject(0).getString("formatted_address");
-        JSONArray jsonArray1=jsonArray.getJSONObject(0).getJSONArray("address_components");
-        JSONObject jsonObject1=jsonArray1.getJSONObject(5);
-        ans=jsonObject1.getString("long_name");
+        ans=jsonArray.getJSONObject(0).getString("formatted_address");
+        String part[]=ans.split(",");
+        int len=part.length;
+        ans=part[len-3];
+//        JSONArray jsonArray1=jsonArray.getJSONObject(0).getJSONArray("address_components");
+//        JSONObject jsonObject1=jsonArray1.getJSONObject(5);
+//        ans=jsonObject1.getString("long_name");
         return ans;
     }
 

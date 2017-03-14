@@ -1,16 +1,24 @@
 package in.truskills.liveexams.Quiz;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import in.truskills.liveexams.R;
 
 public class RulesInQuiz extends AppCompatActivity {
 
+    private static final String TAG = "checkkkkk-InRules";
     TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
+    SharedPreferences quizPrefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +27,10 @@ public class RulesInQuiz extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        quizPrefs=getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -47,7 +59,40 @@ public class RulesInQuiz extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        finish();
+        super.onBackPressed();
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",0);
+        e.apply();
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+        if(quizPrefs.getInt("exit",0)==0){
+            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "submitQuiz", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d(TAG, "onBackPressed: ");
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",0);
+        e.apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",1);
+        e.apply();
     }
 }

@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
     ArrayList<String> sectionName;
     ArrayList<ArrayList<Integer>> questionArray;
     Context c;
+    SharedPreferences quizPrefs;
 
     AllSectionsSummaryAdapter(ArrayList<String> sectionName, ArrayList<ArrayList<Integer>> questionArray, Context c) {
         this.sectionName = sectionName;
@@ -74,6 +76,11 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
         holder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int post, long id) {
+
+                quizPrefs=c.getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
+                SharedPreferences.Editor e=quizPrefs.edit();
+                e.putInt("exit",0);
+                e.apply();
 
                 Intent intentMessage = new Intent();
                 // put the message in Intent

@@ -41,10 +41,10 @@ public class InternetCheckService extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         boolean isConnected = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
         if(isConnected){
-            Toast.makeText(context, "Internet Connection Lost", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Internet Connection Lost", Toast.LENGTH_LONG).show();
         }
         else{
-            Toast.makeText(context, "Internet Connected", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Internet Connected", Toast.LENGTH_LONG).show();
             QuizDatabase ob=new QuizDatabase(context);
             dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
             Log.d("status", "onReceive: "+dataPrefs.getInt("submit",0));

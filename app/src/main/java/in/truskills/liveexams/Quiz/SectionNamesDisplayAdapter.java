@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionName
     ArrayList<String> myList;
     Context c;
     int pos;
+    SharedPreferences quizPrefs;
 
     SectionNamesDisplayAdapter(ArrayList<String> myList, Context c, int pos) {
         this.myList = myList;
@@ -54,6 +56,13 @@ public class SectionNamesDisplayAdapter extends RecyclerView.Adapter<SectionName
         holder.containerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                quizPrefs=c.getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
+                SharedPreferences.Editor e=quizPrefs.edit();
+                e.putInt("exit",0);
+                e.apply();
+
+
                 Intent intentMessage = new Intent();
                 // put the message in Intent
                 //message=serial number of a section..

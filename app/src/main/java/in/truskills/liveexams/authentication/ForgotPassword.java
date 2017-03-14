@@ -49,8 +49,8 @@ import io.fabric.sdk.android.Fabric;
 public class ForgotPassword extends AppCompatActivity {
 
 
-    private static final String TWITTER_KEY = "fIx7W5i8xo9stQ8jhOHVLNdFB";
-    private static final String TWITTER_SECRET = "JQ9IuPXWecyeMFK8VujoYePRHHfQllXNRvRYC6QatmCNt8l5FH";
+//    private static final String TWITTER_KEY = "fIx7W5i8xo9stQ8jhOHVLNdFB";
+//    private static final String TWITTER_SECRET = "JQ9IuPXWecyeMFK8VujoYePRHHfQllXNRvRYC6QatmCNt8l5FH";
 
     Button reset;
     String text;
@@ -151,7 +151,7 @@ public class ForgotPassword extends AppCompatActivity {
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            if(dialog!=null)
+                            if (dialog != null)
                                 dialog.dismiss();
                             //On getting the response..
                             try {
@@ -172,7 +172,7 @@ public class ForgotPassword extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //In case the connection to the Api couldn't be established..
-                            if(dialog!=null)
+                            if (dialog != null)
                                 dialog.dismiss();
                             Toast.makeText(ForgotPassword.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
@@ -182,7 +182,6 @@ public class ForgotPassword extends AppCompatActivity {
 
                             //Put all the required parameters for the post request..
                             Map<String, String> params = new HashMap<String, String>();
-                            Log.d("phone", phoneNumber + "");
                             params.put("mobileNumber", phoneNumber.substring(3));
                             params.put("newPassword", text);
                             return params;
@@ -213,8 +212,8 @@ public class ForgotPassword extends AppCompatActivity {
     public void getVerified() {
 
         Toast.makeText(this, "Enter your registered mobile number", Toast.LENGTH_LONG).show();
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
+//        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+//        Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
         authCallback = new AuthCallback() {
             @Override
             public void success(DigitsSession session, final String phoneNumber) {

@@ -648,6 +648,17 @@ public class QuizDatabase extends SQLiteOpenHelper {
         cursor.close();
         return resultSet;
     }
+
+    public int getNoOfQinOneSec(int si){
+        int num = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si;
+        Cursor cursor = db.rawQuery(query, null);
+        num = cursor.getCount();
+        cursor.close();
+//        db.close();
+        return num;
+    }
 //
 //    public void getAllValues(){
 //        SQLiteDatabase db=this.getReadableDatabase();

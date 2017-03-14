@@ -21,9 +21,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,6 +71,7 @@ interface socketFromTeacher {
 public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent, ConnectivityReciever.ConnectivityReceiverListener {
 
     private static final String SOCKET = "socket";
+    private static final String TAG = "checkkkkk-InQuiz" ;
     MyPageAdapter pageAdapter;
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
     SharedPreferences quizPrefs,dataPrefs;
@@ -105,6 +108,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_main);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         quizPrefs = getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -159,22 +164,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         ob = new QuizDatabase(QuizMainActivity.this);
 
-        Toast.makeText(this, "user"+prefs.getString("userId","")+" exam"+examId, Toast.LENGTH_SHORT).show();
-//        ob.setValuesForData(selectedLanguage,myDate,prefs.getString("userId",""),examId);
-//        String selectedLanguage=ob.getDataFromDataTable(QuizDatabase.selectedLanguage);
-//        String myDate=ob.getDataFromDataTable(QuizDatabase.date);
-//        String userId=ob.getDataFromDataTable(QuizDatabase.userId);
-//        String examId=ob.getDataFromDataTable(QuizDatabase.examId);
-
         SharedPreferences.Editor e=dataPrefs.edit();
         e.putString("date",myDate);
         e.putString("userId",prefs.getString("userId",""));
         e.putString("examId",examId);
         e.putString("selectedLanguage",selectedLanguage);
         e.apply();
-
-//        Log.d("data", "onCreate: "+selectedLanguage+" "+myDate+" "+userId+" "+examId);
-//        ob.getAllValues();
 
         /*
         * hidden element where student video will be loaded
@@ -364,6 +359,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         sectionName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                SharedPreferences.Editor e = quizPrefs.edit();
+                e.putInt("exit",0);
+                e.apply();
+
                 int num = pager.getCurrentItem();
                 int sI = ob.getIntValuesPerQuestionByFragmentIndex(num, QuizDatabase.SectionIndex);
                 //Get serial number of this section from PerSectionDetails..
@@ -428,6 +428,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.summaryIcon:
+
+                SharedPreferences.Editor e = quizPrefs.edit();
+                e.putInt("exit",0);
+                e.apply();
+
                 prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 Intent i = new Intent(QuizMainActivity.this, AllSectionsSummary.class);
                 i.putExtra("examId", examId);
@@ -447,7 +452,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     @Override
     public void onClick(View v) {
-        int ss, qq, n, position;
+        int ss, qq, n, position,noOfQ;
         String temp;
         switch (v.getId()) {
 
@@ -501,10 +506,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 }
                 break;
             case R.id.right:
+                n=pager.getCurrentItem();
+                ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
+                noOfQ=ob.getNoOfQinOneSec(ss);
                 Log.d("checking", "onClick: last=" + linearLayoutManager.findLastCompletelyVisibleItemPosition());
                 position=linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                if(position>(myFragmentCount-4)){
-                    questionsList.getLayoutManager().scrollToPosition(myFragmentCount);
+                if(position>(noOfQ-4)){
+                    questionsList.getLayoutManager().scrollToPosition(noOfQ-1);
                 }else{
                     questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 4);
                 }
@@ -640,10 +648,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        ob.deleteMyTable();
-        SharedPreferences.Editor e = quizPrefs.edit();
-        e.clear();
-        e.apply();
         SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
         JSONObject data = new JSONObject();
         try {
@@ -835,6 +839,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     protected void onResume() {
         super.onResume();
         MyApplication.getInstance().setConnectivityListener(QuizMainActivity.this);
+        SharedPreferences.Editor e=quizPrefs.edit();
+        e.putInt("exit",1);
+        e.apply();
     }
 
     @Override
@@ -922,5 +929,16 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //        }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+        if(quizPrefs.getInt("exit",0)==0){
+            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "submitQuiz", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
 }

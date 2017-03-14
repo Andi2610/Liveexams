@@ -244,12 +244,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(dialog!=null)
-                        dialog.dismiss();
+                        if (dialog != null)
+                            dialog.dismiss();
                         try {
                             //Parse the signup response..
 
-                            Log.d("myResponse=", response);
                             signupLanguageAlternate.setVisibility(View.GONE);
                             signupLanguage.setVisibility(View.VISIBLE);
                             listOfLanguages = MiscellaneousParser.beforeSignupParser(response);
@@ -264,8 +263,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection could not be made..
-                        if(dialog!=null)
-                        dialog.dismiss();
+                        if (dialog != null)
+                            dialog.dismiss();
                         Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -663,26 +662,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-//    public void fetchLocation() {
-//
-//        Log.d("check", "fetchLocation: ");
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            Log.d("check", "fetchLocation: inIf");
-//
-//            return;
-//        }
-//
-////        try{
-////            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-////            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-////            locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-////            locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-////        }catch(Exception e){
-////            Log.e("exception", "fetchLocation: "+e.toString());
-////        }
-//
-//    }
-
     //This method is for validating the user's entered signup info before it is given for registering..
     public void signupValidation() {
 
@@ -767,18 +746,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         url, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(dialog!=null)
-                        dialog.dismiss();
+                        if (dialog != null)
+                            dialog.dismiss();
                         try {
                             //Parse the signup response..
 
                             Log.d("myResponse=", response);
 
                             HashMap<String, String> mapper = MiscellaneousParser.signupParser(response);
-//                            Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
-                            Log.d("response", mapper.get("response"));
                             if (mapper.get("success").equals("true")) {
-//                                Toast.makeText(Signup_Login.this, "Signup Successfull", Toast.LENGTH_SHORT).show();
                                 SharedPreferences.Editor e = prefs.edit();
                                 e.putInt("signup", 1);
                                 e.apply();
@@ -799,8 +775,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection could not be made..
-                        if(dialog!=null)
-                        dialog.dismiss();
+                        if (dialog != null)
+                            dialog.dismiss();
                         Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                     }
                 }) {
@@ -874,8 +850,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             public void onResponse(String response) {
                 //On getting the response..
                 Intent i = null;
-                if(dialog!=null)
-                dialog.dismiss();
+                if (dialog != null)
+                    dialog.dismiss();
                 try {
                     //Parse the login response..
                     HashMap<String, String> mapper = MiscellaneousParser.loginParser(response);
@@ -916,9 +892,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
-                if(dialog!=null)
-                dialog.dismiss();
-                Log.d("error", error.toString() + "");
+                if (dialog != null)
+                    dialog.dismiss();
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         }) {
@@ -1028,16 +1003,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(String response) {
                 //On getting the response..
-                if(dialog!=null)
-                dialog.dismiss();
-                Log.d("responseOfLocation", response);
+                if (dialog != null)
+                    dialog.dismiss();
                 try {
                     String ans = MiscellaneousParser.locationParser(response);
-//                    String[] part = ans.split(",");
-//                    signupLocation.setText(part[2] + "," + part[3]);
                     signupLocation.setText(ans);
                     stopLocationUpdates();
-                    mGoogleApiClient.disconnect();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -1047,9 +1018,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
-                if(dialog!=null)
-                dialog.dismiss();
-                Log.d("error", error.toString() + "");
+                if (dialog != null)
+                    dialog.dismiss();
                 Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -1114,6 +1084,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         Log.d(TAG, "Location update started ..............: ");
     }
@@ -1161,6 +1134,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     protected void stopLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         Log.d(TAG, "Location update stopped .......................");
+        mGoogleApiClient.disconnect();
     }
 
     @Override
