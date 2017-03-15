@@ -1,9 +1,11 @@
 package in.truskills.liveexams.ParticularExamStatistics;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -116,14 +118,12 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
         ob = new AnalyticsDatabase(this);
 
+        pager = (ViewPager) findViewById(R.id.viewpagerForAnswers);
+
         formFragmentListForViewPager();
 
         //Set the view pager adapter..
-        pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
-        pager = (ViewPager) findViewById(R.id.viewpagerForAnswers);
-        pager.setAdapter(pageAdapter);
 
-        forQuiz();
 
     }
 
@@ -173,26 +173,9 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
     public void formFragmentListForViewPager() {
 
-        for (int i = 0; i < noOfSections; ++i) {
-            my_section = i;
-            num = questionArray[i];
-            for (int k = 0; k < num; ++k) {
-                my_question = k;
-                myFragmentCount++;
-                String my_text = ob.getTextOfOneQuestion(my_section, my_question);
-                String myAnswer = ob.getStringValuesPerQuestion(my_section, my_question, AnalyticsDatabase.FinalAnswerId);
-                String correctAnswer = ob.getStringValuesPerQuestion(my_section, my_question, AnalyticsDatabase.RightAnswer);
+        AsyncTaskRunner asyncTaskRunner=new AsyncTaskRunner();
+        asyncTaskRunner.execute();
 
-                int numOp = ob.getNoOfOptionsInOneQuestion(my_section, my_question);
-                options = new ArrayList<>();
-                for (int s = 0; s < numOp; ++s) {
-                    my_option = s;
-                    String my_option_text = ob.getTextOfOneOption(my_section, my_question, my_option);
-                    options.add(my_option_text);
-                }
-                fList.add(MyFragmentForAnswers.newInstance(my_text, options, myAnswer, correctAnswer,myUrl));
-            }
-        }
 
     }
 
@@ -330,6 +313,64 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
                     questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 4);
                 }
                 break;
+        }
+    }
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+
+        ProgressDialog dialog;
+
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            for (int i = 0; i < noOfSections; ++i) {
+                my_section = i;
+                num = questionArray[i];
+                for (int k = 0; k < num; ++k) {
+                    my_question = k;
+                    myFragmentCount++;
+                    String my_text = ob.getTextOfOneQuestion(my_section, my_question);
+                    String myAnswer = ob.getStringValuesPerQuestion(my_section, my_question, AnalyticsDatabase.FinalAnswerId);
+                    String correctAnswer = ob.getStringValuesPerQuestion(my_section, my_question, AnalyticsDatabase.RightAnswer);
+
+                    int numOp = ob.getNoOfOptionsInOneQuestion(my_section, my_question);
+                    options = new ArrayList<>();
+                    for (int s = 0; s < numOp; ++s) {
+                        my_option = s;
+                        String my_option_text = ob.getTextOfOneOption(my_section, my_question, my_option);
+                        options.add(my_option_text);
+                    }
+                    fList.add(MyFragmentForAnswers.newInstance(my_text, options, myAnswer, correctAnswer,myUrl));
+                }
+            }
+
+            return "done";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // execution of result of Long time consuming operation
+            //Set the view pager adapter..
+            if(dialog!=null)
+                dialog.dismiss();
+
+            pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
+            pager.setAdapter(pageAdapter);
+
+            forQuiz();
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(AnswersMainActivity.this);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("Preparing your answers.. Please wait...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
         }
     }
 }

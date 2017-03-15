@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -63,12 +64,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     ArrayList<Fragment> fList;
     TextView myWaitMessage;
     float per;
+    String myResponseResult;
     QuizDatabase ob;
     ProgressBar progressBar;
     ArrayList<String> urls, groups;
     SharedPreferences prefs,dataPrefs;
     Button retryButtonForDownload, exitButton;
     com.wang.avi.AVLoadingIndicatorView avi;
+    Handler h;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
         avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
         avi.show();
+        h=new Handler();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -133,221 +137,15 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
             @Override
-            public void onResponse(String result) {
-                try {
-                    //Parse the result..
-                    map1 = QuestionPaperParser.resultParser(result);
-                    //Get success..
-                    success = map1.get("success");
-                    if (success.equals("true")) {
-
-
-                        //Get response..
-                        response = map1.get("response");
-
-                        //Parse response..
-                        map2 = QuestionPaperParser.responseParser(response);
-                        examDuration = map2.get("ExamDuration");
-                        myExamDuration = QuestionPaperParser.getExamDuration(examDuration);
-                        String[] parts = myExamDuration.split("-");
-                        hour = Integer.parseInt(parts[0]);
-                        minute = Integer.parseInt(parts[1]);
-                        myTime = hour * 60 * 60 * 1000 + minute * 60 * 1000;
-                        Log.d("myTime", myTime + "");
-
-                        //Get Paperset..
-                        Paperset = map2.get("Paperset");
-
-                        //Parse Paperset..
-                        map3 = QuestionPaperParser.PapersetParser(Paperset);
-
-                        //Get Sections..
-                        Sections = map3.get("Sections");
-
-                        //Parse Sections..
-                        map4 = QuestionPaperParser.SectionsParser(Sections);
-
-                        //Get Section..
-                        Section = map4.get("Section");
-
-                        //Get no. of sections..
-                        noOfSections = QuestionPaperParser.getNoOfSections(Section);
-
-                        languageArray = new int[noOfSections][];
-                        fragmentIndex = new int[noOfSections][];
-                        questionArray = new int[noOfSections];
-
-                        //Loop through all the sections..
-                        for (int i = 0; i < noOfSections; ++i) {
-
-                            final int iiii = i;
-
-                            //Parse one section..
-                            map5 = QuestionPaperParser.SectionParser(Section, i);
-
-                            //Get it's variables..
-                            SectionQuestions = map5.get("SectionQuestions");
-                            AttributesOfSection = map5.get("Attributes");
-                            section_max_marks = map5.get("SectionMaxMarks");
-                            section_time = map5.get("SectionTime");
-                            section_description = map5.get("SectionDescription");
-                            section_rules = map5.get("SectionRules");
-
-                            //Parse one section attributes..
-                            map6 = QuestionPaperParser.getAttributesOfSection(AttributesOfSection);
-
-                            //Get it's variables..
-                            name = map6.get("Name");
-                            section_id = map6.get("id");
-                            Log.d("ID:", i + "-" + section_id);
-
-                            //Set in database..
-                            ob.setValuesPerSection(i);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionName, name);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionId, section_id);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionMaxMarks, section_max_marks);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionTime, section_time);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionDescription, section_description);
-                            ob.updateValuesPerSection(iiii, QuizDatabase.SectionRules, section_rules);
-                            map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
-
-                            //Get it's variables..
-                            Question = map7.get("Question");
-
-                            //Get no. of questions in one section..
-                            noOfQuestions = QuestionPaperParser.getNoOfQuestionInOneSection(Question);
-
-                            questionArray[i] = noOfQuestions;
-
-                            fragmentIndex[i] = new int[noOfQuestions];
-
-                            //Loop through all the questions of one section..
-                            for (int j = 0; j < noOfQuestions; ++j) {
-
-                                final int jjjj = j;
-
-                                //Increment fragment index..
-                                fi++;
-                                //Assign it's value to the array..
-                                fragmentIndex[i][j] = fi;
-
-                                //Set in database..
-                                ob.setValuesPerQuestion(i, j);
-                                ob.setValuesForResult(i, j);
-
-                                //Initialise languageArray[i][] as noOfQuestions in section i.
-                                languageArray[i] = new int[noOfQuestions];
-
-                                //Parse one section one Question..
-                                map8 = QuestionPaperParser.QuestionParser(Question, j);
-
-                                //Get it's variables..
-                                myAskedIn = map8.get("AskedIn");
-                                myLanguage = map8.get("Language");
-                                questionAttributes = map8.get("Attributes");
-
-                                //Parse one section one question askedIn..
-                                map9 = QuestionPaperParser.AskedInParser(myAskedIn);
-
-                                //Get it's variables..
-                                myExamName = map9.get("ExamName");
-                                myYear = map9.get("Year");
-
-                                //Get no. of Exam names in which the question has been asked..
-                                noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
-
-                                Log.d("noOfExamName", noOfExamName + "");
-
-                                //Loop through the entire exam and year array..
-                                for (int k = 0; k < noOfExamName; ++k) {
-                                    //Get exam name one by one..
-                                    nm = QuestionPaperParser.getExamNamesOfOneQuestion(myExamName, k);
-                                    //Get Year one by one..
-                                    nmm = QuestionPaperParser.getYearsOfOneQuestion(myYear, k);
-                                }
-
-                                //Get length of language array of one question of one section..
-                                noOfLanguage = QuestionPaperParser.getLengthOfLanguageOfOneQuestion(myLanguage);
-
-                                //Get index of the language array which has to get parsed..
-                                int index = QuestionPaperParser.getIndex(selectedLanguage, myLanguage);
-                                if (index == -1) {
-                                    //Language not found..
-                                } else {
-                                    //Parse the desired index jsonObject og the language array..
-                                    map10 = QuestionPaperParser.LanguageParser(myLanguage, index);
-                                }
-
-                                //Get it's variables..
-                                myQuestionText = map10.get("QuestionText");
-                                myOptions = map10.get("Options");
-
-                                //Get question text to be displayed..
-                                text = QuestionPaperParser.getQuestionText(myQuestionText);
-
-                                map12 = QuestionPaperParser.getAttributesOfQuestion(questionAttributes);
-                                Log.d("QID:", i + "-" + j + "-" + section_id + "-" + map12.get("id"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionText, text);
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.CorrectAnswer, map12.get("CorrectAnswer"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionCorrectMarks, map12.get("QuestionCorrectMarks"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionIncorrectMarks, map12.get("QuestionIncorrectMarks"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.PassageID, map12.get("PassageID"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionType, map12.get("QuestionType"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionTime, map12.get("QuestionTime"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionDifficultyLevel, map12.get("QuestionDifficultyLevel"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionRelativeTopic, map12.get("QuestionRelativeTopic"));
-                                ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionId, map12.get("id"));
-                                ob.updateValuesForResult(iiii, jjjj, QuizDatabase.SectionId, section_id);
-                                ob.updateValuesForResult(iiii, jjjj, QuizDatabase.QuestionId, map12.get("id"));
-                                myOption = QuestionPaperParser.OptionsParser(myOptions);
-
-                                //Get length of option array..
-                                noOfOption = QuestionPaperParser.getLengthOfOptionArray(myOption);
-
-                                //Loop through entire option array..
-                                for (int p = 0; p < noOfOption; ++p) {
-
-                                    final int pppp = p;
-
-                                    //Set in database..
-                                    ob.setValuesPerOption(i, j, p);
-
-                                    //Parse Option Array at the desirex index to get one option..
-                                    myOp = QuestionPaperParser.OptionParser(myOption, p);
-
-                                    //Parse one option..
-                                    map11 = QuestionPaperParser.oneOptionParser(myOp);
-
-                                    //Get Attributes of one option..
-                                    myAt = map11.get("Attributes");
-
-                                    //Parse Attributes of one option..
-                                    myAttri = QuestionPaperParser.getAttributesOfOneOption(myAt);
-                                    opText = map11.get("_");
-
-                                    ob.updateValuesPerOption(iiii, jjjj, pppp, QuizDatabase.OptionText, opText);
-                                    ob.updateValuesPerOption(iiii, jjjj, pppp, QuizDatabase.OptionId, myAttri);
-
-                                }
-                            }
-                        }
-
-                        Handler handler = new Handler();
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                //Back to main thread..
-                                try {
-                                    afterResponse();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
+            public void onResponse(final String result) {
+                h.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        myResponseResult=result;
+                        AsyncTaskRunner asyncTaskRunner=new AsyncTaskRunner();
+                        asyncTaskRunner.execute();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                });
 
             }
         }, new Response.ErrorListener() {
@@ -372,21 +170,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
         if (!f.exists())
             f.mkdir();
-
-//        If offline required..
-        for (int i = 0; i < noOfSections; ++i) {
-            for (int j = 0; j < questionArray[i]; ++j) {
-                String mt = ob.getTextOfOneQuestion(i, j);
-                prepareForOfflineForQuestion(mt, i, j);
-                Log.d("textHere", "OfQuestions" + mt);
-                int noo = ob.getNoOfOptionsInOneQuestion(i, j);
-                for (int k = 0; k < noo; ++k) {
-                    String mo = ob.getTextOfOneOption(i, j, k);
-                    Log.d("textHere", "OfOptions" + mo);
-                    prepareForOfflineForOption(mo, i, j, k);
-                }
-            }
-        }
 
         if(ll.isEmpty()){
             startNewActivity();
@@ -472,6 +255,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             llGroup.add(group);
         }
     }
+
 
     public String format(String str, String examId) {
 
@@ -723,5 +507,251 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         fo.close();
 
         return f;
+    }
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                //Parse the result..
+                map1 = QuestionPaperParser.resultParser(myResponseResult);
+                //Get success..
+                success = map1.get("success");
+                if (success.equals("true")) {
+
+
+                    //Get response..
+                    response = map1.get("response");
+
+                    //Parse response..
+                    map2 = QuestionPaperParser.responseParser(response);
+                    examDuration = map2.get("ExamDuration");
+                    myExamDuration = QuestionPaperParser.getExamDuration(examDuration);
+                    String[] parts = myExamDuration.split("-");
+                    hour = Integer.parseInt(parts[0]);
+                    minute = Integer.parseInt(parts[1]);
+                    myTime = hour * 60 * 60 * 1000 + minute * 60 * 1000;
+                    Log.d("myTime", myTime + "");
+
+                    //Get Paperset..
+                    Paperset = map2.get("Paperset");
+
+                    //Parse Paperset..
+                    map3 = QuestionPaperParser.PapersetParser(Paperset);
+
+                    //Get Sections..
+                    Sections = map3.get("Sections");
+
+                    //Parse Sections..
+                    map4 = QuestionPaperParser.SectionsParser(Sections);
+
+                    //Get Section..
+                    Section = map4.get("Section");
+
+                    //Get no. of sections..
+                    noOfSections = QuestionPaperParser.getNoOfSections(Section);
+
+                    languageArray = new int[noOfSections][];
+                    fragmentIndex = new int[noOfSections][];
+                    questionArray = new int[noOfSections];
+
+                    //Loop through all the sections..
+                    for (int i = 0; i < noOfSections; ++i) {
+
+                        final int iiii = i;
+
+                        //Parse one section..
+                        map5 = QuestionPaperParser.SectionParser(Section, i);
+
+                        //Get it's variables..
+                        SectionQuestions = map5.get("SectionQuestions");
+                        AttributesOfSection = map5.get("Attributes");
+                        section_max_marks = map5.get("SectionMaxMarks");
+                        section_time = map5.get("SectionTime");
+                        section_description = map5.get("SectionDescription");
+                        section_rules = map5.get("SectionRules");
+
+                        //Parse one section attributes..
+                        map6 = QuestionPaperParser.getAttributesOfSection(AttributesOfSection);
+
+                        //Get it's variables..
+                        name = map6.get("Name");
+                        section_id = map6.get("id");
+                        Log.d("ID:", i + "-" + section_id);
+
+                        //Set in database..
+                        ob.setValuesPerSection(i);
+                        ob.updateValuesPerSection(iiii, QuizDatabase.SectionName, name);
+                        ob.updateValuesPerSection(iiii, QuizDatabase.SectionId, section_id);
+                        ob.updateValuesPerSection(iiii, QuizDatabase.SectionMaxMarks, section_max_marks);
+                        ob.updateValuesPerSection(iiii, QuizDatabase.SectionTime, section_time);
+                        ob.updateValuesPerSection(iiii, QuizDatabase.SectionDescription, section_description);
+                        ob.updateValuesPerSection(iiii, QuizDatabase.SectionRules, section_rules);
+                        map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
+
+                        //Get it's variables..
+                        Question = map7.get("Question");
+
+                        //Get no. of questions in one section..
+                        noOfQuestions = QuestionPaperParser.getNoOfQuestionInOneSection(Question);
+
+                        questionArray[i] = noOfQuestions;
+
+                        fragmentIndex[i] = new int[noOfQuestions];
+
+                        //Loop through all the questions of one section..
+                        for (int j = 0; j < noOfQuestions; ++j) {
+
+                            final int jjjj = j;
+
+                            //Increment fragment index..
+                            fi++;
+                            //Assign it's value to the array..
+                            fragmentIndex[i][j] = fi;
+
+                            //Set in database..
+                            ob.setValuesPerQuestion(i, j);
+                            ob.setValuesForResult(i, j);
+
+                            //Initialise languageArray[i][] as noOfQuestions in section i.
+                            languageArray[i] = new int[noOfQuestions];
+
+                            //Parse one section one Question..
+                            map8 = QuestionPaperParser.QuestionParser(Question, j);
+
+                            //Get it's variables..
+                            myAskedIn = map8.get("AskedIn");
+                            myLanguage = map8.get("Language");
+                            questionAttributes = map8.get("Attributes");
+
+                            //Parse one section one question askedIn..
+                            map9 = QuestionPaperParser.AskedInParser(myAskedIn);
+
+                            //Get it's variables..
+                            myExamName = map9.get("ExamName");
+                            myYear = map9.get("Year");
+
+                            //Get no. of Exam names in which the question has been asked..
+                            noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
+
+                            Log.d("noOfExamName", noOfExamName + "");
+
+                            //Loop through the entire exam and year array..
+                            for (int k = 0; k < noOfExamName; ++k) {
+                                //Get exam name one by one..
+                                nm = QuestionPaperParser.getExamNamesOfOneQuestion(myExamName, k);
+                                //Get Year one by one..
+                                nmm = QuestionPaperParser.getYearsOfOneQuestion(myYear, k);
+                            }
+
+                            //Get length of language array of one question of one section..
+                            noOfLanguage = QuestionPaperParser.getLengthOfLanguageOfOneQuestion(myLanguage);
+
+                            //Get index of the language array which has to get parsed..
+                            int index = QuestionPaperParser.getIndex(selectedLanguage, myLanguage);
+                            if (index == -1) {
+                                //Language not found..
+                            } else {
+                                //Parse the desired index jsonObject og the language array..
+                                map10 = QuestionPaperParser.LanguageParser(myLanguage, index);
+                            }
+
+                            //Get it's variables..
+                            myQuestionText = map10.get("QuestionText");
+                            myOptions = map10.get("Options");
+
+                            //Get question text to be displayed..
+                            text = QuestionPaperParser.getQuestionText(myQuestionText);
+
+                            map12 = QuestionPaperParser.getAttributesOfQuestion(questionAttributes);
+                            Log.d("QID:", i + "-" + j + "-" + section_id + "-" + map12.get("id"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionText, text);
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.CorrectAnswer, map12.get("CorrectAnswer"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionCorrectMarks, map12.get("QuestionCorrectMarks"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionIncorrectMarks, map12.get("QuestionIncorrectMarks"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.PassageID, map12.get("PassageID"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionType, map12.get("QuestionType"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionTime, map12.get("QuestionTime"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionDifficultyLevel, map12.get("QuestionDifficultyLevel"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionRelativeTopic, map12.get("QuestionRelativeTopic"));
+                            ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionId, map12.get("id"));
+                            ob.updateValuesForResult(iiii, jjjj, QuizDatabase.SectionId, section_id);
+                            ob.updateValuesForResult(iiii, jjjj, QuizDatabase.QuestionId, map12.get("id"));
+                            myOption = QuestionPaperParser.OptionsParser(myOptions);
+
+                            //Get length of option array..
+                            noOfOption = QuestionPaperParser.getLengthOfOptionArray(myOption);
+
+                            //Loop through entire option array..
+                            for (int p = 0; p < noOfOption; ++p) {
+
+                                final int pppp = p;
+
+                                //Set in database..
+                                ob.setValuesPerOption(i, j, p);
+
+                                //Parse Option Array at the desirex index to get one option..
+                                myOp = QuestionPaperParser.OptionParser(myOption, p);
+
+                                //Parse one option..
+                                map11 = QuestionPaperParser.oneOptionParser(myOp);
+
+                                //Get Attributes of one option..
+                                myAt = map11.get("Attributes");
+
+                                //Parse Attributes of one option..
+                                myAttri = QuestionPaperParser.getAttributesOfOneOption(myAt);
+                                opText = map11.get("_");
+
+                                ob.updateValuesPerOption(iiii, jjjj, pppp, QuizDatabase.OptionText, opText);
+                                ob.updateValuesPerOption(iiii, jjjj, pppp, QuizDatabase.OptionId, myAttri);
+
+                            }
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            //        If offline required..
+            for (int i = 0; i < noOfSections; ++i) {
+                for (int j = 0; j < questionArray[i]; ++j) {
+                    String mt = ob.getTextOfOneQuestion(i, j);
+                    try {
+                        prepareForOfflineForQuestion(mt, i, j);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("textHere", "OfQuestions" + mt);
+                    int noo = ob.getNoOfOptionsInOneQuestion(i, j);
+                    for (int k = 0; k < noo; ++k) {
+                        String mo = ob.getTextOfOneOption(i, j, k);
+                        Log.d("textHere", "OfOptions" + mo);
+                        try {
+                            prepareForOfflineForOption(mo, i, j, k);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            return "done";
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            try {
+                afterResponse();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

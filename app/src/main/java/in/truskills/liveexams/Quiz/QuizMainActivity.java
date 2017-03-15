@@ -1,11 +1,14 @@
 package in.truskills.liveexams.Quiz;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -195,22 +198,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         questionArray = getIntent().getIntArrayExtra("questionArray");
         myTime = getIntent().getIntExtra("ExamDuration", 0);
 
-
-        formFragmentListForViewPager();
-
-        //Set the view pager adapter..
-        pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
-        pager = (ViewPager) findViewById(R.id.viewpager);
-        pager.setAdapter(pageAdapter);
-        total = myFragmentCount + 1;
-        pager.setOffscreenPageLimit(total);
-
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        linearLayoutManager = new LinearLayoutManager(QuizMainActivity.this, LinearLayoutManager.HORIZONTAL, false);
         questionsList.setLayoutManager(linearLayoutManager);
         questionsList.setItemAnimator(new DefaultItemAnimator());
 
-        forQuiz();
+        pager = (ViewPager) findViewById(R.id.viewpager);
 
+        formFragmentListForViewPager();
     }
 
     public void forQuiz() {
@@ -768,77 +762,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
 
     public void formFragmentListForViewPager() {
-        arrayForNoOfSections = new ArrayList<>();
-
-        for (int i = 0; i < noOfSections; ++i) {
-            arrayForNoOfSections.add(i);
-        }
-        //If shuffling required, then do so..
-        Collections.shuffle(arrayForNoOfSections);
-
-        for (int i = 0; i < noOfSections; ++i) {
-            //Increase the section serial number..
-            mySectionCount++;
-            //Getting a section randomly..
-            my_section = arrayForNoOfSections.get(i);
-            //Set the serial number of this section..
-            ob.updateValuesPerSection(my_section, QuizDatabase.SerialNumber, mySectionCount + "");
-
-            //Getting total no.of questions in that section randomly..
-            num = questionArray[arrayForNoOfSections.get(i)];
-
-            arrayForQuestions = new ArrayList<>();
-            for (int j = 0; j < num; ++j) {
-                arrayForQuestions.add(j);
-            }
-
-            //If shuffling required, then do so..
-            Collections.shuffle(arrayForQuestions);
-
-            int myQuestionCount = -1;
-
-            for (int k = 0; k < num; ++k) {
-                //Increase question serial number..
-                myQuestionCount++;
-                //Increase fragment serial number..
-                myFragmentCount++;
-                //Getting a question randomly..
-                my_question = arrayForQuestions.get(k);
-                //Set the serial number of this question..
-                ob.updateValuesPerQuestion(my_section, my_question, QuizDatabase.SerialNumber, myQuestionCount + "");
-                ob.updateValuesPerQuestion(my_section, my_question, QuizDatabase.FragmentIndex, myFragmentCount + "");
-                ob.updateValuesForResult(my_section, my_question, QuizDatabase.SerialNumber, myQuestionCount + "");
-                ob.updateValuesForResult(my_section, my_question, QuizDatabase.FragmentIndex, myFragmentCount + "");
-                String my_text = ob.getTextOfOneQuestion(my_section, my_question);
-
-                int numOp = ob.getNoOfOptionsInOneQuestion(my_section, my_question);
-
-                arrayForOptions = new ArrayList<>();
-                for (int p = 0; p < numOp; ++p) {
-                    arrayForOptions.add(p);
-                }
-                //Shuffle if required..
-                Collections.shuffle(arrayForOptions);
-
-                options = new ArrayList<>();
-
-                int myOptionCount = -1;
-
-                for (int s = 0; s < numOp; ++s) {
-                    //Increase option serial number..
-                    myOptionCount++;
-                    //Getting an option randomly..
-                    my_option = arrayForOptions.get(s);
-                    //Set the serial number of this option..
-                    ob.updateValuesPerOption(my_section, my_question, my_option, QuizDatabase.SerialNumber, myOptionCount + "");
-
-//                    String my_option_text=optionArray[my_section][my_question][my_option];
-                    String my_option_text = ob.getTextOfOneOption(my_section, my_question, my_option);
-                    options.add(my_option_text);
-                }
-                fList.add(MyFragment.newInstance(my_text, options, examId, my_section, my_question, myFragmentCount));
-            }
-        }
+        AsyncTaskRunner asyncTaskRunner=new AsyncTaskRunner();
+        asyncTaskRunner.execute();
 
     }
 
@@ -982,6 +907,116 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     }
                 }
             }).start();
+        }
+
+    }
+
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+        ProgressDialog dialog;
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            arrayForNoOfSections = new ArrayList<>();
+
+            for (int i = 0; i < noOfSections; ++i) {
+                arrayForNoOfSections.add(i);
+            }
+            //If shuffling required, then do so..
+            Collections.shuffle(arrayForNoOfSections);
+
+            for (int i = 0; i < noOfSections; ++i) {
+                //Increase the section serial number..
+                mySectionCount++;
+                //Getting a section randomly..
+                my_section = arrayForNoOfSections.get(i);
+                //Set the serial number of this section..
+                ob.updateValuesPerSection(my_section, QuizDatabase.SerialNumber, mySectionCount + "");
+
+                //Getting total no.of questions in that section randomly..
+                num = questionArray[arrayForNoOfSections.get(i)];
+
+                arrayForQuestions = new ArrayList<>();
+                for (int j = 0; j < num; ++j) {
+                    arrayForQuestions.add(j);
+                }
+
+                //If shuffling required, then do so..
+                Collections.shuffle(arrayForQuestions);
+
+                int myQuestionCount = -1;
+
+                for (int k = 0; k < num; ++k) {
+                    //Increase question serial number..
+                    myQuestionCount++;
+                    //Increase fragment serial number..
+                    myFragmentCount++;
+                    //Getting a question randomly..
+                    my_question = arrayForQuestions.get(k);
+                    //Set the serial number of this question..
+                    ob.updateValuesPerQuestion(my_section, my_question, QuizDatabase.SerialNumber, myQuestionCount + "");
+                    ob.updateValuesPerQuestion(my_section, my_question, QuizDatabase.FragmentIndex, myFragmentCount + "");
+                    ob.updateValuesForResult(my_section, my_question, QuizDatabase.SerialNumber, myQuestionCount + "");
+                    ob.updateValuesForResult(my_section, my_question, QuizDatabase.FragmentIndex, myFragmentCount + "");
+                    String my_text = ob.getTextOfOneQuestion(my_section, my_question);
+
+                    int numOp = ob.getNoOfOptionsInOneQuestion(my_section, my_question);
+
+                    arrayForOptions = new ArrayList<>();
+                    for (int p = 0; p < numOp; ++p) {
+                        arrayForOptions.add(p);
+                    }
+                    //Shuffle if required..
+                    Collections.shuffle(arrayForOptions);
+
+                    options = new ArrayList<>();
+
+                    int myOptionCount = -1;
+
+                    for (int s = 0; s < numOp; ++s) {
+                        //Increase option serial number..
+                        myOptionCount++;
+                        //Getting an option randomly..
+                        my_option = arrayForOptions.get(s);
+                        //Set the serial number of this option..
+                        ob.updateValuesPerOption(my_section, my_question, my_option, QuizDatabase.SerialNumber, myOptionCount + "");
+
+//                    String my_option_text=optionArray[my_section][my_question][my_option];
+                        String my_option_text = ob.getTextOfOneOption(my_section, my_question, my_option);
+                        options.add(my_option_text);
+                    }
+                    fList.add(MyFragment.newInstance(my_text, options, examId, my_section, my_question, myFragmentCount));
+                }
+            }
+            return "done";
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            // execution of result of Long time consuming operation
+            //Set the view pager adapter..
+            if(dialog!=null)
+            dialog.dismiss();
+            pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
+            pager.setAdapter(pageAdapter);
+            total = myFragmentCount + 1;
+            pager.setOffscreenPageLimit(total);
+
+            forQuiz();
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(QuizMainActivity.this);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("Preparing your questions.. Please wait...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
         }
 
     }
