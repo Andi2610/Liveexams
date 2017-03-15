@@ -15,7 +15,7 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class WebViewContentForAnswers {
 
-    public void contentGenerator(final String question, final ArrayList<String> optionsList, WebView webView, String myAnswer, String correctAnswer,String myUrl) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, WebView webView, String myAnswer, String correctAnswer,String myUrl,final Updateable c) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
@@ -59,7 +59,7 @@ public class WebViewContentForAnswers {
 //                            "\t<span><img src=\"https://uploads.wishloop.com/uploads/img_f4325850c9cbe4473e780daa08bffa4b3656b8f6.png\" height=30 width=30/></span>\n" +
                             "\t<span><img src=\"file:///android_asset/wrong_answer_icon.png\" height=30 width=30/></span>\n" +
                             "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
-                            "<span><img src=\"file:///android_asset/explanation_icon.png\" height=30 width=30/></span>"+
+                            "<span style=\"float:right;\" onclick=\"ok.performClick(this.value);\"><img src=\"file:///android_asset/explanation_icon.png\" height=30 width=30/></span>" +
                             "</div>\n" +
                             "<br>";
                 }
@@ -86,7 +86,13 @@ public class WebViewContentForAnswers {
                         "</body>\n" +
                         "</html>";
         webView.loadDataWithBaseURL(null, content, "text/HTML", "UTF-8", null);
+        webView.addJavascriptInterface(new Object() {
+            @JavascriptInterface           // For API 17+
+            public void performClick(String strl) {
 
+                c.update();
+            }
+        }, "ok");
     }
 //style="padding:10px;background-color:green;margin-left:10px"
 }

@@ -20,7 +20,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -31,12 +33,13 @@ import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.AnalyticsDatabase;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
-public class AnswersMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener {
+public class AnswersMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener,Updateable {
 
     MyPageAdapter pageAdapter;
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
     String examName, SectionIndex;
     ArrayList<Fragment> fList;
+    RelativeLayout activity_answers_main;
     int fi,jumpTo;
     TextView sectionNameForAnswers, submittedQuestionsForAnswers, reviewedTickedQuestionsForAnswers, reviewedUntickedQuestionsForAnswers, notAttemptedQuestionsForAnswers, clearedQuestionsForAnswers;
     TextView yourTimeText, maximumTimeText, minimumTimeText, correctlyAnsweredText, yourTimeValue, maximumTimeValue, minimumTimeValue, correctlyAnsweredValue;
@@ -59,6 +62,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        activity_answers_main=(RelativeLayout)findViewById(R.id.activity_answers_main);
         examName = getIntent().getStringExtra("examName");
 
         getSupportActionBar().setTitle("ANSWER KEY");
@@ -316,6 +320,11 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         }
     }
 
+    @Override
+    public void update() {
+        Toast.makeText(this, "Open explanation page", Toast.LENGTH_SHORT).show();
+    }
+
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
 
@@ -355,6 +364,8 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
             //Set the view pager adapter..
             if(dialog!=null)
                 dialog.dismiss();
+            activity_answers_main.setVisibility(View.VISIBLE);
+
 
             pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
             pager.setAdapter(pageAdapter);
@@ -365,6 +376,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
         @Override
         protected void onPreExecute() {
+            activity_answers_main.setVisibility(View.GONE);
             dialog = new ProgressDialog(AnswersMainActivity.this);
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             dialog.setMessage("Preparing your answers.. Please wait...");

@@ -52,12 +52,19 @@ public class MyFragmentForAnswers extends Fragment {
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setSupportZoom(true);
         webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setJavaScriptEnabled(true);
 
         WebViewContentForAnswers obj = new WebViewContentForAnswers();
-        obj.contentGenerator(myQuestion, myOptions, webView, myAnswer, correctAnswer,myUrll);
+
+        Updateable updateable=(Updateable)getActivity();
+
+        obj.contentGenerator(myQuestion, myOptions, webView, myAnswer, correctAnswer,myUrll,updateable);
 
         return v;
     }
 
+}
 
+interface Updateable {
+    public void update();
 }

@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +82,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     private static final String TAG = "checkkkkk-InQuiz" ;
     public static boolean visible=true;
     Handler h;
+    RelativeLayout activity_quiz_main;
     MyPageAdapter pageAdapter;
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
     SharedPreferences quizPrefs,dataPrefs;
@@ -118,6 +120,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_main);
         h=new Handler();
+
+        activity_quiz_main=(RelativeLayout)findViewById(R.id.activity_quiz_main);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -1000,6 +1004,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             //Set the view pager adapter..
             if(dialog!=null)
             dialog.dismiss();
+            activity_quiz_main.setVisibility(View.VISIBLE);
+
             pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
             pager.setAdapter(pageAdapter);
             total = myFragmentCount + 1;
@@ -1011,6 +1017,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         @Override
         protected void onPreExecute() {
+            activity_quiz_main.setVisibility(View.GONE);
             dialog = new ProgressDialog(QuizMainActivity.this);
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             dialog.setMessage("Preparing your questions.. Please wait...");
