@@ -219,6 +219,9 @@ public class AllSectionsSummary extends AppCompatActivity {
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
+                        SharedPreferences.Editor ee=quizPrefs.edit();
+                        ee.clear();
+                        ee.apply();
                         Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack

@@ -30,11 +30,12 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class SubmitAnswerPaper {
 
-    SharedPreferences dataPrefs;
+    SharedPreferences dataPrefs,quizPrefs;
 
     public void submit(final QuizDatabase ob, final Context context, final String result, final String userId, final String examId){
 
         dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
+        quizPrefs=context.getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String myurl = ConstantsDefined.api + "answerPaper";
         Map<String, String> params = new HashMap<String, String>();
@@ -66,6 +67,9 @@ public class SubmitAnswerPaper {
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
+                        SharedPreferences.Editor ee=quizPrefs.edit();
+                        ee.clear();
+                        ee.apply();
 
                         ((Activity)context).finish();
                         Intent intent = new Intent(context, SplashScreen.class);
