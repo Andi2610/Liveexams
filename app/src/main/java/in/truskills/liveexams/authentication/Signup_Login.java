@@ -74,6 +74,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -265,7 +266,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         //If connection could not be made..
                         if (dialog != null)
                             dialog.dismiss();
-                        Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        if(ConstantsDefined.isOnline(Signup_Login.this)){
+                            //Do nothing..
+                            Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
                 requestQueue.add(stringRequest);
@@ -777,7 +783,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         //If connection could not be made..
                         if (dialog != null)
                             dialog.dismiss();
-                        Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        if(ConstantsDefined.isOnline(Signup_Login.this)){
+                            //Do nothing..
+                            Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }) {
                     @Override
@@ -894,7 +905,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //In case the connection to the Api couldn't be established..
                 if (dialog != null)
                     dialog.dismiss();
-                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                if(ConstantsDefined.isOnline(Signup_Login.this)){
+                    //Do nothing..
+                    Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         }) {
             @Override
@@ -1020,7 +1036,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //In case the connection to the Api couldn't be established..
                 if (dialog != null)
                     dialog.dismiss();
-                Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                if(ConstantsDefined.isOnline(Signup_Login.this)){
+                    //Do nothing..
+                    Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         requestQueue.add(stringRequest);

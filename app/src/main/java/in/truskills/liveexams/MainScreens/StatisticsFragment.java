@@ -192,8 +192,13 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
                 if(dialog!=null)
                 dialog.dismiss();
                 Log.d("myError", error + "");
-                Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
-                noConnectionLayout.setVisibility(View.VISIBLE);
+                if(ConstantsDefined.isOnline(getActivity())){
+                    //Do nothing..
+                    Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                    noConnectionLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
         requestQueue.add(jsonObjectRequest);

@@ -248,7 +248,12 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
             @Override
             public void onErrorResponse(VolleyError error) {
 //                avLoadingIndicatorView.hide();
-                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                if(ConstantsDefined.isOnline(getActivity())){
+                    //Do nothing..
+                    Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -428,7 +433,12 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 if(dialog!=null)
                 dialog.dismiss();
-                Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                if(ConstantsDefined.isOnline(getActivity())){
+                    //Do nothing..
+                    Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         requestQueue.add(jsonObjectRequest);

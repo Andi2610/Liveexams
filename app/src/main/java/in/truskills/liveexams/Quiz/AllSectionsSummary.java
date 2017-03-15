@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -226,6 +228,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
+                        finish();
                     } else {
                         JSONObject jsonObject2 = new JSONObject(result);
                         ob.deleteMyTable();
@@ -241,6 +244,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -252,17 +256,25 @@ public class AllSectionsSummary extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
+                if(progressDialog!=null)
                 progressDialog.dismiss();
                 Log.d("error", error.toString() + "");
-                Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
-                String folder_main = "LiveExams";
-                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                if (f.exists()) {
-                    deleteDir(f);
+
+                if(ConstantsDefined.isOnline(AllSectionsSummary.this)){
+                    //Do nothing..
+                    Toast.makeText(AllSectionsSummary.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
+                    String folder_main = "LiveExams";
+                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                    if (f.exists()) {
+                        deleteDir(f);
+                    }
+                    Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                    startActivity(intent);
+                    finish();
                 }
-                Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                startActivity(intent);
             }
         }) {
             @Override
@@ -362,10 +374,11 @@ public class AllSectionsSummary extends AppCompatActivity {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    ((Activity)AllSectionsSummary.this).finish();
-                                    Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
+//                                    Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                    startActivity(intent);
+//                                    finish();
                                 }
                             }
                         });

@@ -942,7 +942,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         super.onPause();
         Log.d(TAG, "onPause: ");
         if(quizPrefs.getInt("exit",0)==0){
-            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         }else{
             visible=false;
             new Thread(new Runnable() {
@@ -976,10 +976,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    ((Activity)QuizMainActivity.this).finish();
-                                    Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(intent);
                                 }
                             }
                         });

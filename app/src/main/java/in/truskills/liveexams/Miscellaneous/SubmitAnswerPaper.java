@@ -71,10 +71,11 @@ public class SubmitAnswerPaper {
                         ee.clear();
                         ee.apply();
 
-                        ((Activity)context).finish();
-                        Intent intent = new Intent(context, SplashScreen.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);
+                        ((Activity)context).finish();
 
                     } else {
                         ob.deleteMyTable();

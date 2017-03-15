@@ -41,27 +41,32 @@ public class WebViewContentForAnswers {
         for (int i = 0; i < optionsListSize; ++i) {
             if (i == correctanswerId) {
                 x = x + "<div>\n" +
-                        "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
+//                        "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
+                        "\t<span><img src=\"file:///android_asset/right_answer_icon.png\" height=30 width=30/></span>\n" +
                         "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
                         "</div>\n" +
                         "<br>";
             } else if (i == myAnswerId) {
                 if (myAnswerId == correctanswerId) {
                     x = x + "<div>\n" +
-                            "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
+//                            "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
+                            "\t<span><img src=\"file:///android_asset/right_answer_icon.png\" height=30 width=30/></span>\n" +
                             "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
                             "</div>\n" +
                             "<br>";
                 } else {
                     x = x + "<div>\n" +
-                            "\t<span><img src=\"https://uploads.wishloop.com/uploads/img_f4325850c9cbe4473e780daa08bffa4b3656b8f6.png\" height=30 width=30/></span>\n" +
+//                            "\t<span><img src=\"https://uploads.wishloop.com/uploads/img_f4325850c9cbe4473e780daa08bffa4b3656b8f6.png\" height=30 width=30/></span>\n" +
+                            "\t<span><img src=\"file:///android_asset/wrong_answer_icon.png\" height=30 width=30/></span>\n" +
                             "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
+                            "<span><img src=\"file:///android_asset/explanation_icon.png\" height=30 width=30/></span>"+
                             "</div>\n" +
                             "<br>";
                 }
             } else {
                 x = x + "<div>\n" +
-                        "\t<span><img src=\"https://data.unhcr.org/horn-of-africa/images/circle_grey.png\" height=30 width=30/></span>\n" +
+//                        "\t<span><img src=\"https://data.unhcr.org/horn-of-africa/images/circle_grey.png\" height=30 width=30/></span>\n" +
+                        "\t<span><img src=\"file:///android_asset/no_answer_icon.png\" height=30 width=30/></span>\n" +
                         "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
                         "</div>\n" +
                         "<br>";

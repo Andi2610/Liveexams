@@ -28,7 +28,7 @@ import in.truskills.liveexams.R;
 
 public class InitialInfo extends AppCompatActivity {
 
-    String date, startTime, endTime, score, attempts, totalMarks, duration, examName, bestScore, averageScore, totalStudents,myUrl;
+    String date, startTime, rank,endTime, score, attempts, totalMarks, duration, examName, bestScore, averageScore, totalStudents,myUrl;
     int noOfSections, questionArray[], totalQuestions = 0;
     Button answerKeyButton;
     TextView dateText, dateValue, startTimeText, startTimeValue, endTimeText, endTimeValue, totalMarksText, totalMarksValue, bestScoreValue, bestScoreText, averageScoreValue, averageScoreText;
@@ -61,6 +61,7 @@ public class InitialInfo extends AppCompatActivity {
         bestScore = getIntent().getStringExtra("bestScore");
         averageScore = getIntent().getStringExtra("averageScore");
         totalStudents = getIntent().getStringExtra("totalStudents");
+        rank = getIntent().getStringExtra("rank");
         myUrl = getIntent().getStringExtra("url");
         questionArray = new int[noOfSections];
         questionArray = getIntent().getIntArrayExtra("questionArray");
@@ -146,13 +147,15 @@ public class InitialInfo extends AppCompatActivity {
         endTimeValue.setText(endTime);
         totalMarksValue.setText(totalMarks);
 
-        myRank.setText("2");
+        myRank.setText(rank);
         totalRank.setText("/" + totalStudents);
 
         myScore.setText(score);
         totalScore.setText("/" + totalMarks);
 
-        myPercentile.setText("99.2");
+        float myPer=(Integer.parseInt(rank)*100)/(Integer.parseInt(totalStudents)+1);
+
+        myPercentile.setText(myPer+"");
         totalPercentile.setText("/100");
 
         myAttempt.setText(attempts);

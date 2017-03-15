@@ -142,7 +142,12 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                         //If connection couldn't be made..
                         if(dialog!=null)
                         dialog.dismiss();
-                        Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        if(ConstantsDefined.isOnline(c)){
+                            //Do nothing..
+                            Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }) {
                     @Override

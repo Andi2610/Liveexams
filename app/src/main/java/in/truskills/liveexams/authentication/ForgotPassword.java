@@ -41,6 +41,7 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Quiz.AllSectionsSummary;
 import in.truskills.liveexams.R;
 import io.fabric.sdk.android.Fabric;
 
@@ -174,7 +175,12 @@ public class ForgotPassword extends AppCompatActivity {
                             //In case the connection to the Api couldn't be established..
                             if (dialog != null)
                                 dialog.dismiss();
-                            Toast.makeText(ForgotPassword.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                            if(ConstantsDefined.isOnline(ForgotPassword.this)){
+                                //Do nothing..
+                                Toast.makeText(ForgotPassword.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(ForgotPassword.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }) {
                         @Override

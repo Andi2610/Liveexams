@@ -337,7 +337,12 @@ public class StartPageFragment extends Fragment {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //If the connection couldn't be made..
-                            Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                            if(ConstantsDefined.isOnline(getActivity())){
+                                //Do nothing..
+                                Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }) {
                         @Override
@@ -490,7 +495,12 @@ public class StartPageFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                if(ConstantsDefined.isOnline(getActivity())){
+                    //Do nothing..
+                    Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -527,7 +537,12 @@ public class StartPageFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                if(ConstantsDefined.isOnline(getActivity())){
+                    //Do nothing..
+                    Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         requestQueue.add(jsonObjectRequest);

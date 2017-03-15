@@ -30,6 +30,7 @@ public class EndStudentAnalyticsParser {
     private static final String sectionWiseAttemptedQuestions="sectionWiseAttemptedQuestions";
     private static final String sectionWiseTimeSpent="sectionWiseTimeSpent";
     private static final String sectionWiseMarks="sectionWiseMarks";
+    private static final String rank="rank";
 
 
 
@@ -40,6 +41,7 @@ public class EndStudentAnalyticsParser {
         map.put("examId",jsonObject.getString(examId));
         map.put("userId",jsonObject.getString(userId));
         map.put("__v",jsonObject.getString(__v));
+        map.put("rank",jsonObject.getString(rank));
         map.put("analytics",jsonObject.getJSONArray(analytics).getJSONObject(0).toString());
         return map;
     }

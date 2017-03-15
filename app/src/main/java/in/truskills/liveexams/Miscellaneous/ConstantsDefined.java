@@ -1,5 +1,10 @@
 package in.truskills.liveexams.Miscellaneous;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
+
 /**
  * Created by Shivansh Gupta on 24-02-2017.
  */
@@ -26,4 +31,23 @@ public class ConstantsDefined {
     public static final String urlForLocationFetch="https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
     public static final long time=60000;
+
+    public static boolean isOnline(Context context) {
+        boolean connected=true;
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            connected = networkInfo != null && networkInfo.isAvailable() &&
+                    networkInfo.isConnected();
+            return connected;
+
+
+        } catch (Exception e) {
+            System.out.println("CheckConnectivity Exception: " + e.getMessage());
+            Log.v("connectivity", e.toString());
+        }
+        return connected;
+    }
 }

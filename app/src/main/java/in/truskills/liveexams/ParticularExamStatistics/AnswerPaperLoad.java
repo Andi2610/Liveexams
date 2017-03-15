@@ -59,7 +59,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
     String questionAttributes, opText, examDuration, examId, name, selectedLanguage, myExamDuration, questionPaperResponse, answerKeyResponse, endStudentAnalyticsResponse, endExamAnalyticsResponse, answerPaperResponse;
     String startTime, endTime, totalMarks, score, attempts, myStartTime, myEndTime, examName, date, bestScore, averageScore, totalStudents;
     ArrayList<Fragment> fList;
-    String myUrl;
+    String myUrl,rank;
     TextView myWaitMessage;
     AnalyticsDatabase ob;
     ArrayList<String> urls, groups;
@@ -311,6 +311,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                         intent.putExtra("bestScore", bestScore);
                         intent.putExtra("averageScore", averageScore);
                         intent.putExtra("totalStudents", totalStudents);
+                        intent.putExtra("rank", rank);
                         intent.putExtra("url", myUrl);
                         Log.d("myLength=", questionArray.length + "");
                         intent.putExtra("questionArray", questionArray);
@@ -332,6 +333,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
     public void setEndStudentAnalyticsResponse(String response) throws JSONException {
         HashMap<String, String> map = EndStudentAnalyticsParser.responseParser(response);
         int si;
+        rank=map.get("rank");
         String analytics = map.get("analytics");
         JSONArray jsonArray;
         int len;
@@ -492,7 +494,12 @@ public class AnswerPaperLoad extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(AnswerPaperLoad.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                if(ConstantsDefined.isOnline(AnswerPaperLoad.this)){
+                    //Do nothing..
+                    Toast.makeText(AnswerPaperLoad.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(AnswerPaperLoad.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -534,7 +541,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
                 //If connection couldn't be made..
-                Toast.makeText(AnswerPaperLoad.this, "Sorry! No internet connection\nPlease try again later..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AnswerPaperLoad.this, "Sorry! Couldn't connect..\nPlease try again later..", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }) {

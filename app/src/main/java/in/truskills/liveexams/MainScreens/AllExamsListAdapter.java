@@ -124,7 +124,12 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                     public void onErrorResponse(VolleyError error) {
                         if(dialog!=null)
                         dialog.dismiss();
-                        Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        if(ConstantsDefined.isOnline(c)){
+                            //Do nothing..
+                            Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }) {
                     @Override

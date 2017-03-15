@@ -291,7 +291,12 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 if(dialog!=null)
                 dialog.dismiss();
-                Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                if(ConstantsDefined.isOnline(getActivity())){
+                    //Do nothing..
+                    Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         requestQueue.add(jsonObjectRequest);

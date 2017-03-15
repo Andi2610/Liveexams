@@ -1,0 +1,3128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExamQuestionPaper>
+    <ExamName>NEET</ExamName>
+    <ExamId>000002</ExamId>
+    <MaximumMarks>720</MaximumMarks>
+    <StartDate>3/15/2017</StartDate>
+    <EndDate>3/15/2017</EndDate>
+    <StartTime>11-00</StartTime>
+    <EndTime>14-00</EndTime>
+    <ExamDuration>03-00</ExamDuration>
+    <Instructions>some sequence of instructions</Instructions>
+    <Description>description of the exam</Description>
+    <ExamImage>\2012\ExamImage.jpg</ExamImage>
+    <AuthorDetails id = "" Name="" Emailid="" Contact="" Qualification="" Location=""> </AuthorDetails>
+    <Paperset id="2"></Paperset>
+    <Purpose>Explain the purpose of this exam</Purpose>
+
+    <Sections>
+        <Section id="1" Name="Physics">
+            <SectionMaxMarks>180</SectionMaxMarks>
+            <SectionTime>01-00</SectionTime>
+            <SectionDescription>This Section is for physics</SectionDescription>
+            <SectionRules>This Section is for......</SectionRules>
+            <SectionQuestions>
+
+                <Question id="1" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q1.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q1a1.jpg</Option>
+                            <Option id="2">\Images\q1a2.jpg</Option>
+                            <Option id="3">\Images\q1a3.jpg</Option>
+                            <Option id="4">\Images\q1a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+
+                <Question id="2" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q2.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q2a1.jpg</Option>
+                            <Option id="2">\Images\q2a2.jpg</Option>
+                            <Option id="3">\Images\q2a3.jpg</Option>
+                            <Option id="4">\Images\q2a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="3" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q3.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q3a1.jpg</Option>
+                            <Option id="2">\Images\q3a2.jpg</Option>
+                            <Option id="3">\Images\q3a3.jpg</Option>
+                            <Option id="4">\Images\q3a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="4" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q4.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q4a1.jpg</Option>
+                            <Option id="2">\Images\q4a2.jpg</Option>
+                            <Option id="3">\Images\q4a3.jpg</Option>
+                            <Option id="4">\Images\q4a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="5" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q5.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q5a1.jpg</Option>
+                            <Option id="2">\Images\q5a2.jpg</Option>
+                            <Option id="3">\Images\q5a3.jpg</Option>
+                            <Option id="4">\Images\q5a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="6" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q6.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q6a1.jpg</Option>
+                            <Option id="2">\Images\q6a2.jpg</Option>
+                            <Option id="3">\Images\q6a3.jpg</Option>
+                            <Option id="4">\Images\q6a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="7" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q7.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q7a1.jpg</Option>
+                            <Option id="2">\Images\q7a2.jpg</Option>
+                            <Option id="3">\Images\q7a3.jpg</Option>
+                            <Option id="4">\Images\q7a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="8" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q8.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q8a1.jpg</Option>
+                            <Option id="2">\Images\q8a2.jpg</Option>
+                            <Option id="3">\Images\q8a3.jpg</Option>
+                            <Option id="4">\Images\q8a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="9" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q9.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q9a1.jpg</Option>
+                            <Option id="2">\Images\q9a2.jpg</Option>
+                            <Option id="3">\Images\q9a3.jpg</Option>
+                            <Option id="4">\Images\q9a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="10" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q10.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q10a1.jpg</Option>
+                            <Option id="2">\Images\q10a2.jpg</Option>
+                            <Option id="3">\Images\q10a3.jpg</Option>
+                            <Option id="4">\Images\q10a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="11" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q11.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q11a1.jpg</Option>
+                            <Option id="2">\Images\q11a2.jpg</Option>
+                            <Option id="3">\Images\q11a3.jpg</Option>
+                            <Option id="4">\Images\q11a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="12" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q12.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q12a1.jpg</Option>
+                            <Option id="2">\Images\q12a2.jpg</Option>
+                            <Option id="3">\Images\q12a3.jpg</Option>
+                            <Option id="4">\Images\q12a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="13" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q13.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q13a1.jpg</Option>
+                            <Option id="2">\Images\q13a2.jpg</Option>
+                            <Option id="3">\Images\q13a3.jpg</Option>
+                            <Option id="4">\Images\q13a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="14" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q14.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q14a1.jpg</Option>
+                            <Option id="2">\Images\q14a2.jpg</Option>
+                            <Option id="3">\Images\q14a3.jpg</Option>
+                            <Option id="4">\Images\q14a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="15" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q15.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q15a1.jpg</Option>
+                            <Option id="2">\Images\q15a2.jpg</Option>
+                            <Option id="3">\Images\q15a3.jpg</Option>
+                            <Option id="4">\Images\q15a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="16" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q16.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q16a1.jpg</Option>
+                            <Option id="2">\Images\q16a2.jpg</Option>
+                            <Option id="3">\Images\q16a3.jpg</Option>
+                            <Option id="4">\Images\q16a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="17" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q17.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q17a1.jpg</Option>
+                            <Option id="2">\Images\q17a2.jpg</Option>
+                            <Option id="3">\Images\q17a3.jpg</Option>
+                            <Option id="4">\Images\q17a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="18" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q18.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q18a1.jpg</Option>
+                            <Option id="2">\Images\q18a2.jpg</Option>
+                            <Option id="3">\Images\q18a3.jpg</Option>
+                            <Option id="4">\Images\q18a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="19" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q19.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q19a1.jpg</Option>
+                            <Option id="2">\Images\q19a2.jpg</Option>
+                            <Option id="3">\Images\q19a3.jpg</Option>
+                            <Option id="4">\Images\q19a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="20" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q20.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q20a1.jpg</Option>
+                            <Option id="2">\Images\q20a2.jpg</Option>
+                            <Option id="3">\Images\q20a3.jpg</Option>
+                            <Option id="4">\Images\q20a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="21" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q21.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q21a1.jpg</Option>
+                            <Option id="2">\Images\q21a2.jpg</Option>
+                            <Option id="3">\Images\q21a3.jpg</Option>
+                            <Option id="4">\Images\q21a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="22" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q22.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q22a1.jpg</Option>
+                            <Option id="2">\Images\q22a2.jpg</Option>
+                            <Option id="3">\Images\q22a3.jpg</Option>
+                            <Option id="4">\Images\q22a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="23" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q23.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q23a1.jpg</Option>
+                            <Option id="2">\Images\q23a2.jpg</Option>
+                            <Option id="3">\Images\q23a3.jpg</Option>
+                            <Option id="4">\Images\q23a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="24" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q24.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q24a1.jpg</Option>
+                            <Option id="2">\Images\q24a2.jpg</Option>
+                            <Option id="3">\Images\q24a3.jpg</Option>
+                            <Option id="4">\Images\q24a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="25" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q25.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q25a1.jpg</Option>
+                            <Option id="2">\Images\q25a2.jpg</Option>
+                            <Option id="3">\Images\q25a3.jpg</Option>
+                            <Option id="4">\Images\q25a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="26" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q26.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q26a1.jpg</Option>
+                            <Option id="2">\Images\q26a2.jpg</Option>
+                            <Option id="3">\Images\q26a3.jpg</Option>
+                            <Option id="4">\Images\q26a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="27" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q27.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q27a1.jpg</Option>
+                            <Option id="2">\Images\q27a2.jpg</Option>
+                            <Option id="3">\Images\q27a3.jpg</Option>
+                            <Option id="4">\Images\q27a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="28" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q28.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q28a1.jpg</Option>
+                            <Option id="2">\Images\q28a2.jpg</Option>
+                            <Option id="3">\Images\q28a3.jpg</Option>
+                            <Option id="4">\Images\q28a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="29" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q29.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q29a1.jpg</Option>
+                            <Option id="2">\Images\q29a2.jpg</Option>
+                            <Option id="3">\Images\q29a3.jpg</Option>
+                            <Option id="4">\Images\q29a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="30" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q30.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q30a1.jpg</Option>
+                            <Option id="2">\Images\q30a2.jpg</Option>
+                            <Option id="3">\Images\q30a3.jpg</Option>
+                            <Option id="4">\Images\q30a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="31" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q31.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q31a1.jpg</Option>
+                            <Option id="2">\Images\q31a2.jpg</Option>
+                            <Option id="3">\Images\q31a3.jpg</Option>
+                            <Option id="4">\Images\q31a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="32" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q32.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q32a1.jpg</Option>
+                            <Option id="2">\Images\q32a2.jpg</Option>
+                            <Option id="3">\Images\q32a3.jpg</Option>
+                            <Option id="4">\Images\q32a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="33" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q33.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q33a1.jpg</Option>
+                            <Option id="2">\Images\q33a2.jpg</Option>
+                            <Option id="3">\Images\q33a3.jpg</Option>
+                            <Option id="4">\Images\q33a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="34" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q34.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q34a1.jpg</Option>
+                            <Option id="2">\Images\q34a2.jpg</Option>
+                            <Option id="3">\Images\q34a3.jpg</Option>
+                            <Option id="4">\Images\q34a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="35" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q35.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q35a1.jpg</Option>
+                            <Option id="2">\Images\q35a2.jpg</Option>
+                            <Option id="3">\Images\q35a3.jpg</Option>
+                            <Option id="4">\Images\q35a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="36" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q36.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q36a1.jpg</Option>
+                            <Option id="2">\Images\q36a2.jpg</Option>
+                            <Option id="3">\Images\q36a3.jpg</Option>
+                            <Option id="4">\Images\q36a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="37" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q37.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q37a1.jpg</Option>
+                            <Option id="2">\Images\q37a2.jpg</Option>
+                            <Option id="3">\Images\q37a3.jpg</Option>
+                            <Option id="4">\Images\q37a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="38" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q38.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q38a1.jpg</Option>
+                            <Option id="2">\Images\q38a2.jpg</Option>
+                            <Option id="3">\Images\q38a3.jpg</Option>
+                            <Option id="4">\Images\q38a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="39" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q39.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q39a1.jpg</Option>
+                            <Option id="2">\Images\q39a2.jpg</Option>
+                            <Option id="3">\Images\q39a3.jpg</Option>
+                            <Option id="4">\Images\q39a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="40" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q40.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q40a1.jpg</Option>
+                            <Option id="2">\Images\q40a2.jpg</Option>
+                            <Option id="3">\Images\q40a3.jpg</Option>
+                            <Option id="4">\Images\q40a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="41" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q41.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q41a1.jpg</Option>
+                            <Option id="2">\Images\q41a2.jpg</Option>
+                            <Option id="3">\Images\q41a3.jpg</Option>
+                            <Option id="4">\Images\q41a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="42" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q42.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q42a1.jpg</Option>
+                            <Option id="2">\Images\q42a2.jpg</Option>
+                            <Option id="3">\Images\q42a3.jpg</Option>
+                            <Option id="4">\Images\q42a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="43" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q43.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q43a1.jpg</Option>
+                            <Option id="2">\Images\q43a2.jpg</Option>
+                            <Option id="3">\Images\q43a3.jpg</Option>
+                            <Option id="4">\Images\q43a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="44" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q44.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q44a1.jpg</Option>
+                            <Option id="2">\Images\q44a2.jpg</Option>
+                            <Option id="3">\Images\q44a3.jpg</Option>
+                            <Option id="4">\Images\q44a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="45" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q45.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q45a1.jpg</Option>
+                            <Option id="2">\Images\q45a2.jpg</Option>
+                            <Option id="3">\Images\q45a3.jpg</Option>
+                            <Option id="4">\Images\q45a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+            </SectionQuestions>
+        </Section>
+
+
+        <Section id="2" Name="Chemistry">
+            <SectionMaxMarks>180</SectionMaxMarks>
+            <SectionTime>01-00</SectionTime>
+            <SectionDescription>This Section is for chemistry</SectionDescription>
+            <SectionRules>This Section is for......</SectionRules>
+            <SectionQuestions>
+
+                <Question id="136" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q136.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q136a1.jpg</Option>
+                            <Option id="2">\Images\q136a2.jpg</Option>
+                            <Option id="3">\Images\q136a3.jpg</Option>
+                            <Option id="4">\Images\q136a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+
+                <Question id="137" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q137.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q137a1.jpg</Option>
+                            <Option id="2">\Images\q137a2.jpg</Option>
+                            <Option id="3">\Images\q137a3.jpg</Option>
+                            <Option id="4">\Images\q137a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="138" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q138.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q138a1.jpg</Option>
+                            <Option id="2">\Images\q138a2.jpg</Option>
+                            <Option id="3">\Images\q138a3.jpg</Option>
+                            <Option id="4">\Images\q138a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="139" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q139.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q139a1.jpg</Option>
+                            <Option id="2">\Images\q139a2.jpg</Option>
+                            <Option id="3">\Images\q139a3.jpg</Option>
+                            <Option id="4">\Images\q139a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="140" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q140.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q140a1.jpg</Option>
+                            <Option id="2">\Images\q140a2.jpg</Option>
+                            <Option id="3">\Images\q140a3.jpg</Option>
+                            <Option id="4">\Images\q140a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="141" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q141.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q141a1.jpg</Option>
+                            <Option id="2">\Images\q141a2.jpg</Option>
+                            <Option id="3">\Images\q141a3.jpg</Option>
+                            <Option id="4">\Images\q141a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="142" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q142.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q142a1.jpg</Option>
+                            <Option id="2">\Images\q142a2.jpg</Option>
+                            <Option id="3">\Images\q142a3.jpg</Option>
+                            <Option id="4">\Images\q142a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="143" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q143.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q143a1.jpg</Option>
+                            <Option id="2">\Images\q143a2.jpg</Option>
+                            <Option id="3">\Images\q143a3.jpg</Option>
+                            <Option id="4">\Images\q143a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="144" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q144.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q144a1.jpg</Option>
+                            <Option id="2">\Images\q144a2.jpg</Option>
+                            <Option id="3">\Images\q144a3.jpg</Option>
+                            <Option id="4">\Images\q144a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="145" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q145.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q145a1.jpg</Option>
+                            <Option id="2">\Images\q145a2.jpg</Option>
+                            <Option id="3">\Images\q145a3.jpg</Option>
+                            <Option id="4">\Images\q145a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="146" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q146.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q146a1.jpg</Option>
+                            <Option id="2">\Images\q146a2.jpg</Option>
+                            <Option id="3">\Images\q146a3.jpg</Option>
+                            <Option id="4">\Images\q146a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="147" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q147.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q147a1.jpg</Option>
+                            <Option id="2">\Images\q147a2.jpg</Option>
+                            <Option id="3">\Images\q147a3.jpg</Option>
+                            <Option id="4">\Images\q147a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="148" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q148.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q148a1.jpg</Option>
+                            <Option id="2">\Images\q148a2.jpg</Option>
+                            <Option id="3">\Images\q148a3.jpg</Option>
+                            <Option id="4">\Images\q148a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="149" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q149.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q149a1.jpg</Option>
+                            <Option id="2">\Images\q149a2.jpg</Option>
+                            <Option id="3">\Images\q149a3.jpg</Option>
+                            <Option id="4">\Images\q149a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="150" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q150.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q150a1.jpg</Option>
+                            <Option id="2">\Images\q150a2.jpg</Option>
+                            <Option id="3">\Images\q150a3.jpg</Option>
+                            <Option id="4">\Images\q150a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="151" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q151.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q151a1.jpg</Option>
+                            <Option id="2">\Images\q151a2.jpg</Option>
+                            <Option id="3">\Images\q151a3.jpg</Option>
+                            <Option id="4">\Images\q151a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="152" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q152.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q152a1.jpg</Option>
+                            <Option id="2">\Images\q152a2.jpg</Option>
+                            <Option id="3">\Images\q152a3.jpg</Option>
+                            <Option id="4">\Images\q152a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="153" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q153.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q153a1.jpg</Option>
+                            <Option id="2">\Images\q153a2.jpg</Option>
+                            <Option id="3">\Images\q153a3.jpg</Option>
+                            <Option id="4">\Images\q153a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="154" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q154.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q154a1.jpg</Option>
+                            <Option id="2">\Images\q154a2.jpg</Option>
+                            <Option id="3">\Images\q154a3.jpg</Option>
+                            <Option id="4">\Images\q154a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="155" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q155.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q155a1.jpg</Option>
+                            <Option id="2">\Images\q155a2.jpg</Option>
+                            <Option id="3">\Images\q155a3.jpg</Option>
+                            <Option id="4">\Images\q155a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="156" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q156.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q156a1.jpg</Option>
+                            <Option id="2">\Images\q156a2.jpg</Option>
+                            <Option id="3">\Images\q156a3.jpg</Option>
+                            <Option id="4">\Images\q156a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="157" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q157.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q157a1.jpg</Option>
+                            <Option id="2">\Images\q157a2.jpg</Option>
+                            <Option id="3">\Images\q157a3.jpg</Option>
+                            <Option id="4">\Images\q157a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="158" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q158.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q158a1.jpg</Option>
+                            <Option id="2">\Images\q158a2.jpg</Option>
+                            <Option id="3">\Images\q158a3.jpg</Option>
+                            <Option id="4">\Images\q158a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="159" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q159.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q159a1.jpg</Option>
+                            <Option id="2">\Images\q159a2.jpg</Option>
+                            <Option id="3">\Images\q159a3.jpg</Option>
+                            <Option id="4">\Images\q159a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="160" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q160.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q160a1.jpg</Option>
+                            <Option id="2">\Images\q160a2.jpg</Option>
+                            <Option id="3">\Images\q160a3.jpg</Option>
+                            <Option id="4">\Images\q160a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="161" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q161.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q161a1.jpg</Option>
+                            <Option id="2">\Images\q161a2.jpg</Option>
+                            <Option id="3">\Images\q161a3.jpg</Option>
+                            <Option id="4">\Images\q161a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="162" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q162.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q162a1.jpg</Option>
+                            <Option id="2">\Images\q162a2.jpg</Option>
+                            <Option id="3">\Images\q162a3.jpg</Option>
+                            <Option id="4">\Images\q162a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="163" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q163.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q163a1.jpg</Option>
+                            <Option id="2">\Images\q163a2.jpg</Option>
+                            <Option id="3">\Images\q163a3.jpg</Option>
+                            <Option id="4">\Images\q163a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="164" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q164.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q164a1.jpg</Option>
+                            <Option id="2">\Images\q164a2.jpg</Option>
+                            <Option id="3">\Images\q164a3.jpg</Option>
+                            <Option id="4">\Images\q164a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="165" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q165.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q165a1.jpg</Option>
+                            <Option id="2">\Images\q165a2.jpg</Option>
+                            <Option id="3">\Images\q165a3.jpg</Option>
+                            <Option id="4">\Images\q165a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="166" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q166.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q166a1.jpg</Option>
+                            <Option id="2">\Images\q166a2.jpg</Option>
+                            <Option id="3">\Images\q166a3.jpg</Option>
+                            <Option id="4">\Images\q166a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="167" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q167.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q167a1.jpg</Option>
+                            <Option id="2">\Images\q167a2.jpg</Option>
+                            <Option id="3">\Images\q167a3.jpg</Option>
+                            <Option id="4">\Images\q167a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="168" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q168.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q168a1.jpg</Option>
+                            <Option id="2">\Images\q168a2.jpg</Option>
+                            <Option id="3">\Images\q168a3.jpg</Option>
+                            <Option id="4">\Images\q168a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="169" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q169.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q169a1.jpg</Option>
+                            <Option id="2">\Images\q169a2.jpg</Option>
+                            <Option id="3">\Images\q169a3.jpg</Option>
+                            <Option id="4">\Images\q169a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="170" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q170.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q170a1.jpg</Option>
+                            <Option id="2">\Images\q170a2.jpg</Option>
+                            <Option id="3">\Images\q170a3.jpg</Option>
+                            <Option id="4">\Images\q170a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="171" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q171.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q171a1.jpg</Option>
+                            <Option id="2">\Images\q171a2.jpg</Option>
+                            <Option id="3">\Images\q171a3.jpg</Option>
+                            <Option id="4">\Images\q171a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="172" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q172.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q172a1.jpg</Option>
+                            <Option id="2">\Images\q172a2.jpg</Option>
+                            <Option id="3">\Images\q172a3.jpg</Option>
+                            <Option id="4">\Images\q172a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="173" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q173.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q173a1.jpg</Option>
+                            <Option id="2">\Images\q173a2.jpg</Option>
+                            <Option id="3">\Images\q173a3.jpg</Option>
+                            <Option id="4">\Images\q173a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="174" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q174.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q174a1.jpg</Option>
+                            <Option id="2">\Images\q174a2.jpg</Option>
+                            <Option id="3">\Images\q174a3.jpg</Option>
+                            <Option id="4">\Images\q174a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="175" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q175.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q175a1.jpg</Option>
+                            <Option id="2">\Images\q175a2.jpg</Option>
+                            <Option id="3">\Images\q175a3.jpg</Option>
+                            <Option id="4">\Images\q175a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="176" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q176.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q176a1.jpg</Option>
+                            <Option id="2">\Images\q176a2.jpg</Option>
+                            <Option id="3">\Images\q176a3.jpg</Option>
+                            <Option id="4">\Images\q176a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="177" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q177.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q177a1.jpg</Option>
+                            <Option id="2">\Images\q177a2.jpg</Option>
+                            <Option id="3">\Images\q177a3.jpg</Option>
+                            <Option id="4">\Images\q177a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="178" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q178.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q178a1.jpg</Option>
+                            <Option id="2">\Images\q178a2.jpg</Option>
+                            <Option id="3">\Images\q178a3.jpg</Option>
+                            <Option id="4">\Images\q178a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="179" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q179.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q179a1.jpg</Option>
+                            <Option id="2">\Images\q179a2.jpg</Option>
+                            <Option id="3">\Images\q179a3.jpg</Option>
+                            <Option id="4">\Images\q179a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="180" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q180.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q180a1.jpg</Option>
+                            <Option id="2">\Images\q180a2.jpg</Option>
+                            <Option id="3">\Images\q180a3.jpg</Option>
+                            <Option id="4">\Images\q180a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+            </SectionQuestions>
+        </Section>
+
+
+        <Section id="3" Name="Biology">
+            <SectionMaxMarks>360</SectionMaxMarks>
+            <SectionTime>01-00</SectionTime>
+            <SectionDescription>This Section is for biology</SectionDescription>
+            <SectionRules>This Section is for......</SectionRules>
+            <SectionQuestions>
+
+                <Question id="46" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q46.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q46a1.jpg</Option>
+                            <Option id="2">\Images\q46a2.jpg</Option>
+                            <Option id="3">\Images\q46a3.jpg</Option>
+                            <Option id="4">\Images\q46a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+
+                <Question id="47" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q47.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q47a1.jpg</Option>
+                            <Option id="2">\Images\q47a2.jpg</Option>
+                            <Option id="3">\Images\q47a3.jpg</Option>
+                            <Option id="4">\Images\q47a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="48" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q48.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q48a1.jpg</Option>
+                            <Option id="2">\Images\q48a2.jpg</Option>
+                            <Option id="3">\Images\q48a3.jpg</Option>
+                            <Option id="4">\Images\q48a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="49" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q49.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q49a1.jpg</Option>
+                            <Option id="2">\Images\q49a2.jpg</Option>
+                            <Option id="3">\Images\q49a3.jpg</Option>
+                            <Option id="4">\Images\q49a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+
+                <Question id="50" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q50.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q50a1.jpg</Option>
+                            <Option id="2">\Images\q50a2.jpg</Option>
+                            <Option id="3">\Images\q50a3.jpg</Option>
+                            <Option id="4">\Images\q50a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="51" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q51.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q51a1.jpg</Option>
+                            <Option id="2">\Images\q51a2.jpg</Option>
+                            <Option id="3">\Images\q51a3.jpg</Option>
+                            <Option id="4">\Images\q51a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="52" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q52.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q52a1.jpg</Option>
+                            <Option id="2">\Images\q52a2.jpg</Option>
+                            <Option id="3">\Images\q52a3.jpg</Option>
+                            <Option id="4">\Images\q52a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="53" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q53.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q53a1.jpg</Option>
+                            <Option id="2">\Images\q53a2.jpg</Option>
+                            <Option id="3">\Images\q53a3.jpg</Option>
+                            <Option id="4">\Images\q53a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="54" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q54.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q54a1.jpg</Option>
+                            <Option id="2">\Images\q54a2.jpg</Option>
+                            <Option id="3">\Images\q54a3.jpg</Option>
+                            <Option id="4">\Images\q54a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="55" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q55.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q55a1.jpg</Option>
+                            <Option id="2">\Images\q55a2.jpg</Option>
+                            <Option id="3">\Images\q55a3.jpg</Option>
+                            <Option id="4">\Images\q55a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="56" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q56.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q56a1.jpg</Option>
+                            <Option id="2">\Images\q56a2.jpg</Option>
+                            <Option id="3">\Images\q56a3.jpg</Option>
+                            <Option id="4">\Images\q56a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="57" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q57.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q57a1.jpg</Option>
+                            <Option id="2">\Images\q57a2.jpg</Option>
+                            <Option id="3">\Images\q57a3.jpg</Option>
+                            <Option id="4">\Images\q57a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="58" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q58.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q58a1.jpg</Option>
+                            <Option id="2">\Images\q58a2.jpg</Option>
+                            <Option id="3">\Images\q58a3.jpg</Option>
+                            <Option id="4">\Images\q58a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="59" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q59.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q59a1.jpg</Option>
+                            <Option id="2">\Images\q59a2.jpg</Option>
+                            <Option id="3">\Images\q59a3.jpg</Option>
+                            <Option id="4">\Images\q59a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="60" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q60.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q60a1.jpg</Option>
+                            <Option id="2">\Images\q60a2.jpg</Option>
+                            <Option id="3">\Images\q60a3.jpg</Option>
+                            <Option id="4">\Images\q60a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="61" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q61.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q61a1.jpg</Option>
+                            <Option id="2">\Images\q61a2.jpg</Option>
+                            <Option id="3">\Images\q61a3.jpg</Option>
+                            <Option id="4">\Images\q61a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="62" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q62.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q62a1.jpg</Option>
+                            <Option id="2">\Images\q62a2.jpg</Option>
+                            <Option id="3">\Images\q62a3.jpg</Option>
+                            <Option id="4">\Images\q62a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="63" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q63.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q63a1.jpg</Option>
+                            <Option id="2">\Images\q63a2.jpg</Option>
+                            <Option id="3">\Images\q63a3.jpg</Option>
+                            <Option id="4">\Images\q63a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="64" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q64.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q64a1.jpg</Option>
+                            <Option id="2">\Images\q64a2.jpg</Option>
+                            <Option id="3">\Images\q64a3.jpg</Option>
+                            <Option id="4">\Images\q64a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="65" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q65.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q65a1.jpg</Option>
+                            <Option id="2">\Images\q65a2.jpg</Option>
+                            <Option id="3">\Images\q65a3.jpg</Option>
+                            <Option id="4">\Images\q65a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="66" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q66.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q66a1.jpg</Option>
+                            <Option id="2">\Images\q66a2.jpg</Option>
+                            <Option id="3">\Images\q66a3.jpg</Option>
+                            <Option id="4">\Images\q66a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="67" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q67.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q67a1.jpg</Option>
+                            <Option id="2">\Images\q67a2.jpg</Option>
+                            <Option id="3">\Images\q67a3.jpg</Option>
+                            <Option id="4">\Images\q67a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="68" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q68.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q68a1.jpg</Option>
+                            <Option id="2">\Images\q68a2.jpg</Option>
+                            <Option id="3">\Images\q68a3.jpg</Option>
+                            <Option id="4">\Images\q68a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="69" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q69.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q69a1.jpg</Option>
+                            <Option id="2">\Images\q69a2.jpg</Option>
+                            <Option id="3">\Images\q69a3.jpg</Option>
+                            <Option id="4">\Images\q69a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="70" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q70.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q70a1.jpg</Option>
+                            <Option id="2">\Images\q70a2.jpg</Option>
+                            <Option id="3">\Images\q70a3.jpg</Option>
+                            <Option id="4">\Images\q70a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="71" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q71.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q71a1.jpg</Option>
+                            <Option id="2">\Images\q71a2.jpg</Option>
+                            <Option id="3">\Images\q71a3.jpg</Option>
+                            <Option id="4">\Images\q71a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="72" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q72.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q72a1.jpg</Option>
+                            <Option id="2">\Images\q72a2.jpg</Option>
+                            <Option id="3">\Images\q72a3.jpg</Option>
+                            <Option id="4">\Images\q72a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="73" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q73.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q73a1.jpg</Option>
+                            <Option id="2">\Images\q73a2.jpg</Option>
+                            <Option id="3">\Images\q73a3.jpg</Option>
+                            <Option id="4">\Images\q73a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="74" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q74.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q74a1.jpg</Option>
+                            <Option id="2">\Images\q74a2.jpg</Option>
+                            <Option id="3">\Images\q74a3.jpg</Option>
+                            <Option id="4">\Images\q74a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="75" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q75.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q75a1.jpg</Option>
+                            <Option id="2">\Images\q75a2.jpg</Option>
+                            <Option id="3">\Images\q75a3.jpg</Option>
+                            <Option id="4">\Images\q75a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="76" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q76.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q76a1.jpg</Option>
+                            <Option id="2">\Images\q76a2.jpg</Option>
+                            <Option id="3">\Images\q76a3.jpg</Option>
+                            <Option id="4">\Images\q76a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="77" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q77.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q77a1.jpg</Option>
+                            <Option id="2">\Images\q77a2.jpg</Option>
+                            <Option id="3">\Images\q77a3.jpg</Option>
+                            <Option id="4">\Images\q77a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="78" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q78.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q78a1.jpg</Option>
+                            <Option id="2">\Images\q78a2.jpg</Option>
+                            <Option id="3">\Images\q78a3.jpg</Option>
+                            <Option id="4">\Images\q78a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="79" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q79.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q79a1.jpg</Option>
+                            <Option id="2">\Images\q79a2.jpg</Option>
+                            <Option id="3">\Images\q79a3.jpg</Option>
+                            <Option id="4">\Images\q79a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="80" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q80.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q80a1.jpg</Option>
+                            <Option id="2">\Images\q80a2.jpg</Option>
+                            <Option id="3">\Images\q80a3.jpg</Option>
+                            <Option id="4">\Images\q80a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="81" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q81.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q81a1.jpg</Option>
+                            <Option id="2">\Images\q81a2.jpg</Option>
+                            <Option id="3">\Images\q81a3.jpg</Option>
+                            <Option id="4">\Images\q81a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="82" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q82.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q82a1.jpg</Option>
+                            <Option id="2">\Images\q82a2.jpg</Option>
+                            <Option id="3">\Images\q82a3.jpg</Option>
+                            <Option id="4">\Images\q82a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="83" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q83.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q83a1.jpg</Option>
+                            <Option id="2">\Images\q83a2.jpg</Option>
+                            <Option id="3">\Images\q83a3.jpg</Option>
+                            <Option id="4">\Images\q83a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="84" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q84.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q84a1.jpg</Option>
+                            <Option id="2">\Images\q84a2.jpg</Option>
+                            <Option id="3">\Images\q84a3.jpg</Option>
+                            <Option id="4">\Images\q84a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="85" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q85.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q85a1.jpg</Option>
+                            <Option id="2">\Images\q85a2.jpg</Option>
+                            <Option id="3">\Images\q85a3.jpg</Option>
+                            <Option id="4">\Images\q85a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="86" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q86.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q86a1.jpg</Option>
+                            <Option id="2">\Images\q86a2.jpg</Option>
+                            <Option id="3">\Images\q86a3.jpg</Option>
+                            <Option id="4">\Images\q86a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="87" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q87.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q87a1.jpg</Option>
+                            <Option id="2">\Images\q87a2.jpg</Option>
+                            <Option id="3">\Images\q87a3.jpg</Option>
+                            <Option id="4">\Images\q87a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="88" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q88.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q88a1.jpg</Option>
+                            <Option id="2">\Images\q88a2.jpg</Option>
+                            <Option id="3">\Images\q88a3.jpg</Option>
+                            <Option id="4">\Images\q88a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="89" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q89.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q89a1.jpg</Option>
+                            <Option id="2">\Images\q89a2.jpg</Option>
+                            <Option id="3">\Images\q89a3.jpg</Option>
+                            <Option id="4">\Images\q89a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="90" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q90.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q90a1.jpg</Option>
+                            <Option id="2">\Images\q90a2.jpg</Option>
+                            <Option id="3">\Images\q90a3.jpg</Option>
+                            <Option id="4">\Images\q90a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="91" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q91.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q91a1.jpg</Option>
+                            <Option id="2">\Images\q91a2.jpg</Option>
+                            <Option id="3">\Images\q91a3.jpg</Option>
+                            <Option id="4">\Images\q91a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="92" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q92.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q92a1.jpg</Option>
+                            <Option id="2">\Images\q92a2.jpg</Option>
+                            <Option id="3">\Images\q92a3.jpg</Option>
+                            <Option id="4">\Images\q92a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="93" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q93.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q93a1.jpg</Option>
+                            <Option id="2">\Images\q93a2.jpg</Option>
+                            <Option id="3">\Images\q93a3.jpg</Option>
+                            <Option id="4">\Images\q93a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="94" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q94.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q94a1.jpg</Option>
+                            <Option id="2">\Images\q94a2.jpg</Option>
+                            <Option id="3">\Images\q94a3.jpg</Option>
+                            <Option id="4">\Images\q94a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="95" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q95.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q95a1.jpg</Option>
+                            <Option id="2">\Images\q95a2.jpg</Option>
+                            <Option id="3">\Images\q95a3.jpg</Option>
+                            <Option id="4">\Images\q95a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="96" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q96.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q96a1.jpg</Option>
+                            <Option id="2">\Images\q96a2.jpg</Option>
+                            <Option id="3">\Images\q96a3.jpg</Option>
+                            <Option id="4">\Images\q96a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="97" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q97.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q97a1.jpg</Option>
+                            <Option id="2">\Images\q97a2.jpg</Option>
+                            <Option id="3">\Images\q97a3.jpg</Option>
+                            <Option id="4">\Images\q97a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="98" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q98.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q98a1.jpg</Option>
+                            <Option id="2">\Images\q98a2.jpg</Option>
+                            <Option id="3">\Images\q98a3.jpg</Option>
+                            <Option id="4">\Images\q98a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="99" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q99.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q99a1.jpg</Option>
+                            <Option id="2">\Images\q99a2.jpg</Option>
+                            <Option id="3">\Images\q99a3.jpg</Option>
+                            <Option id="4">\Images\q99a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="100" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q100.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q100a1.jpg</Option>
+                            <Option id="2">\Images\q100a2.jpg</Option>
+                            <Option id="3">\Images\q100a3.jpg</Option>
+                            <Option id="4">\Images\q100a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="101" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q101.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q101a1.jpg</Option>
+                            <Option id="2">\Images\q101a2.jpg</Option>
+                            <Option id="3">\Images\q101a3.jpg</Option>
+                            <Option id="4">\Images\q101a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="102" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q102.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q102a1.jpg</Option>
+                            <Option id="2">\Images\q102a2.jpg</Option>
+                            <Option id="3">\Images\q102a3.jpg</Option>
+                            <Option id="4">\Images\q102a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="103" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q103.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q103a1.jpg</Option>
+                            <Option id="2">\Images\q103a2.jpg</Option>
+                            <Option id="3">\Images\q103a3.jpg</Option>
+                            <Option id="4">\Images\q103a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="104" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q104.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q104a1.jpg</Option>
+                            <Option id="2">\Images\q104a2.jpg</Option>
+                            <Option id="3">\Images\q104a3.jpg</Option>
+                            <Option id="4">\Images\q104a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="105" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q105.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q105a1.jpg</Option>
+                            <Option id="2">\Images\q105a2.jpg</Option>
+                            <Option id="3">\Images\q105a3.jpg</Option>
+                            <Option id="4">\Images\q105a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="106" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q106.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q106a1.jpg</Option>
+                            <Option id="2">\Images\q106a2.jpg</Option>
+                            <Option id="3">\Images\q106a3.jpg</Option>
+                            <Option id="4">\Images\q106a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="107" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q107.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q107a1.jpg</Option>
+                            <Option id="2">\Images\q107a2.jpg</Option>
+                            <Option id="3">\Images\q107a3.jpg</Option>
+                            <Option id="4">\Images\q107a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="108" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q108.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q108a1.jpg</Option>
+                            <Option id="2">\Images\q108a2.jpg</Option>
+                            <Option id="3">\Images\q108a3.jpg</Option>
+                            <Option id="4">\Images\q108a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="109" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q109.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q109a1.jpg</Option>
+                            <Option id="2">\Images\q109a2.jpg</Option>
+                            <Option id="3">\Images\q109a3.jpg</Option>
+                            <Option id="4">\Images\q109a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="110" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q110.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q110a1.jpg</Option>
+                            <Option id="2">\Images\q110a2.jpg</Option>
+                            <Option id="3">\Images\q110a3.jpg</Option>
+                            <Option id="4">\Images\q110a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="111" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q111.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q111a1.jpg</Option>
+                            <Option id="2">\Images\q111a2.jpg</Option>
+                            <Option id="3">\Images\q111a3.jpg</Option>
+                            <Option id="4">\Images\q111a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="112" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q112.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q112a1.jpg</Option>
+                            <Option id="2">\Images\q112a2.jpg</Option>
+                            <Option id="3">\Images\q112a3.jpg</Option>
+                            <Option id="4">\Images\q112a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="113" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q113.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q113a1.jpg</Option>
+                            <Option id="2">\Images\q113a2.jpg</Option>
+                            <Option id="3">\Images\q113a3.jpg</Option>
+                            <Option id="4">\Images\q113a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="114" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q114.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q114a1.jpg</Option>
+                            <Option id="2">\Images\q114a2.jpg</Option>
+                            <Option id="3">\Images\q114a3.jpg</Option>
+                            <Option id="4">\Images\q114a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="115" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q115.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q115a1.jpg</Option>
+                            <Option id="2">\Images\q115a2.jpg</Option>
+                            <Option id="3">\Images\q115a3.jpg</Option>
+                            <Option id="4">\Images\q115a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="116" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q116.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q116a1.jpg</Option>
+                            <Option id="2">\Images\q116a2.jpg</Option>
+                            <Option id="3">\Images\q116a3.jpg</Option>
+                            <Option id="4">\Images\q116a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="117" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q117.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q117a1.jpg</Option>
+                            <Option id="2">\Images\q117a2.jpg</Option>
+                            <Option id="3">\Images\q117a3.jpg</Option>
+                            <Option id="4">\Images\q117a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="118" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q118.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q118a1.jpg</Option>
+                            <Option id="2">\Images\q118a2.jpg</Option>
+                            <Option id="3">\Images\q118a3.jpg</Option>
+                            <Option id="4">\Images\q118a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="119" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q119.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q119a1.jpg</Option>
+                            <Option id="2">\Images\q119a2.jpg</Option>
+                            <Option id="3">\Images\q119a3.jpg</Option>
+                            <Option id="4">\Images\q119a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="120" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q120.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q120a1.jpg</Option>
+                            <Option id="2">\Images\q120a2.jpg</Option>
+                            <Option id="3">\Images\q120a3.jpg</Option>
+                            <Option id="4">\Images\q120a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="121" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q121.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q121a1.jpg</Option>
+                            <Option id="2">\Images\q121a2.jpg</Option>
+                            <Option id="3">\Images\q121a3.jpg</Option>
+                            <Option id="4">\Images\q121a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="122" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q122.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q122a1.jpg</Option>
+                            <Option id="2">\Images\q122a2.jpg</Option>
+                            <Option id="3">\Images\q122a3.jpg</Option>
+                            <Option id="4">\Images\q122a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="123" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q123.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q123a1.jpg</Option>
+                            <Option id="2">\Images\q123a2.jpg</Option>
+                            <Option id="3">\Images\q123a3.jpg</Option>
+                            <Option id="4">\Images\q123a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="124" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q124.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q124a1.jpg</Option>
+                            <Option id="2">\Images\q124a2.jpg</Option>
+                            <Option id="3">\Images\q124a3.jpg</Option>
+                            <Option id="4">\Images\q124a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="125" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q125.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q125a1.jpg</Option>
+                            <Option id="2">\Images\q125a2.jpg</Option>
+                            <Option id="3">\Images\q125a3.jpg</Option>
+                            <Option id="4">\Images\q125a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="126" CorrectAnswer="3" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q126.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q126a1.jpg</Option>
+                            <Option id="2">\Images\q126a2.jpg</Option>
+                            <Option id="3">\Images\q126a3.jpg</Option>
+                            <Option id="4">\Images\q126a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="127" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q127.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q127a1.jpg</Option>
+                            <Option id="2">\Images\q127a2.jpg</Option>
+                            <Option id="3">\Images\q127a3.jpg</Option>
+                            <Option id="4">\Images\q127a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="128" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q128.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q128a1.jpg</Option>
+                            <Option id="2">\Images\q128a2.jpg</Option>
+                            <Option id="3">\Images\q128a3.jpg</Option>
+                            <Option id="4">\Images\q128a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="129" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q129.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q129a1.jpg</Option>
+                            <Option id="2">\Images\q129a2.jpg</Option>
+                            <Option id="3">\Images\q129a3.jpg</Option>
+                            <Option id="4">\Images\q129a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="130" CorrectAnswer="1" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q130.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q130a1.jpg</Option>
+                            <Option id="2">\Images\q130a2.jpg</Option>
+                            <Option id="3">\Images\q130a3.jpg</Option>
+                            <Option id="4">\Images\q130a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="131" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q131.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q131a1.jpg</Option>
+                            <Option id="2">\Images\q131a2.jpg</Option>
+                            <Option id="3">\Images\q131a3.jpg</Option>
+                            <Option id="4">\Images\q131a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="132" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q132.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q132a1.jpg</Option>
+                            <Option id="2">\Images\q132a2.jpg</Option>
+                            <Option id="3">\Images\q132a3.jpg</Option>
+                            <Option id="4">\Images\q132a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="133" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q133.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q133a1.jpg</Option>
+                            <Option id="2">\Images\q133a2.jpg</Option>
+                            <Option id="3">\Images\q133a3.jpg</Option>
+                            <Option id="4">\Images\q133a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="134" CorrectAnswer="2" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q134.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q134a1.jpg</Option>
+                            <Option id="2">\Images\q134a2.jpg</Option>
+                            <Option id="3">\Images\q134a3.jpg</Option>
+                            <Option id="4">\Images\q134a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+                <Question id="135" CorrectAnswer="4" QuestionCorrectMarks="4" QuestionIncorrectMarks="-1" PassageID="" QuestionType="MCQ" QuestionTime="00-02" QuestionDifficultyLevel="1" QuestionRelativeTopic="">
+                    <AskedIn>
+                        <ExamName>NEET</ExamName>
+                        <Year>2012</Year>
+
+                    </AskedIn>
+                    <Language Name="English">
+                        <QuestionText>\Images\q135.jpg</QuestionText>
+                        <Options>
+                            <Option id="1">\Images\q135a1.jpg</Option>
+                            <Option id="2">\Images\q135a2.jpg</Option>
+                            <Option id="3">\Images\q135a3.jpg</Option>
+                            <Option id="4">\Images\q135a4.jpg</Option>
+                        </Options>
+                    </Language>
+
+                </Question>
+            </SectionQuestions>
+        </Section>
+
+
+    </Sections>
+</ExamQuestionPaper>

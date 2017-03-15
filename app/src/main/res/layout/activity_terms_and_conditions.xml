@@ -6,12 +6,24 @@
     android:layout_height="match_parent"
     tools:context="in.truskills.liveexams.Miscellaneous.TermsAndConditions">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Terms and Conditions will be displayed here.."
-        android:gravity="center"
-        android:textSize="20dp"
-        android:textColor="@color/light_blue"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Terms and Conditions"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:textColor="@color/light_blue"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </RelativeLayout>

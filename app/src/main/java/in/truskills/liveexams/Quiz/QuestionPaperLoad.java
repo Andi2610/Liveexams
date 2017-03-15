@@ -355,7 +355,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             public void onErrorResponse(VolleyError error) {
 
                 //If connection couldn't be made..
-                Toast.makeText(QuestionPaperLoad.this, "Sorry! Couldn't connect to internet", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuestionPaperLoad.this, "Sorry! Couldn't connect..Please try again..", Toast.LENGTH_SHORT).show();
                 retryButtonForDownload.setVisibility(View.VISIBLE);
                 exitButton.setVisibility(View.VISIBLE);
                 avi.hide();
