@@ -134,6 +134,11 @@ public class ForgotPassword extends AppCompatActivity {
                 if (text.length() < 6) {
                     newPassword.setError("Minimum 6 characters required");
                 } else {
+
+                    ConstantsDefined.updateAndroidSecurityProvider(ForgotPassword.this);
+                    ConstantsDefined.beforeVolleyConnect();
+
+
                     requestQueue = Volley.newRequestQueue(getApplicationContext());
 
                     //Call change password api..

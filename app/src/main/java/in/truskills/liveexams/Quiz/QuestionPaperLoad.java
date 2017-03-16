@@ -54,6 +54,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     int languageArray[][], fragmentIndex[][];
     LinkedList ll = new LinkedList();
     LinkedList llGroup = new LinkedList();
+    public static boolean visible=true,gone=false;
     ImageRequest ir;
     HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12;
     int noOfQuestions = 0, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1, hour, minute, myTime, curCount = 0, myCount = 0, questionArray[];
@@ -131,6 +132,9 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         avi.show();
         myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
 
+        ConstantsDefined.updateAndroidSecurityProvider(this);
+        ConstantsDefined.beforeVolleyConnect();
+
         //Api to be connected to get the question paper..
         url = ConstantsDefined.api + "questionPaper/" + examId;
         //Make the request..
@@ -196,10 +200,10 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             @Override
             public void onClick(View v) {
                 String folder_main = "LiveExams";
-//                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-//                if (f.exists()) {
-//                    deleteDir(f);
-//                }
+                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                if (f.exists()) {
+                    deleteDir(f);
+                }
                 ob.deleteMyTable();
                 SharedPreferences.Editor e=dataPrefs.edit();
                 e.clear();
@@ -315,9 +319,11 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     protected void onResume() {
         super.onResume();
         MyApplication.getInstance().setConnectivityListener(QuestionPaperLoad.this);
+        visible=true;
     }
 
     public void startNewActivity() {
+        gone=true;
         Intent intent = new Intent(QuestionPaperLoad.this, QuizMainActivity.class);
         intent.putExtra("examId", examId);
         intent.putExtra("name", paperName);
@@ -328,6 +334,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         intent.putExtra("date", myDate);
         startActivity(intent);
         finish();
+
     }
 
     @Override
@@ -342,54 +349,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     }
 
     public void downloadImages() throws Exception {
-//        Log.d("heree", "downloadImages: ");
-//        NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
-//        executor = new ThreadPoolExecutor(
-//                NUMBER_OF_CORES * 2,
-//                NUMBER_OF_CORES * 2,
-//                60L,
-//                TimeUnit.SECONDS,
-//                new LinkedBlockingQueue<Runnable>()
-//        );
-//        String folder_main = "LiveExams";
-//        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-//        children = f.list();
-//        len = children.length;
-//        if (len == myCount) {
-//            startNewActivity();
-//        }else{
-//            Log.d("heree", "downloadImages: heree");
-//            retryButtonForDownload.setVisibility(View.INVISIBLE);
-//            exitButton.setVisibility(View.INVISIBLE);
-//            progressBar.setVisibility(View.VISIBLE);
-//            avi.show();
-//            myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
-//            for (int i = 0; i < urls.size(); ++i) {
-//                String myImage = groups.get(i);
-//                String pp = f.getAbsolutePath();
-//                File file = new File(pp
-//                        + File.separator + myImage);
-//                if (!file.exists())
-//                    executor.execute(new LongThread(i, urls.get(i), new Handler(MyQuestionPaperLoad.this), groups.get(i), MyQuestionPaperLoad.this, executor));
-//            }
-//            executor.shutdown();
-//            executor.awaitTermination(Integer.MAX_VALUE, TimeUnit.SECONDS);
-//            if (executor.isTerminated() == true) {
-//                children = f.list();
-//                len = children.length;
-//                Log.d("executor", "forDownload: len=" + len);
-//                if (len == myCount) {
-//                    startNewActivity();
-//                } else {
-//                    Toast.makeText(this, "Sorry! Couldn't connect to internet", Toast.LENGTH_SHORT).show();
-//                    retryButtonForDownload.setVisibility(View.VISIBLE);
-//                    exitButton.setVisibility(View.VISIBLE);
-//                    myWaitMessage.setText("Couldn't download Question paper..");
-//                    avi.hide();
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                }
-//            }
-//        }
+
         if(!ll.isEmpty()){
             retryButtonForDownload.setVisibility(View.INVISIBLE);
             exitButton.setVisibility(View.INVISIBLE);
@@ -467,28 +427,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     }
 
     public static File savebitmap(Bitmap bmp,String grp) throws Exception {
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
-////        File f = new File(Environment.getExternalStorageDirectory()
-////                + File.separator + "testimage.jpg");
-//        String folder_main = "LiveExams";
-//
-//        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-//        if (!f.exists()) {
-//            f.mkdirs();
-//        }
-//
-//        String pp=f.getAbsolutePath();
-//        File file = new File(pp
-//                + File.separator + "imag"+i+".jpg");
-//        file.createNewFile();
-//        FileOutputStream fo = new FileOutputStream(file);
-//        fo.write(bytes.toByteArray());
-//        fo.close();
-//
-//        Log.d("hereeeee", "inSaveBitmap");
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+
         String folder_main = "LiveExams";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
@@ -753,5 +692,45 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             }
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(gone){
+
+        }else{
+            visible=false;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(ConstantsDefined.time);
+                    }catch (Exception e){
+
+                    }finally {
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(visible){
+
+                                }else{
+                                    String folder_main = "LiveExams";
+                                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                                    if (f.exists()) {
+                                        deleteDir(f);
+                                    }
+                                    ob.deleteMyTable();
+                                    SharedPreferences.Editor e=dataPrefs.edit();
+                                    e.clear();
+                                    e.apply();
+                                    finish();
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
+        }
     }
 }

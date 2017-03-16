@@ -36,6 +36,10 @@ public class SubmitAnswerPaper {
 
         dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
         quizPrefs=context.getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
+
+        ConstantsDefined.updateAndroidSecurityProvider((Activity) context);
+        ConstantsDefined.beforeVolleyConnect();
+
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         String myurl = ConstantsDefined.api + "answerPaper";
         Map<String, String> params = new HashMap<String, String>();

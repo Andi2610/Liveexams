@@ -242,6 +242,10 @@ public class AnswerPaperLoad extends AppCompatActivity {
     }
 
     public void getUrl(){
+
+        ConstantsDefined.updateAndroidSecurityProvider(this);
+        ConstantsDefined.beforeVolleyConnect();
+
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         String url = ConstantsDefined.api + "getS3Url";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -284,6 +288,8 @@ public class AnswerPaperLoad extends AppCompatActivity {
 
     public void afterConnect(final String myUrl){
         //Api to be connected to get the question paper..
+        ConstantsDefined.updateAndroidSecurityProvider(this);
+        ConstantsDefined.beforeVolleyConnect();
         url = ConstantsDefined.api + "getAnswerAnalytics";
         //Make the request..
         requestQueue = Volley.newRequestQueue(getApplicationContext());

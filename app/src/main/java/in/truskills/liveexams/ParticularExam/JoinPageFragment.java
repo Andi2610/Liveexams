@@ -171,6 +171,10 @@ public class JoinPageFragment extends Fragment {
                 ob = (JoinPageInterface) getActivity();
 
                 //Enroll User
+
+                ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+                ConstantsDefined.beforeVolleyConnect();
+
                 final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                 String url = ConstantsDefined.api + "enrollUser/" + prefs.getString("userId", "abc");
                 StringRequest stringRequest = new StringRequest(Request.Method.PUT,

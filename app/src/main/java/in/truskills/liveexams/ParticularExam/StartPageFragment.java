@@ -298,6 +298,10 @@ public class StartPageFragment extends Fragment {
                     Answers.getInstance().logCustom(new CustomEvent("Leave button clicked")
                             .putCustomAttribute("userName", prefs.getString("userName", ""))
                             .putCustomAttribute("examId", examId));
+
+                    ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+                    ConstantsDefined.beforeVolleyConnect();
+
                     //Unenroll user
                     final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     String url = ConstantsDefined.api + "unenrollUser/" + prefs.getString("userId", "abc");
@@ -464,6 +468,10 @@ public class StartPageFragment extends Fragment {
 
     public void getDate(){
         Log.d("myDateeeee", "getDate: ");
+
+        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.beforeVolleyConnect();
+
         requestQueue = Volley.newRequestQueue(getActivity());
         String url = ConstantsDefined.api + "getTimeStamp";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -507,6 +515,9 @@ public class StartPageFragment extends Fragment {
     }
 
     public void afterResponse(final String myDate){
+
+        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.beforeVolleyConnect();
 
         requestQueue = Volley.newRequestQueue(getActivity());
         String url = ConstantsDefined.api + "getS3Url";

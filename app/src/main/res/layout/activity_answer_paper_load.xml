@@ -31,20 +31,11 @@
             android:layout_height="100dp"
             style="@style/AVLoadingIndicatorView"
             android:visibility="visible"
-            app:indicatorName="BallClipRotatePulseIndicator"
+            app:indicatorName="LineSpinFadeLoaderIndicator"
             android:layout_below="@+id/myWaitMessageForAnswer"
             app:indicatorColor="@color/colorPrimary"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true" />
-
-        <!--<ProgressBar-->
-            <!--android:id="@+id/progressBar"-->
-            <!--style="?android:attr/progressBarStyleHorizontal"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/avi"-->
-            <!--android:layout_marginTop="30dp"-->
-            <!--android:layout_centerHorizontal="true" />-->
 
     </RelativeLayout>
 

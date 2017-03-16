@@ -31,7 +31,7 @@
             android:layout_height="100dp"
             style="@style/AVLoadingIndicatorView"
             android:visibility="visible"
-            app:indicatorName="BallClipRotatePulseIndicator"
+            app:indicatorName="LineSpinFadeLoaderIndicator"
             android:layout_below="@+id/myWaitMessage"
             app:indicatorColor="@color/colorPrimary"
             android:layout_marginTop="30dp"

@@ -58,6 +58,8 @@ import com.digits.sdk.android.Digits;
 import com.digits.sdk.android.DigitsException;
 import com.digits.sdk.android.DigitsSession;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -65,6 +67,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.security.ProviderInstaller;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 
@@ -73,6 +76,9 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,6 +87,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.MainScreens.MainActivity;
@@ -145,6 +158,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             finish();
         }
         createLocationRequest();
+
+        ConstantsDefined.updateAndroidSecurityProvider(this);
+        ConstantsDefined.beforeVolleyConnect();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -230,6 +247,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupLanguageAlternate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                ConstantsDefined.updateAndroidSecurityProvider(Signup_Login.this);
+                ConstantsDefined.beforeVolleyConnect();
+
                 //Api to be connected to..
                 String url = ConstantsDefined.api + "beforeSignup";
 
@@ -264,6 +285,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection could not be made..
+                        Log.d("checkForError",error.toString());
                         if (dialog != null)
                             dialog.dismiss();
                         if(ConstantsDefined.isOnline(Signup_Login.this)){
@@ -737,6 +759,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 // Do something with the session
                 Toast.makeText(Signup_Login.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
 
+                ConstantsDefined.updateAndroidSecurityProvider(Signup_Login.this);
+                ConstantsDefined.beforeVolleyConnect();
+
                 //Api to be connected to..
                 String url = ConstantsDefined.api + "signup";
 
@@ -843,6 +868,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     //This method is for logging up i.e calling login api..
     public void loginFunction() {
+
+        ConstantsDefined.updateAndroidSecurityProvider(Signup_Login.this);
+        ConstantsDefined.beforeVolleyConnect();
 
         //Api to be connected to..
         String url = ConstantsDefined.api + "login";
@@ -1166,4 +1194,5 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             Log.d(TAG, "Location update resumed .....................");
         }
     }
+
 }

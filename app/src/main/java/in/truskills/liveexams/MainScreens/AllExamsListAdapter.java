@@ -1,5 +1,6 @@
 package in.truskills.liveexams.MainScreens;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -93,6 +94,9 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                     dialog.setCancelable(false);
                     dialog.show();
                 }
+
+                ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
+                ConstantsDefined.beforeVolleyConnect();
 
                 String url = ConstantsDefined.api + "examDetails";
                 StringRequest stringRequest = new StringRequest(Request.Method.POST,

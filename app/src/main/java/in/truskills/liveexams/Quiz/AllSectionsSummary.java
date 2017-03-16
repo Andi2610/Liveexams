@@ -190,6 +190,9 @@ public class AllSectionsSummary extends AppCompatActivity {
 //        }
 
         //Api to be connected to..
+        ConstantsDefined.updateAndroidSecurityProvider(this);
+        ConstantsDefined.beforeVolleyConnect();
+
         String myurl = ConstantsDefined.api + "answerPaper";
         Log.d("myurl", "submit: "+myurl);
 

@@ -1,5 +1,6 @@
 package in.truskills.liveexams.MainScreens;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -92,6 +93,9 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
                     dialog.setCancelable(false);
                     dialog.show();
                 }
+
+                ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
+                ConstantsDefined.beforeVolleyConnect();
 
                 //Get exam details of the exam on which the user has clicked..
                 String url = ConstantsDefined.api + "examDetails";

@@ -169,6 +169,8 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
 //        avLoadingIndicatorView.show();
 
         valuesList = new ArrayList<>();
+        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.beforeVolleyConnect();
         String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
@@ -403,6 +405,9 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
             dialog.setCancelable(false);
             dialog.show();
         }
+
+        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.beforeVolleyConnect();
 
         String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,

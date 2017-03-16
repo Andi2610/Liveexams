@@ -133,6 +133,9 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
             dialog.show();
         }
 
+        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.beforeVolleyConnect();
+
         //Get data for list populate..
         String url = ConstantsDefined.api + "getAnalyzedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -191,13 +194,15 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
             public void onErrorResponse(VolleyError error) {
                 if(dialog!=null)
                 dialog.dismiss();
+                noConnectionLayout.setVisibility(View.VISIBLE);
+
                 Log.d("myError", error + "");
                 if(ConstantsDefined.isOnline(getActivity())){
                     //Do nothing..
                     Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+
                 }else{
                     Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
-                    noConnectionLayout.setVisibility(View.VISIBLE);
                 }
             }
         });

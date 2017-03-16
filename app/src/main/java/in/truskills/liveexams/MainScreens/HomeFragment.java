@@ -208,6 +208,9 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
             dialog.show();
         }
 
+        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.beforeVolleyConnect();
+
         String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
@@ -288,6 +291,9 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                Log.d("checkForError",error.toString());
+
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 if(dialog!=null)
                 dialog.dismiss();

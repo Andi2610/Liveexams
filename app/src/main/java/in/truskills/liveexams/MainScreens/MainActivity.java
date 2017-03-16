@@ -37,6 +37,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+// import com.amazonaws.services.s3.model.Region;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.digits.sdk.android.events.LogoutEventDetails;
@@ -55,11 +64,14 @@ import in.truskills.liveexams.Miscellaneous.RealPathUtil;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
+import static android.provider.ContactsContract.CommonDataKinds.StructuredName.SUFFIX;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface {
 
     //Declare variables..
     NavigationView navigationView;
     CircularImageView navImage;
+    String my_path;
     TextView navName, navEmail;
     static final int REQUEST_CAMERA = 2, SELECT_FILE = 1;
     String defaultImage;
@@ -73,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final String CAMERA = "camera";
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
+    String accessKeyId="AKIAIJUGKGFIXTWNTTQA",
+    secretAccessKey= "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",
+    region= "ap-south-1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-//        toggle.setDrawerIndicatorEnabled(true);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -181,9 +195,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         galleryIntent();
 //                        }
                     } else if (items[item].equals("Remove Photo")) {
-                        SharedPreferences.Editor e = prefs.edit();
-                        e.putString("navImage", defaultImage);
-                        e.apply();
+//                        SharedPreferences.Editor e = prefs.edit();
+//                        e.putString("navImage", defaultImage);
+//                        e.apply();
                         navImage.setImageBitmap(icon);
                     } else if (items[item].equals("Cancel")) {
                         if(dialog!=null)
@@ -330,18 +344,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             else if (requestCode == REQUEST_CAMERA) {
                 if (resultCode == RESULT_OK) {
                     Log.d(CAMERA, "camera1");
-                    String path = selectedImagePath + "/" + filename;
-                    Log.d(CAMERA, path + " CAMERA");
+                    my_path = selectedImagePath + "/" + filename;
+                    Log.d(CAMERA, my_path + " CAMERA");
                     BitmapFactory.Options options = new BitmapFactory.Options();
-                    Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+                    options.inSampleSize = 2;
+                    Bitmap bitmap = BitmapFactory.decodeFile(my_path, options);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                     byte[] b = baos.toByteArray();
                     navImage.setImageBitmap(bitmap);
 
-                    SharedPreferences.Editor e = prefs.edit();
-                    e.putString("navImage", Base64.encodeToString(b, Base64.DEFAULT));
-                    e.apply();
+//                    SharedPreferences.Editor e = prefs.edit();
+//                    e.putString("navImage", Base64.encodeToString(b, Base64.DEFAULT));
+//                    e.apply();
                 } else if (resultCode == RESULT_CANCELED) {
                     Log.d(CAMERA, "User cancelled image capture");
                 } else {
@@ -388,11 +403,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 e.printStackTrace();
             }
         }
-        String tempString = BitmapToString(bm);
-        //Edit shared preference of navImage to currently obtained image..
-        SharedPreferences.Editor e = prefs.edit();
-        e.putString("navImage", tempString);
-        e.apply();
+//        String tempString = BitmapToString(bm);
+//        //Edit shared preference of navImage to currently obtained image..
+//        SharedPreferences.Editor e = prefs.edit();
+//        e.putString("navImage", tempString);
+//        e.apply();
         navImage.setImageBitmap(bm);
     }
 
@@ -550,4 +565,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    public void uploadImageToServer(){
+        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+        AmazonS3 s3client = new AmazonS3Client(credentials);
+        s3client.setRegion(Region.getRegion(Regions.DEFAULT_REGION));
+        // upload file to folder and set it to public
+        String fileName = "Users/" + prefs.getString("userName","default")+".png";
+        s3client.putObject(new PutObjectRequest("live-exams", fileName,
+                new File(my_path))
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+
+    }
 }

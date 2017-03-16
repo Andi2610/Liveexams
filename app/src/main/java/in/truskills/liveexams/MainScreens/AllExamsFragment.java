@@ -181,6 +181,10 @@ public class AllExamsFragment extends Fragment {
     }
 
     public void connectToApi(String s) {
+
+        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.beforeVolleyConnect();
+
         String url = ConstantsDefined.api + "searchExams/" + s;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
