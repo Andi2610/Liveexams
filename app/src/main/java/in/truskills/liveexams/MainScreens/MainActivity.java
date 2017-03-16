@@ -353,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                     ExifInterface ei = null;
+                    Bitmap myBitmap=null;
                     try {
                         ei = new ExifInterface(my_path);
                         int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
@@ -363,15 +364,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         switch(orientation) {
 
                             case ExifInterface.ORIENTATION_ROTATE_90://6
-//                                rotateImage(bitmap, 90);
+                                myBitmap=rotateImage(bitmap, 90);
                                 break;
 
                             case ExifInterface.ORIENTATION_ROTATE_180://3
-//                                rotateImage(bitmap, 180);
+                                myBitmap=rotateImage(bitmap, 180);
                                 break;
 
                             case ExifInterface.ORIENTATION_ROTATE_270://8
-//                                rotateImage(bitmap, 270);
+                                myBitmap=rotateImage(bitmap, 270);
                                 break;
 
                             case ExifInterface.ORIENTATION_NORMAL://1
@@ -383,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         e.printStackTrace();
                     }
                     byte[] b = baos.toByteArray();
-                    navImage.setImageBitmap(bitmap);
+                    navImage.setImageBitmap(myBitmap);
 
 //                    SharedPreferences.Editor e = prefs.edit();
 //                    e.putString("navImage", Base64.encodeToString(b, Base64.DEFAULT));

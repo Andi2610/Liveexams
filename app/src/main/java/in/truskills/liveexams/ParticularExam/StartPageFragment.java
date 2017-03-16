@@ -362,27 +362,32 @@ public class StartPageFragment extends Fragment {
 
                     boolean statusForWriteStorage = CheckForPermissions.checkForWriteStorage(getActivity());
                     if (statusForWriteStorage) {
-                        //Check if a valid language has been chosen from the list..
-                        if (selectedLanguage.equals("LANGUAGE"))
-                            //If not chosen..
-                            Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
-                        else {
-                            //Else if chosen..
-                            //Start Quiz
-                            String folder_main = "LiveExams";
 
-                            File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                            if (f.exists()) {
-                                deleteDir(f);
+                        boolean statusForCamera = CheckForPermissions.checkForCamera(getActivity());
+
+                        if(statusForCamera){
+                            //Check if a valid language has been chosen from the list..
+                            if (selectedLanguage.equals("LANGUAGE"))
+                                //If not chosen..
+                                Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
+                            else {
+                                //Else if chosen..
+                                //Start Quiz
+                                String folder_main = "LiveExams";
+
+                                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                                if (f.exists()) {
+                                    deleteDir(f);
+                                }
+
+                                getDate();
                             }
 
-                            getDate();
+                            o.deleteMyTable();
+                            SharedPreferences.Editor e=dataPrefs.edit();
+                            e.clear();
+                            e.apply();
                         }
-
-                        o.deleteMyTable();
-                        SharedPreferences.Editor e=dataPrefs.edit();
-                        e.clear();
-                        e.apply();
 
                     }
 
@@ -438,7 +443,11 @@ public class StartPageFragment extends Fragment {
             case CheckForPermissions.WRITE_STORAGE_CODE:
                 //If permission is granted
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Check if a valid language has been chosen from the list..
+
+                    boolean statusForCamera = CheckForPermissions.checkForCamera(getActivity());
+
+                    if(statusForCamera){
+                        //Check if a valid language has been chosen from the list..
                         if (selectedLanguage.equals("LANGUAGE"))
                             //If not chosen..
                             Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
@@ -454,15 +463,48 @@ public class StartPageFragment extends Fragment {
 
                             getDate();
                         }
+
                         o.deleteMyTable();
-                    SharedPreferences.Editor e=dataPrefs.edit();
-                    e.clear();
-                    e.apply();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
+                    }else{
+                        Toast.makeText(getActivity(), "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     //Displaying another toast if permission is not granted
                     Toast.makeText(getActivity(), "Oops you have denied the permission for write to storage\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
                 break;
+            case CheckForPermissions.CAMERA_PERMISSION_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (selectedLanguage.equals("LANGUAGE"))
+                        //If not chosen..
+                        Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
+                    else {
+                        //Else if chosen..
+                        //Start Quiz
+                        String folder_main = "LiveExams";
+
+                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                        if (f.exists()) {
+                            deleteDir(f);
+                        }
+
+                        getDate();
+                    }
+
+                    o.deleteMyTable();
+                    SharedPreferences.Editor e=dataPrefs.edit();
+                    e.clear();
+                    e.apply();
+
+                } else {
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(getActivity(), "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
+                }
+            break;
+
         }
     }
 
