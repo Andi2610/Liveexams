@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -351,6 +352,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Bitmap bitmap = BitmapFactory.decodeFile(my_path, options);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    ExifInterface ei = null;
+                    try {
+                        ei = new ExifInterface(my_path);
+                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                                ExifInterface.ORIENTATION_UNDEFINED);
+
+                        Log.d("orientation", "onActivityResult: "+orientation);
+
+                        switch(orientation) {
+
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                rotateImage(bitmap, 90);
+                                break;
+
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                rotateImage(bitmap, 180);
+                                break;
+
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                rotateImage(bitmap, 270);
+                                break;
+
+                            case ExifInterface.ORIENTATION_NORMAL:
+
+                            default:
+                                break;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     byte[] b = baos.toByteArray();
                     navImage.setImageBitmap(bitmap);
 
@@ -575,5 +606,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new File(my_path))
                 .withCannedAcl(CannedAccessControlList.PublicRead));
 
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
     }
 }

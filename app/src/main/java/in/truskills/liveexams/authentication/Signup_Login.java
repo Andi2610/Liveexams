@@ -389,7 +389,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int l = signupName.getText().toString().length();
-                        if (l < 1) {
+                        if (l < 2) {
                             signupName.setError("Required", dr);
                         } else {
                             signupName.setError(null);

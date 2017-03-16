@@ -1,5 +1,6 @@
 package in.truskills.liveexams.Quiz;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,6 +46,7 @@ import in.truskills.liveexams.JsonParsers.QuestionPaperParser;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.MyApplication;
+import in.truskills.liveexams.Miscellaneous.SplashScreen;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
@@ -302,17 +304,17 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     @Override
     public void onBackPressed() {
-//        Log.d("place", "onBackPressed: of QPL");
-        String folder_main = "LiveExams";
-        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-        if (f.exists()) {
-            deleteDir(f);
-        }
-        ob.deleteMyTable();
-        SharedPreferences.Editor e=dataPrefs.edit();
-        e.clear();
-        e.apply();
-        finish();
+////        Log.d("place", "onBackPressed: of QPL");
+//        String folder_main = "LiveExams";
+//        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+//        if (f.exists()) {
+//            deleteDir(f);
+//        }
+//        ob.deleteMyTable();
+//        SharedPreferences.Editor e=dataPrefs.edit();
+//        e.clear();
+//        e.apply();
+//        finish();
     }
 
     @Override
@@ -724,6 +726,11 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                                     SharedPreferences.Editor e=dataPrefs.edit();
                                     e.clear();
                                     e.apply();
+                                    Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
                                     finish();
                                 }
                             }

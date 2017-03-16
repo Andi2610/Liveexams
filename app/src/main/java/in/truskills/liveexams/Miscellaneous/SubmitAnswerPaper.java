@@ -107,21 +107,7 @@ public class SubmitAnswerPaper {
                     deleteDir(f);
                 }
             }
-        })
-//        {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//
-//                //Put all the required parameters for the post request..
-//                Map<String, String> params = new HashMap<String, String>();
-//                Log.d("params", "getParams: "+userId+" "+examId);
-//                params.put("userId", userId);
-//                params.put("examId", examId);
-//                params.put("answerPaper", result);
-//                return params;
-//            }
-//        }
-                ;
+        });
         requestQueue.add(stringRequest);
     }
 
