@@ -675,10 +675,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     // in/truskills/liveexams/Quiz/QuizMainActivity.java:137
     public void initSocketConnection() {
         try {
-            socket = IO.socket("http://35.154.110.122:3002/");
-            Log.d("url", "http://35.154.110.122:3002/ found");
+            socket = IO.socket(ConstantsDefined.socketConnectionUrl);
+            Log.d("url", ConstantsDefined.socketConnectionUrl+ "found");
         } catch (URISyntaxException e) {
-            Log.d("url", "http://35.154.110.122:3002/ not found");
+            Log.d("url", ConstantsDefined.socketConnectionUrl+ " not found");
         }
         //connect to server
         socket.connect();

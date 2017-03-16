@@ -358,23 +358,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
                                 ExifInterface.ORIENTATION_UNDEFINED);
 
-                        Log.d("orientation", "onActivityResult: "+orientation);
+                        Log.d("orientation", "onActivityResult: "+orientation+" "+ExifInterface.ORIENTATION_ROTATE_90+" "+ExifInterface.ORIENTATION_ROTATE_180+" "+ExifInterface.ORIENTATION_ROTATE_270+" "+ExifInterface.ORIENTATION_NORMAL);
 
                         switch(orientation) {
 
-                            case ExifInterface.ORIENTATION_ROTATE_90:
-                                rotateImage(bitmap, 90);
+                            case ExifInterface.ORIENTATION_ROTATE_90://6
+//                                rotateImage(bitmap, 90);
                                 break;
 
-                            case ExifInterface.ORIENTATION_ROTATE_180:
-                                rotateImage(bitmap, 180);
+                            case ExifInterface.ORIENTATION_ROTATE_180://3
+//                                rotateImage(bitmap, 180);
                                 break;
 
-                            case ExifInterface.ORIENTATION_ROTATE_270:
-                                rotateImage(bitmap, 270);
+                            case ExifInterface.ORIENTATION_ROTATE_270://8
+//                                rotateImage(bitmap, 270);
                                 break;
 
-                            case ExifInterface.ORIENTATION_NORMAL:
+                            case ExifInterface.ORIENTATION_NORMAL://1
 
                             default:
                                 break;
