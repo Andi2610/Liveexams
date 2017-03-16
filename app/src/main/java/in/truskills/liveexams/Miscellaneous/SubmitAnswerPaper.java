@@ -30,12 +30,13 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class SubmitAnswerPaper {
 
-    SharedPreferences dataPrefs,quizPrefs;
+    SharedPreferences dataPrefs,quizPrefs,allow;
 
     public void submit(final QuizDatabase ob, final Context context, final String result, final String userId, final String examId){
 
         dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
         quizPrefs=context.getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
+        allow=context.getSharedPreferences("allow",Context.MODE_PRIVATE);
 
         ConstantsDefined.updateAndroidSecurityProvider((Activity) context);
         ConstantsDefined.beforeVolleyConnect();
@@ -74,7 +75,9 @@ public class SubmitAnswerPaper {
                         SharedPreferences.Editor ee=quizPrefs.edit();
                         ee.clear();
                         ee.apply();
-
+                        SharedPreferences.Editor eee=allow.edit();
+                        eee.putInt("allow",1);
+                        ee.apply();
                         Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -71,7 +71,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     Button finishButton;
     String examId, userId, selectedLanguage,myDate;
     RequestQueue requestQueue;
-    SharedPreferences prefs,dataPrefs,quizPrefs;
+    SharedPreferences prefs,dataPrefs,quizPrefs,allow;
     Handler h;
     public static boolean visible;
 
@@ -91,6 +91,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
         dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
         quizPrefs=getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
+        allow=getSharedPreferences("allow",Context.MODE_PRIVATE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -267,6 +268,9 @@ public class AllSectionsSummary extends AppCompatActivity {
                     //Do nothing..
                     Toast.makeText(AllSectionsSummary.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
+                    SharedPreferences.Editor e=allow.edit();
+                    e.putInt("allow",0);
+                    e.apply();
                     Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
                     String folder_main = "LiveExams";
                     File f = new File(Environment.getExternalStorageDirectory(), folder_main);

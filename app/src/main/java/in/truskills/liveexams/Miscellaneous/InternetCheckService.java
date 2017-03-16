@@ -36,7 +36,7 @@ public class InternetCheckService extends BroadcastReceiver {
     public InternetCheckService() {
     }
 
-    SharedPreferences dataPrefs;
+    SharedPreferences dataPrefs,allow;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -48,6 +48,7 @@ public class InternetCheckService extends BroadcastReceiver {
 //            Toast.makeText(context, "Internet Connected", Toast.LENGTH_LONG).show();
             QuizDatabase ob=new QuizDatabase(context);
             dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
+            allow=context.getSharedPreferences("allow",Context.MODE_PRIVATE);
             Log.d("status", "onReceive: "+dataPrefs.getInt("submit",0));
             int ans=dataPrefs.getInt("submit",0);
             if(ob==null){
