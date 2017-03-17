@@ -786,6 +786,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         e.putInt("exit",1);
         e.apply();
         visible=true;
+        if(t!=null&&t.isAlive())
         t.interrupt();
     }
 

@@ -158,6 +158,7 @@ public class RulesInQuiz extends AppCompatActivity {
         e.putInt("exit",1);
         e.apply();
         visible=true;
-        t.interrupt();
+        if(t!=null&&t.isAlive())
+            t.interrupt();
     }
 }
