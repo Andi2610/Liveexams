@@ -19,6 +19,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
+import android.view.DragEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -410,7 +413,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         String text = signupEmail.getText().toString();
-                        if (!TextUtils.isEmpty(text) && android.util.Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
+                        if (!TextUtils.isEmpty(text) && Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
                             signupEmail.setError(null);
                         } else {
                             signupEmail.setError("Enter valid Email", dr);
@@ -503,6 +506,29 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Rechange the arrow button: from down to up again..
                 signupHandleImage.setImageResource(R.drawable.up_arrow);
+
+                //Set the validation message for rest of the fields as null..
+                signupEmail.setError(null);
+                signupMobile.setError(null);
+                signupPassword.setError(null);
+                signupConfirmPassword.setError(null);
+
+                //Clear the previous content of all the fields..
+                signupName.setText("");
+                signupEmail.setText("");
+                signupMobile.setText("");
+                signupPassword.setText("");
+                signupLocation.setText("LOCATION");
+                signupConfirmPassword.setText("");
+                signupGender.setSelection(0);
+            }
+        });
+
+        signupDrawer.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent event) {
+                Toast.makeText(Signup_Login.this, "dragged", Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
 
@@ -595,8 +621,14 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Rechange the arrow button: from down to up again..
                 loginHandleImage.setImageResource(R.drawable.up_arrow);
+
+                loginName.setText("");
+                loginPassword.setText("");
+
             }
         });
+
+
 
     }
 
@@ -756,6 +788,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         authCallback = new AuthCallback() {
             @Override
             public void success(DigitsSession session, String phoneNumber) {
+
+                mobile=phoneNumber;
+
                 // Do something with the session
                 Toast.makeText(Signup_Login.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
 

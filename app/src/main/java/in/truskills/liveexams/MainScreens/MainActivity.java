@@ -376,11 +376,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 break;
 
                             case ExifInterface.ORIENTATION_NORMAL://1
-
+                                myBitmap=bitmap;
+                                break;
                             default:
                                 break;
                         }
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     byte[] b = baos.toByteArray();
@@ -421,16 +422,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
 
                     // SDK >= 11 && SDK < 19
-                else if (Build.VERSION.SDK_INT < 19)
+                else if (Build.VERSION.SDK_INT <= 19)
                     realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
 
                     // SDK > 19 (Android 4.4)
                 else
                     realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
 
-                Log.d("RotateImage", "RealPath=" + realPath);
-                getCameraPhotoOrientation(this, fileUri, realPath);
                 bm = decodeUri(fileUri);
+
+                ExifInterface ei = null;
+                Bitmap myBitmap=null;
+                try {
+                    ei = new ExifInterface(realPath);
+                    int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_UNDEFINED);
+
+                    Log.d("orientation", "onActivityResult: "+orientation+" "+ExifInterface.ORIENTATION_ROTATE_90+" "+ExifInterface.ORIENTATION_ROTATE_180+" "+ExifInterface.ORIENTATION_ROTATE_270+" "+ExifInterface.ORIENTATION_NORMAL);
+
+                    switch(orientation) {
+
+                        case ExifInterface.ORIENTATION_ROTATE_90://6
+                            myBitmap=rotateImage(bm, 90);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_180://3
+                            myBitmap=rotateImage(bm, 180);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_270://8
+                            myBitmap=rotateImage(bm, 270);
+                            break;
+
+                        case ExifInterface.ORIENTATION_NORMAL://1
+                            myBitmap=bm;
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                navImage.setImageBitmap(myBitmap);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -440,7 +475,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        SharedPreferences.Editor e = prefs.edit();
 //        e.putString("navImage", tempString);
 //        e.apply();
-        navImage.setImageBitmap(bm);
     }
 
     @Override
@@ -564,38 +598,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     // capture image orientation
-
-    public int getCameraPhotoOrientation(Context context, Uri imageUri,
-                                         String imagePath) {
-        int rotate = 0;
-        try {
-            context.getContentResolver().notifyChange(imageUri, null);
-            File imageFile = new File(imagePath);
-            ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
-            int orientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
-
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
-            }
-
-            Log.d("RotateImage", "Exif orientation: " + orientation);
-            Log.d("RotateImage", "Rotate value: " + rotate);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return rotate;
-    }
-
 
     public void uploadImageToServer(){
         AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);

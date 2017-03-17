@@ -84,7 +84,7 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
 
                 SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
 
-                Log.d("prefs",allow.getInt("allow",1)+"");
+                Log.d("prefsAllow",allow.getInt("allow",1)+"");
                 if(allow.getInt("allow",1)==0){
                     Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
                 }else{

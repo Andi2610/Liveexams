@@ -4,16 +4,23 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class RealPathUtil {
 
     @SuppressLint("NewApi")
-    public static String getRealPathFromURI_API19(Context context, Uri uri){
+    public static String getRealPathFromURI_API19(Context context, Uri uri) throws IOException {
+
         String filePath = "";
         String wholeID = DocumentsContract.getDocumentId(uri);
+//        String wholeID = DocumentsContract.getDocumentId(uri);
 
         // Split at colon, use second item in the array
         String id = wholeID.split(":")[1];

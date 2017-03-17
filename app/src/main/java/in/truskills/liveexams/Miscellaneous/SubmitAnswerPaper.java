@@ -74,11 +74,14 @@ public class SubmitAnswerPaper {
                         SharedPreferences.Editor ee=quizPrefs.edit();
                         ee.clear();
                         ee.apply();
+
                         allow=context.getSharedPreferences("allow",Context.MODE_PRIVATE);
+                        Log.d("prefsAllowBefore",allow.getInt("allow",1)+"");
+
                         SharedPreferences.Editor eee=allow.edit();
                         eee.putInt("allow",1);
                         eee.apply();
-                        Log.d("prefs",allow.getInt("allow",1)+"");
+                        Log.d("prefsAllowAfter",allow.getInt("allow",1)+"");
 
                         Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

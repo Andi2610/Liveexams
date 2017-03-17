@@ -271,6 +271,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                     SharedPreferences.Editor e=allow.edit();
                     e.putInt("allow",0);
                     e.apply();
+                    Log.d("prefsAllow",allow.getInt("allow",1)+"");
                     Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
                     String folder_main = "LiveExams";
                     File f = new File(Environment.getExternalStorageDirectory(), folder_main);

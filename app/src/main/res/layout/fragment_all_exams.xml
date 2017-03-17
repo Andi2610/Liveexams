@@ -10,7 +10,7 @@
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:textSize="30dp"
-        android:text="Search Exams"
+        android:text="Search All Exams"
         android:textColor="@color/light_grey"
         android:id="@+id/searchExams"/>
 

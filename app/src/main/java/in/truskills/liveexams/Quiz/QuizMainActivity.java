@@ -371,6 +371,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
                 int num = pager.getCurrentItem();
                 int sI = ob.getIntValuesPerQuestionByFragmentIndex(num, QuizDatabase.SectionIndex);
+                SharedPreferences.Editor editor=quizPrefs.edit();
+                editor.putInt("sI",sI);
+                editor.apply();
+
                 //Get serial number of this section from PerSectionDetails..
                 String srNo = ob.getStringValuesPerSectionBySectionIndex(sI, QuizDatabase.SerialNumber);
                 Intent i = new Intent(QuizMainActivity.this, SectionNamesDisplay.class);
@@ -388,16 +392,19 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 int mySrNo = data.getIntExtra("message", 0);
                 //Get SectionIndex by srNo..
                 int sI = ob.getIntValuesPerSectionBySerialNumber(mySrNo, QuizDatabase.SectionIndex);
+                if(quizPrefs.getInt("sI",0)==sI){
+//                    my_fi = ob.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
+                }else{
+                    //Get fragment index with section index= sI and serial number=0 from PerQuestionDetails..
+                    my_fi = ob.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            pager.setCurrentItem(my_fi,true);
 
-                //Get fragment index with section index= sI and serial number=0 from PerQuestionDetails..
-                my_fi = ob.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        pager.setCurrentItem(my_fi,true);
-
-                    }
-                });
+                        }
+                    });
+                }
             }
         } else if (requestCode == REQUEST_CODE_FOR_ALL_SUMMARY) {
             if (data != null) {

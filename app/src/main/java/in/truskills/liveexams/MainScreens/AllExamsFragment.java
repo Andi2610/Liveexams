@@ -182,6 +182,8 @@ public class AllExamsFragment extends Fragment {
 
     public void connectToApi(String s) {
 
+        filteredList=new ArrayList<>();
+
         ConstantsDefined.updateAndroidSecurityProvider(getActivity());
         ConstantsDefined.beforeVolleyConnect();
 
