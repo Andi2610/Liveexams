@@ -36,9 +36,8 @@ public class SubmitAnswerPaper {
 
         dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
         quizPrefs=context.getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
-        allow=context.getSharedPreferences("allow",Context.MODE_PRIVATE);
 
-        ConstantsDefined.updateAndroidSecurityProvider((Activity) context);
+//        ConstantsDefined.updateAndroidSecurityProvider((Activity) context);
         ConstantsDefined.beforeVolleyConnect();
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -75,14 +74,16 @@ public class SubmitAnswerPaper {
                         SharedPreferences.Editor ee=quizPrefs.edit();
                         ee.clear();
                         ee.apply();
+                        allow=context.getSharedPreferences("allow",Context.MODE_PRIVATE);
                         SharedPreferences.Editor eee=allow.edit();
                         eee.putInt("allow",1);
-                        ee.apply();
+                        eee.apply();
+                        Log.d("prefs",allow.getInt("allow",1)+"");
+
                         Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);
-                        ((Activity)context).finish();
 
                     } else {
                         ob.deleteMyTable();

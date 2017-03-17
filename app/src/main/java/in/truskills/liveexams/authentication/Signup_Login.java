@@ -1136,7 +1136,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        PendingResult<Status> pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        PendingResult<Status> pendingResult;
+        if(mGoogleApiClient.isConnected()){
+            pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        }
         Log.d(TAG, "Location update started ..............: ");
     }
 
@@ -1181,9 +1184,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        Log.d(TAG, "Location update stopped .......................");
-        mGoogleApiClient.disconnect();
+        if(mGoogleApiClient.isConnected()){
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+            Log.d(TAG, "Location update stopped .......................");
+            mGoogleApiClient.disconnect();
+        }
     }
 
     @Override

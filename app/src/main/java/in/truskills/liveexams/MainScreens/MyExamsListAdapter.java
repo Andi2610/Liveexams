@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,8 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
             public void onClick(View view) {
 
                 SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
+                Log.d("prefs",allow.getInt("allow",1)+"");
+
                 if(allow.getInt("allow",1)==0){
                     Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
                 }else{

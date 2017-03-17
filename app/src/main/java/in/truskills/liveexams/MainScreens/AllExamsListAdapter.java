@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,70 +82,77 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
             @Override
             public void onClick(View view) {
 
-                value = myList.get(holder.getAdapterPosition());
+                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
 
-                final RequestQueue requestQueue = Volley.newRequestQueue(c);
-                prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                Log.d("prefs",allow.getInt("allow",1)+"");
+                if(allow.getInt("allow",1)==0){
+                    Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
+                }else{
+                    value = myList.get(holder.getAdapterPosition());
 
-                if(c!=null){
-                    dialog = new ProgressDialog(c);
-                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    dialog.setMessage("Loading. Please wait...");
-                    dialog.setIndeterminate(true);
-                    dialog.setCancelable(false);
-                    dialog.show();
+                    final RequestQueue requestQueue = Volley.newRequestQueue(c);
+                    prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+
+                    if(c!=null){
+                        dialog = new ProgressDialog(c);
+                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                        dialog.setMessage("Loading. Please wait...");
+                        dialog.setIndeterminate(true);
+                        dialog.setCancelable(false);
+                        dialog.show();
+                    }
+
+                    ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
+                    ConstantsDefined.beforeVolleyConnect();
+
+                    String url = ConstantsDefined.api + "examDetails";
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                            url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            if(dialog!=null)
+                                dialog.dismiss();
+                            try {
+                                HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
+                                final String enrolled = mapper.get("enrolled");
+                                final String timestamp = mapper.get("timestamp");
+                                final String examDetails = mapper.get("examDetails");
+                                final String examGiven = mapper.get("examGiven");
+                                final String examId = value.getExamId();
+                                h = new Handler();
+                                h.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startMyActivity(enrolled, timestamp, examDetails, value.getName(), examId, examGiven);
+                                    }
+                                });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if(dialog!=null)
+                                dialog.dismiss();
+                            if(ConstantsDefined.isOnline(c)){
+                                //Do nothing..
+                                Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("userId", prefs.getString("userId", "abc"));
+                            params.put("examId", value.getExamId());
+                            return params;
+                        }
+                    };
+                    requestQueue.add(stringRequest);
                 }
-
-                ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
-                ConstantsDefined.beforeVolleyConnect();
-
-                String url = ConstantsDefined.api + "examDetails";
-                StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                        url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if(dialog!=null)
-                        dialog.dismiss();
-                        try {
-                            HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
-                            final String enrolled = mapper.get("enrolled");
-                            final String timestamp = mapper.get("timestamp");
-                            final String examDetails = mapper.get("examDetails");
-                            final String examGiven = mapper.get("examGiven");
-                            final String examId = value.getExamId();
-                            h = new Handler();
-                            h.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    startMyActivity(enrolled, timestamp, examDetails, value.getName(), examId, examGiven);
-                                }
-                            });
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if(dialog!=null)
-                        dialog.dismiss();
-                        if(ConstantsDefined.isOnline(c)){
-                            //Do nothing..
-                            Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("userId", prefs.getString("userId", "abc"));
-                        params.put("examId", value.getExamId());
-                        return params;
-                    }
-                };
-                requestQueue.add(stringRequest);
             }
         });
     }
