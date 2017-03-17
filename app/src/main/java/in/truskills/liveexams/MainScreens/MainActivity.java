@@ -34,38 +34,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.SDKGlobalConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-// import com.amazonaws.services.s3.model.Region;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-import com.digits.sdk.android.events.LogoutEventDetails;
 import com.pkmmte.view.CircularImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
-import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
-import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.Miscellaneous.RealPathUtil;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
 
-import static android.provider.ContactsContract.CommonDataKinds.StructuredName.SUFFIX;
+import static android.R.attr.key;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface {
 
@@ -87,19 +85,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle toggle;
     DrawerLayout drawer;
     String accessKeyId="AKIAIJUGKGFIXTWNTTQA",
-    secretAccessKey= "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",
-    region= "ap-south-1";
+    secretAccessKey= "nrtoImZxd9cU1oNAVD6NwCVooTwleoc6kVi3C0JJ";
+    AWSCredentials credentials;
+    AmazonS3 s3client;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //Set toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //Get shared preferences..
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+
+        credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+        s3client = new AmazonS3Client(credentials);
+        s3client.setRegion( (com.amazonaws.services.s3.model.Region.AP_Mumbai).toAWSRegion() );
 
         bundle = new Bundle();
 
@@ -241,11 +246,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             selectedImagePath = imagePath.getAbsolutePath();
         } else {
-            imagePath = new File("sdcard/camera_app");
+            imagePath = new File(Environment.getExternalStorageDirectory()+"/camera_app");
             if (!imagePath.exists()) {
                 imagePath.mkdir();
             }
-            selectedImagePath = "sdcard/camera_app";
+            selectedImagePath = Environment.getExternalStorageDirectory()+"/camera_app";
         }
         Long tsLong = System.currentTimeMillis() / 1000;
         String ts = tsLong.toString();
@@ -378,14 +383,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             case ExifInterface.ORIENTATION_NORMAL://1
                                 myBitmap=bitmap;
                                 break;
-                            default:
+                            default:myBitmap=bitmap;
                                 break;
                         }
+                        byte[] b = baos.toByteArray();
+                        navImage.setImageBitmap(myBitmap);
+                        uploadImageToServer();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    byte[] b = baos.toByteArray();
-                    navImage.setImageBitmap(myBitmap);
 
 //                    SharedPreferences.Editor e = prefs.edit();
 //                    e.putString("navImage", Base64.encodeToString(b, Base64.DEFAULT));
@@ -431,6 +437,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 bm = decodeUri(fileUri);
 
+                my_path=realPath;
+
                 ExifInterface ei = null;
                 Bitmap myBitmap=null;
                 try {
@@ -457,14 +465,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         case ExifInterface.ORIENTATION_NORMAL://1
                             myBitmap=bm;
                             break;
-                        default:
+                        default:myBitmap=bm;
                             break;
                     }
+                    navImage.setImageBitmap(myBitmap);
+                    uploadImageToServer();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                navImage.setImageBitmap(myBitmap);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -600,14 +609,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // capture image orientation
 
     public void uploadImageToServer(){
-        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
-        AmazonS3 s3client = new AmazonS3Client(credentials);
-        s3client.setRegion(Region.getRegion(Regions.DEFAULT_REGION));
-        // upload file to folder and set it to public
-        String fileName = "Users/" + prefs.getString("userName","default")+".png";
-        s3client.putObject(new PutObjectRequest("live-exams", fileName,
-                new File(my_path))
-                .withCannedAcl(CannedAccessControlList.PublicRead));
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.setProperty(SDKGlobalConfiguration.ENFORCE_S3_SIGV4_SYSTEM_PROPERTY, "true");
+//                s3client.
+                // upload file to folder and set it to public
+                String fileName = "Users/" + prefs.getString("userId","");
+                s3client.putObject(new PutObjectRequest("live-exams", fileName,
+//                        new File(Environment.getExternalStorageDirectory()+"/DCIM/Cymera2/CYMERA_20170316_125312.jpg"))
+                        new File(my_path))
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+            }
+        }).start();
 
     }
 

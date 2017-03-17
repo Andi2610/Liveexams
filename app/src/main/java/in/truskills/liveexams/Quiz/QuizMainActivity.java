@@ -105,11 +105,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     socketFromTeacher socketfromteacher;
     SharedPreferences prefs;
     CountDownTimer count;
-    android.support.v7.app.AlertDialog.Builder builder;
-    AlertDialog mAlertDialog;
     String myDate;
     long timeUntil;
     Button left, right;
+    Thread t;
 
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
@@ -724,6 +723,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 JSONObject data = new JSONObject();
                 try {
                     data.put("userId", prefs.getString("userId", ""));
+                    data.put("userName",prefs.getString("userName",""));
                     data.put("examId", examId);
                     data.put("isTeacher", false);
                 } catch (JSONException e) {
@@ -786,6 +786,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         e.putInt("exit",1);
         e.apply();
         visible=true;
+        t.interrupt();
     }
 
     @Override
@@ -877,49 +878,50 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause: ");
-        if(quizPrefs.getInt("exit",0)==0){
+        if (quizPrefs.getInt("exit", 0) == 0) {
 //            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
-        }else{
-            visible=false;
-            new Thread(new Runnable() {
+        } else {
+            visible = false;
+            t = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try{
+                    try {
                         Thread.sleep(ConstantsDefined.time);
-                    }catch (Exception e){
+                    } catch (Exception e) {
 
-                    }finally {
+                    } finally {
                         h.post(new Runnable() {
                             @Override
                             public void run() {
-                                if(visible){
+                                if (visible) {
 
-                                }else{
+                                } else {
                                     JSONArray jsonArray = ob.getQuizResult();
                                     final JSONObject jsonObject = new JSONObject();
-                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
-                                    String myDate=dataPrefs.getString("date","");
-                                    String userId=dataPrefs.getString("userId","");
-                                    String examId=dataPrefs.getString("examId","");
+                                    String selectedLanguage = dataPrefs.getString("selectedLanguage", "");
+                                    String myDate = dataPrefs.getString("date", "");
+                                    String userId = dataPrefs.getString("userId", "");
+                                    String examId = dataPrefs.getString("examId", "");
 
                                     try {
                                         jsonObject.put("result", jsonArray);
                                         jsonObject.put("selectedLanguage", selectedLanguage);
                                         jsonObject.put("date", myDate);
 
-                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
-                                        submitAnswerPaper.submit(ob,QuizMainActivity.this,jsonObject.toString(),userId,examId);
+                                        SubmitAnswerPaper submitAnswerPaper = new SubmitAnswerPaper();
+                                        submitAnswerPaper.submit(ob, QuizMainActivity.this, jsonObject.toString(), userId, examId);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 }
                             }
                         });
+
                     }
                 }
-            }).start();
+            });
+            t.start();
         }
-
     }
 
 

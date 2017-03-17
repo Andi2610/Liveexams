@@ -32,6 +32,7 @@ public class RulesInQuiz extends AppCompatActivity {
     QuizDatabase ob;
     public static boolean visible;
     Handler h;
+    Thread t;
 
 
     @Override
@@ -92,7 +93,7 @@ public class RulesInQuiz extends AppCompatActivity {
 //            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         }else{
             visible=false;
-            new Thread(new Runnable() {
+            t=new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try{
@@ -134,7 +135,8 @@ public class RulesInQuiz extends AppCompatActivity {
                         });
                     }
                 }
-            }).start();
+            });
+            t.start();
         }
     }
 
@@ -156,5 +158,6 @@ public class RulesInQuiz extends AppCompatActivity {
         e.putInt("exit",1);
         e.apply();
         visible=true;
+        t.interrupt();
     }
 }

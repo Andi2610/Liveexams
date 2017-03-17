@@ -42,6 +42,7 @@ public class SectionNamesDisplay extends Activity {
     SharedPreferences quizPrefs,dataPrefs;
     public static boolean visible;
     Handler h;
+    Thread t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class SectionNamesDisplay extends Activity {
         e.putInt("exit",1);
         e.apply();
         visible=true;
+        t.interrupt();
     }
 
     @Override
@@ -105,7 +107,7 @@ public class SectionNamesDisplay extends Activity {
 //            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         }else{
             visible=false;
-            new Thread(new Runnable() {
+            t=new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try{
@@ -141,7 +143,8 @@ public class SectionNamesDisplay extends Activity {
                         });
                     }
                 }
-            }).start();
+            });
+            t.start();
         }
     }
 }

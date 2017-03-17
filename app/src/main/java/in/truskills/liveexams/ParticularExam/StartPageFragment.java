@@ -1,6 +1,7 @@
 package in.truskills.liveexams.ParticularExam;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -74,6 +75,7 @@ public class StartPageFragment extends Fragment {
     ViewFlipper viewFlipper;
     RequestQueue requestQueue;
     QuizDatabase o;
+    ProgressDialog myDialog;
     CustomSpinnerForDetailsAdapter customSpinnerForDetailsAdapter;
 
     public StartPageFragment() {
@@ -93,6 +95,14 @@ public class StartPageFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         o = new QuizDatabase(getActivity());
+
+        if(getActivity()!=null){
+            myDialog = new ProgressDialog(getActivity());
+            myDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            myDialog.setMessage("Loading. Please wait...");
+            myDialog.setIndeterminate(true);
+            myDialog.setCancelable(false);
+        }
 
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -511,6 +521,8 @@ public class StartPageFragment extends Fragment {
     public void getDate(){
         Log.d("myDateeeee", "getDate: ");
 
+        myDialog.show();
+
         ConstantsDefined.updateAndroidSecurityProvider(getActivity());
         ConstantsDefined.beforeVolleyConnect();
 
@@ -576,6 +588,8 @@ public class StartPageFragment extends Fragment {
                         public void run() {
 //                            Log.d("dateeeee", "run: "+myDate);
 //                            afterResponse(myDate);
+                            if(myDialog!=null)
+                            myDialog.dismiss();
 
                             afterConnect(myDate,myUrl);
 

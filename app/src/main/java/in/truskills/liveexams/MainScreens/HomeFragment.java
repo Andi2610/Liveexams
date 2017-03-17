@@ -164,20 +164,29 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
 
                 @Override
                 public boolean onQueryTextChange(String s) {
-                    s = s.toString().toLowerCase();
-                    filteredList = new ArrayList<>();
 
-                    for (int i = 0; i < valuesList.size(); i++) {
+                    if(s.equals("")){
+                        filteredList = new ArrayList<>();
+                        myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
+                        myExamsList.setAdapter(myExamsListAdapter);
+                        myExamsListAdapter.notifyDataSetChanged();
 
-                        final String text = valuesList.get(i).name.toLowerCase();
-                        if (text.contains(s)) {
+                    }else{
+                        s = s.toString().toLowerCase();
+                        filteredList = new ArrayList<>();
 
-                            filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
+                        for (int i = 0; i < valuesList.size(); i++) {
+
+                            final String text = valuesList.get(i).name.toLowerCase();
+                            if (text.contains(s)) {
+
+                                filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
+                            }
                         }
+                        myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
+                        myExamsList.setAdapter(myExamsListAdapter);
+                        myExamsListAdapter.notifyDataSetChanged();
                     }
-                    myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
-                    myExamsList.setAdapter(myExamsListAdapter);
-                    myExamsListAdapter.notifyDataSetChanged();
                     return true;
                 }
             });
