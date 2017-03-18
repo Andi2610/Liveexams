@@ -58,6 +58,7 @@ import com.pkmmte.view.CircularImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
@@ -141,12 +142,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navName = (TextView) view.findViewById(R.id.navName);
         navEmail = (TextView) view.findViewById(R.id.navEmail);
 
-        icon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_add_a_photo_white_24dp);
+//        icon = BitmapFactory.decodeResource(getResources(),
+//                R.drawable.ic_add_a_photo_white_24dp);
+//
+//        savebitmap(ico)
+//
+//        defaultImage = BitmapToString(icon);
 
-        defaultImage = BitmapToString(icon);
 
-        Bitmap myImage = StringToBitmap(prefs.getString("navImage", defaultImage));
+        Bitmap myImage = getBitmap(prefs.getString("navImage",""));
 
         navImage.setImageBitmap(myImage);
 
@@ -213,6 +217,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                        e.putString("navImage", defaultImage);
 //                        e.apply();
                         navImage.setImageBitmap(icon);
+
+                        File f= null;
+                        try {
+                            f = savebitmap(icon);
+                            String myPath=f.getPath();
+                            SharedPreferences.Editor e = prefs.edit();
+                            e.putString("navImage", myPath);
+                            e.apply();
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
                     } else if (items[item].equals("Cancel")) {
                         if(dialog!=null)
                         dialog.dismiss();
@@ -559,6 +578,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             SharedPreferences.Editor e = prefs.edit();
             e.clear();
             e.apply();
+
+            String folder_main = "LiveExamsProfileImage";
+            File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+            if (f.exists()) {
+                deleteDir(f);
+            }
+
+            String folder_main2 = "LiveExams";
+            File f2 = new File(Environment.getExternalStorageDirectory(), folder_main2);
+            if (f2.exists()) {
+                deleteDir(f2);
+            }
+
             Intent i = new Intent(MainActivity.this, Signup_Login.class);
             startActivity(i);
             finish();
@@ -711,10 +743,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
           }else{
              navImage.setImageBitmap(MyBitmap);
-              String myImage=BitmapToString(MyBitmap);
-              SharedPreferences.Editor e = prefs.edit();
-                    e.putString("navImage", myImage);
-                    e.apply();
+              try {
+                  File f=savebitmap(MyBitmap);
+                  String myPath=f.getPath();
+
+                  Log.d("myPath", "onResponse: "+myPath);
+
+                  SharedPreferences.Editor e = prefs.edit();
+                  e.putString("navImage", myPath);
+                  e.apply();
+
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
               dialog.dismiss();
 
           }
@@ -731,6 +772,62 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             dialog.setCancelable(false);
           dialog.show();
         }
+    }
+
+    public static File savebitmap(Bitmap bmp) throws Exception {
+
+        String folder_main = "LiveExamsProfileImage";
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
+        String pp = f.getAbsolutePath();
+        File file = new File(pp
+                + File.separator + "profileImage.jpg");
+        file.createNewFile();
+        FileOutputStream fo = new FileOutputStream(file);
+        fo.write(bytes.toByteArray());
+        fo.close();
+
+        return f;
+    }
+
+    public Bitmap getBitmap(String myPath){
+
+        File imgFile = new  File(myPath);
+
+        if(imgFile.exists()){
+
+            File f[]=imgFile.listFiles();
+
+            Bitmap myBitmap = BitmapFactory.decodeFile(f[0].getPath());
+
+            Log.d("imagePath", "getBitmap: "+imgFile.getPath());
+
+            return myBitmap;
+        }
+
+        return null;
+
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+
+        // The directory is now empty so delete it
+        return dir.delete();
     }
 
 }

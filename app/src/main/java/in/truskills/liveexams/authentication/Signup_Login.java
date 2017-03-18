@@ -22,6 +22,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -81,6 +82,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -939,7 +942,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                                 R.drawable.ic_add_a_photo_white_24dp);
 
-                        String defaultImage = BitmapToString(icon);
+//                        String defaultImage = BitmapToString(icon);
+
+                        File f=savebitmap(icon);
+                        String myPath=f.getPath();
+
+                        Log.d("myPath", "onResponse: "+myPath);
 
                         SharedPreferences.Editor e = prefs.edit();
                         e.putString("userId", mapper.get("id"));
@@ -949,7 +957,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         e.putString("profileImageUrl", mapper.get("profileImageUrl"));
                         e.putString("joinedExams", mapper.get("joinedExams"));
                         e.putString("login", "true");
-                        e.putString("navImage", defaultImage);
+                        e.putString("navImage", myPath);
                         e.apply();
                         Answers.getInstance().logCustom(new CustomEvent("Login successfull")
                                 .putCustomAttribute("userName", mapper.get("userName")));
@@ -961,6 +969,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -1257,11 +1267,19 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 Bitmap myB=getOrientedBitmap(urlToConnect,bitmap);
 
-                String myImage = BitmapToString(myB);
+                try {
+                    File f=savebitmap(myB);
+                    String myPath=f.getPath();
 
-                SharedPreferences.Editor e = prefs.edit();
-                e.putString("navImage", myImage);
-                e.apply();
+                    Log.d("myPath", "onResponse: "+myPath);
+
+                    SharedPreferences.Editor e = prefs.edit();
+                    e.putString("navImage", myPath);
+                    e.apply();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 if (dialog != null)
                     dialog.dismiss();
@@ -1331,5 +1349,27 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }
 
         return myBitmap;
+    }
+
+    public static File savebitmap(Bitmap bmp) throws Exception {
+
+        String folder_main = "LiveExamsProfileImage";
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
+        String pp = f.getAbsolutePath();
+        File file = new File(pp
+                + File.separator + "profileImage.jpg");
+        file.createNewFile();
+        FileOutputStream fo = new FileOutputStream(file);
+        fo.write(bytes.toByteArray());
+        fo.close();
+
+        return f;
     }
 }
