@@ -150,7 +150,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        defaultImage = BitmapToString(icon);
 
 
-        Bitmap myImage = getBitmap(prefs.getString("navImage",""));
+        String myImagePath = prefs.getString("navImage","");
+
+        Bitmap myImage=getBitmap(myImagePath);
 
         navImage.setImageBitmap(myImage);
 
