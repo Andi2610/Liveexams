@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -19,6 +20,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -51,6 +53,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.crashlytics.android.answers.Answers;
@@ -288,13 +291,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //If connection could not be made..
-                        Log.d("checkForError",error.toString());
+                        Log.d("checkForError", error.toString());
                         if (dialog != null)
                             dialog.dismiss();
-                        if(ConstantsDefined.isOnline(Signup_Login.this)){
+                        if (ConstantsDefined.isOnline(Signup_Login.this)) {
                             //Do nothing..
                             Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-                        }else{
+                        } else {
                             Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -629,7 +632,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         });
 
 
-
     }
 
     protected void createLocationRequest() {
@@ -789,7 +791,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void success(DigitsSession session, String phoneNumber) {
 
-                mobile=phoneNumber;
+                mobile = phoneNumber;
 
                 // Do something with the session
                 Toast.makeText(Signup_Login.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
@@ -843,10 +845,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         //If connection could not be made..
                         if (dialog != null)
                             dialog.dismiss();
-                        if(ConstantsDefined.isOnline(Signup_Login.this)){
+                        if (ConstantsDefined.isOnline(Signup_Login.this)) {
                             //Do nothing..
                             Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-                        }else{
+                        } else {
                             Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -949,10 +951,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         e.apply();
                         Answers.getInstance().logCustom(new CustomEvent("Login successfull")
                                 .putCustomAttribute("userName", mapper.get("userName")));
-                        Toast.makeText(Signup_Login.this, "Welcome to Live Exams", Toast.LENGTH_SHORT).show();
-                        i = new Intent(Signup_Login.this, MainActivity.class);
-                        startActivity(i);
-                        finish();
+
+                        getProfileImage(mapper.get("profileImageUrl"), mapper.get("id"));
+
                     } else {
                         //Display error message..
                         Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
@@ -968,10 +969,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //In case the connection to the Api couldn't be established..
                 if (dialog != null)
                     dialog.dismiss();
-                if(ConstantsDefined.isOnline(Signup_Login.this)){
+                if (ConstantsDefined.isOnline(Signup_Login.this)) {
                     //Do nothing..
                     Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
                     Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -1099,10 +1100,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //In case the connection to the Api couldn't be established..
                 if (dialog != null)
                     dialog.dismiss();
-                if(ConstantsDefined.isOnline(Signup_Login.this)){
+                if (ConstantsDefined.isOnline(Signup_Login.this)) {
                     //Do nothing..
                     Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
                     Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -1172,7 +1173,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             return;
         }
         PendingResult<Status> pendingResult;
-        if(mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient.isConnected()) {
             pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
         Log.d(TAG, "Location update started ..............: ");
@@ -1219,7 +1220,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     }
 
     protected void stopLocationUpdates() {
-        if(mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             Log.d(TAG, "Location update stopped .......................");
             mGoogleApiClient.disconnect();
@@ -1235,4 +1236,98 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void getProfileImage(String myUrl, String id) {
+
+        dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Preparing your profile pic.. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        final String urlToConnect = ConstantsDefined.profileImageUrl + id;
+
+        RequestQueue requestQ = Volley.newRequestQueue(getApplicationContext());
+
+        ImageRequest ir = new ImageRequest(urlToConnect, new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap bitmap) {
+
+                Bitmap myB=getOrientedBitmap(urlToConnect,bitmap);
+
+                String myImage = BitmapToString(myB);
+
+                SharedPreferences.Editor e = prefs.edit();
+                e.putString("navImage", myImage);
+                e.apply();
+
+                if (dialog != null)
+                    dialog.dismiss();
+
+                Toast.makeText(Signup_Login.this, "Welcome to Live Exams", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(Signup_Login.this, MainActivity.class);
+                startActivity(i);
+                finish();
+
+            }
+        }, 0, 0, null,
+                new Response.ErrorListener() {
+                    public void onErrorResponse(VolleyError error) {
+                        if (dialog != null)
+                            dialog.dismiss();
+                        Toast.makeText(Signup_Login.this, "Sorry! Profile pic couldn't be fetched..", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Signup_Login.this, "Welcome to Live Exams", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(Signup_Login.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+        requestQ.add(ir);
+
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
+
+    public Bitmap getOrientedBitmap(String realPath, Bitmap bm) {
+        ExifInterface ei = null;
+        Bitmap myBitmap = bm;
+        try {
+            ei = new ExifInterface(realPath);
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED);
+
+            Log.d("orientation", "onActivityResult: " + orientation + " " + ExifInterface.ORIENTATION_ROTATE_90 + " " + ExifInterface.ORIENTATION_ROTATE_180 + " " + ExifInterface.ORIENTATION_ROTATE_270 + " " + ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+
+                case ExifInterface.ORIENTATION_ROTATE_90://6
+                    myBitmap = rotateImage(bm, 90);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_180://3
+                    myBitmap = rotateImage(bm, 180);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270://8
+                    myBitmap = rotateImage(bm, 270);
+                    break;
+
+                case ExifInterface.ORIENTATION_NORMAL://1
+                    myBitmap = bm;
+                    break;
+                default:
+                    myBitmap = bm;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return myBitmap;
+    }
 }

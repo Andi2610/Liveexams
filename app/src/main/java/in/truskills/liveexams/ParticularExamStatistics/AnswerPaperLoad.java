@@ -61,12 +61,14 @@ public class AnswerPaperLoad extends AppCompatActivity {
     String startTime, endTime, totalMarks, score, attempts, myStartTime, myEndTime, examName, date, bestScore, averageScore, totalStudents;
     ArrayList<Fragment> fList;
     String myUrl,rank;
+    public static boolean execute;
     TextView myWaitMessage;
     AnalyticsDatabase ob;
     ArrayList<String> urls, groups;
     String myResponseResult,myResponseLanguage,myResponseUrl;
     SharedPreferences prefs;
     Handler h;
+    AsyncTaskRunner asyncTaskRunner;
     //myExamDuration,myStartTime,myEndTime,
 
     @Override
@@ -102,7 +104,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
         myResponseLanguage=language;
         myResponseUrl=myUrl;
 
-        AsyncTaskRunner asyncTaskRunner=new AsyncTaskRunner();
+        asyncTaskRunner=new AsyncTaskRunner();
         asyncTaskRunner.execute();
 
     }
@@ -413,7 +415,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                     ob.updateValuesPerSection(iiii, AnalyticsDatabase.SectionId, section_id);
                     ob.updateValuesPerSection(iiii, AnalyticsDatabase.SectionName, name);
                     ob.updateValuesPerSection(iiii, AnalyticsDatabase.SectionMarks, section_max_marks);
-                    ob.updateValuesPerSection(iiii, AnalyticsDatabase.SectionTime, my_section_time);
+                    ob.updateValuesPerSection(iiii, AnalyticsDatabase.SectionTime, section_time);
 //                        }
 //                    }).start();
                     map7 = QuestionPaperParser.SectionQuestionsParser(SectionQuestions);
@@ -561,8 +563,13 @@ public class AnswerPaperLoad extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+
+            execute=false;
+
+
             // execution of result of Long time consuming operation
             //Set the view pager adapter..
+
 
                 Intent intent = new Intent(AnswerPaperLoad.this, InitialInfo.class);
                 intent.putExtra("startTime", myStartTime);
@@ -586,6 +593,27 @@ public class AnswerPaperLoad extends AppCompatActivity {
         }
 
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            execute=true;
+        }
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(execute){
+            asyncTaskRunner.cancel(true);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(execute){
+            asyncTaskRunner.cancel(true);
+            finish();
+        }
     }
 }

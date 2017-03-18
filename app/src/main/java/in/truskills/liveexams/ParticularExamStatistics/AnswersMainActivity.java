@@ -49,7 +49,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
     AllQuestionsInOneSectionAdapterForAnswers allQuestionsInOneSectionAdapterForAnswers;
     LinearLayoutManager linearLayoutManager;
     ArrayList<String> options;
-    String minimumTime, maximumTime, yourTime, correctlyAnsweredBy,myUrl;
+    String minimumTime, maximumTime, yourTime, correctlyAnsweredBy,myUrl,totalStudents;
     int my_section, my_question, my_option, questionArray[], noOfSections, num,myFragmentCount=0;
     SharedPreferences prefs;
     Button left, right;
@@ -118,6 +118,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
         noOfSections = getIntent().getIntExtra("noOfSections", 0);
         questionArray = getIntent().getIntArrayExtra("questionArray");
         myUrl = getIntent().getStringExtra("url");
+        totalStudents = getIntent().getStringExtra("totalStudents");
         Log.d("myLength=", questionArray.length + "");
 
         ob = new AnalyticsDatabase(this);
@@ -278,6 +279,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
             case R.id.summaryIcon:
                 prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 Intent i = new Intent(AnswersMainActivity.this, AllSectionsSummaryForAnswers.class);
+                i.putExtra("totalStudents",totalStudents);
                 startActivityForResult(i, REQUEST_CODE_FOR_ALL_SUMMARY);
                 break;
         }

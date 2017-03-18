@@ -1,5 +1,6 @@
 package in.truskills.liveexams.MainScreens;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,9 +14,11 @@ import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -76,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String defaultImage;
     Bundle bundle;
     SharedPreferences prefs;
-    Bitmap icon;
+    Bitmap icon,MyBitmap;
     CharSequence[] items;
     FragmentManager manager;
     private String selectedImagePath;
@@ -88,6 +91,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     secretAccessKey= "nrtoImZxd9cU1oNAVD6NwCVooTwleoc6kVi3C0JJ";
     AWSCredentials credentials;
     AmazonS3 s3client;
+    Handler h;
+    ProgressDialog dialog;
+    public static boolean error=false;
 
 
     @Override
@@ -98,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Set toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        h=new Handler();
 
         //Get shared preferences..
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -387,7 +395,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 break;
                         }
                         byte[] b = baos.toByteArray();
-                        navImage.setImageBitmap(myBitmap);
+                        MyBitmap=myBitmap;
+
                         uploadImageToServer();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -417,6 +426,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
+        Log.d("here", "onSelectFromGalleryResult: ");
         Bitmap bm = null;
         if (data != null) {
             try {
@@ -438,6 +448,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 bm = decodeUri(fileUri);
 
                 my_path=realPath;
+
+                Log.d("gallery", "onSelectFromGalleryResult: "+my_path);
 
                 ExifInterface ei = null;
                 Bitmap myBitmap=null;
@@ -468,7 +480,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         default:myBitmap=bm;
                             break;
                     }
-                    navImage.setImageBitmap(myBitmap);
+//                    navImage.setImageBitmap(myBitmap);
+                    MyBitmap=myBitmap;
                     uploadImageToServer();
 
                 } catch (Exception e) {
@@ -610,19 +623,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void uploadImageToServer(){
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.setProperty(SDKGlobalConfiguration.ENFORCE_S3_SIGV4_SYSTEM_PROPERTY, "true");
-//                s3client.
-                // upload file to folder and set it to public
-                String fileName = "Users/" + prefs.getString("userId","");
-                s3client.putObject(new PutObjectRequest("live-exams", fileName,
-//                        new File(Environment.getExternalStorageDirectory()+"/DCIM/Cymera2/CYMERA_20170316_125312.jpg"))
-                        new File(my_path))
-                        .withCannedAcl(CannedAccessControlList.PublicRead));
-            }
-        }).start();
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                try{
+//
+////                dialog = new ProgressDialog(MainActivity.this);
+////                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+////                dialog.setMessage("Loading.. Please wait...");
+////                dialog.setIndeterminate(true);
+////                dialog.setCancelable(false);
+//
+//                    System.setProperty(SDKGlobalConfiguration.ENFORCE_S3_SIGV4_SYSTEM_PROPERTY, "true");
+////                s3client.
+//                    // upload file to folder and set it to public
+//                    String fileName = "Users/" + prefs.getString("userId","");
+//                    s3client.putObject(new PutObjectRequest("live-exams", fileName,
+////                        new File(Environment.getExternalStorageDirectory()+"/DCIM/Cymera2/CYMERA_20170316_125312.jpg"))
+//                            new File(my_path))
+//                            .withCannedAcl(CannedAccessControlList.PublicRead));
+////                dialog.dismiss();
+//
+////                runOnUiThread(new Runnable() {
+////                        @Override
+////                        public void run() {
+////                            navImage.setImageBitmap(MyBitmap);
+////                        }
+////                    });
+//
+//                }catch(Exception e){
+//                    Log.d("exception",e.toString());
+////                    dialog.dismiss();
+////                    runOnUiThread(new Runnable() {
+////                                @Override
+////                                public void run() {
+////                                    Toast.makeText(MainActivity.this, "Sorry! No internet connection..\nPlease try again..", Toast.LENGTH_SHORT).show();
+////                                }
+////                            });
+//                }
+//            }
+//        }).start();
+
+        AsyncTaskRunner async = new AsyncTaskRunner();
+        async.execute();
 
     }
 
@@ -632,4 +677,59 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
                 matrix, true);
     }
+
+    private class AsyncTaskRunner extends AsyncTask<String, String, String> {
+
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            try{
+
+                System.setProperty(SDKGlobalConfiguration.ENFORCE_S3_SIGV4_SYSTEM_PROPERTY, "true");
+//                s3client.
+                // upload file to folder and set it to public
+                String fileName = "Users/" + prefs.getString("userId","");
+                s3client.putObject(new PutObjectRequest("live-exams", fileName,
+                        new File(my_path))
+                        .withCannedAcl(CannedAccessControlList.PublicRead));
+
+            }catch (Exception e){
+                error=true;
+            }
+            return "done";
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+
+          if(error){
+              Toast.makeText(MainActivity.this, "Sorry! Couldn't update your profile pic..", Toast.LENGTH_SHORT).show();
+              dialog.dismiss();
+
+          }else{
+             navImage.setImageBitmap(MyBitmap);
+              String myImage=BitmapToString(MyBitmap);
+              SharedPreferences.Editor e = prefs.edit();
+                    e.putString("navImage", myImage);
+                    e.apply();
+              dialog.dismiss();
+
+          }
+
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("Updating your profile pic.. Please wait...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+          dialog.show();
+        }
+    }
+
 }

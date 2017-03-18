@@ -184,6 +184,7 @@
                             android:textStyle="bold"
                             android:layout_gravity="right"
                             android:id="@+id/yourTimeValue"
+                            android:gravity="right"
                             android:layout_weight="1" />
 
                     </TableRow>
@@ -215,6 +216,7 @@
                             android:textStyle="bold"
                             android:layout_gravity="right"
                             android:id="@+id/minimumTimeValue"
+                            android:gravity="right"
                             android:layout_weight="1"/>
 
                     </TableRow>
@@ -246,6 +248,7 @@
                             android:textStyle="bold"
                             android:layout_gravity="right"
                             android:id="@+id/maximumTimeValue"
+                            android:gravity="right"
                             android:layout_weight="1"/>
 
                     </TableRow>
@@ -306,6 +309,7 @@
                             android:textStyle="bold"
                             android:layout_gravity="right"
                             android:id="@+id/correctlyAnsweredValue"
+                            android:gravity="right"
                             android:layout_weight="1"/>
 
                     </TableRow>

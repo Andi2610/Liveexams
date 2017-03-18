@@ -23,6 +23,7 @@ public class AllSectionsSummaryForAnswers extends AppCompatActivity {
     ArrayList<ArrayList<Integer>> questionArray;
     AllSectionsSummaryAdapterForAnswers allSectionsSummaryAdapterForAnswers;
     LinearLayoutManager linearLayoutManager;
+    String totalStudents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,8 @@ public class AllSectionsSummaryForAnswers extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        totalStudents=getIntent().getStringExtra("totalStudents");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -50,7 +53,7 @@ public class AllSectionsSummaryForAnswers extends AppCompatActivity {
             questionArray.add(listOfFi);
         }
 
-        allSectionsSummaryAdapterForAnswers = new AllSectionsSummaryAdapterForAnswers(name, questionArray, AllSectionsSummaryForAnswers.this);
+        allSectionsSummaryAdapterForAnswers = new AllSectionsSummaryAdapterForAnswers(name, questionArray, totalStudents,AllSectionsSummaryForAnswers.this);
 
         linearLayoutManager = new LinearLayoutManager(this);
         allSectionsListForanswers.setLayoutManager(linearLayoutManager);

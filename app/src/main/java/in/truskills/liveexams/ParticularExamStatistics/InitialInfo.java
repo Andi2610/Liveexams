@@ -178,6 +178,7 @@ public class InitialInfo extends AppCompatActivity {
         intent.putExtra("noOfSections", noOfSections);
         intent.putExtra("questionArray", questionArray);
         intent.putExtra("url", myUrl);
+        intent.putExtra("totalStudents", totalStudents);
         startActivity(intent);
     }
 }

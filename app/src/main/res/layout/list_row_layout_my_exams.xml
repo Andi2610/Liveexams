@@ -78,6 +78,7 @@
                             android:textSize="19dp"
                             android:textColor="@color/black"
                             android:layout_gravity="right"
+                            android:gravity="right"
                             android:id="@+id/startDateValue"
                             android:layout_weight="1" />
 
@@ -108,6 +109,7 @@
                             android:textSize="19dp"
                             android:textColor="@color/black"
                             android:layout_gravity="right"
+                            android:gravity="right"
                             android:id="@+id/endDateValue"
                             android:layout_weight="1"/>
 
@@ -139,6 +141,7 @@
                             android:textColor="@color/black"
                             android:layout_gravity="right"
                             android:id="@+id/durationValue"
+                            android:gravity="right"
                             android:layout_weight="1"/>
 
                     </TableRow>

@@ -17,7 +17,10 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.AnalyticsDatabase;
@@ -32,12 +35,14 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
 
     ArrayList<String> sectionName;
     ArrayList<ArrayList<Integer>> questionArray;
+    String totalStudents;
     Context c;
 
-    AllSectionsSummaryAdapterForAnswers(ArrayList<String> sectionName, ArrayList<ArrayList<Integer>> questionArray, Context c) {
+    AllSectionsSummaryAdapterForAnswers(ArrayList<String> sectionName, ArrayList<ArrayList<Integer>> questionArray, String totalStudents,Context c) {
         this.sectionName = sectionName;
         this.questionArray = questionArray;
         this.c = c;
+        this.totalStudents=totalStudents;
     }
 
     @Override
@@ -62,13 +67,28 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
         String attempted = ob.getValuesPerSection(sI, AnalyticsDatabase.SectionWiseAttemptedQuestions);
         int totalQuestions = types.size();
         String time = ob.getValuesPerSection(sI, AnalyticsDatabase.SectionWiseTimeSpent);
+        int myTime=Integer.parseInt(time);
+        Date d = new Date(myTime * 1000L);
+        SimpleDateFormat df = new SimpleDateFormat("HH-mm-ss"); // HH for 0-23
+        df.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String strTime = df.format(d);
+//        double myTimeInMin=myTime/(60);
+//        int myTimeInMinInt=(int)myTimeInMin;
+//        String strTime = String.format("%.2f", myTimeInMin);
         String totalTime = ob.getValuesPerSection(sI, AnalyticsDatabase.SectionTime);
+//        int totalT=Integer.parseInt(totalTime);
+
+//        Date dTotal = new Date(totalT*60*60 * 1000L);
+//        SimpleDateFormat dfTotal = new SimpleDateFormat("HH:mm:ss"); // HH for 0-23
+//        dfTotal.setTimeZone(TimeZone.getTimeZone("GMT"));
+//        String strTimeTotal = dfTotal.format(dTotal);
+
         String rank = ob.getValuesPerSection(sI, AnalyticsDatabase.SectionWiseRank);
-        String totalRank = "100";
+        String totalRank = totalStudents;
 
         holder.scoreSectionWise.setText("SCORE:  " + score + "/" + totalScore);
         holder.attemptedSectionWise.setText("ATTEMPTED:  " + attempted + "/" + totalQuestions);
-        holder.timeSectionWise.setText("TIME:  " + time + "/" + totalTime);
+        holder.timeSectionWise.setText("TIME:  " + strTime + "/" + totalTime+" hours");
         holder.rankSectionWise.setText("RANK:  " + rank + "/" + totalRank);
 
 //        WindowManager wm = (WindowManager)    c.getSystemService(Context.WINDOW_SERVICE);

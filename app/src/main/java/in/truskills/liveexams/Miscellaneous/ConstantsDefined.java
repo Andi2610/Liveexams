@@ -33,6 +33,8 @@ public class ConstantsDefined {
 
     //Url for image..
     public static final String imageUrl = "https://s3.ap-south-1.amazonaws.com/live-exams/";
+
+    public static final String profileImageUrl="https://s3.ap-south-1.amazonaws.com/live-exams/Users/";
     //Constants for flashphoner..
     public static final String STARTSTREAMING = "startStreaming";
     public static final String STARTEDSTREAMING = "startedStreaming";

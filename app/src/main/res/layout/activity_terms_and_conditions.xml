@@ -6,24 +6,37 @@
     android:layout_height="match_parent"
     tools:context="in.truskills.liveexams.Miscellaneous.TermsAndConditions">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <include
+            layout="@layout/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></include>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Terms and Conditions"
-                android:gravity="center"
-                android:textSize="20dp"
-                android:textColor="@color/light_blue"/>
+                android:layout_height="match_parent">
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/termsAndConditions"
+                    android:textSize="20dp"
+                    android:textColor="@color/light_blue"/>
 
-    </ScrollView>
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
 
 </RelativeLayout>

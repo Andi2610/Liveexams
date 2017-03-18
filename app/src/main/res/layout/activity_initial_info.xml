@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="60dp"
         android:background="@color/white">
 
         <include
@@ -63,6 +63,7 @@
                             android:textColor="@color/black"
                             android:layout_gravity="right"
                             android:textStyle="bold"
+                            android:gravity="right"
                             android:id="@+id/dateValue"
                             android:layout_weight="1" />
 
@@ -93,6 +94,7 @@
                             android:textSize="19dp"
                             android:textColor="@color/black"
                             android:layout_gravity="right"
+                            android:gravity="right"
                             android:id="@+id/startTimeValue"
                             android:textStyle="bold"
                             android:layout_weight="1"/>
@@ -125,6 +127,7 @@
                             android:textColor="@color/black"
                             android:layout_gravity="right"
                             android:id="@+id/endTimeValue"
+                            android:gravity="right"
                             android:textStyle="bold"
                             android:layout_weight="1"/>
 
@@ -180,6 +183,7 @@
                             android:textColor="@color/black"
                             android:layout_gravity="right"
                             android:textStyle="bold"
+                            android:gravity="right"
                             android:id="@+id/totalMarksValue"
                             android:layout_weight="1"/>
 
