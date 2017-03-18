@@ -585,6 +585,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             byte[] encodeByte = Base64.decode(string, Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            bitmap.recycle();
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();

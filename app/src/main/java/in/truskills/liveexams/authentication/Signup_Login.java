@@ -791,7 +791,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void success(DigitsSession session, String phoneNumber) {
 
-                mobile = phoneNumber;
+                mobile = phoneNumber.substring(3);
+
+                Log.d("phone", "success: "+mobile);
 
                 // Do something with the session
                 Toast.makeText(Signup_Login.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
