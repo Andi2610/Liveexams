@@ -1265,9 +1265,17 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Bitmap bitmap) {
 
-//                Bitmap myB=getOrientedBitmap(urlToConnect,bitmap);
-
+                File ff= null;
                 Bitmap myB=bitmap;
+                try {
+                    ff = saveBitmapDefault(bitmap);
+                    String myPathh=ff.getPath()+"/profileImage.jpg";
+
+                    myB=getOrientedBitmap(myPathh,bitmap);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 try {
                     File f=savebitmap(myB);
@@ -1376,4 +1384,27 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         return f;
     }
+
+    public static File saveBitmapDefault(Bitmap bmp) throws Exception {
+
+        String folder_main = "LiveExamsProfileImageDefault";
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
+        String pp = f.getAbsolutePath();
+        File file = new File(pp
+                + File.separator + "profileImage.jpg");
+        file.createNewFile();
+        FileOutputStream fo = new FileOutputStream(file);
+        fo.write(bytes.toByteArray());
+        fo.close();
+
+        return f;
+    }
+
 }

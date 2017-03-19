@@ -107,6 +107,7 @@ public class ConstantsDefined {
 
     public static void updateAndroidSecurityProvider(Activity callingActivity) {
         try {
+            if(callingActivity!=null)
             ProviderInstaller.installIfNeeded(callingActivity);
         } catch (GooglePlayServicesRepairableException e) {
             // Thrown when Google Play Services is not installed, up-to-date, or enabled
