@@ -218,15 +218,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                        SharedPreferences.Editor e = prefs.edit();
 //                        e.putString("navImage", defaultImage);
 //                        e.apply();
-                        navImage.setImageBitmap(icon);
+                        Bitmap icon = BitmapFactory.decodeResource(getResources(),
+                                R.drawable.ic_add_a_photo_white_24dp);
+
+
+                        MyBitmap=icon;
+
+//                        navImage.setImageBitmap(icon);
 
                         File f= null;
                         try {
-                            f = savebitmap(icon);
-                            String myPath=f.getPath();
+                            f = saveBitmapDefault(icon);
+                            String myPathh=f.getPath()+"/profileImage.jpg";
                             SharedPreferences.Editor e = prefs.edit();
-                            e.putString("navImage", myPath);
+                            e.putString("navImage", myPathh);
                             e.apply();
+
+                            my_path=myPathh;
+
+                            uploadImageToServer();
 
 
                         } catch (Exception e) {
@@ -503,6 +513,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
 //                    navImage.setImageBitmap(myBitmap);
                     MyBitmap=myBitmap;
+//                    BitmapFactory.Options options=new BitmapFactory.Options();
+//                    options.inSampleSize=8;
+//                    MyBitmap=BitmapFactory.decodeStream(myBitmap,null,options);
                     uploadImageToServer();
 
                 } catch (Exception e) {
@@ -767,6 +780,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         @Override
         protected void onPreExecute() {
+            error=false;
             dialog = new ProgressDialog(MainActivity.this);
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             dialog.setMessage("Updating your profile pic.. Please wait...");
@@ -779,6 +793,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static File savebitmap(Bitmap bmp) throws Exception {
 
         String folder_main = "LiveExamsProfileImage";
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+
+        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
+        String pp = f.getAbsolutePath();
+        File file = new File(pp
+                + File.separator + "profileImage.jpg");
+        file.createNewFile();
+        FileOutputStream fo = new FileOutputStream(file);
+        fo.write(bytes.toByteArray());
+        fo.close();
+
+        return f;
+    }
+
+    public static File saveBitmapDefault(Bitmap bmp) throws Exception {
+
+        String folder_main = "LiveExamsProfileImageDefault";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
 

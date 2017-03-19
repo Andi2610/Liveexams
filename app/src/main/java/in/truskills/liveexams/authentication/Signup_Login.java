@@ -1265,7 +1265,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Bitmap bitmap) {
 
-                Bitmap myB=getOrientedBitmap(urlToConnect,bitmap);
+//                Bitmap myB=getOrientedBitmap(urlToConnect,bitmap);
+
+                Bitmap myB=bitmap;
 
                 try {
                     File f=savebitmap(myB);
@@ -1339,6 +1341,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 case ExifInterface.ORIENTATION_NORMAL://1
                     myBitmap = bm;
+                    break;
+                case 0: myBitmap = rotateImage(bm, 270);
                     break;
                 default:
                     myBitmap = bm;
