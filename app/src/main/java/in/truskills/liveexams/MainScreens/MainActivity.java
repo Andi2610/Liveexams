@@ -142,13 +142,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navName = (TextView) view.findViewById(R.id.navName);
         navEmail = (TextView) view.findViewById(R.id.navEmail);
 
-//        icon = BitmapFactory.decodeResource(getResources(),
-//                R.drawable.ic_add_a_photo_white_24dp);
-//
-//        savebitmap(ico)
-//
-//        defaultImage = BitmapToString(icon);
-
 
         String myImagePath = prefs.getString("navImage",Environment.getExternalStorageDirectory()+"/LiveExamsProfileImageDefault/profileImage.jpg");
 
@@ -204,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onClick(DialogInterface dialog, int item) {
 
                     if (items[item].equals("Take Photo")) {
-                        boolean statusForCamera = CheckForPermissions.checkForCamera(MainActivity.this);
+//                        boolean statusForCamera = CheckForPermissions.checkForCamera(MainActivity.this);
 //                        if (statusForCamera) {
 //                            Log.d(CAMERA, "permission granted for camera");
                         cameraIntent();
@@ -219,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                        e.putString("navImage", defaultImage);
 //                        e.apply();
                         Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                                R.drawable.ic_add_a_photo_white_24dp);
+                                R.drawable.camera);
 
 
                         MyBitmap=icon;
@@ -428,6 +421,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         byte[] b = baos.toByteArray();
                         MyBitmap=myBitmap;
 
+                        bitmap.recycle();
+                        bitmap = null;
+
+                        myBitmap.recycle();
+                        myBitmap = null;
+
                         uploadImageToServer();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -513,6 +512,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
 //                    navImage.setImageBitmap(myBitmap);
                     MyBitmap=myBitmap;
+
+                    bm.recycle();
+                    bm = null;
+
+                    myBitmap.recycle();
+                    myBitmap = null;
 //                    BitmapFactory.Options options=new BitmapFactory.Options();
 //                    options.inSampleSize=8;
 //                    MyBitmap=BitmapFactory.decodeStream(myBitmap,null,options);
@@ -625,35 +630,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    //A method to convert bitmap to string..
-    public Bitmap StringToBitmap(String string) {
-        try {
-            byte[] encodeByte = Base64.decode(string, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-//            bitmap.recycle();
-            return bitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public void releaseBitmap(Bitmap mDrawBitmap) {
-        if (mDrawBitmap != null) {
-            mDrawBitmap.recycle();
-            mDrawBitmap = null;
-        }
-    }
-
-    //A method to convert string to bitmap..
-    public String BitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
     }
 
     //Whenever a new fragment is loaded, when home fragment is initially visible..

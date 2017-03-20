@@ -864,15 +864,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         //Attach parameters required..
                         Map<String, String> params = new HashMap<String, String>();
 
-                        Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                                R.drawable.camera);
+//                        Bitmap icon = BitmapFactory.decodeResource(getResources(),
+//                                R.drawable.camera);
+//
+//                        String defaultImage = BitmapToString(icon);
 
-                        String defaultImage = BitmapToString(icon);
-
-                        SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor e = prefs.edit();
-                        e.putString("navImage", defaultImage);
-                        e.apply();
+//                        SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor e = prefs.edit();
+//                        e.putString("navImage", defaultImage);
+//                        e.apply();
                         params.put("userName", name);
                         params.put("gender", gender);
                         params.put("password", password);
@@ -940,7 +940,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     if (mapper.get("success").equals("true")) {
 
                         Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                                R.drawable.ic_add_a_photo_white_24dp);
+                                R.drawable.camera);
 
 //                        String defaultImage = BitmapToString(icon);
 
@@ -1000,15 +1000,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             }
         };
         requestQueue.add(stringRequest);
-    }
-
-    //This method is use whenever a bitmap is to be converted into string..
-    public String BitmapToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return temp;
     }
 
     @Override
@@ -1266,7 +1257,21 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             public void onResponse(Bitmap bitmap) {
 
                 File ff= null;
-                Bitmap myB=bitmap;
+                Bitmap myB=bitmap,bm=bitmap;
+
+                Log.d("exception", "onResponse: "+"gotBitmap");
+
+
+//                if(bm.getWidth() > bm.getHeight()) {
+//                    Bitmap bMapRotate = null;
+//                    Matrix mat = new Matrix();
+//                    mat.postRotate(90);
+//                    bMapRotate = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), mat, true);
+//                    bm.recycle();
+//                    bm = null;
+//                    myB=bMapRotate;
+//                }
+
                 try {
                     ff = saveBitmapDefault(bitmap);
                     String myPathh=ff.getPath()+"/profileImage.jpg";
@@ -1277,6 +1282,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d("exception", "onResponse: "+e.toString());
                 }
 
                 try {
@@ -1291,6 +1297,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d("exception", "onResponse: "+e.toString());
                 }
 
                 if (dialog != null)
@@ -1331,7 +1338,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         try {
             ei = new ExifInterface(realPath);
             int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_UNDEFINED);
+                    ExifInterface.ORIENTATION_NORMAL);
 
             Log.d("orientation", "onActivityResult: " + orientation + " " + ExifInterface.ORIENTATION_ROTATE_90 + " " + ExifInterface.ORIENTATION_ROTATE_180 + " " + ExifInterface.ORIENTATION_ROTATE_270 + " " + ExifInterface.ORIENTATION_NORMAL);
 
