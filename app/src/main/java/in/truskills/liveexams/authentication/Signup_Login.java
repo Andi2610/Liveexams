@@ -1271,6 +1271,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     ff = saveBitmapDefault(bitmap);
                     String myPathh=ff.getPath()+"/profileImage.jpg";
 
+                    Log.d("pathh", "onResponse: "+myPathh);
+
                     myB=getOrientedBitmap(myPathh,bitmap);
 
                 } catch (Exception e) {

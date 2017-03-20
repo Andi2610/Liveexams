@@ -249,7 +249,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         final Matcher matcher = pattern.matcher(text);
         final Matcher matcher1 = pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst = "<img src=\"file://" + base + "/LiveExams/$2\" style=\"max-width:100%;/>";
+        String subst = "<img src=\"file://" + base + "/LiveExams/$2\"/>";
         String result = matcher1.replaceAll(subst);
         ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, result);
 
@@ -688,48 +688,48 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        if(gone){
-//
-//        }else{
-//            visible=false;
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try{
-//                        Thread.sleep(ConstantsDefined.time);
-//                    }catch (Exception e){
-//
-//                    }finally {
-//                        h.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if(visible){
-//
-//                                }else{
-//                                    String folder_main = "LiveExams";
-//                                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-//                                    if (f.exists()) {
-//                                        deleteDir(f);
-//                                    }
-//                                    ob.deleteMyTable();
-//                                    SharedPreferences.Editor e=dataPrefs.edit();
-//                                    e.clear();
-//                                    e.apply();
-//                                    Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
-//                                    Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
-//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                    startActivity(intent);
-//                                    finish();
-//                                }
-//                            }
-//                        });
-//                    }
-//                }
-//            }).start();
-//        }
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(gone){
+
+        }else{
+            visible=false;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(ConstantsDefined.time);
+                    }catch (Exception e){
+
+                    }finally {
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(visible){
+
+                                }else{
+                                    String folder_main = "LiveExams";
+                                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                                    if (f.exists()) {
+                                        deleteDir(f);
+                                    }
+                                    ob.deleteMyTable();
+                                    SharedPreferences.Editor e=dataPrefs.edit();
+                                    e.clear();
+                                    e.apply();
+                                    Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        });
+                    }
+                }
+            }).start();
+        }
+    }
 }
