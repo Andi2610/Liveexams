@@ -56,7 +56,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     int languageArray[][], fragmentIndex[][];
     LinkedList ll = new LinkedList();
     LinkedList llGroup = new LinkedList();
-    public static boolean visible=true,gone=false;
+    public static boolean visible=true,gone=false,download=false;
     ImageRequest ir;
     HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12;
     int noOfQuestions = 0, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1, hour, minute, myTime, curCount = 0, myCount = 0, questionArray[];
@@ -128,6 +128,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
         Log.d("heree", "downloadQP: ");
 
+        download=false;
+
         retryButtonForDownload.setVisibility(View.INVISIBLE);
         exitButton.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
@@ -144,9 +146,11 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                 url, new Response.Listener<String>() {
             @Override
             public void onResponse(final String result) {
+
                 h.post(new Runnable() {
                     @Override
                     public void run() {
+                        download=true;
                         myResponseResult=result;
                         AsyncTaskRunner asyncTaskRunner=new AsyncTaskRunner();
                         asyncTaskRunner.execute();
@@ -222,7 +226,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         final Matcher matcher = pattern.matcher(text);
         final Matcher matcher1 = pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst = "<img src=\"file://" + base + "/LiveExams/$2\"/>";
+        String subst = "<img src=\"file://" + base + "/LiveExams/$2\" style=\"max-width:100%;\"\"/>";
         String result = matcher1.replaceAll(subst);
         ob.updateValuesPerQuestion(ii, jj, QuizDatabase.QuestionText, result);
 
@@ -245,7 +249,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         final Matcher matcher = pattern.matcher(text);
         final Matcher matcher1 = pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst = "<img src=\"file://" + base + "/LiveExams/$2\"/>";
+        String subst = "<img src=\"file://" + base + "/LiveExams/$2\" style=\"max-width:100%;/>";
         String result = matcher1.replaceAll(subst);
         ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, result);
 
@@ -366,20 +370,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     }
 
     public void checkFunction() throws Exception {
-//        String folder_main = "LiveExams";
-//        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-//        if(noOfSections==0){
-//            downloadQP();
-//        }else if (f.exists()) {
-//            children = f.list();
-//            len = children.length;
-//            if (len == myCount) {
-//                startNewActivity();
-//            }else{
-//                downloadImages();
-//            }
-//        }
-        if(noOfSections==0){
+        if(!download){
             downloadQP();
         }else if(!ll.isEmpty()){
             downloadImages();
@@ -621,6 +612,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                             ob.updateValuesPerQuestion(iiii, jjjj, QuizDatabase.QuestionId, map12.get("id"));
                             ob.updateValuesForResult(iiii, jjjj, QuizDatabase.SectionId, section_id);
                             ob.updateValuesForResult(iiii, jjjj, QuizDatabase.QuestionId, map12.get("id"));
+                            ob.updateValuesForResult(iiii,jjjj,QuizDatabase.TempAnswerSerialNumber,-1+"");
                             myOption = QuestionPaperParser.OptionsParser(myOptions);
 
                             //Get length of option array..
@@ -696,48 +688,48 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(gone){
-
-        }else{
-            visible=false;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        Thread.sleep(ConstantsDefined.time);
-                    }catch (Exception e){
-
-                    }finally {
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(visible){
-
-                                }else{
-                                    String folder_main = "LiveExams";
-                                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                                    if (f.exists()) {
-                                        deleteDir(f);
-                                    }
-                                    ob.deleteMyTable();
-                                    SharedPreferences.Editor e=dataPrefs.edit();
-                                    e.clear();
-                                    e.apply();
-                                    Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-                        });
-                    }
-                }
-            }).start();
-        }
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if(gone){
+//
+//        }else{
+//            visible=false;
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try{
+//                        Thread.sleep(ConstantsDefined.time);
+//                    }catch (Exception e){
+//
+//                    }finally {
+//                        h.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if(visible){
+//
+//                                }else{
+//                                    String folder_main = "LiveExams";
+//                                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+//                                    if (f.exists()) {
+//                                        deleteDir(f);
+//                                    }
+//                                    ob.deleteMyTable();
+//                                    SharedPreferences.Editor e=dataPrefs.edit();
+//                                    e.clear();
+//                                    e.apply();
+//                                    Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
+//                                    Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                    startActivity(intent);
+//                                    finish();
+//                                }
+//                            }
+//                        });
+//                    }
+//                }
+//            }).start();
+//        }
+//    }
 }

@@ -786,8 +786,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         e.putInt("exit",1);
         e.apply();
         visible=true;
-        if(t!=null&&t.isAlive())
-        t.interrupt();
+        if(t!=null&&t.isAlive()){
+            t.interrupt();
+        }
     }
 
     @Override
@@ -888,6 +889,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 public void run() {
                     try {
                         Thread.sleep(ConstantsDefined.time);
+
                     } catch (Exception e) {
 
                     } finally {

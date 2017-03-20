@@ -86,7 +86,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="392f8a786ac85c7b9899687155b01647d8538cbc" />
+            android:value="f98eb8525dfdbf7a0115bce32af0957d3a6584d7" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

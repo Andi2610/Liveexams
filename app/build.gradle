@@ -41,13 +41,13 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile('com.digits.sdk.android:digits:2.0.5@aar') {
+    compile('com.digits.sdk.android:digits:2.0.6@aar') {
         transitive = true;
     }
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }
-    compile('com.twitter.sdk.android:twitter:2.3.1@aar') {
+    compile('com.twitter.sdk.android:twitter:2.3.2@aar') {
         transitive = true;
     }
     compile project(':wcs-android-sdk-1.0.1.2')

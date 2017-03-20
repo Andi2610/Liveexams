@@ -35,7 +35,7 @@ public class WebViewContent {
 
         //Dynamic radio buttons added depending upon the options list size..
         for (int i = 0; i < optionsListSize; ++i) {
-            x = x + "<input type=\"radio\" id=\"" + i + "\" name=\"options\" value=\"" + i + "\" onclick=\"ok.performClick(this.value);\" style=\"margin:10px\" ><label for=\"" + i + "\">" + formattedOptions.get(i) + "</label></input><br>";
+            x = x + "<input type=\"radio\" id=\"" + i + "\" name=\"options\" value=\"" + i + "\" onclick=\"ok.performClick(this.value);\" style=\"margin:10px\" ><label for=\"" + i + "\" style=\"width:90%;\">" + formattedOptions.get(i) + "</label></input><br>";
         }
 
         //Generate the html content..

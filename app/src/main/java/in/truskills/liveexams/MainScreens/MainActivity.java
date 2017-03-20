@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        defaultImage = BitmapToString(icon);
 
 
-        String myImagePath = prefs.getString("navImage","");
+        String myImagePath = prefs.getString("navImage",Environment.getExternalStorageDirectory()+"/LiveExamsProfileImageDefault/profileImage.jpg");
 
         Bitmap myImage=getBitmap(myImagePath);
 
