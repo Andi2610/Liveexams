@@ -353,8 +353,10 @@ public class StartPageFragment extends Fragment {
                             //If the connection couldn't be made..
                             if(ConstantsDefined.isOnline(getActivity())){
                                 //Do nothing..
+                                if(getActivity()!=null)
                                 Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                             }else{
+                                if(getActivity()!=null)
                                 Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -379,6 +381,7 @@ public class StartPageFragment extends Fragment {
                             //Check if a valid language has been chosen from the list..
                             if (selectedLanguage.equals("LANGUAGE"))
                                 //If not chosen..
+                                if(getActivity()!=null)
                                 Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
                             else {
                                 //Else if chosen..
@@ -406,6 +409,7 @@ public class StartPageFragment extends Fragment {
                             .putCustomAttribute("examId", examId));
 
                 } else {
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "This exam is over", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -460,6 +464,7 @@ public class StartPageFragment extends Fragment {
                         //Check if a valid language has been chosen from the list..
                         if (selectedLanguage.equals("LANGUAGE"))
                             //If not chosen..
+                            if(getActivity()!=null)
                             Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
                         else {
                             //Else if chosen..
@@ -479,10 +484,12 @@ public class StartPageFragment extends Fragment {
                         e.clear();
                         e.apply();
                     }else{
+                        if(getActivity()!=null)
                         Toast.makeText(getActivity(), "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     //Displaying another toast if permission is not granted
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Oops you have denied the permission for write to storage\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -490,6 +497,7 @@ public class StartPageFragment extends Fragment {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (selectedLanguage.equals("LANGUAGE"))
                         //If not chosen..
+                        if(getActivity()!=null)
                         Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
                     else {
                         //Else if chosen..
@@ -511,6 +519,7 @@ public class StartPageFragment extends Fragment {
 
                 } else {
                     //Displaying another toast if permission is not granted
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
             break;
@@ -561,8 +570,10 @@ public class StartPageFragment extends Fragment {
                     myDialog.dismiss();
                 if(ConstantsDefined.isOnline(getActivity())){
                     //Do nothing..
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -610,8 +621,10 @@ public class StartPageFragment extends Fragment {
                     myDialog.dismiss();
                 if(ConstantsDefined.isOnline(getActivity())){
                     //Do nothing..
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                 }
             }

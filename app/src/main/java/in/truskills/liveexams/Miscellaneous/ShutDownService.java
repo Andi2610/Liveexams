@@ -24,6 +24,8 @@ public class ShutDownService extends BroadcastReceiver {
 
         QuizDatabase ob=new QuizDatabase(context);
         SharedPreferences dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
+        SharedPreferences quizPrefs=context.getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
+//        SharedPreferences prefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
         Log.d("switchOff", "onReceive: inSwitchOff");
         String folder_main = "LiveExams";
         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
@@ -32,6 +34,9 @@ public class ShutDownService extends BroadcastReceiver {
         }
         ob.deleteMyTable();
         SharedPreferences.Editor e=dataPrefs.edit();
+        e.clear();
+        e.apply();
+        e=quizPrefs.edit();
         e.clear();
         e.apply();
     }

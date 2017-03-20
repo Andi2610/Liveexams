@@ -277,8 +277,10 @@ public class AllExamsFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 if(ConstantsDefined.isOnline(getActivity())){
                     //Do nothing..
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
+                    if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                 }
             }

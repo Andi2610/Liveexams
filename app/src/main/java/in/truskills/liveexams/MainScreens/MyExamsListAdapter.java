@@ -86,6 +86,7 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                 Log.d("prefsAllow",allow.getInt("allow",1)+"");
 
                 if(allow.getInt("allow",1)==0){
+                    if(c!=null)
                     Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
                 }else{
                     value = myList.get(holder.getAdapterPosition());
@@ -155,8 +156,10 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                                 dialog.dismiss();
                             if(ConstantsDefined.isOnline(c)){
                                 //Do nothing..
+                                if(c!=null)
                                 Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                             }else{
+                                if(c!=null)
                                 Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                             }
                         }

@@ -148,8 +148,10 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
                         dialog.dismiss();
                         if(ConstantsDefined.isOnline(c)){
                             //Do nothing..
+                            if(c!=null)
                             Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                         }else{
+                            if(c!=null)
                             Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
                     }
