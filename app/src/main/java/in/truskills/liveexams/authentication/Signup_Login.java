@@ -1281,7 +1281,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     File f=savebitmap(myB);
                     String myPath=f.getPath();
 
-                    Log.d("myPath", "onResponse: "+myPath);
+                    Log.d("myPath", "onResponse: inResponse"+myPath);
 
                     SharedPreferences.Editor e = prefs.edit();
                     e.putString("navImage", myPath);
