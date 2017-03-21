@@ -290,7 +290,7 @@ public class AllExamsFragmentTemp extends Fragment implements ConnectivityReciev
         menu.clear();
         inflater.inflate(R.menu.all_exams_menu, menu);
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem = menu.findItem(R.id.search);
+        MenuItem menuItem = menu.findItem(R.id.searchAllExams);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         MenuItemCompat.setOnActionExpandListener(menuItem,
                 new MenuItemCompat.OnActionExpandListener() {

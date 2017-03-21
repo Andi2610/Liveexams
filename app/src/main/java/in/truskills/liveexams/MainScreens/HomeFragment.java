@@ -208,6 +208,8 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
 
     public void setList() {
 
+        valuesList=new ArrayList<>();
+
         //connect to joinedExams api..
         if(getActivity()!=null){
             dialog = new ProgressDialog(getActivity());
