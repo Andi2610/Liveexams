@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Declare variables..
     NavigationView navigationView;
     CircularImageView navImage;
+    String myOrient="";
     String my_path;
     TextView navName, navEmail;
     static final int REQUEST_CAMERA = 2, SELECT_FILE = 1;
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navEmail = (TextView) view.findViewById(R.id.navEmail);
 
 
-        String myImagePath = prefs.getString("navImage",Environment.getExternalStorageDirectory()+"/LiveExamsProfileImageDefault/profileImage.jpg");
+        String myImagePath = prefs.getString("navImage","");
 
         Bitmap myImage=getBitmap(myImagePath);
 
@@ -221,13 +222,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         File f= null;
                         try {
-                            f = saveBitmapDefault(icon);
-                            String myPathh=f.getPath()+"/profileImage.jpg";
-                            SharedPreferences.Editor e = prefs.edit();
-                            e.putString("navImage", myPathh);
-                            e.apply();
 
-                            my_path=myPathh;
+                             f=savebitmap(icon);
+
+                            String myPathh=f.getPath();
+
+                            SharedPreferences.Editor ee = prefs.edit();
+                            ee.putString("navImage", myPathh);
+                            ee.apply();
+
+                            my_path=myPathh+"/profileImage.jpg";
 
                             uploadImageToServer();
 
@@ -402,30 +406,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                             case ExifInterface.ORIENTATION_ROTATE_90://6
                                 myBitmap=rotateImage(bitmap, 90);
+                                myOrient=90+"";
                                 break;
 
                             case ExifInterface.ORIENTATION_ROTATE_180://3
                                 myBitmap=rotateImage(bitmap, 180);
+                                myOrient=180+"";
                                 break;
 
                             case ExifInterface.ORIENTATION_ROTATE_270://8
                                 myBitmap=rotateImage(bitmap, 270);
+                                myOrient=270+"";
                                 break;
 
                             case ExifInterface.ORIENTATION_NORMAL://1
                                 myBitmap=bitmap;
+                                myOrient=0+"";
                                 break;
                             default:myBitmap=bitmap;
+                                myOrient=0+"";
                                 break;
                         }
                         byte[] b = baos.toByteArray();
                         MyBitmap=myBitmap;
 
-                        bitmap.recycle();
-                        bitmap = null;
+                        File fRotated=saveBitmapRotated(MyBitmap);
 
-                        myBitmap.recycle();
-                        myBitmap = null;
+                        String tempPath=fRotated.getPath()+"/profileImage.jpg";
+
+                        my_path=tempPath;
 
                         uploadImageToServer();
                     } catch (Exception e) {
@@ -494,30 +503,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                         case ExifInterface.ORIENTATION_ROTATE_90://6
                             myBitmap=rotateImage(bm, 90);
+                            myOrient=90+"";
                             break;
 
                         case ExifInterface.ORIENTATION_ROTATE_180://3
                             myBitmap=rotateImage(bm, 180);
+                            myOrient=180+"";
                             break;
 
                         case ExifInterface.ORIENTATION_ROTATE_270://8
                             myBitmap=rotateImage(bm, 270);
+                            myOrient=270+"";
                             break;
 
                         case ExifInterface.ORIENTATION_NORMAL://1
                             myBitmap=bm;
+                            myOrient=0+"";
                             break;
                         default:myBitmap=bm;
+                            myOrient=0+"";
                             break;
                     }
 //                    navImage.setImageBitmap(myBitmap);
                     MyBitmap=myBitmap;
 
-                    bm.recycle();
-                    bm = null;
+                    File fRotated=saveBitmapRotated(MyBitmap);
 
-                    myBitmap.recycle();
-                    myBitmap = null;
+                    String tempPath=fRotated.getPath()+"/profileImage.jpg";
+
+                    my_path=tempPath;
+
+//                    bm.recycle();
+//                    bm = null;
+
+//                    myBitmap.recycle();
+//                    myBitmap = null;
 //                    BitmapFactory.Options options=new BitmapFactory.Options();
 //                    options.inSampleSize=8;
 //                    MyBitmap=BitmapFactory.decodeStream(myBitmap,null,options);
@@ -611,6 +631,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 deleteDir(f2);
             }
 
+            String folder_main3 = "LiveExamsProfileImageRotated";
+            File f3 = new File(Environment.getExternalStorageDirectory(), folder_main3);
+            if (f3.exists()) {
+                deleteDir(f3);
+            }
+
             Intent i = new Intent(MainActivity.this, Signup_Login.class);
             startActivity(i);
             finish();
@@ -646,50 +672,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // capture image orientation
 
     public void uploadImageToServer(){
-
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                try{
-//
-////                dialog = new ProgressDialog(MainActivity.this);
-////                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-////                dialog.setMessage("Loading.. Please wait...");
-////                dialog.setIndeterminate(true);
-////                dialog.setCancelable(false);
-//
-//                    System.setProperty(SDKGlobalConfiguration.ENFORCE_S3_SIGV4_SYSTEM_PROPERTY, "true");
-////                s3client.
-//                    // upload file to folder and set it to public
-//                    String fileName = "Users/" + prefs.getString("userId","");
-//                    s3client.putObject(new PutObjectRequest("live-exams", fileName,
-////                        new File(Environment.getExternalStorageDirectory()+"/DCIM/Cymera2/CYMERA_20170316_125312.jpg"))
-//                            new File(my_path))
-//                            .withCannedAcl(CannedAccessControlList.PublicRead));
-////                dialog.dismiss();
-//
-////                runOnUiThread(new Runnable() {
-////                        @Override
-////                        public void run() {
-////                            navImage.setImageBitmap(MyBitmap);
-////                        }
-////                    });
-//
-//                }catch(Exception e){
-//                    Log.d("exception",e.toString());
-////                    dialog.dismiss();
-////                    runOnUiThread(new Runnable() {
-////                                @Override
-////                                public void run() {
-////                                    Toast.makeText(MainActivity.this, "Sorry! No internet connection..\nPlease try again..", Toast.LENGTH_SHORT).show();
-////                                }
-////                            });
-//                }
-//            }
-//        }).start();
-
         AsyncTaskRunner async = new AsyncTaskRunner();
         async.execute();
 
@@ -713,13 +695,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 System.setProperty(SDKGlobalConfiguration.ENFORCE_S3_SIGV4_SYSTEM_PROPERTY, "true");
 //                s3client.
                 // upload file to folder and set it to public
-                String fileName = "Users/" + prefs.getString("userId","");
+                String fileName = "Users/" + prefs.getString("userId","")+".jpg";
                 s3client.putObject(new PutObjectRequest("live-exams", fileName,
                         new File(my_path))
                         .withCannedAcl(CannedAccessControlList.PublicRead));
 
             }catch (Exception e){
                 error=true;
+                Log.d("error", "doInBackground: "+e.toString());
             }
             return "done";
         }
@@ -737,8 +720,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
               try {
                   File f=savebitmap(MyBitmap);
                   String myPath=f.getPath();
-
-                  Log.d("myPath", "onResponse: "+myPath);
 
                   SharedPreferences.Editor e = prefs.edit();
                   e.putString("navImage", myPath);
@@ -788,9 +769,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return f;
     }
 
-    public static File saveBitmapDefault(Bitmap bmp) throws Exception {
+    public static File saveBitmapRotated(Bitmap bmp) throws Exception {
 
-        String folder_main = "LiveExamsProfileImageDefault";
+        String folder_main = "LiveExamsProfileImageRotated";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
 

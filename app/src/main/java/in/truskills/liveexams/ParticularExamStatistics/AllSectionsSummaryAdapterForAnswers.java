@@ -69,7 +69,7 @@ public class AllSectionsSummaryAdapterForAnswers extends RecyclerView.Adapter<Al
         String time = ob.getValuesPerSection(sI, AnalyticsDatabase.SectionWiseTimeSpent);
         int myTime=Integer.parseInt(time);
         Date d = new Date(myTime * 1000L);
-        SimpleDateFormat df = new SimpleDateFormat("HH-mm-ss"); // HH for 0-23
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss"); // HH for 0-23
         df.setTimeZone(TimeZone.getTimeZone("GMT"));
         String strTime = df.format(d);
 //        double myTimeInMin=myTime/(60);

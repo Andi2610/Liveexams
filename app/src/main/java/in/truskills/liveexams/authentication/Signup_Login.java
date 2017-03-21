@@ -49,6 +49,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -145,6 +149,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     Animation slide_down;
     Drawable dr;
     ProgressDialog dialog;
+    String accessKeyId="AKIAIJUGKGFIXTWNTTQA",
+            secretAccessKey= "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";
+    AWSCredentials credentials;
+    AmazonS3 s3client;
+
     private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
 
 
@@ -942,12 +951,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                                 R.drawable.camera);
 
-//                        String defaultImage = BitmapToString(icon);
-
                         File f=savebitmap(icon);
+
                         String myPath=f.getPath();
 
-                        Log.d("myPath", "onResponse: "+myPath);
+                        SharedPreferences.Editor ee = prefs.edit();
+                        ee.putString("navImage", myPath);
+                        ee.apply();
 
                         SharedPreferences.Editor e = prefs.edit();
                         e.putString("userId", mapper.get("id"));
@@ -1248,7 +1258,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         dialog.setCancelable(false);
         dialog.show();
 
-        final String urlToConnect = ConstantsDefined.profileImageUrl + id;
+        final String urlToConnect = ConstantsDefined.profileImageUrl + id+".jpg";
 
         RequestQueue requestQ = Volley.newRequestQueue(getApplicationContext());
 
@@ -1256,40 +1266,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Bitmap bitmap) {
 
-                File ff= null;
-                Bitmap myB=bitmap,bm=bitmap;
-
-                Log.d("exception", "onResponse: "+"gotBitmap");
-
-
-//                if(bm.getWidth() > bm.getHeight()) {
-//                    Bitmap bMapRotate = null;
-//                    Matrix mat = new Matrix();
-//                    mat.postRotate(90);
-//                    bMapRotate = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), mat, true);
-//                    bm.recycle();
-//                    bm = null;
-//                    myB=bMapRotate;
-//                }
-
                 try {
-                    ff = saveBitmapDefault(bitmap);
-                    String myPathh=ff.getPath()+"/profileImage.jpg";
-
-                    Log.d("pathh", "onResponse: "+myPathh);
-
-                    myB=getOrientedBitmap(myPathh,bitmap);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d("exception", "onResponse: "+e.toString());
-                }
-
-                try {
-                    File f=savebitmap(myB);
+                    File f=savebitmap(bitmap);
                     String myPath=f.getPath();
-
-                    Log.d("myPath", "onResponse: inResponse"+myPath);
 
                     SharedPreferences.Editor e = prefs.edit();
                     e.putString("navImage", myPath);
@@ -1325,78 +1304,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public static Bitmap rotateImage(Bitmap source, float angle) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
-                matrix, true);
-    }
-
-    public Bitmap getOrientedBitmap(String realPath, Bitmap bm) {
-        ExifInterface ei = null;
-        Bitmap myBitmap = bm;
-        try {
-            ei = new ExifInterface(realPath);
-            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
-
-            Log.d("orientation", "onActivityResult: " + orientation + " " + ExifInterface.ORIENTATION_ROTATE_90 + " " + ExifInterface.ORIENTATION_ROTATE_180 + " " + ExifInterface.ORIENTATION_ROTATE_270 + " " + ExifInterface.ORIENTATION_NORMAL);
-
-            switch (orientation) {
-
-                case ExifInterface.ORIENTATION_ROTATE_90://6
-                    myBitmap = rotateImage(bm, 90);
-                    break;
-
-                case ExifInterface.ORIENTATION_ROTATE_180://3
-                    myBitmap = rotateImage(bm, 180);
-                    break;
-
-                case ExifInterface.ORIENTATION_ROTATE_270://8
-                    myBitmap = rotateImage(bm, 270);
-                    break;
-
-                case ExifInterface.ORIENTATION_NORMAL://1
-                    myBitmap = bm;
-                    break;
-                case 0: myBitmap = rotateImage(bm, 270);
-                    break;
-                default:
-                    myBitmap = bm;
-                    break;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return myBitmap;
-    }
-
     public static File savebitmap(Bitmap bmp) throws Exception {
 
         String folder_main = "LiveExamsProfileImage";
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
-
-        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-        if (!f.exists()) {
-            f.mkdirs();
-        }
-
-        String pp = f.getAbsolutePath();
-        File file = new File(pp
-                + File.separator + "profileImage.jpg");
-        file.createNewFile();
-        FileOutputStream fo = new FileOutputStream(file);
-        fo.write(bytes.toByteArray());
-        fo.close();
-
-        return f;
-    }
-
-    public static File saveBitmapDefault(Bitmap bmp) throws Exception {
-
-        String folder_main = "LiveExamsProfileImageDefault";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
 

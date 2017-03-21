@@ -324,7 +324,7 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
 
     @Override
     public void update() {
-        Toast.makeText(this, "Open explanation page", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "No Explanation available for this Question..", Toast.LENGTH_SHORT).show();
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
