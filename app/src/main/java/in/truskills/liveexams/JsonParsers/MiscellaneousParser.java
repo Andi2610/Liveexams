@@ -344,5 +344,16 @@ public class MiscellaneousParser {
         return ans;
     }
 
+    public static HashMap<String,String> allExamsApiParserTemp(JSONObject result) throws JSONException {
+        HashMap<String,String> map=new HashMap<>();
+        map.put("response",result.getJSONObject(response).toString());
+        map.put("success",result.getString(success));
+        JSONObject jsonObject1=new JSONObject(result.getJSONObject(response).toString());
+        String myTimestamp=jsonObject1.getString(timestamp);
+        String myExams=jsonObject1.getJSONArray(exams).toString();
+        map.put("timestamp",myTimestamp);
+        map.put("exams",myExams);
+        return map;
+    }
 
 }

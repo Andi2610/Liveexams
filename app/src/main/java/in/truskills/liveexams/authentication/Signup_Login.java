@@ -777,8 +777,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     public void loginValidation() {
         login_name = loginName.getText().toString();
         login_password = loginPassword.getText().toString();
-        if (!login_name.equals("") && !login_password.equals(""))
-            loginFunction();
+        if (!login_name.equals("") && !login_password.equals("")){
+            boolean checkForWrite=CheckForPermissions.checkForWriteStorage(this);
+            if(checkForWrite)
+                loginFunction();
+        }
         else {
             if (login_name.equals(""))
                 loginName.setError("Required", dr);
@@ -1056,6 +1059,15 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 }
                 getVerified();
                 break;
+            case CheckForPermissions.WRITE_STORAGE_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    loginFunction();
+                } else {
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(this, "Oops you have denied the permission for write to storage\n" +
+                            "Go to settings and grant them", Toast.LENGTH_LONG).show();
+                }
+                break;
         }
     }
 
@@ -1325,5 +1337,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         return f;
     }
+
 
 }
