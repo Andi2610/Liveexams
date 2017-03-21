@@ -96,8 +96,8 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
 
         //Initialise the variables..
         add = (Button) getActivity().findViewById(R.id.add);
-        retryButton = (Button) getActivity().findViewById(R.id.retryButton);
-        noConnectionLayout = (LinearLayout) getActivity().findViewById(R.id.noConnectionLayout);
+        retryButton = (Button) getActivity().findViewById(R.id.retryButtonForHome);
+        noConnectionLayout = (LinearLayout) getActivity().findViewById(R.id.noConnectionLayoutForHome);
         noConnectionText = (TextView) getActivity().findViewById(R.id.noConnectionText);
         Typeface tff1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         retryButton.setTypeface(tff1);
@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AllExamsFragment f = new AllExamsFragment();
+                AllExamsFragmentTemp f = new AllExamsFragmentTemp();
                 ob.changeFragmentFromHome(f);
             }
         });
@@ -125,6 +125,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                 setList();
             }
         });
+
     }
 
     @Override
@@ -197,7 +198,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addIcon:
-                AllExamsFragment f = new AllExamsFragment();
+                AllExamsFragmentTemp f = new AllExamsFragmentTemp();
                 ob.changeFragmentFromHome(f);
                 break;
         }
@@ -306,6 +307,8 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 if(dialog!=null)
                 dialog.dismiss();
+
+
                 if(ConstantsDefined.isOnline(getActivity())){
                     //Do nothing..
                     if(getActivity()!=null)

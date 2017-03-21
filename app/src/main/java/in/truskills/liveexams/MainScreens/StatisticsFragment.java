@@ -111,6 +111,7 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
         noConnectionLayout.setVisibility(View.GONE);
         noExams.setVisibility(View.GONE);
 
+
         setList();
 
         retryButton.setOnClickListener(new View.OnClickListener() {

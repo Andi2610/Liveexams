@@ -155,12 +155,19 @@ public class MiscellaneousParser {
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             ExamNameList.add(jsonObject.getJSONArray(ExamName).get(0).toString());
+
             ExamDurationList.add(jsonObject.getJSONArray(ExamDuration).get(0).toString());
+
             StartTimeList.add(jsonObject.getJSONArray(StartTime).get(0).toString());
+
             EndTimeList.add(jsonObject.getJSONArray(EndTime).get(0).toString());
+
             StartDateList.add(jsonObject.getJSONArray(StartDate).get(0).toString());
+
             EndDateList.add(jsonObject.getJSONArray(EndDate).get(0).toString());
+
             ExamIdList.add(jsonObject.getString(id));
+
         }
         mapper.put("ExamName", ExamNameList);
         mapper.put("ExamDuration", ExamDurationList);
@@ -342,18 +349,6 @@ public class MiscellaneousParser {
 //        JSONObject jsonObject1=jsonArray1.getJSONObject(5);
 //        ans=jsonObject1.getString("long_name");
         return ans;
-    }
-
-    public static HashMap<String,String> allExamsApiParserTemp(JSONObject result) throws JSONException {
-        HashMap<String,String> map=new HashMap<>();
-        map.put("response",result.getJSONObject(response).toString());
-        map.put("success",result.getString(success));
-        JSONObject jsonObject1=new JSONObject(result.getJSONObject(response).toString());
-        String myTimestamp=jsonObject1.getString(timestamp);
-        String myExams=jsonObject1.getJSONArray(exams).toString();
-        map.put("timestamp",myTimestamp);
-        map.put("exams",myExams);
-        return map;
     }
 
 }

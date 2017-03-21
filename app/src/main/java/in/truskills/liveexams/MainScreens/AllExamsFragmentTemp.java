@@ -22,7 +22,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,17 +40,21 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
-
-public class AllExamsFragment extends Fragment{
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class AllExamsFragmentTemp extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
 
 
     RecyclerView allExamsList;
@@ -60,12 +63,15 @@ public class AllExamsFragment extends Fragment{
     List<Values> valuesList, filteredList;
     Values values;
     RequestQueue requestQueue;
+    ProgressDialog dialog;
     Handler h;
     SearchView searchView;
     String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
     TextView searchExams;
+    LinearLayout noConnectionLayout;
+    Button retryButton;
 
-    public AllExamsFragment() {
+    public AllExamsFragmentTemp() {
         // Required empty public constructor
     }
 
@@ -75,14 +81,14 @@ public class AllExamsFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_all_exams, container, false);
+        return inflater.inflate(R.layout.fragment_all_exams_fragment_temp, container, false);
     }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        allExamsList = (RecyclerView) getActivity().findViewById(R.id.allExamsList);
+
+        allExamsList = (RecyclerView) getActivity().findViewById(R.id.allExamsListTemp);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
         requestQueue = Volley.newRequestQueue(getActivity());
@@ -91,116 +97,70 @@ public class AllExamsFragment extends Fragment{
         searchExams = (TextView) getActivity().findViewById(R.id.searchExams);
         Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         searchExams.setTypeface(tff);
+
+        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayoutForAllExams);
+        retryButton=(Button)getActivity().findViewById(R.id.retryButtonForAllExams);
+
         searchExams.setVisibility(View.GONE);
+        noConnectionLayout.setVisibility(View.GONE);
+
+        dialog = new ProgressDialog(getActivity());
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Fetching all exams.. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
 
         allExamsList.setLayoutManager(linearLayoutManager);
         allExamsList.setItemAnimator(new DefaultItemAnimator());
 
+        retryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("reached", "onClick: ");
+                setList();
+            }
+        });
+
+        valuesList=new ArrayList<>();
+
         setList();
+
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.all_exams_menu, menu);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem = menu.findItem(R.id.searchAllExams);
-        menuItem.expandActionView();
-        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        MenuItemCompat.setOnActionExpandListener(menuItem,
-                new MenuItemCompat.OnActionExpandListener() {
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                        // Return true to allow the action view to expand
-                        searchView.requestFocus();
-                        return true;
-                    }
+    public void setList(){
 
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                        // When the action view is collapsed, reset the query
-//                        setList();
-                        searchView.clearFocus();
-                        // Return true to allow the action view to collapse
-                        return true;
-                    }
-                });
-        searchView.setIconifiedByDefault(true);
-        if (searchView != null) {
-            searchView.onActionViewExpanded();
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
-            searchView.setQueryHint("Type here..");
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return true;
-                }
 
-                @Override
-                public boolean onQueryTextChange(String s) {
+        valuesList=new ArrayList<>();
 
-                    s = s.toString().toLowerCase();
-
-                    filteredList = new ArrayList<>();
-
-                    if (s.equals("")) {
-                        allExamsListAdapter = new AllExamsListAdapter(filteredList, getActivity());
-                        allExamsList.setAdapter(allExamsListAdapter);
-                        allExamsListAdapter.notifyDataSetChanged();
-                        searchExams.setVisibility(View.VISIBLE);
-                    } else {
-                        connectToApi(s);
-                    }
-                    return true;
-                }
-            });
+        //connect to joinedExams api..
+        if(getActivity()!=null){
+            dialog.show();
         }
-    }
-
-    public void setList() {
-        valuesList = new ArrayList<>();
-        allExamsListAdapter = new AllExamsListAdapter(valuesList, getActivity());
-        allExamsList.setAdapter(allExamsListAdapter);
-        allExamsListAdapter.notifyDataSetChanged();
-        searchExams.setVisibility(View.VISIBLE);
-    }
-
-    public void populateList(List<Values> list) {
-        allExamsListAdapter = new AllExamsListAdapter(list, getActivity());
-        allExamsList.setAdapter(allExamsListAdapter);
-        allExamsListAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        filteredList = new ArrayList<>();
-
-        if (searchView == null) {
-            allExamsListAdapter = new AllExamsListAdapter(filteredList, getActivity());
-            allExamsList.setAdapter(allExamsListAdapter);
-            allExamsListAdapter.notifyDataSetChanged();
-
-        } else {
-            connectToApi(searchView.getQuery() + "");
-        }
-
-    }
-
-    public void connectToApi(String s) {
-
-        filteredList=new ArrayList<>();
 
         ConstantsDefined.updateAndroidSecurityProvider(getActivity());
         ConstantsDefined.beforeVolleyConnect();
 
-        String url = ConstantsDefined.api + "searchExams/" + s;
+        String url = "https://api.liveexams.in/data/allexams";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONObject response)
+            {
+
+                Log.d("reached", "onResponse: ");
+
+                if(dialog!=null)
+                    dialog.dismiss();
+                else{
+                    Log.d("reached", "onResponse: nullDialog");
+                }
+
+                noConnectionLayout.setVisibility(View.GONE);
+
+
                 try {
+
                     HashMap<String, String> map = MiscellaneousParser.allExamsApiParser(response);
                     String exams = map.get("exams");
                     String timestamp = map.get("timestamp");
@@ -209,17 +169,20 @@ public class AllExamsFragment extends Fragment{
                     JSONArray jsonArray = new JSONArray(exams);
                     int length = jsonArray.length();
                     if (length == 0) {
-                        filteredList.clear();
+                        valuesList.clear();
                         h.post(new Runnable() {
                             @Override
                             public void run() {
                                 searchExams.setVisibility(View.VISIBLE);
-                                populateList(filteredList);
+                                noConnectionLayout.setVisibility(View.GONE);
+                                populateList(valuesList);
                             }
                         });
                     } else {
                         searchExams.setVisibility(View.GONE);
-                        filteredList = new ArrayList<Values>();
+                        noConnectionLayout.setVisibility(View.GONE);
+
+                        valuesList = new ArrayList<Values>();
                         for (int i = 0; i < length; ++i) {
                             myStartDate = mapper.get("StartDate").get(i);
                             myEndDate = mapper.get("EndDate").get(i);
@@ -253,46 +216,153 @@ public class AllExamsFragment extends Fragment{
 
                             if (middle_date.before(start_date)) {
                                 values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                filteredList.add(values);
+                                valuesList.add(values);
                             } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
                                 if (middle_date.equals(end_date)) {
                                     if (!middle_time.after(end_time)) {
                                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                        filteredList.add(values);
+                                        valuesList.add(values);
                                     }
                                 } else {
                                     values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                    filteredList.add(values);
+                                    valuesList.add(values);
                                 }
                             }
                         }
                         h.post(new Runnable() {
                             @Override
                             public void run() {
-                                populateList(filteredList);
+                                populateList(valuesList);
                             }
                         });
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
+
+                }catch(Exception e) {
                     e.printStackTrace();
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                Log.d("checkForError",error.toString());
+
+                noConnectionLayout.setVisibility(View.VISIBLE);
+
+                if(dialog!=null)
+                    dialog.dismiss();
+
+
                 if(ConstantsDefined.isOnline(getActivity())){
                     //Do nothing..
                     if(getActivity()!=null)
-                    Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
                     if(getActivity()!=null)
-                    Toast.makeText(getActivity(), "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         requestQueue.add(jsonObjectRequest);
     }
 
+    public void populateList(List<Values> list) {
+        allExamsListAdapter = new AllExamsListAdapter(list, getActivity());
+        allExamsList.setLayoutManager(linearLayoutManager);
+        allExamsList.setItemAnimator(new DefaultItemAnimator());
+        allExamsList.setAdapter(allExamsListAdapter);
+        allExamsListAdapter.notifyDataSetChanged();
+
+        if (list.isEmpty()) {
+           searchExams.setVisibility(View.VISIBLE);
+            noConnectionLayout.setVisibility(View.GONE);
+
+        } else {
+            searchExams.setVisibility(View.GONE);
+            noConnectionLayout.setVisibility(View.GONE);
+
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.all_exams_menu, menu);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        MenuItem menuItem = menu.findItem(R.id.search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        MenuItemCompat.setOnActionExpandListener(menuItem,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                        // Return true to allow the action view to expand
+                        searchView.requestFocus();
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                        // When the action view is collapsed, reset the query
+                        setList();
+                        searchView.clearFocus();
+                        // Return true to allow the action view to collapse
+                        return true;
+                    }
+                });
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
+            searchView.setQueryHint("Type here..");
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+
+                    if(s.equals("")){
+                        filteredList = new ArrayList<>();
+                        allExamsListAdapter = new AllExamsListAdapter(filteredList, getActivity());
+                        allExamsList.setAdapter(allExamsListAdapter);
+                        allExamsListAdapter.notifyDataSetChanged();
+
+                    }else{
+                        s = s.toString().toLowerCase();
+                        filteredList = new ArrayList<>();
+
+                        for (int i = 0; i < valuesList.size(); i++) {
+
+                            final String text = valuesList.get(i).name.toLowerCase();
+                            if (text.contains(s)) {
+
+                                filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
+                            }
+                        }
+                        allExamsListAdapter = new AllExamsListAdapter(filteredList, getActivity());
+                        allExamsList.setAdapter(allExamsListAdapter);
+                        allExamsListAdapter.notifyDataSetChanged();
+                    }
+                    return true;
+                }
+            });
+        }
+    }
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (isConnected) {
+            if (valuesList.isEmpty()) {
+                setList();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        valuesList = new ArrayList<>();
+        setList();
+    }
 }

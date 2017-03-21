@@ -1,699 +1,702 @@
 {
-    "response": [
-    {
-    "_id": "58cb8a7facfad33a53752b16",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "11-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Exam1"
-    ]
+    "response": {
+        "timestamp": "2017-03-21T16:00:38+05:30",
+        "exams": [
+            {
+                "_id": "58cb8a7facfad33a53752b16",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "11-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Exam1"
+                ]
+            },
+            {
+                "_id": "58cb8cf1acfad33a53752c08",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "13-00"
+                ],
+                "StartTime": [
+                    "12-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/17/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "NEET"
+                ]
+            },
+            {
+                "_id": "58cb8dc1acfad33a53752ee2",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "11-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Exam2"
+                ]
+            },
+            {
+                "_id": "58cb8dc9acfad33a53752fc1",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "11-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Exam3"
+                ]
+            },
+            {
+                "_id": "58cb90a2acfad33a5375311b",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "11-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Exam4"
+                ]
+            },
+            {
+                "_id": "58cb90e0acfad33a537531fa",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "11-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Exam5"
+                ]
+            },
+            {
+                "_id": "58cb99afacfad33a53753318",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "11-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Exam6"
+                ]
+            },
+            {
+                "_id": "58cbbf4dacfad33a53753457",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "11-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Exam7"
+                ]
+            },
+            {
+                "_id": "58cbc621acfad33a537535ea",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "12-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/17/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "JEE"
+                ]
+            },
+            {
+                "_id": "58cbce42e550bf410c0bae05",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "15-00"
+                ],
+                "EndDate": [
+                    "1/2/2017"
+                ],
+                "StartDate": [
+                    "1/1/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Maths"
+                ]
+            },
+            {
+                "_id": "58cbd512ed53bb42456a650e",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "20-00"
+                ],
+                "StartTime": [
+                    "11-00"
+                ],
+                "EndDate": [
+                    "3/17/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Exam8"
+                ]
+            },
+            {
+                "_id": "58cbdba5ed53bb42456a65ed",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "15-00"
+                ],
+                "EndDate": [
+                    "3/29/2017"
+                ],
+                "StartDate": [
+                    "3/16/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "AI"
+                ]
+            },
+            {
+                "_id": "58ccc0bfed53bb42456a66de",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "10-00"
+                ],
+                "EndDate": [
+                    "3/19/2017"
+                ],
+                "StartDate": [
+                    "3/18/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "JEE"
+                ]
+            },
+            {
+                "_id": "58cd17a5c323e04ff01a07d3",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "17-15"
+                ],
+                "StartTime": [
+                    "17-00"
+                ],
+                "EndDate": [
+                    "3/18/2017"
+                ],
+                "StartDate": [
+                    "3/18/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Maths"
+                ]
+            },
+            {
+                "_id": "58cf784b7fbbc0613c8d47e6",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "13-00"
+                ],
+                "StartTime": [
+                    "12-00"
+                ],
+                "EndDate": [
+                    "3/20/2017"
+                ],
+                "StartDate": [
+                    "3/20/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "English"
+                ]
+            },
+            {
+                "_id": "58cf7fb17fbbc0613c8d4ac3",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "15-00"
+                ],
+                "EndDate": [
+                    "1/2/2017"
+                ],
+                "StartDate": [
+                    "1/1/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Maths"
+                ]
+            },
+            {
+                "_id": "58cf85097fbbc0613c8d4bb2",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-00"
+                ],
+                "StartTime": [
+                    "15-00"
+                ],
+                "EndDate": [
+                    "1/2/2017"
+                ],
+                "StartDate": [
+                    "1/1/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Maths"
+                ]
+            },
+            {
+                "_id": "58cf87667fbbc0613c8d4ca1",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "13-45"
+                ],
+                "StartTime": [
+                    "13-20"
+                ],
+                "EndDate": [
+                    "3/21/2017"
+                ],
+                "StartDate": [
+                    "3/20/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Maths"
+                ]
+            },
+            {
+                "_id": "58cf8b0c7fbbc0613c8d4d81",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "17-00"
+                ],
+                "StartTime": [
+                    "13-00"
+                ],
+                "EndDate": [
+                    "3/20/2017"
+                ],
+                "StartDate": [
+                    "3/20/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Physics"
+                ]
+            },
+            {
+                "_id": "58cf96ac7fbbc0613c8d50c8",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "14-45"
+                ],
+                "StartTime": [
+                    "14-20"
+                ],
+                "EndDate": [
+                    "3/21/2017"
+                ],
+                "StartDate": [
+                    "3/20/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "CoolExam"
+                ]
+            },
+            {
+                "_id": "58cf9dfa7fbbc0613c8d52b9",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "21-00"
+                ],
+                "StartTime": [
+                    "13-00"
+                ],
+                "EndDate": [
+                    "3/20/2017"
+                ],
+                "StartDate": [
+                    "3/20/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Physics retest"
+                ]
+            },
+            {
+                "_id": "58cfa15a7fbbc0613c8d5596",
+                "ExamDuration": [],
+                "EndTime": [
+                    "16-10"
+                ],
+                "StartTime": [
+                    "15-10"
+                ],
+                "EndDate": [
+                    "3/21/2017"
+                ],
+                "StartDate": [
+                    "3/21/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "English"
+                ]
+            },
+            {
+                "_id": "58cfa3867fbbc0613c8d5870",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "16-10"
+                ],
+                "StartTime": [
+                    "15-15"
+                ],
+                "EndDate": [
+                    "3/20/2017"
+                ],
+                "StartDate": [
+                    "3/21/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Date21/3"
+                ]
+            },
+            {
+                "_id": "58cfa5847fbbc0613c8d5b4b",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "12-10"
+                ],
+                "StartTime": [
+                    "15-00"
+                ],
+                "EndDate": [
+                    "3/21/2017"
+                ],
+                "StartDate": [
+                    "3/21/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Date21/3"
+                ]
+            },
+            {
+                "_id": "58cfa6a57fbbc0613c8d60fb",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "16-10"
+                ],
+                "StartTime": [
+                    "15-00"
+                ],
+                "EndDate": [
+                    "3/21/2017"
+                ],
+                "StartDate": [
+                    "3/21/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Date21/3"
+                ]
+            },
+            {
+                "_id": "58cfadce7fbbc0613c8d69e3",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "17-10"
+                ],
+                "StartTime": [
+                    "16-00"
+                ],
+                "EndDate": [
+                    "3/20/2017"
+                ],
+                "StartDate": [
+                    "3/20/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "forMonitor"
+                ]
+            },
+            {
+                "_id": "58cfc9537fbbc0613c8d6ddd",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "17-30"
+                ],
+                "StartTime": [
+                    "17-00"
+                ],
+                "EndDate": [
+                    "3/20/2017"
+                ],
+                "StartDate": [
+                    "3/20/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "forAnalytics"
+                ]
+            },
+            {
+                "_id": "58cfcaa57fbbc0613c8d7112",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "18-30"
+                ],
+                "StartTime": [
+                    "18-00"
+                ],
+                "EndDate": [
+                    "3/20/2017"
+                ],
+                "StartDate": [
+                    "3/20/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "forAnalytics"
+                ]
+            },
+            {
+                "_id": "58d0d0b17fbbc0613c8d757d",
+                "ExamDuration": [
+                    "03-00"
+                ],
+                "EndTime": [
+                    "21-00"
+                ],
+                "StartTime": [
+                    "10-00"
+                ],
+                "EndDate": [
+                    "3/22/2017"
+                ],
+                "StartDate": [
+                    "3/22/2017"
+                ],
+                "ExamId": [
+                    "0001"
+                ],
+                "ExamName": [
+                    "Chemistry"
+                ]
+            }
+        ]
     },
-    {
-    "_id": "58cb8cf1acfad33a53752c08",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "13-00"
-    ],
-    "StartTime": [
-    "12-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/17/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "NEET"
-    ]
-    },
-    {
-    "_id": "58cb8dc1acfad33a53752ee2",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "11-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Exam2"
-    ]
-    },
-    {
-    "_id": "58cb8dc9acfad33a53752fc1",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "11-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Exam3"
-    ]
-    },
-    {
-    "_id": "58cb90a2acfad33a5375311b",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "11-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Exam4"
-    ]
-    },
-    {
-    "_id": "58cb90e0acfad33a537531fa",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "11-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Exam5"
-    ]
-    },
-    {
-    "_id": "58cb99afacfad33a53753318",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "11-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Exam6"
-    ]
-    },
-    {
-    "_id": "58cbbf4dacfad33a53753457",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "11-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Exam7"
-    ]
-    },
-    {
-    "_id": "58cbc621acfad33a537535ea",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "12-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/17/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "JEE"
-    ]
-    },
-    {
-    "_id": "58cbce42e550bf410c0bae05",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "15-00"
-    ],
-    "EndDate": [
-    "1/2/2017"
-    ],
-    "StartDate": [
-    "1/1/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Maths"
-    ]
-    },
-    {
-    "_id": "58cbd512ed53bb42456a650e",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "20-00"
-    ],
-    "StartTime": [
-    "11-00"
-    ],
-    "EndDate": [
-    "3/17/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Exam8"
-    ]
-    },
-    {
-    "_id": "58cbdba5ed53bb42456a65ed",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "15-00"
-    ],
-    "EndDate": [
-    "3/29/2017"
-    ],
-    "StartDate": [
-    "3/16/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "AI"
-    ]
-    },
-    {
-    "_id": "58ccc0bfed53bb42456a66de",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "10-00"
-    ],
-    "EndDate": [
-    "3/19/2017"
-    ],
-    "StartDate": [
-    "3/18/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "JEE"
-    ]
-    },
-    {
-    "_id": "58cd17a5c323e04ff01a07d3",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "17-15"
-    ],
-    "StartTime": [
-    "17-00"
-    ],
-    "EndDate": [
-    "3/18/2017"
-    ],
-    "StartDate": [
-    "3/18/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Maths"
-    ]
-    },
-    {
-    "_id": "58cf784b7fbbc0613c8d47e6",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "13-00"
-    ],
-    "StartTime": [
-    "12-00"
-    ],
-    "EndDate": [
-    "3/20/2017"
-    ],
-    "StartDate": [
-    "3/20/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "English"
-    ]
-    },
-    {
-    "_id": "58cf7fb17fbbc0613c8d4ac3",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "15-00"
-    ],
-    "EndDate": [
-    "1/2/2017"
-    ],
-    "StartDate": [
-    "1/1/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Maths"
-    ]
-    },
-    {
-    "_id": "58cf85097fbbc0613c8d4bb2",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-00"
-    ],
-    "StartTime": [
-    "15-00"
-    ],
-    "EndDate": [
-    "1/2/2017"
-    ],
-    "StartDate": [
-    "1/1/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Maths"
-    ]
-    },
-    {
-    "_id": "58cf87667fbbc0613c8d4ca1",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "13-45"
-    ],
-    "StartTime": [
-    "13-20"
-    ],
-    "EndDate": [
-    "3/21/2017"
-    ],
-    "StartDate": [
-    "3/20/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Maths"
-    ]
-    },
-    {
-    "_id": "58cf8b0c7fbbc0613c8d4d81",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "17-00"
-    ],
-    "StartTime": [
-    "13-00"
-    ],
-    "EndDate": [
-    "3/20/2017"
-    ],
-    "StartDate": [
-    "3/20/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Physics"
-    ]
-    },
-    {
-    "_id": "58cf96ac7fbbc0613c8d50c8",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "14-45"
-    ],
-    "StartTime": [
-    "14-20"
-    ],
-    "EndDate": [
-    "3/21/2017"
-    ],
-    "StartDate": [
-    "3/20/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "CoolExam"
-    ]
-    },
-    {
-    "_id": "58cf9dfa7fbbc0613c8d52b9",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "21-00"
-    ],
-    "StartTime": [
-    "13-00"
-    ],
-    "EndDate": [
-    "3/20/2017"
-    ],
-    "StartDate": [
-    "3/20/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Physics retest"
-    ]
-    },
-    {
-    "_id": "58cfa15a7fbbc0613c8d5596",
-    "ExamDuration": [],
-    "EndTime": [
-    "16-10"
-    ],
-    "StartTime": [
-    "15-10"
-    ],
-    "EndDate": [
-    "3/21/2017"
-    ],
-    "StartDate": [
-    "3/21/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "English"
-    ]
-    },
-    {
-    "_id": "58cfa3867fbbc0613c8d5870",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "16-10"
-    ],
-    "StartTime": [
-    "15-15"
-    ],
-    "EndDate": [
-    "3/20/2017"
-    ],
-    "StartDate": [
-    "3/21/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Date21/3"
-    ]
-    },
-    {
-    "_id": "58cfa5847fbbc0613c8d5b4b",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "12-10"
-    ],
-    "StartTime": [
-    "15-00"
-    ],
-    "EndDate": [
-    "3/21/2017"
-    ],
-    "StartDate": [
-    "3/21/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Date21/3"
-    ]
-    },
-    {
-    "_id": "58cfa6a57fbbc0613c8d60fb",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "16-10"
-    ],
-    "StartTime": [
-    "15-00"
-    ],
-    "EndDate": [
-    "3/21/2017"
-    ],
-    "StartDate": [
-    "3/21/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Date21/3"
-    ]
-    },
-    {
-    "_id": "58cfadce7fbbc0613c8d69e3",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "17-10"
-    ],
-    "StartTime": [
-    "16-00"
-    ],
-    "EndDate": [
-    "3/20/2017"
-    ],
-    "StartDate": [
-    "3/20/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "forMonitor"
-    ]
-    },
-    {
-    "_id": "58cfc9537fbbc0613c8d6ddd",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "17-30"
-    ],
-    "StartTime": [
-    "17-00"
-    ],
-    "EndDate": [
-    "3/20/2017"
-    ],
-    "StartDate": [
-    "3/20/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "forAnalytics"
-    ]
-    },
-    {
-    "_id": "58cfcaa57fbbc0613c8d7112",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "18-30"
-    ],
-    "StartTime": [
-    "18-00"
-    ],
-    "EndDate": [
-    "3/20/2017"
-    ],
-    "StartDate": [
-    "3/20/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "forAnalytics"
-    ]
-    },
-    {
-    "_id": "58d0d0b17fbbc0613c8d757d",
-    "ExamDuration": [
-    "03-00"
-    ],
-    "EndTime": [
-    "21-00"
-    ],
-    "StartTime": [
-    "10-00"
-    ],
-    "EndDate": [
-    "3/22/2017"
-    ],
-    "StartDate": [
-    "3/22/2017"
-    ],
-    "ExamId": [
-    "0001"
-    ],
-    "ExamName": [
-    "Chemistry"
-    ]
-    }
-    ],
     "success": "true"
-    }
+}
