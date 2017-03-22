@@ -372,21 +372,25 @@ public class StartPageFragment extends Fragment {
                     requestQueue.add(stringRequest);
                 } else if (start_leave_button.getText().equals("START")) {
 
+
+                    Log.d("start", "onClick: 1");
+
                     boolean statusForWriteStorage = CheckForPermissions.checkForWriteStorage(getActivity());
                     if (statusForWriteStorage) {
+
+                        Log.d("start", "onClick: 2");
+
 
                         boolean statusForCamera = CheckForPermissions.checkForCamera(getActivity());
 
                         if(statusForCamera){
+
+                            Log.d("start", "onClick: 3");
+
                             //Check if a valid language has been chosen from the list..
-                            if (selectedLanguage.equals("LANGUAGE"))
-                                //If not chosen..
-                                if(getActivity()!=null)
-                                Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
-                            else {
-                                //Else if chosen..
-                                //Start Quiz
-                                String folder_main = "LiveExams";
+                                    Log.d("start", "onClick: 4");
+
+                                    String folder_main = "LiveExams";
 
                                 File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                                 if (f.exists()) {
@@ -401,8 +405,6 @@ public class StartPageFragment extends Fragment {
                             e.clear();
                             e.apply();
                         }
-
-                    }
 
                     Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
                             .putCustomAttribute("userName", prefs.getString("userName", ""))
@@ -462,11 +464,6 @@ public class StartPageFragment extends Fragment {
 
                     if(statusForCamera){
                         //Check if a valid language has been chosen from the list..
-                        if (selectedLanguage.equals("LANGUAGE"))
-                            //If not chosen..
-                            if(getActivity()!=null)
-                            Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
-                        else {
                             //Else if chosen..
                             //Start Quiz
                             String folder_main = "LiveExams";
@@ -477,7 +474,6 @@ public class StartPageFragment extends Fragment {
                             }
 
                             getDate();
-                        }
 
                         o.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
@@ -529,6 +525,9 @@ public class StartPageFragment extends Fragment {
 
     public void getDate(){
         Log.d("myDateeeee", "getDate: ");
+
+        Log.d("start", "onClick: 5");
+
 
         myDialog.show();
 

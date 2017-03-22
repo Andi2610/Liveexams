@@ -611,9 +611,9 @@ public class AnswerPaperLoad extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if(execute){
-            asyncTaskRunner.cancel(true);
-            finish();
-        }
+//        if(execute){
+//            asyncTaskRunner.cancel(true);
+//            finish();
+//        }
     }
 }
