@@ -524,7 +524,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             myOrient=0+"";
                             break;
                     }
-//                    navImage.setImageBitmap(myBitmap);
                     MyBitmap=myBitmap;
 
                     File fRotated=saveBitmapRotated(MyBitmap);
@@ -533,14 +532,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     my_path=tempPath;
 
-//                    bm.recycle();
-//                    bm = null;
-
-//                    myBitmap.recycle();
-//                    myBitmap = null;
-//                    BitmapFactory.Options options=new BitmapFactory.Options();
-//                    options.inSampleSize=8;
-//                    MyBitmap=BitmapFactory.decodeStream(myBitmap,null,options);
                     uploadImageToServer();
 
                 } catch (Exception e) {
@@ -551,11 +542,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 e.printStackTrace();
             }
         }
-//        String tempString = BitmapToString(bm);
-//        //Edit shared preference of navImage to currently obtained image..
-//        SharedPreferences.Editor e = prefs.edit();
-//        e.putString("navImage", tempString);
-//        e.apply();
     }
 
     @Override
