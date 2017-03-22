@@ -848,8 +848,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                                 signupDrawer.close();
                                 loginDrawer.open();
                             } else {
-                                JSONObject jo = new JSONObject(mapper.get("response"));
-                                String errmsg = jo.getString("errmsg");
+//                                JSONObject jo = new JSONObject(mapper.get("response"));
+//                                String errmsg = jo.getString("errmsg");
+                                String errmsg=mapper.get("response");
                                 Toast.makeText(Signup_Login.this, "Couldn't Signup: " + errmsg, Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {

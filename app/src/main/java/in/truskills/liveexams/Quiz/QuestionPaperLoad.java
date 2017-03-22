@@ -75,6 +75,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     Button retryButtonForDownload, exitButton;
     com.wang.avi.AVLoadingIndicatorView avi;
     Handler h;
+    AsyncTaskRunner asyncTaskRunner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +153,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                     public void run() {
                         download=true;
                         myResponseResult=result;
-                        AsyncTaskRunner asyncTaskRunner=new AsyncTaskRunner();
+                        asyncTaskRunner=new AsyncTaskRunner();
                         asyncTaskRunner.execute();
                     }
                 });

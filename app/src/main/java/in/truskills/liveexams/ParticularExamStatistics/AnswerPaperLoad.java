@@ -604,16 +604,11 @@ public class AnswerPaperLoad extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         if(execute){
+            Log.d("execute", "onBackPressed: true");
             asyncTaskRunner.cancel(true);
-        }
-    }
+        }else{
+            Log.d("execute", "onBackPressed: false");
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        if(execute){
-//            asyncTaskRunner.cancel(true);
-//            finish();
-//        }
+        }
     }
 }
