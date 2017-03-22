@@ -477,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
 
                     // SDK >= 11 && SDK < 19
-                else if (Build.VERSION.SDK_INT <= 19)
+                else if (Build.VERSION.SDK_INT <= 22)
                     realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
 
                     // SDK > 19 (Android 4.4)
