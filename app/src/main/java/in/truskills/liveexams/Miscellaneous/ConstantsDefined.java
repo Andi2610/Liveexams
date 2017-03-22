@@ -98,7 +98,13 @@ public class ConstantsDefined {
         // Create all-trusting host name verifier
         HostnameVerifier allHostsValid = new HostnameVerifier() {
             public boolean verify(String hostname, SSLSession session) {
-                return true;
+                Log.d("hostName", "verify: "+hostname);
+                if( hostname.equals("api.liveexams.in")||
+                        hostname.equals("s3.ap-south-1.amazonaws.com")||
+                        hostname.equals("maps.googleapis.com"))
+                    return true;
+
+                return false;
             }
         };
         // Install the all-trusting host verifier
