@@ -249,6 +249,7 @@ public class AllExamsFragmentTemp extends Fragment implements ConnectivityReciev
                 Log.d("checkForError",error.toString());
 
                 noConnectionLayout.setVisibility(View.VISIBLE);
+                searchExams.setVisibility(View.GONE);
 
                 if(dialog!=null)
                     dialog.dismiss();

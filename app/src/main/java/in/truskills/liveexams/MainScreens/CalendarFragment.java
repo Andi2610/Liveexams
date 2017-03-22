@@ -186,6 +186,8 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
                     HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExams);
                     JSONArray arr = new JSONArray(myJoinedExams);
                     int length = arr.length();
+
+                    valuesList=new ArrayList<>();
                     for (int i = 0; i < length; ++i) {
 
                         //If user is still enrolled to this exam..

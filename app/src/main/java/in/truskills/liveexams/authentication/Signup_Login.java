@@ -365,6 +365,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 e.putInt("signup", 0);
                 e.apply();
 
+                locationField.setEnabled(true);
+
+
                 //Hide the login drawer..
                 loginDrawer.setVisibility(View.GONE);
                 app_logo.setVisibility(View.GONE);
@@ -686,6 +689,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             //If location icon is pressed..Call the getCurrentLocation method..
             case R.id.locationField:
                 getCurrentLocation();
+                locationField.setEnabled(false);
                 break;
         }
     }
