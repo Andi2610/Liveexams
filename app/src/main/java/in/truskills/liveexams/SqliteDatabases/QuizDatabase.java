@@ -83,7 +83,7 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
     String CREATE_MY_TABLE_PER_SECTION =
             "CREATE TABLE " + TABLE_PER_SECTION + "("
-                    + SerialNumber + " TEXT,"
+                    + SerialNumber + " TEXT DEFAULT '-1',"
                     + SectionIndex + " INTEGER PRIMARY KEY,"
                     + SectionMaxMarks + " TEXT,"
                     + SectionTime + " TEXT,"
