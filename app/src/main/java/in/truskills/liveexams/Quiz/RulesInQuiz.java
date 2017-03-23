@@ -27,7 +27,7 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 public class RulesInQuiz extends AppCompatActivity {
 
     private static final String TAG = "checkkkkk-InRules";
-    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
+    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8,tv9,tv10;
     SharedPreferences quizPrefs,dataPrefs;
     QuizDatabase ob;
     public static boolean visible;
@@ -64,6 +64,8 @@ public class RulesInQuiz extends AppCompatActivity {
         tv6 = (TextView) findViewById(R.id.tv6);
         tv7 = (TextView) findViewById(R.id.tv7);
         tv8 = (TextView) findViewById(R.id.tv8);
+        tv9 = (TextView) findViewById(R.id.tv9);
+        tv10 = (TextView) findViewById(R.id.tv10);
 
         Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         tv1.setTypeface(tff);
@@ -74,6 +76,8 @@ public class RulesInQuiz extends AppCompatActivity {
         tv6.setTypeface(tff);
         tv7.setTypeface(tff);
         tv8.setTypeface(tff);
+        tv9.setTypeface(tff);
+        tv10.setTypeface(tff);
     }
 
     @Override

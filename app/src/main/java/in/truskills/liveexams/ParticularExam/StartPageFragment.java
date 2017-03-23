@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -54,7 +53,6 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 import in.truskills.liveexams.R;
 
@@ -385,26 +383,32 @@ public class StartPageFragment extends Fragment {
 
                         if(statusForCamera){
 
-                            Log.d("start", "onClick: 3");
+                            boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
 
-                            //Check if a valid language has been chosen from the list..
-                                    Log.d("start", "onClick: 4");
+                            if(statusForVibrate){
 
-                                    String folder_main = "LiveExams";
+                                Log.d("start", "onClick: 3");
+
+                                //Check if a valid language has been chosen from the list..
+                                Log.d("start", "onClick: 4");
+
+                                String folder_main = "LiveExams";
 
                                 File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                                 if (f.exists()) {
                                     deleteDir(f);
                                 }
 
+                                o.deleteMyTable();
+                                SharedPreferences.Editor e=dataPrefs.edit();
+                                e.clear();
+                                e.apply();
+
                                 getDate();
                             }
 
-                            o.deleteMyTable();
-                            SharedPreferences.Editor e=dataPrefs.edit();
-                            e.clear();
-                            e.apply();
                         }
+                    }
 
                     Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
                             .putCustomAttribute("userName", prefs.getString("userName", ""))
@@ -466,6 +470,11 @@ public class StartPageFragment extends Fragment {
                         //Check if a valid language has been chosen from the list..
                             //Else if chosen..
                             //Start Quiz
+
+                        boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
+
+                        if(statusForVibrate) {
+
                             String folder_main = "LiveExams";
 
                             File f = new File(Environment.getExternalStorageDirectory(), folder_main);
@@ -473,12 +482,13 @@ public class StartPageFragment extends Fragment {
                                 deleteDir(f);
                             }
 
-                            getDate();
+                            o.deleteMyTable();
+                            SharedPreferences.Editor e=dataPrefs.edit();
+                            e.clear();
+                            e.apply();
 
-                        o.deleteMyTable();
-                        SharedPreferences.Editor e=dataPrefs.edit();
-                        e.clear();
-                        e.apply();
+                            getDate();
+                        }
                     }else{
                         if(getActivity()!=null)
                         Toast.makeText(getActivity(), "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
@@ -491,13 +501,10 @@ public class StartPageFragment extends Fragment {
                 break;
             case CheckForPermissions.CAMERA_PERMISSION_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (selectedLanguage.equals("LANGUAGE"))
-                        //If not chosen..
-                        if(getActivity()!=null)
-                        Toast.makeText(getActivity(), "Please select a language", Toast.LENGTH_SHORT).show();
-                    else {
-                        //Else if chosen..
-                        //Start Quiz
+                    boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
+
+                    if(statusForVibrate) {
+
                         String folder_main = "LiveExams";
 
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
@@ -505,13 +512,13 @@ public class StartPageFragment extends Fragment {
                             deleteDir(f);
                         }
 
+                        o.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
+
                         getDate();
                     }
-
-                    o.deleteMyTable();
-                    SharedPreferences.Editor e=dataPrefs.edit();
-                    e.clear();
-                    e.apply();
 
                 } else {
                     //Displaying another toast if permission is not granted
@@ -519,6 +526,36 @@ public class StartPageFragment extends Fragment {
                     Toast.makeText(getActivity(), "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                 }
             break;
+
+            case CheckForPermissions.VIBRATE_CODE:
+
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
+
+                    if(statusForVibrate){
+
+
+                        String folder_main = "LiveExams";
+
+                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                        if (f.exists()) {
+                            deleteDir(f);
+                        }
+
+                        o.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
+
+                        getDate();
+                    }
+                } else {
+                    //Displaying another toast if permission is not granted
+                    if(getActivity()!=null)
+                        Toast.makeText(getActivity(), "Oops you have denied the permission for triggering vibration\nGo to settings and grant them", Toast.LENGTH_LONG).show();
+                }
+
+                break;
 
         }
     }
@@ -635,7 +672,7 @@ public class StartPageFragment extends Fragment {
     }
 
     public void afterConnect(String myDate,String myUrl){
-        Intent i = new Intent(getActivity(), QuestionPaperLoad.class);
+        Intent i = new Intent(getActivity(), RulesBeforeQuiz.class);
         i.putExtra("examId", examId);
         i.putExtra("name", name);
         i.putExtra("language", selectedLanguage);

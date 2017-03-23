@@ -16,7 +16,7 @@ import in.truskills.liveexams.R;
 public class RulesFragment extends Fragment {
 
 
-    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8;
+    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8,tv9,tv10;
 
     public RulesFragment() {
         // Required empty public constructor
@@ -41,6 +41,8 @@ public class RulesFragment extends Fragment {
         tv6 = (TextView) getActivity().findViewById(R.id.tv6);
         tv7 = (TextView) getActivity().findViewById(R.id.tv7);
         tv8 = (TextView) getActivity().findViewById(R.id.tv8);
+        tv9 = (TextView) getActivity().findViewById(R.id.tv9);
+        tv10 = (TextView) getActivity().findViewById(R.id.tv10);
 
         Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         tv1.setTypeface(tff);
@@ -51,6 +53,8 @@ public class RulesFragment extends Fragment {
         tv6.setTypeface(tff);
         tv7.setTypeface(tff);
         tv8.setTypeface(tff);
+        tv9.setTypeface(tff);
+        tv10.setTypeface(tff);
 
     }
 }

@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
@@ -109,6 +110,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     long timeUntil;
     Button left, right;
     Thread t;
+    Vibrator vibrator;
+
 
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
@@ -121,6 +124,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         h=new Handler();
 
         activity_quiz_main=(RelativeLayout)findViewById(R.id.activity_quiz_main);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -468,6 +473,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         switch (v.getId()) {
 
             case R.id.submitButton:
+                if(submitButton.isEnabled())
+                vibrator.vibrate(500);
                 n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
                 qq = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.QuestionIndex);
@@ -478,6 +485,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //                ob.getAllValues();
                 break;
             case R.id.reviewButton:
+                vibrator.vibrate(500);
                 n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
                 qq = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.QuestionIndex);
@@ -495,6 +503,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //                ob.getAllValues();
                 break;
             case R.id.clearButton:
+                if(clearButton.isEnabled())
+                    vibrator.vibrate(500);
                 n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
                 qq = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.QuestionIndex);
@@ -534,14 +544,14 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public void changeButtonStatus(boolean status) {
         if (status) {
             submitButton.setEnabled(true);
-            submitButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//            submitButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             clearButton.setEnabled(true);
-            clearButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+//            clearButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         } else {
             submitButton.setEnabled(false);
-            submitButton.setBackgroundColor(getResources().getColor(R.color.light_colorPrimary));
+//            submitButton.setBackgroundColor(getResources().getColor(R.color.light_colorPrimary));
             clearButton.setEnabled(false);
-            clearButton.setBackgroundColor(getResources().getColor(R.color.light_colorPrimary));
+//            clearButton.setBackgroundColor(getResources().getColor(R.color.light_colorPrimary));
         }
     }
 

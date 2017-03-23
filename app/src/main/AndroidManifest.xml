@@ -22,6 +22,7 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".Miscellaneous.MyApplication"
@@ -139,16 +140,16 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-
-        <receiver
-            android:name=".Miscellaneous.ShutDownService">
-
-        <intent-filter>
-            <action android:name="android.intent.action.ACTION_SHUTDOWN" />
-            <action android:name="android.intent.action.QUICKBOOT_POWEROFF" />
-        </intent-filter>
-
+        <receiver android:name=".Miscellaneous.ShutDownService">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <action android:name="android.intent.action.QUICKBOOT_POWEROFF" />
+            </intent-filter>
         </receiver>
+
+        <activity android:name=".ParticularExam.RulesBeforeQuiz"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog"></activity>
     </application>
 
 </manifest>

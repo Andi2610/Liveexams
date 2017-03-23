@@ -62,7 +62,7 @@ public class SubmitAnswerPaper {
                     String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
                         String folder_main = "LiveExams";
-                        Toast.makeText(context, "Your answer paper has been submitted..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Your answers for the quiz have been successfully submitted..", Toast.LENGTH_LONG).show();
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
                             deleteDir(f);
