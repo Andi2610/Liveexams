@@ -101,7 +101,9 @@ public class ConstantsDefined {
                 Log.d("hostName", "verify: "+hostname);
                 if( hostname.equals("api.liveexams.in")||
                         hostname.equals("s3.ap-south-1.amazonaws.com")||
-                        hostname.equals("maps.googleapis.com"))
+                        hostname.equals("maps.googleapis.com")||
+                        hostname.equals("live-exams.s3-ap-south-1.amazonaws.com")||
+                        hostname.equals("reports.crashlytics.com"))
                     return true;
 
                 return false;

@@ -250,6 +250,12 @@ public class AllExamsFragmentTemp extends Fragment implements ConnectivityReciev
 
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 searchExams.setVisibility(View.GONE);
+                valuesList=new ArrayList<>();
+                allExamsListAdapter = new AllExamsListAdapter(valuesList, getActivity());
+                allExamsList.setLayoutManager(linearLayoutManager);
+                allExamsList.setItemAnimator(new DefaultItemAnimator());
+                allExamsList.setAdapter(allExamsListAdapter);
+                allExamsListAdapter.notifyDataSetChanged();
 
                 if(dialog!=null)
                     dialog.dismiss();

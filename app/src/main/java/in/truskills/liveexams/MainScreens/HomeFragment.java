@@ -132,65 +132,68 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.main, menu);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem = menu.findItem(R.id.search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        MenuItemCompat.setOnActionExpandListener(menuItem,
-                new MenuItemCompat.OnActionExpandListener() {
+        SearchManager searchManager=null;
+        if(getActivity()!=null){
+            searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+            MenuItem menuItem = menu.findItem(R.id.search);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+            MenuItemCompat.setOnActionExpandListener(menuItem,
+                    new MenuItemCompat.OnActionExpandListener() {
+                        @Override
+                        public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                            // Return true to allow the action view to expand
+                            searchView.requestFocus();
+                            return true;
+                        }
+
+                        @Override
+                        public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                            // When the action view is collapsed, reset the query
+                            setList();
+                            searchView.clearFocus();
+                            // Return true to allow the action view to collapse
+                            return true;
+                        }
+                    });
+            if (searchView != null) {
+                searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
+                searchView.setQueryHint("Type here..");
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
-                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                        // Return true to allow the action view to expand
-                        searchView.requestFocus();
+                    public boolean onQueryTextSubmit(String query) {
                         return true;
                     }
 
                     @Override
-                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                        // When the action view is collapsed, reset the query
-                        setList();
-                        searchView.clearFocus();
-                        // Return true to allow the action view to collapse
+                    public boolean onQueryTextChange(String s) {
+
+                        if(s.equals("")){
+                            filteredList = new ArrayList<>();
+                            myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
+                            myExamsList.setAdapter(myExamsListAdapter);
+                            myExamsListAdapter.notifyDataSetChanged();
+
+                        }else{
+                            s = s.toString().toLowerCase();
+                            filteredList = new ArrayList<>();
+
+                            for (int i = 0; i < valuesList.size(); i++) {
+
+                                final String text = valuesList.get(i).name.toLowerCase();
+                                if (text.contains(s)) {
+
+                                    filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
+                                }
+                            }
+                            myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
+                            myExamsList.setAdapter(myExamsListAdapter);
+                            myExamsListAdapter.notifyDataSetChanged();
+                        }
                         return true;
                     }
                 });
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
-            searchView.setQueryHint("Type here..");
-
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-
-                    if(s.equals("")){
-                        filteredList = new ArrayList<>();
-                        myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
-                        myExamsList.setAdapter(myExamsListAdapter);
-                        myExamsListAdapter.notifyDataSetChanged();
-
-                    }else{
-                        s = s.toString().toLowerCase();
-                        filteredList = new ArrayList<>();
-
-                        for (int i = 0; i < valuesList.size(); i++) {
-
-                            final String text = valuesList.get(i).name.toLowerCase();
-                            if (text.contains(s)) {
-
-                                filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
-                            }
-                        }
-                        myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
-                        myExamsList.setAdapter(myExamsListAdapter);
-                        myExamsListAdapter.notifyDataSetChanged();
-                    }
-                    return true;
-                }
-            });
+            }
         }
     }
 

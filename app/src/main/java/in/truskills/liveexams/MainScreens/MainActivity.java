@@ -382,68 +382,74 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (resultCode == Activity.RESULT_OK) {
             Log.d(CAMERA, requestCode + "");
             if (requestCode == SELECT_FILE)
-                onSelectFromGalleryResult(data);
+                if(data!=null)
+                    onSelectFromGalleryResult(data);
+                else
+                    Toast.makeText(this, "Sorry!! Your profile picture couldn't be uploaded..", Toast.LENGTH_SHORT).show();
             else if (requestCode == REQUEST_CAMERA) {
                 if (resultCode == RESULT_OK) {
-                    Log.d(CAMERA, "camera1");
-                    my_path = selectedImagePath + "/" + filename;
-                    Log.d(CAMERA, my_path + " CAMERA");
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 2;
-                    Bitmap bitmap = BitmapFactory.decodeFile(my_path, options);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    ExifInterface ei = null;
-                    Bitmap myBitmap=null;
-                    try {
-                        ei = new ExifInterface(my_path);
-                        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                                ExifInterface.ORIENTATION_UNDEFINED);
 
-                        Log.d("orientation", "onActivityResult: "+orientation+" "+ExifInterface.ORIENTATION_ROTATE_90+" "+ExifInterface.ORIENTATION_ROTATE_180+" "+ExifInterface.ORIENTATION_ROTATE_270+" "+ExifInterface.ORIENTATION_NORMAL);
+                    if(data!=null){
 
-                        switch(orientation) {
+                        Log.d(CAMERA, "camera1");
+                        my_path = selectedImagePath + "/" + filename;
+                        Log.d(CAMERA, my_path + " CAMERA");
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inSampleSize = 2;
+                        Bitmap bitmap = BitmapFactory.decodeFile(my_path, options);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        ExifInterface ei = null;
+                        Bitmap myBitmap=null;
+                        try {
+                            ei = new ExifInterface(my_path);
+                            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                                    ExifInterface.ORIENTATION_UNDEFINED);
 
-                            case ExifInterface.ORIENTATION_ROTATE_90://6
-                                myBitmap=rotateImage(bitmap, 90);
-                                myOrient=90+"";
-                                break;
+                            Log.d("orientation", "onActivityResult: "+orientation+" "+ExifInterface.ORIENTATION_ROTATE_90+" "+ExifInterface.ORIENTATION_ROTATE_180+" "+ExifInterface.ORIENTATION_ROTATE_270+" "+ExifInterface.ORIENTATION_NORMAL);
 
-                            case ExifInterface.ORIENTATION_ROTATE_180://3
-                                myBitmap=rotateImage(bitmap, 180);
-                                myOrient=180+"";
-                                break;
+                            switch(orientation) {
 
-                            case ExifInterface.ORIENTATION_ROTATE_270://8
-                                myBitmap=rotateImage(bitmap, 270);
-                                myOrient=270+"";
-                                break;
+                                case ExifInterface.ORIENTATION_ROTATE_90://6
+                                    myBitmap=rotateImage(bitmap, 90);
+                                    myOrient=90+"";
+                                    break;
 
-                            case ExifInterface.ORIENTATION_NORMAL://1
-                                myBitmap=bitmap;
-                                myOrient=0+"";
-                                break;
-                            default:myBitmap=bitmap;
-                                myOrient=0+"";
-                                break;
+                                case ExifInterface.ORIENTATION_ROTATE_180://3
+                                    myBitmap=rotateImage(bitmap, 180);
+                                    myOrient=180+"";
+                                    break;
+
+                                case ExifInterface.ORIENTATION_ROTATE_270://8
+                                    myBitmap=rotateImage(bitmap, 270);
+                                    myOrient=270+"";
+                                    break;
+
+                                case ExifInterface.ORIENTATION_NORMAL://1
+                                    myBitmap=bitmap;
+                                    myOrient=0+"";
+                                    break;
+                                default:myBitmap=bitmap;
+                                    myOrient=0+"";
+                                    break;
+                            }
+                            byte[] b = baos.toByteArray();
+                            MyBitmap=myBitmap;
+
+                            File fRotated=saveBitmapRotated(MyBitmap);
+
+                            String tempPath=fRotated.getPath()+"/profileImage.jpg";
+
+                            my_path=tempPath;
+
+                            uploadImageToServer();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        byte[] b = baos.toByteArray();
-                        MyBitmap=myBitmap;
-
-                        File fRotated=saveBitmapRotated(MyBitmap);
-
-                        String tempPath=fRotated.getPath()+"/profileImage.jpg";
-
-                        my_path=tempPath;
-
-                        uploadImageToServer();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    }else{
+                        Toast.makeText(this, "Sorry!! Your profile picture couldn't be uploaded..", Toast.LENGTH_SHORT).show();
                     }
 
-//                    SharedPreferences.Editor e = prefs.edit();
-//                    e.putString("navImage", Base64.encodeToString(b, Base64.DEFAULT));
-//                    e.apply();
                 } else if (resultCode == RESULT_CANCELED) {
                     Log.d(CAMERA, "User cancelled image capture");
                 } else {

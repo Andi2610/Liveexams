@@ -689,7 +689,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             //If location icon is pressed..Call the getCurrentLocation method..
             case R.id.locationField:
                 getCurrentLocation();
-                locationField.setEnabled(false);
                 break;
         }
     }
@@ -735,6 +734,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             } else {
 //                fetchLocation();
                 mGoogleApiClient.connect();
+                locationField.setEnabled(false);
                 updateUI();
             }
         }
@@ -1047,6 +1047,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     } else {
 //                        fetchLocation();
                         mGoogleApiClient.connect();
+                        locationField.setEnabled(false);
                         updateUI();
                     }
                 } else {
