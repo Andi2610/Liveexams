@@ -1302,6 +1302,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     dialog.dismiss();
 
                 Toast.makeText(Signup_Login.this, "Welcome to Live Exams", Toast.LENGTH_SHORT).show();
+
+//                Snackbar.make(findViewById(android.R.id.content), "Welcome to Live Exams", Snackbar.LENGTH_LONG)
+//                        .show();
+
                 Intent i = new Intent(Signup_Login.this, MainActivity.class);
                 startActivity(i);
                 finish();

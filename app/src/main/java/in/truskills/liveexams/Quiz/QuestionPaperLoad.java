@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,15 +66,18 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri, section_id, section_max_marks, section_time, section_description, section_rules;
     String questionAttributes, opText, examDuration, examId, name, selectedLanguage, myExamDuration, paperName,myDate,myUrl;
     ArrayList<Fragment> fList;
-    TextView myWaitMessage;
     float per;
     String myResponseResult;
     QuizDatabase ob;
-    ProgressBar progressBar;
     ArrayList<String> urls, groups;
     SharedPreferences prefs,dataPrefs;
-    Button retryButtonForDownload, exitButton;
+
+    Button retryButtonForDownload, exitButtonForDownload;
+    LinearLayout paperGettingReadyLayout,paperGettingDownloadLayout,noInternetLayout;
+    TextView paperGettingReadyMessage,paperGettingDownloadMessage,noInternetMessage,paperGettingDownloadPercentage;
+    ProgressBar progressBar;
     com.wang.avi.AVLoadingIndicatorView avi;
+
     Handler h;
     AsyncTaskRunner asyncTaskRunner;
 
@@ -83,11 +87,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         setContentView(R.layout.activity_my_question_paper_load);
 
         avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
-        avi.show();
         h=new Handler();
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        paperGettingDownloadLayout=(LinearLayout)findViewById(R.id.paperGettingDownloadLayout);
+        noInternetLayout=(LinearLayout)findViewById(R.id.noInternetLayout);
+        paperGettingReadyLayout=(LinearLayout)findViewById(R.id.paperGettingReadyLayout);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
@@ -100,16 +106,22 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
         progressBar.setProgressDrawable(customDrawable);
 
-
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
         retryButtonForDownload = (Button) findViewById(R.id.retryButtonForDownload);
-        exitButton = (Button) findViewById(R.id.exitButton);
+        exitButtonForDownload = (Button) findViewById(R.id.exitButtonForDownload);
 
-        myWaitMessage = (TextView) findViewById(R.id.myWaitMessage);
+        noInternetMessage = (TextView) findViewById(R.id.noInternetMessage);
+        paperGettingDownloadPercentage = (TextView) findViewById(R.id.paperGettingDownloadPercentage);
+        paperGettingDownloadMessage = (TextView) findViewById(R.id.paperGettingDownloadMessage);
+        paperGettingReadyMessage = (TextView) findViewById(R.id.paperGettingReadyMessage);
+
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
-        myWaitMessage.setTypeface(tff1);
+        noInternetMessage.setTypeface(tff1);
+        paperGettingDownloadMessage.setTypeface(tff1);
+        paperGettingReadyMessage.setTypeface(tff1);
         retryButtonForDownload.setTypeface(tff1);
-        exitButton.setTypeface(tff1);
+        exitButtonForDownload.setTypeface(tff1);
+        paperGettingDownloadPercentage.setTypeface(tff1);
 
         examId = getIntent().getStringExtra("examId");
         paperName = getIntent().getStringExtra("name");
@@ -122,6 +134,10 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         groups = new ArrayList<>();
         ob = new QuizDatabase(this);
 
+        paperGettingDownloadLayout.setVisibility(View.GONE);
+        paperGettingReadyLayout.setVisibility(View.GONE);
+        noInternetLayout.setVisibility(View.GONE);
+
         downloadQP();
     }
 
@@ -131,11 +147,9 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
         download=false;
 
-        retryButtonForDownload.setVisibility(View.INVISIBLE);
-        exitButton.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-        avi.show();
-        myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
+        paperGettingDownloadLayout.setVisibility(View.GONE);
+        paperGettingReadyLayout.setVisibility(View.VISIBLE);
+        noInternetLayout.setVisibility(View.GONE);
 
         ConstantsDefined.updateAndroidSecurityProvider(this);
         ConstantsDefined.beforeVolleyConnect();
@@ -165,11 +179,10 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
                 //If connection couldn't be made..
                 Toast.makeText(QuestionPaperLoad.this, "Sorry! Couldn't connect..Please try again..", Toast.LENGTH_SHORT).show();
-                retryButtonForDownload.setVisibility(View.VISIBLE);
-                exitButton.setVisibility(View.VISIBLE);
-                avi.hide();
-                progressBar.setVisibility(View.INVISIBLE);
-                myWaitMessage.setText("Couldn't download Question paper..");
+                paperGettingDownloadLayout.setVisibility(View.GONE);
+                paperGettingReadyLayout.setVisibility(View.GONE);
+                noInternetLayout.setVisibility(View.VISIBLE);
+
             }
         });
         requestQueue.add(stringRequest);
@@ -195,6 +208,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         retryButtonForDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("clicked", "onClick: retry");
                 try {
                     checkFunction();
                 } catch (Exception e) {
@@ -203,9 +217,11 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             }
         });
 
-        exitButton.setOnClickListener(new View.OnClickListener() {
+        exitButtonForDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("clicked", "onClick: exit");
+
                 String folder_main = "LiveExams";
                 File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                 if (f.exists()) {
@@ -358,11 +374,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     public void downloadImages() throws Exception {
 
         if(!ll.isEmpty()){
-            retryButtonForDownload.setVisibility(View.INVISIBLE);
-            exitButton.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
-            avi.show();
-            myWaitMessage.setText("Please wait.. \n Your question paper is getting ready..");
             myFunc((String)ll.get(0),(String)llGroup.get(0));
         }else{
             startNewActivity();
@@ -382,7 +393,9 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     public void myFunc(String myUrl, final String myGroup){
 
-        avi.show();
+        paperGettingDownloadLayout.setVisibility(View.VISIBLE);
+        paperGettingReadyLayout.setVisibility(View.GONE);
+        noInternetLayout.setVisibility(View.GONE);
 
         ir = new ImageRequest(myUrl, new Response.Listener<Bitmap>() {
             @Override
@@ -391,6 +404,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                 curCount++;
                 Log.d("count", curCount + " " + myCount);
                 per = (curCount / (float) myCount) * 100;
+                paperGettingDownloadPercentage.setText((int)per+"%");
                 progressBar.setProgress((int) per);
                 try {
                     savebitmap(bitmap,myGroup);
@@ -410,11 +424,9 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(QuestionPaperLoad.this, "Sorry! Couldn't connect..", Toast.LENGTH_LONG).show();
-                        retryButtonForDownload.setVisibility(View.VISIBLE);
-                        exitButton.setVisibility(View.VISIBLE);
-                        avi.hide();
-                        progressBar.setVisibility(View.INVISIBLE);
-                        myWaitMessage.setText("Couldn't download Question paper..");
+                        paperGettingDownloadLayout.setVisibility(View.GONE);
+                        paperGettingReadyLayout.setVisibility(View.GONE);
+                        noInternetLayout.setVisibility(View.VISIBLE);
                     }
                 });
         requestQueue.add(ir);

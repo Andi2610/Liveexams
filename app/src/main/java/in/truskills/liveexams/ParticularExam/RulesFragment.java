@@ -57,4 +57,18 @@ public class RulesFragment extends Fragment {
         tv10.setTypeface(tff);
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
+    }
+
 }

@@ -5,73 +5,123 @@
     android:id="@+id/activity_question_paper_load"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.truskills.liveexams.Quiz.MyQuestionPaperLoad"
+    tools:context="in.truskills.liveexams.Quiz.QuestionPaperLoad"
     android:background="@color/light_grey">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+        android:id="@+id/paperGettingReadyLayout"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/myWaitMessage"
-            android:textSize="20dp"
+            android:id="@+id/paperGettingReadyMessage"
+            android:textSize="25dp"
             android:textStyle="bold"
             android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:layout_centerHorizontal="true"
-            android:text="Please wait.. \n Your question paper is getting ready.."/>
+            android:text="Please wait.. \n Your question paper is getting ready..\nThis may take few moments.."/>
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/avi"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             style="@style/AVLoadingIndicatorView"
             android:visibility="visible"
             app:indicatorName="LineSpinFadeLoaderIndicator"
-            android:layout_below="@+id/myWaitMessage"
             app:indicatorColor="@color/colorPrimary"
             android:layout_marginTop="30dp"
-            android:layout_centerHorizontal="true" />
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/paperGettingDownloadLayout"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/paperGettingDownloadMessage"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
+            android:text="Please wait.. \n Your quiz content is getting downloaded.."/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/paperGettingDownloadPercentage"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerHorizontal="true"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/avi"
-            android:layout_marginTop="30dp"
+            android:layout_margin="30dp"
             android:layout_centerHorizontal="true" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/noInternetLayout"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noInternetMessage"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
+            android:text="Sorry!! No internet connection.."/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:padding="10dp"
             android:textColor="@color/light_black"
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:text="Retry"
             android:background="@color/grey"
-            android:layout_below="@+id/progressBar"
             android:id="@+id/retryButtonForDownload"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
-            android:padding="10dp"
             android:textColor="@color/light_black"
             android:layout_gravity="center"
             android:layout_margin="20dp"
             android:text="Exit"
             android:background="@color/grey"
-            android:layout_below="@+id/retryButtonForDownload"
-            android:id="@+id/exitButton" />
+            android:id="@+id/exitButtonForDownload" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

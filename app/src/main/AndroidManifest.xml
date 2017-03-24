@@ -148,8 +148,7 @@
         </receiver>
 
         <activity android:name=".ParticularExam.RulesBeforeQuiz"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Dialog"></activity>
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

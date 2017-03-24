@@ -210,7 +210,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="15dp"
-                android:text="NOTE: \n\nPlease don't leave the quiz screen.\n\nIn case you go out of the quiz screen for more than 60 seconds, your quiz will be auto submitted.\n\nIf internet is unavailable when you submit the quiz, then your answers will be submitted once the internet resumes."
+                android:text="NOTE: \n\nPlease don't leave the quiz screen.\n\nIn case you go out of the quiz screen for more than 60 seconds, your quiz will be auto submitted.\n\nIf internet is unavailable when you submit the quiz, then your answers will be submitted once the internet resumes.\n\nAfter successfull submission, you can get your answer analytics after the exam duration ends.."
                 android:layout_margin="10dp"
                 android:id="@+id/tv10"/>
 

@@ -80,6 +80,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_sections_summary);
+        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -347,6 +348,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
         Log.d(TAG, "onPause: ");
         if(quizPrefs.getInt("exit",0)==0){
 //            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
@@ -413,6 +415,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
         SharedPreferences.Editor e=quizPrefs.edit();
         e.putInt("exit",0);
         e.apply();

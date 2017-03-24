@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -12,10 +14,10 @@ import android.widget.TextView;
 import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.R;
 
-public class RulesBeforeQuiz extends Activity {
+public class RulesBeforeQuiz extends AppCompatActivity {
 
 
-    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8,tv9,tv10,tv11;
+    TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8,tv9,tv10;
     Button continueButton,exitButton;
     String examId,paperName,selectedLanguage,myDate,myUrl,name;
 
@@ -24,6 +26,14 @@ public class RulesBeforeQuiz extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_rules_before_quiz);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
+        getSupportActionBar().setTitle("RULES");
 
         tv1 = (TextView) findViewById(R.id.tv1);
         tv2 = (TextView) findViewById(R.id.tv2);
@@ -35,7 +45,6 @@ public class RulesBeforeQuiz extends Activity {
         tv8 = (TextView) findViewById(R.id.tv8);
         tv9 = (TextView) findViewById(R.id.tv9);
         tv10 = (TextView) findViewById(R.id.tv10);
-        tv11 = (TextView) findViewById(R.id.tv11);
         continueButton = (Button) findViewById(R.id.continueButton);
         exitButton = (Button) findViewById(R.id.exitButton);
 
@@ -50,7 +59,6 @@ public class RulesBeforeQuiz extends Activity {
         tv8.setTypeface(tff);
         tv9.setTypeface(tff);
         tv10.setTypeface(tff);
-        tv11.setTypeface(tff);
         continueButton.setTypeface(tff);
         exitButton.setTypeface(tff);
 
@@ -78,7 +86,7 @@ public class RulesBeforeQuiz extends Activity {
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
     }
@@ -93,5 +101,17 @@ public class RulesBeforeQuiz extends Activity {
     {
         super.onPause();
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 }
