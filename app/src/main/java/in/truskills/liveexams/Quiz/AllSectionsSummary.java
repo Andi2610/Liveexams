@@ -24,6 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -71,10 +74,13 @@ public class AllSectionsSummary extends AppCompatActivity {
     Button finishButton;
     String examId, userId, selectedLanguage,myDate;
     RequestQueue requestQueue;
-    SharedPreferences prefs,dataPrefs,quizPrefs,allow;
+    SharedPreferences prefs,dataPrefs,quizPrefs,allow,firstTime,firstTimeForRules;
     Handler h;
     Thread t;
     public static boolean visible;
+    LinearLayout awareLayoutForRules;
+    TextView textForAwareForRules;
+    ImageView imageForAwareForRules;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +93,18 @@ public class AllSectionsSummary extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
         dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
         quizPrefs=getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
         allow=getSharedPreferences("allow",Context.MODE_PRIVATE);
+        firstTime=getSharedPreferences("firstTime",Context.MODE_PRIVATE);
+        firstTimeForRules=getSharedPreferences("firstTimeForRules",Context.MODE_PRIVATE);
+
+        awareLayoutForRules=(LinearLayout)findViewById(R.id.awareLayoutForRules);
+        textForAwareForRules=(TextView)findViewById(R.id.textForAwareForRules);
+        imageForAwareForRules=(ImageView)findViewById(R.id.imageForAwareForRules);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -134,6 +145,7 @@ public class AllSectionsSummary extends AppCompatActivity {
 
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         finishButton.setTypeface(tff1);
+        textForAwareForRules.setTypeface(tff1);
 
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +169,51 @@ public class AllSectionsSummary extends AppCompatActivity {
                 alert.show();
             }
         });
+
+        Log.d("prefs", "onCreate: firstTimeForRules"+firstTimeForRules.getInt("firstTimeForRules",1));
+
+        if(firstTimeForRules.getInt("firstTimeForRules",1)==1){
+
+            SharedPreferences.Editor eee=firstTimeForRules.edit();
+            eee.putInt("firstTimeForRules",0);
+            eee.apply();
+
+            Log.d("prefs", "onCreate: firstTimeForRules"+firstTimeForRules.getInt("firstTimeForRules",1));
+
+            allSectionsList.setAlpha((float)0.2);
+            finishButton.setAlpha((float)0.2);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try{
+                        Thread.sleep(5000);
+                    }catch (Exception ee){
+                        ee.printStackTrace();
+                    }finally {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                makeInvisible();
+                            }
+                        });
+
+                    }
+                }
+            }).start();
+
+        }else{
+            awareLayoutForRules.setVisibility(View.GONE);
+            allSectionsList.setAlpha((float)1);
+            finishButton.setAlpha((float)1);
+        }
+    }
+
+    public void makeInvisible(){
+        awareLayoutForRules.setVisibility(View.GONE);
+        allSectionsList.setAlpha((float)1);
+        finishButton.setAlpha((float)1);
+
     }
 
     public void submit() {
@@ -230,6 +287,12 @@ public class AllSectionsSummary extends AppCompatActivity {
                         SharedPreferences.Editor ee=quizPrefs.edit();
                         ee.clear();
                         ee.apply();
+                        SharedPreferences.Editor eee=firstTime.edit();
+                        eee.clear();
+                        eee.apply();
+                        SharedPreferences.Editor eeeee=firstTimeForRules.edit();
+                        eeeee.clear();
+                        eeeee.apply();
                         Toast.makeText(AllSectionsSummary.this, "Your answers for the quiz have been successfully submitted..", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack

@@ -32,6 +32,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -104,14 +106,19 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option, questionArray[], noOfSections, num, total, myTime;
     Socket socket;
     socketFromTeacher socketfromteacher;
-    SharedPreferences prefs;
+    SharedPreferences prefs,firstTime;
     CountDownTimer count;
     String myDate;
     long timeUntil;
     Button left, right;
     Thread t;
     Vibrator vibrator;
-
+    LinearLayout awareLayoutForSummary;
+    TextView textForAwareForSummary;
+    ImageView imageForAwareForSummary;
+    RelativeLayout header,listLayout;
+    TextView breakLine;
+    LinearLayout footer;
 
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
@@ -125,6 +132,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         activity_quiz_main=(RelativeLayout)findViewById(R.id.activity_quiz_main);
 
+        header=(RelativeLayout)findViewById(R.id.header);
+        listLayout=(RelativeLayout)findViewById(R.id.listLayout);
+        breakLine=(TextView)findViewById(R.id.breakLine);
+        footer=(LinearLayout)findViewById(R.id.footer);
+
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -132,6 +144,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         quizPrefs = getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
         dataPrefs = getSharedPreferences("dataPrefs", Context.MODE_PRIVATE);
+        firstTime = getSharedPreferences("firstTime", Context.MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -141,6 +154,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         paperName = getIntent().getStringExtra("name");
         selectedLanguage = getIntent().getStringExtra("language");
         myDate = getIntent().getStringExtra("date");
+
+        awareLayoutForSummary=(LinearLayout)findViewById(R.id.awareLayoutForSummary);
+        textForAwareForSummary=(TextView)findViewById(R.id.textForAwareForSummary);
+        imageForAwareForSummary=(ImageView)findViewById(R.id.imageForAwareForSummary);
 
 //        Toast.makeText(this, "date:"+myDate, Toast.LENGTH_SHORT).show();
 
@@ -164,6 +181,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         sectionName.setTypeface(tff1);
         timer.setTypeface(tff1);
+        textForAwareForSummary.setTypeface(tff1);
         Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         submittedQuestions.setTypeface(tff1);
         reviewedTickedQuestions.setTypeface(tff1);
@@ -216,6 +234,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     }
 
     public void forQuiz() {
+
+        awareLayoutForSummary.setVisibility(View.GONE);
+        header.setAlpha((float)1);
+        listLayout.setAlpha((float)1);
+        footer.setAlpha((float)1);
+        pager.setAlpha((float)1);
+        breakLine.setAlpha((float)1);
 
 //        ob.getAllValues();
 
@@ -1033,7 +1058,20 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             total = myFragmentCount + 1;
             pager.setOffscreenPageLimit(total);
 
-            forQuiz();
+            if(firstTime.getInt("firstTime",1)==1){
+                SharedPreferences.Editor e=firstTime.edit();
+                e.putInt("firstTime",0);
+                e.apply();
+                header.setAlpha((float)0.2);
+                listLayout.setAlpha((float)0.2);
+                footer.setAlpha((float)0.2);
+                pager.setAlpha((float)0.2);
+                breakLine.setAlpha((float)0.2);
+                forAware();
+            }
+
+            else
+                forQuiz();
         }
 
 
@@ -1048,6 +1086,28 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             dialog.show();
         }
 
+    }
+
+    public void forAware(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(5000);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            forQuiz();
+                        }
+                    });
+
+                }
+            }
+        }).start();
     }
 
 }

@@ -30,12 +30,14 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class SubmitAnswerPaper {
 
-    SharedPreferences dataPrefs,quizPrefs,allow;
+    SharedPreferences dataPrefs,quizPrefs,allow,firstTime,firstTimeForRules;
 
     public void submit(final QuizDatabase ob, final Context context, final String result, final String userId, final String examId){
 
         dataPrefs=context.getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
         quizPrefs=context.getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
+        firstTime=context.getSharedPreferences("firstTime",Context.MODE_PRIVATE);
+        firstTimeForRules=context.getSharedPreferences("firstTimeForRules",Context.MODE_PRIVATE);
 
 //        ConstantsDefined.updateAndroidSecurityProvider((Activity) context);
         ConstantsDefined.beforeVolleyConnect();
@@ -74,13 +76,18 @@ public class SubmitAnswerPaper {
                         SharedPreferences.Editor ee=quizPrefs.edit();
                         ee.clear();
                         ee.apply();
-
+                        SharedPreferences.Editor eee=firstTime.edit();
+                        eee.clear();
+                        eee.apply();
+                        SharedPreferences.Editor eeeee=firstTimeForRules.edit();
+                        eeeee.clear();
+                        eeeee.apply();
                         allow=context.getSharedPreferences("allow",Context.MODE_PRIVATE);
                         Log.d("prefsAllowBefore",allow.getInt("allow",1)+"");
 
-                        SharedPreferences.Editor eee=allow.edit();
-                        eee.putInt("allow",1);
-                        eee.apply();
+                        SharedPreferences.Editor eeee=allow.edit();
+                        eeee.putInt("allow",1);
+                        eeee.apply();
                         Log.d("prefsAllowAfter",allow.getInt("allow",1)+"");
 
                         Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
