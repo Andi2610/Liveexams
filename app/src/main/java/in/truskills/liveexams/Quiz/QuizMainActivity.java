@@ -486,7 +486,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
             case R.id.submitButton:
                 if(submitButton.isEnabled())
-                vibrator.vibrate(500);
+                vibrator.vibrate(200);
                 n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
                 qq = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.QuestionIndex);
@@ -497,7 +497,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //                ob.getAllValues();
                 break;
             case R.id.reviewButton:
-                vibrator.vibrate(500);
+                vibrator.vibrate(200);
                 n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
                 qq = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.QuestionIndex);
@@ -516,7 +516,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 break;
             case R.id.clearButton:
                 if(clearButton.isEnabled())
-                    vibrator.vibrate(500);
+                    vibrator.vibrate(200);
                 n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
                 qq = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.QuestionIndex);

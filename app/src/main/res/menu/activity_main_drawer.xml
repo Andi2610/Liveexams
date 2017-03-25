@@ -15,6 +15,10 @@
             android:icon="@drawable/statistics"
             android:title="Statistics" />
         <item
+            android:id="@+id/nav_faq"
+            android:icon="@drawable/faq_icon"
+            android:title="User Guide" />
+        <item
             android:id="@+id/nav_share"
             android:icon="@drawable/share_icon"
             android:title="Share the app" />
@@ -22,10 +26,6 @@
             android:id="@+id/nav_rate"
             android:icon="@drawable/rate_icon"
             android:title="Rate us" />
-        <item
-            android:id="@+id/nav_faq"
-            android:icon="@drawable/faq_icon"
-            android:title="User Guide" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
