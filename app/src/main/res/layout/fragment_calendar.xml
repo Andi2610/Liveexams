@@ -29,16 +29,14 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <!--<com.wang.avi.AVLoadingIndicatorView-->
-        <!--android:id="@+id/aviForCalendar"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--style="@style/AVLoadingIndicatorView"-->
-        <!--app:indicatorName="LineScaleIndicator"-->
-        <!--android:layout_below="@+id/calendarView"-->
-        <!--app:indicatorColor="@color/colorPrimary"-->
-        <!--android:layout_marginTop="30dp"-->
-        <!--android:layout_centerHorizontal="true" />-->
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="@dimen/fab_margin"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:src="@drawable/calendar" />-->
 
     <LinearLayout
         android:layout_width="wrap_content"

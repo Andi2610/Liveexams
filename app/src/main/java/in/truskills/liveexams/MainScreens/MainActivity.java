@@ -670,7 +670,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FaqFragment f = (FaqFragment) manager.findFragmentByTag("FaqFragment");
             if (!(f != null && f.isVisible())) {
 
-                StatisticsFragment fragment = new StatisticsFragment();
+                FaqFragment fragment = new FaqFragment();
                 FragmentTransaction t = manager.beginTransaction();
                 t.replace(R.id.fragment, fragment, "FaqFragment");
                 t.commit();
@@ -835,5 +835,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return null;
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        navigationView.setCheckedItem(R.id.nav_home);
     }
 }

@@ -346,11 +346,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //Change the arrow button: from up to down, for the user to know that the drawer can be closed on sliding down..
                 signupHandleImage.setImageResource(R.drawable.down_arrow);
 
-                //Set the validation message for rest of the fields as null..
-                signupEmail.setError(null);
-                signupMobile.setError(null);
-                signupPassword.setError(null);
-                signupConfirmPassword.setError(null);
 
                 //Clear the previous content of all the fields..
                 signupName.setText("");
@@ -360,6 +355,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 signupLocation.setText("LOCATION");
                 signupConfirmPassword.setText("");
                 signupGender.setSelection(0);
+
+                //Set the validation message for rest of the fields as null..
+                signupName.setError(null);
+                signupEmail.setError(null);
+                signupMobile.setError(null);
+                signupPassword.setError(null);
+                signupConfirmPassword.setError(null);
 //                signupLanguage.setSelection(0);
 
                 //Add the text change listener on the required fields to show the validation error message to the user at appropriate times..
@@ -494,12 +496,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //Rechange the arrow button: from down to up again..
                 signupHandleImage.setImageResource(R.drawable.up_arrow);
 
-                //Set the validation message for rest of the fields as null..
-                signupEmail.setError(null);
-                signupMobile.setError(null);
-                signupPassword.setError(null);
-                signupConfirmPassword.setError(null);
-
                 //Clear the previous content of all the fields..
                 signupName.setText("");
                 signupEmail.setText("");
@@ -508,6 +504,14 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 signupLocation.setText("LOCATION");
                 signupConfirmPassword.setText("");
                 signupGender.setSelection(0);
+
+                //Set the validation message for rest of the fields as null..
+                signupName.setError(null);
+                signupEmail.setError(null);
+                signupMobile.setError(null);
+                signupPassword.setError(null);
+                signupConfirmPassword.setError(null);
+
             }
         });
 
@@ -546,6 +550,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 //Clear the previous content of both the fields..
                 loginName.setText("");
                 loginPassword.setText("");
+
+                loginName.setError(null);
+                loginPassword.setError(null);
 
                 //Add text change listener on both the fields to show appropriate validation error messages..
                 //loginName: userName field cannot be empty..
@@ -611,6 +618,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 loginName.setText("");
                 loginPassword.setText("");
+
+                loginName.setError(null);
+                loginPassword.setError(null);
 
             }
         });

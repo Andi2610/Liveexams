@@ -4,9 +4,131 @@
     android:layout_height="match_parent"
     tools:context="in.truskills.liveexams.MainScreens.FaqFragment">
 
-    <TextView
+    <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="FAQs" />
+        android:id="@+id/webViewForFaq"></WebView>
+
+    <SlidingDrawer
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/contactUsDrawer"
+        android:handle="@+id/contactUsHandle"
+        android:content="@+id/contactUsContent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/contactUsHandle"
+            android:orientation="horizontal"
+            android:weightSum="100"
+            android:background="@color/orange">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CONTACT US"
+                android:textSize="20dp"
+                android:id="@+id/contactUsButton"
+                android:background="@color/orange"
+                android:layout_weight="90"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/contactUsHandleImage"
+                android:layout_weight="10"
+                android:src="@drawable/up_arrow"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/contactUsContent"
+            android:background="@color/light_grey">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:background="@color/grey">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@color/light_grey"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv1"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:textSize="30dp"
+                    android:textColor="@color/black"
+                    android:text="Truskills Solutions Pvt. Ltd."
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv2"
+                    android:textSize="20dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/colorPrimary"
+                    android:text="C-408, Titanium Square, Thaltej Cross Road, S.G Highway, Thaltej
+Ahmedabad Gujarat 380054"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv3"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    android:text="Sales: 079-40093467\n
+ Office: +91-9408603436"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv4"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorPrimary"
+                    android:text="info@truskills.in"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/locate_us_icon"
+                    android:id="@+id/locate_us"/>
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </SlidingDrawer>
 
 </FrameLayout>

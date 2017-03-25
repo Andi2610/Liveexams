@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -73,14 +74,14 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
     HashMap<String, ArrayList<String>> mapper;
     int i;
     Date myCurrDate;
-    Calendar currentCalendar;
+    Calendar currentCalendar,customCalendar;
     Handler h;
     CustomCalendarView calendarView;
     Button retryButton;
     LinearLayout noConnectionLayout;
     TextView noConnectionText;
     ProgressDialog dialog;
-    AVLoadingIndicatorView avLoadingIndicatorView;
+    FloatingActionButton fab;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -101,6 +102,8 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
 
         requestQueue = Volley.newRequestQueue(getActivity());
         h = new Handler();
+
+//        fab=(FloatingActionButton)getActivity().findViewById(R.id.fab);
 //        avLoadingIndicatorView=(AVLoadingIndicatorView)getActivity().findViewById(R.id.aviForCalendar);
 //        avLoadingIndicatorView.setVisibility(View.GONE);
 
@@ -130,6 +133,7 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
                 populateFirstTime();
             }
         });
+
     }
 
     private class DisabledColorDecorator implements DayDecorator {
@@ -397,6 +401,75 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
         decorators.add(new SetExamsColorDecorator());
         calendarView.setDecorators(decorators);
         calendarView.refreshCalendar(currentCalendar);
+
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                customCalendar=Calendar.getInstance();
+//                String date="25/05/2017";
+//                SimpleDateFormat simpleDateFormattt = new SimpleDateFormat("dd/MM/yyyy");
+//                try {
+//                    Date date1= simpleDateFormattt.parse(date);
+//                    customCalendar.setTime(date1);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                populateListForCalendar(25, 5, 2017);
+//                calendarView.refreshCalendar(customCalendar);
+//                //Show/hide overflow days of a month
+//                calendarView.setShowOverflowDate(false);
+//
+//                //call refreshCalendar to update calendar the view
+//                calendarView.refreshCalendar(customCalendar);
+//
+//                //Handling custom calendar events
+//                calendarView.setCalendarListener(new CalendarListener() {
+//                    @Override
+//                    public void onDateSelected(Date date) {
+//                        simpleDateFormat = new SimpleDateFormat("dd");
+//                        int dd = Integer.parseInt(simpleDateFormat.format(date));
+//                        simpleDateFormat = new SimpleDateFormat("MM");
+//                        int mm = Integer.parseInt(simpleDateFormat.format(date));
+//                        simpleDateFormat = new SimpleDateFormat("yyyy");
+//                        int yy = Integer.parseInt(simpleDateFormat.format(date));
+//                        populateListForCalendar(dd, mm, yy);
+//                    }
+//
+//                    @Override
+//                    public void onMonthChanged(Date date) {
+//                        simpleDateFormat = new SimpleDateFormat("dd");
+//                        int dd = Integer.parseInt(simpleDateFormat.format(date));
+//                        simpleDateFormat = new SimpleDateFormat("MM");
+//                        int mm = Integer.parseInt(simpleDateFormat.format(date));
+//                        simpleDateFormat = new SimpleDateFormat("yyyy");
+//                        int yy = Integer.parseInt(simpleDateFormat.format(date));
+//                        if (curr_day == dd && curr_month == mm && curr_year == yy) {
+//                            populateListForCalendar(dd, mm, yy);
+//                        } else {
+//                            valuesList = new ArrayList<>();
+//                            calendarListAdapter = new CalendarListAdapter(valuesList, getActivity());
+//                            myExamsList.setAdapter(calendarListAdapter);
+//                            calendarListAdapter.notifyDataSetChanged();
+//                        }
+//                    }
+//                });
+//
+//                //Setting custom font
+//                final Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+//                if (null != typeface) {
+//                    calendarView.setCustomTypeface(typeface);
+//                    calendarView.refreshCalendar(customCalendar);
+//                }
+//
+//                //adding calendar day decorators
+//                List decorators = new ArrayList<>();
+//                decorators.add(new DisabledColorDecorator());
+//                decorators.add(new SetExamsColorDecorator());
+//                calendarView.setDecorators(decorators);
+//                calendarView.refreshCalendar(customCalendar);
+//            }
+//        });
     }
 
     public void populateFirstTime() {
