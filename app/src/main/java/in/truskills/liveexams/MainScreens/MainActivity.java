@@ -62,6 +62,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.RealPathUtil;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
@@ -611,22 +612,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.clear();
             e.apply();
 
-            String folder_main = "LiveExamsProfileImage";
+            String folder_main = ".LiveExamsProfileImage";
             File f = new File(Environment.getExternalStorageDirectory(), folder_main);
             if (f.exists()) {
-                deleteDir(f);
+                ConstantsDefined.deleteDir(f);
             }
 
-            String folder_main2 = "LiveExams";
+            String folder_main2 = ".LiveExams";
             File f2 = new File(Environment.getExternalStorageDirectory(), folder_main2);
             if (f2.exists()) {
-                deleteDir(f2);
+                ConstantsDefined.deleteDir(f2);
             }
 
-            String folder_main3 = "LiveExamsProfileImageRotated";
+            String folder_main3 = ".LiveExamsProfileImageRotated";
             File f3 = new File(Environment.getExternalStorageDirectory(), folder_main3);
             if (f3.exists()) {
-                deleteDir(f3);
+                ConstantsDefined.deleteDir(f3);
             }
 
             Intent i = new Intent(MainActivity.this, Signup_Login.class);
@@ -643,6 +644,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navigationView.setCheckedItem(R.id.nav_statistics);
                 getSupportActionBar().setTitle("STATISTICS");
             }
+        }else if(id==R.id.nav_share){
+
+            try
+            { Intent iii = new Intent(Intent.ACTION_SEND);
+                iii.setType("text/plain");
+                iii.putExtra(Intent.EXTRA_SUBJECT, "LiveExams");
+                String sAux = "\nLet me recommend you this application\n\nAn awesome platform to prepare for any competitive exams conducted by top teachers and institutes! :)\n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=in.truskills.liveexams \n\n";
+                iii.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(iii, "choose one"));
+            }
+            catch(Exception e)
+            { //e.toString();
+            }
+
+
+        }else if(id==R.id.nav_rate){
+            Intent ii=new Intent((Intent.ACTION_VIEW));
+            ii.setData(Uri.parse("market://details?id=in.truskills.liveexams"));
+            startActivity(ii);
+
+        }else if(id==R.id.nav_faq){
+
+            FaqFragment f = (FaqFragment) manager.findFragmentByTag("FaqFragment");
+            if (!(f != null && f.isVisible())) {
+
+                StatisticsFragment fragment = new StatisticsFragment();
+                FragmentTransaction t = manager.beginTransaction();
+                t.replace(R.id.fragment, fragment, "FaqFragment");
+                t.commit();
+                navigationView.setCheckedItem(R.id.nav_faq);
+                getSupportActionBar().setTitle("FAQ");
+            }
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -741,7 +776,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static File savebitmap(Bitmap bmp) throws Exception {
 
-        String folder_main = "LiveExamsProfileImage";
+        String folder_main = ".LiveExamsProfileImage";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
 
@@ -763,7 +798,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static File saveBitmapRotated(Bitmap bmp) throws Exception {
 
-        String folder_main = "LiveExamsProfileImageRotated";
+        String folder_main = ".LiveExamsProfileImageRotated";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
 
@@ -801,20 +836,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return null;
 
     }
-
-    public static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // The directory is now empty so delete it
-        return dir.delete();
-    }
-
 }

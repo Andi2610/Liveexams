@@ -1,6 +1,5 @@
 package in.truskills.liveexams.Miscellaneous;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
+import in.truskills.liveexams.authentication.SplashScreen;
 
 /**
  * Created by Shivansh Gupta on 14-03-2017.
@@ -63,11 +63,11 @@ public class SubmitAnswerPaper {
                     String success = jsonObject1.getString("success");
                     String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
-                        String folder_main = "LiveExams";
+                        String folder_main = ".LiveExams";
                         Toast.makeText(context, "Your answers for the quiz have been successfully submitted..", Toast.LENGTH_LONG).show();
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
-                            deleteDir(f);
+                            ConstantsDefined.deleteDir(f);
                         }
                         ob.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
@@ -100,10 +100,10 @@ public class SubmitAnswerPaper {
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
-                        String folder_main = "LiveExams";
+                        String folder_main = ".LiveExams";
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
-                            deleteDir(f);
+                            ConstantsDefined.deleteDir(f);
                         }
                     }
                 } catch (JSONException e) {
@@ -115,29 +115,14 @@ public class SubmitAnswerPaper {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("errors", "onErrorResponse: "+error);
-                String folder_main = "LiveExams";
+                String folder_main = ".LiveExams";
                 File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                 if (f.exists()) {
-                    deleteDir(f);
+                    ConstantsDefined.deleteDir(f);
                 }
             }
         });
         requestQueue.add(stringRequest);
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // The directory is now empty so delete it
-        return dir.delete();
     }
 
 }

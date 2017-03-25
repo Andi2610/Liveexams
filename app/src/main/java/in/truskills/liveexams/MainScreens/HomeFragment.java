@@ -233,6 +233,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
             @Override
             public void onResponse(JSONObject response) {
                 noConnectionLayout.setVisibility(View.GONE);
+                add.setVisibility(View.GONE);
                 if(dialog!=null)
                 dialog.dismiss();
                 try {
@@ -310,6 +311,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                 Log.d("checkForError",error.toString());
 
                 noConnectionLayout.setVisibility(View.VISIBLE);
+                add.setVisibility(View.GONE);
                 if(dialog!=null)
                 dialog.dismiss();
 
@@ -336,8 +338,10 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
 
         if (list.isEmpty()) {
             add.setVisibility(View.VISIBLE);
+            noConnectionLayout.setVisibility(View.GONE);
         } else {
             add.setVisibility(View.GONE);
+            noConnectionLayout.setVisibility(View.GONE);
         }
     }
 

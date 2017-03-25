@@ -1,4 +1,4 @@
-package in.truskills.liveexams.Miscellaneous;
+package in.truskills.liveexams.authentication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

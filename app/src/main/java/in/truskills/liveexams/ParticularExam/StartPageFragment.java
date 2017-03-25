@@ -392,11 +392,11 @@ public class StartPageFragment extends Fragment {
                                 //Check if a valid language has been chosen from the list..
                                 Log.d("start", "onClick: 4");
 
-                                String folder_main = "LiveExams";
+                                String folder_main = ".LiveExams";
 
                                 File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                                 if (f.exists()) {
-                                    deleteDir(f);
+                                    ConstantsDefined.deleteDir(f);
                                 }
 
                                 o.deleteMyTable();
@@ -421,22 +421,6 @@ public class StartPageFragment extends Fragment {
             }
         });
     }
-
-    public static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // The directory is now empty so delete it
-        return dir.delete();
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -475,11 +459,11 @@ public class StartPageFragment extends Fragment {
 
                         if(statusForVibrate) {
 
-                            String folder_main = "LiveExams";
+                            String folder_main = ".LiveExams";
 
                             File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                             if (f.exists()) {
-                                deleteDir(f);
+                                ConstantsDefined.deleteDir(f);
                             }
 
                             o.deleteMyTable();
@@ -505,11 +489,11 @@ public class StartPageFragment extends Fragment {
 
                     if(statusForVibrate) {
 
-                        String folder_main = "LiveExams";
+                        String folder_main = ".LiveExams";
 
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
-                            deleteDir(f);
+                            ConstantsDefined.deleteDir(f);
                         }
 
                         o.deleteMyTable();
@@ -535,11 +519,11 @@ public class StartPageFragment extends Fragment {
                     if(statusForVibrate){
 
 
-                        String folder_main = "LiveExams";
+                        String folder_main = ".LiveExams";
 
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
-                            deleteDir(f);
+                            ConstantsDefined.deleteDir(f);
                         }
 
                         o.deleteMyTable();

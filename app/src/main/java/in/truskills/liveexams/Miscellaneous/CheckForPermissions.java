@@ -140,23 +140,4 @@ public class CheckForPermissions {
         }
         return false;
     }
-
-//    public static boolean checkForMicrophone(Context c){
-//        int result = ContextCompat.checkSelfPermission(c, Manifest.permission.);
-//        if (result == PackageManager.PERMISSION_GRANTED){
-//            //Permission is already given..
-//            return true;
-//        }else{
-//            //Request storage permission..
-//            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) c,Manifest.permission.RECEIVE_SMS)){
-//                //If the user has denied the permission previously your code will come to this block
-//                //Here you can explain why you need this permission
-//                //Explain here why you need this permission
-//                Toast.makeText(c, "This permission is needed to automatic read OTP", Toast.LENGTH_SHORT).show();
-//            }
-//            //And finally ask for the permission
-//            ActivityCompat.requestPermissions((Activity)c,new String[]{Manifest.permission.RECEIVE_SMS},SMS_PERMISSION_CODE);
-//        }
-//        return false;
-//    }
 }

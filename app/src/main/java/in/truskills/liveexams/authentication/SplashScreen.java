@@ -1,4 +1,4 @@
-package in.truskills.liveexams.Miscellaneous;
+package in.truskills.liveexams.authentication;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +12,9 @@ import com.crashlytics.android.Crashlytics;
 import com.digits.sdk.android.Digits;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
+
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.R;
-import in.truskills.liveexams.authentication.Signup_Login;
 import io.fabric.sdk.android.Fabric;
 
 public class SplashScreen extends Activity {

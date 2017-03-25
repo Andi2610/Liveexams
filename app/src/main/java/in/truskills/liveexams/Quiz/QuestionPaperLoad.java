@@ -1,6 +1,5 @@
 package in.truskills.liveexams.Quiz;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,7 +38,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +45,7 @@ import in.truskills.liveexams.JsonParsers.QuestionPaperParser;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.MyApplication;
-import in.truskills.liveexams.Miscellaneous.SplashScreen;
+import in.truskills.liveexams.authentication.SplashScreen;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
@@ -190,7 +188,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     public void afterResponse() throws Exception{
 
-        String folder_main = "LiveExams";
+        String folder_main = ".LiveExams";
         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
         if (!f.exists())
             f.mkdir();
@@ -222,10 +220,10 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             public void onClick(View v) {
                 Log.d("clicked", "onClick: exit");
 
-                String folder_main = "LiveExams";
+                String folder_main = ".LiveExams";
                 File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                 if (f.exists()) {
-                    deleteDir(f);
+                    ConstantsDefined.deleteDir(f);
                 }
                 ob.deleteMyTable();
                 SharedPreferences.Editor e=dataPrefs.edit();
@@ -306,21 +304,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     public void prepareForOnlineForOption(int ii, int jj, int kk, String text) {
         String myText = format(text, examId);
         ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, myText);
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // The directory is now empty so delete it
-        return dir.delete();
     }
 
     @Override
@@ -722,10 +705,10 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                                 if(visible){
 
                                 }else{
-                                    String folder_main = "LiveExams";
+                                    String folder_main = ".LiveExams";
                                     File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                                     if (f.exists()) {
-                                        deleteDir(f);
+                                        ConstantsDefined.deleteDir(f);
                                     }
                                     ob.deleteMyTable();
                                     SharedPreferences.Editor e=dataPrefs.edit();

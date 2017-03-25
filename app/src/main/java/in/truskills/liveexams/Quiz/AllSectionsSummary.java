@@ -1,6 +1,5 @@
 package in.truskills.liveexams.Quiz;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +31,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -43,22 +39,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.Miscellaneous.MyApplication;
-import in.truskills.liveexams.Miscellaneous.SplashScreen;
 import in.truskills.liveexams.Miscellaneous.SubmitAnswerPaper;
-import in.truskills.liveexams.ParticularExamStatistics.RulesInAnswers;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
@@ -275,10 +262,10 @@ public class AllSectionsSummary extends AppCompatActivity {
                     String success = jsonObject1.getString("success");
                     String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
-                        String folder_main = "LiveExams";
+                        String folder_main = ".LiveExams";
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
-                            deleteDir(f);
+                            ConstantsDefined.deleteDir(f);
                         }
                         ob.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
@@ -304,10 +291,10 @@ public class AllSectionsSummary extends AppCompatActivity {
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
-                        String folder_main = "LiveExams";
+                        String folder_main = ".LiveExams";
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
-                            deleteDir(f);
+                            ConstantsDefined.deleteDir(f);
                         }
                         Toast.makeText(AllSectionsSummary.this, jsonObject2.getString("errmsg") + "", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
@@ -338,10 +325,10 @@ public class AllSectionsSummary extends AppCompatActivity {
                     e.apply();
                     Log.d("prefsAllow",allow.getInt("allow",1)+"");
                     Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
-                    String folder_main = "LiveExams";
+                    String folder_main = ".LiveExams";
                     File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                     if (f.exists()) {
-                        deleteDir(f);
+                        ConstantsDefined.deleteDir(f);
                     }
                     Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
@@ -362,21 +349,6 @@ public class AllSectionsSummary extends AppCompatActivity {
             }
         };
         requestQueue.add(stringRequest);
-    }
-
-    public static boolean deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
-                if (!success) {
-                    return false;
-                }
-            }
-        }
-
-        // The directory is now empty so delete it
-        return dir.delete();
     }
 
     @Override

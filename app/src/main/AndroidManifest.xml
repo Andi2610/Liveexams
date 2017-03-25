@@ -32,7 +32,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Miscellaneous.SplashScreen"
+            android:name=".authentication.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -52,7 +52,7 @@
             android:name=".authentication.Signup_Login"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Miscellaneous.TermsAndConditions"
+            android:name=".authentication.TermsAndConditions"
             android:screenOrientation="portrait" />
         <activity
             android:name=".authentication.ForgotPassword"
