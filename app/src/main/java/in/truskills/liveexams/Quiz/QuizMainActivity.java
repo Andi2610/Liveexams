@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.flashphoner.fpwcsapi.layout.PercentFrameLayout;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -39,10 +48,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.SurfaceViewRenderer;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import in.truskills.liveexams.MainScreens.MainActivity;
@@ -93,7 +104,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option, questionArray[], noOfSections, num, total, myTime;
     Socket socket;
     socketFromTeacher socketfromteacher;
-    SharedPreferences prefs,firstTime;
+    SharedPreferences prefs,firstTime,firstTimeForRules,allow;
     CountDownTimer count;
     String myDate;
     long timeUntil;
@@ -132,6 +143,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
         dataPrefs = getSharedPreferences("dataPrefs", Context.MODE_PRIVATE);
         firstTime = getSharedPreferences("firstTime", Context.MODE_PRIVATE);
+        allow = getSharedPreferences("allow", Context.MODE_PRIVATE);
+        firstTimeForRules = getSharedPreferences("firstTimeForRules", Context.MODE_PRIVATE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -247,25 +260,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
             public void onFinish() {
                 timer.setText("done!");
-                AlertDialog.Builder builder = new AlertDialog.Builder(QuizMainActivity.this);
-                builder.setMessage("Quiz is over!! Re-directing to Home page");
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(3000);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        } finally {
-                            Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                            startActivity(intent);
-                        }
-                    }
-                });
-                t.start();
-                AlertDialog alert = builder.create();
-                alert.show();
+                submit();
             }
 
 
@@ -1095,6 +1090,158 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 }
             }
         }).start();
+    }
+
+    public void submit() {
+
+        RequestQueue requestQueue;
+
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+//        ob.getAllValues();
+        JSONArray jsonArray = ob.getQuizResult();
+        final JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("result", jsonArray);
+            jsonObject.put("selectedLanguage", selectedLanguage);
+            jsonObject.put("date", myDate);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//        ob.setSubmitTrue();
+
+        SharedPreferences.Editor e=dataPrefs.edit();
+        e.putInt("submit",1);
+        e.apply();
+
+//        try {
+//            File root = new File(Environment.getExternalStorageDirectory(), "MyResult");
+//            if (!root.exists()) {
+//                root.mkdirs();
+//            }
+//            File gpxfile = new File(root, "MyResult");
+//            FileWriter writer = new FileWriter(gpxfile);
+//            writer.append(jsonObject.toString());
+//            writer.flush();
+//            writer.close();
+////                                    Toast.makeText(AllSectionsSummary.this, "Saved", Toast.LENGTH_SHORT).show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        //Api to be connected to..
+        ConstantsDefined.updateAndroidSecurityProvider(this);
+        ConstantsDefined.beforeVolleyConnect();
+
+        String myurl = ConstantsDefined.api + "answerPaper";
+        Log.d("myurl", "submit: "+myurl);
+
+        final ProgressDialog progressDialog = new ProgressDialog(QuizMainActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("Quiz is over..Submitting your answers.. Please wait...");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        //Make a request..
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                myurl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //On getting the response..
+                progressDialog.dismiss();
+                try {
+                    JSONObject jsonObject1 = new JSONObject(response);
+                    String success = jsonObject1.getString("success");
+                    String result = jsonObject1.getString("response");
+                    if (success.equals("true")) {
+                        String folder_main = ".LiveExams";
+                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                        if (f.exists()) {
+                            ConstantsDefined.deleteDir(f);
+                        }
+                        ob.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
+                        SharedPreferences.Editor ee=quizPrefs.edit();
+                        ee.clear();
+                        ee.apply();
+                        SharedPreferences.Editor eee=firstTime.edit();
+                        eee.clear();
+                        eee.apply();
+                        SharedPreferences.Editor eeeee=firstTimeForRules.edit();
+                        eeeee.clear();
+                        eeeee.apply();
+                        Toast.makeText(QuizMainActivity.this, "Your answers for the quiz have been successfully submitted..", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        JSONObject jsonObject2 = new JSONObject(result);
+                        ob.deleteMyTable();
+                        SharedPreferences.Editor e=dataPrefs.edit();
+                        e.clear();
+                        e.apply();
+                        String folder_main = ".LiveExams";
+                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                        if (f.exists()) {
+                            ConstantsDefined.deleteDir(f);
+                        }
+                        Toast.makeText(QuizMainActivity.this, jsonObject2.getString("errmsg") + "", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                        startActivity(intent);
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    progressDialog.dismiss();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //In case the connection to the Api couldn't be established..
+                if(progressDialog!=null)
+                    progressDialog.dismiss();
+                Log.d("error", error.toString() + "");
+
+                if(ConstantsDefined.isOnline(QuizMainActivity.this)){
+                    //Do nothing..
+                    Toast.makeText(QuizMainActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    SharedPreferences.Editor e=allow.edit();
+                    e.putInt("allow",0);
+                    e.apply();
+                    Log.d("prefsAllow",allow.getInt("allow",1)+"");
+                    Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
+                    String folder_main = ".LiveExams";
+                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                    if (f.exists()) {
+                        ConstantsDefined.deleteDir(f);
+                    }
+                    Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                //Put all the required parameters for the post request..
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userId", prefs.getString("userId",""));
+                params.put("examId", examId);
+                params.put("answerPaper", jsonObject.toString());
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
 }

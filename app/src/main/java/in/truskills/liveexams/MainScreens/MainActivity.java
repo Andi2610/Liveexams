@@ -675,7 +675,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 t.replace(R.id.fragment, fragment, "FaqFragment");
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_faq);
-                getSupportActionBar().setTitle("FAQ");
+                getSupportActionBar().setTitle("USER GUIDE");
             }
 
         }

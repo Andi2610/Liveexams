@@ -67,6 +67,7 @@ public class MyFragment extends Fragment implements Updateable {
         webView.getSettings().setDisplayZoomControls(false);
         webView.getSettings().setJavaScriptEnabled(true);
 
+
         MyFragmentInterface obb = (MyFragmentInterface) getActivity();
 
         o = (MyFragmentInterface) getActivity();
