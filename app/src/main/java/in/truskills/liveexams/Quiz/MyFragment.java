@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -67,10 +69,24 @@ public class MyFragment extends Fragment implements Updateable {
         webView.getSettings().setDisplayZoomControls(false);
         webView.getSettings().setJavaScriptEnabled(true);
 
-
         MyFragmentInterface obb = (MyFragmentInterface) getActivity();
 
         o = (MyFragmentInterface) getActivity();
+
+//        if(mySi==0&&myQi==0){
+//            webView.setWebViewClient(new WebViewClient() {
+//
+//                public void onPageFinished(WebView view, String url) {
+//                    // do your stuff here
+//
+//                    o.hideDialog();
+//
+//                }
+//            });
+//        }
+
+//        o.hideDialog();
+
         WebViewContent obj = new WebViewContent();
         obj.contentGenerator(myQuestion, myOptions, webView, mySi, myQi, getActivity(), obb, myFragmentCount);
 
@@ -88,11 +104,12 @@ public class MyFragment extends Fragment implements Updateable {
 
 interface MyFragmentInterface {
     public void enableButtons();
-
+    public void hideDialog();
     public void putDetailsForNotAnswered(int si, int qi, int fi);
 }
 
 interface Updateable {
     public void update();
 }
+
 

@@ -42,6 +42,7 @@ import com.flashphoner.fpwcsapi.layout.PercentFrameLayout;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -117,10 +118,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     RelativeLayout header,listLayout;
     TextView breakLine;
     LinearLayout footer;
+    AVLoadingIndicatorView avi;
 
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
     PercentFrameLayout parentRender;
+    ProgressDialog progressDialog2 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +131,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         setContentView(R.layout.activity_quiz_main);
         h=new Handler();
 
+        progressDialog2= new ProgressDialog(QuizMainActivity.this);
+
+
         activity_quiz_main=(RelativeLayout)findViewById(R.id.activity_quiz_main);
+
+//        avi=(AVLoadingIndicatorView)findViewById(R.id.avi);
 
         header=(RelativeLayout)findViewById(R.id.header);
         listLayout=(RelativeLayout)findViewById(R.id.listLayout);
@@ -242,9 +250,25 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         pager.setAlpha((float)1);
         breakLine.setAlpha((float)1);
 
+
 //        ob.getAllValues();
 
-        //Set timer..
+        //Set timer.
+
+        //Initially.. fragmentIndex=0;
+        //Getting SectionIndex, QuestionIndex and SerialNumber of fragmentIndex=0;
+        int sI = ob.getIntValuesPerQuestionByFragmentIndex(0, QuizDatabase.SectionIndex);
+        int qI = ob.getIntValuesPerQuestionByFragmentIndex(0, QuizDatabase.QuestionIndex);
+
+//        if(sI==0&&qI==0){
+//
+//            progressDialog2.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//            progressDialog2.setMessage("Loading... Please wait...");
+//            progressDialog2.setIndeterminate(true);
+//            progressDialog2.setCancelable(false);
+//            progressDialog2.show();
+//        }
+
         count = new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
 
             public void onTick(long millisUntilFinished) {
@@ -266,11 +290,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         };
         count.start();
-
-        //Initially.. fragmentIndex=0;
-        //Getting SectionIndex, QuestionIndex and SerialNumber of fragmentIndex=0;
-        int sI = ob.getIntValuesPerQuestionByFragmentIndex(0, QuizDatabase.SectionIndex);
-        int qI = ob.getIntValuesPerQuestionByFragmentIndex(0, QuizDatabase.QuestionIndex);
 
         //Update read status..
         ob.updateValuesForResult(sI, qI, QuizDatabase.ReadStatus, 1 + "");
@@ -571,6 +590,14 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 changeButtonStatus(true);
             }
         });
+    }
+
+    @Override
+    public void hideDialog() {
+
+//        if(progressDialog2!=null)
+//        progressDialog2.hide();
+
     }
 
     @Override
@@ -944,7 +971,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         }
     }
 
-
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
         ProgressDialog dialog;
@@ -1209,10 +1235,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     progressDialog.dismiss();
                 Log.d("error", error.toString() + "");
 
-                if(ConstantsDefined.isOnline(QuizMainActivity.this)){
-                    //Do nothing..
-                    Toast.makeText(QuizMainActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-                }else{
                     SharedPreferences.Editor e=allow.edit();
                     e.putInt("allow",0);
                     e.apply();
@@ -1227,7 +1249,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                     startActivity(intent);
                     finish();
-                }
             }
         }) {
             @Override
