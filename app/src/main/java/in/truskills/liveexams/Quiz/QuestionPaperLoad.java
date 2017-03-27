@@ -241,7 +241,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         final Matcher matcher = pattern.matcher(text);
         final Matcher matcher1 = pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst = "<img src=\"file://" + base + "/LiveExams/$2\" style=\"max-width:100%;\"\"/>";
+        String subst = "<img src=\"file://" + base + "/.LiveExams/$2\" style=\"max-width:100%;\"\"/>";
         String result = matcher1.replaceAll(subst);
         ob.updateValuesPerQuestion(ii, jj, QuizDatabase.QuestionText, result);
 
@@ -264,7 +264,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         final Matcher matcher = pattern.matcher(text);
         final Matcher matcher1 = pattern.matcher(text);
         String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-        String subst = "<img src=\"file://" + base + "/LiveExams/$2\"/>";
+        String subst = "<img src=\"file://" + base + "/.LiveExams/$2\"/>";
         String result = matcher1.replaceAll(subst);
         ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, result);
 
@@ -417,7 +417,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     public static File savebitmap(Bitmap bmp,String grp) throws Exception {
 
-        String folder_main = "LiveExams";
+        String folder_main = ".LiveExams";
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
 
