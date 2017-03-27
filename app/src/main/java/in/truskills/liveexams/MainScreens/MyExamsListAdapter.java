@@ -82,7 +82,9 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+//
+//                Intent i=new Intent(c, FeedbackActivity.class);
+//                c.startActivity(i);
                 SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
                 Log.d("prefsAllow",allow.getInt("allow",1)+"");
 
