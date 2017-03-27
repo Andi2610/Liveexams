@@ -281,7 +281,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                         eeeee.clear();
                         eeeee.apply();
                         Toast.makeText(AllSectionsSummary.this, "Your answers for the quiz have been successfully submitted..", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
+                        Intent intent = new Intent(AllSectionsSummary.this, FeedbackActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
                         finish();

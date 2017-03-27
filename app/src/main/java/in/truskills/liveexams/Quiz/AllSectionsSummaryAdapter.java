@@ -62,7 +62,6 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
 
         Typeface tff1 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
         holder.mySectionName.setTypeface(tff1);
-        Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
         holder.submittedQuestionsAllSummary.setTypeface(tff1);
         holder.reviewedTickedQuestionsAllSummary.setTypeface(tff1);
         holder.reviewedUntickedQuestionsAllSummary.setTypeface(tff1);

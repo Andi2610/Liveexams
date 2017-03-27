@@ -1200,7 +1200,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         eeeee.clear();
                         eeeee.apply();
                         Toast.makeText(QuizMainActivity.this, "Your answers for the quiz have been successfully submitted..", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                        Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
                         finish();
