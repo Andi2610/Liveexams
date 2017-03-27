@@ -250,6 +250,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         pager.setAlpha((float)1);
         breakLine.setAlpha((float)1);
 
+        timer.setText("Starting.. Please wait..");
+
 
 //        ob.getAllValues();
 
@@ -269,27 +271,27 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //            progressDialog2.show();
 //        }
 
-        count = new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
-
-            public void onTick(long millisUntilFinished) {
-
-                timer.setText("" + String.format(FORMAT,
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
-                timeUntil = millisUntilFinished;
-            }
-
-            public void onFinish() {
-                timer.setText("done!");
-                submit();
-            }
-
-
-        };
-        count.start();
+//        count = new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
+//
+//            public void onTick(long millisUntilFinished) {
+//
+//                timer.setText("" + String.format(FORMAT,
+//                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+//                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+//                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+//                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+//                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+//                timeUntil = millisUntilFinished;
+//            }
+//
+//            public void onFinish() {
+//                timer.setText("done!");
+//                submit();
+//            }
+//
+//
+//        };
+//        count.start();
 
         //Update read status..
         ob.updateValuesForResult(sI, qI, QuizDatabase.ReadStatus, 1 + "");
@@ -597,6 +599,29 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
 //        if(progressDialog2!=null)
 //        progressDialog2.hide();
+//        Toast.makeText(this, "fully_loaded", Toast.LENGTH_SHORT).show();
+
+        count = new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
+
+            public void onTick(long millisUntilFinished) {
+
+                timer.setText("" + String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                timeUntil = millisUntilFinished;
+            }
+
+            public void onFinish() {
+                timer.setText("done!");
+                submit();
+            }
+
+
+        };
+        count.start();
 
     }
 

@@ -73,17 +73,19 @@ public class MyFragment extends Fragment implements Updateable {
 
         o = (MyFragmentInterface) getActivity();
 
-//        if(mySi==0&&myQi==0){
-//            webView.setWebViewClient(new WebViewClient() {
-//
-//                public void onPageFinished(WebView view, String url) {
-//                    // do your stuff here
-//
-//                    o.hideDialog();
-//
-//                }
-//            });
-//        }
+        if(mySi==0&&myQi==0){
+            webView.setWebViewClient(new WebViewClient() {
+
+                public void onPageFinished(WebView view, String url) {
+                    // do your stuff here
+
+                    o.hideDialog();
+
+                    Log.d("here", "onPageFinished: ");
+
+                }
+            });
+        }
 
 //        o.hideDialog();
 
