@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         android:id="@+id/signupLayout">
+
         <SlidingDrawer
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -50,7 +51,8 @@
                 android:layout_height="match_parent"
                 android:id="@+id/signupContent"
                 android:background="@color/light_grey"
-                android:isScrollContainer="false">
+                android:isScrollContainer="false"
+                android:layout_marginTop="50dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -141,36 +143,78 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginRight="10dp"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@color/edit_text_color"
-                        android:weightSum="100"
-                        android:id="@+id/locationField">
-                        <TextView
-                            android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginRight="10dp"
                             android:background="@color/edit_text_color"
-                            android:textColor="@color/light_grey"
-                            android:text="LOCATION"
-                            android:id="@+id/signupLocation"
-                            android:layout_weight="90"
-                            android:textSize="20dp"
-                            android:layout_gravity="center"/>
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="50dp"
-                            android:id="@+id/locationIcon"
-                            android:layout_weight="10"
-                            android:layout_marginRight="20dp"
-                            android:background="@drawable/location_icon"
-                            android:layout_gravity="center"/>
-                    </LinearLayout>
+                            android:weightSum="100"
+                            android:id="@+id/locationField">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:background="@color/edit_text_color"
+                                android:textColor="@color/light_grey"
+                                android:text="LOCATION"
+                                android:id="@+id/signupLocation"
+                                android:layout_weight="90"
+                                android:textSize="20dp"
+                                android:layout_gravity="center"/>
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/locationIcon"
+                                android:layout_weight="10"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/location_icon"
+                                android:layout_gravity="center"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/edit_text_color"
+                            android:weightSum="100"
+                            android:id="@+id/locationFieldEditText">
+
+                            <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:layout_weight="90"
+                                android:background="@color/edit_text_color"
+                                android:textColor="@color/white"
+                                android:textColorHint="@color/light_grey"
+                                android:lines="1"
+                                android:inputType="text"
+                                android:hint="LOCATION"
+                                android:id="@+id/signupLocationEditText" />
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="50dp"
+                                android:id="@+id/locationIconEditText"
+                                android:layout_weight="10"
+                                android:layout_marginRight="20dp"
+                                android:background="@drawable/location_icon"
+                                android:layout_gravity="center"/>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -220,7 +264,7 @@
                             android:textSize="10dp"/>
                     </LinearLayout>
 
-                <LinearLayout
+                    <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="2dp"
@@ -240,7 +284,9 @@
                 </LinearLayout>
 
             </ScrollView>
+
         </SlidingDrawer>
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"

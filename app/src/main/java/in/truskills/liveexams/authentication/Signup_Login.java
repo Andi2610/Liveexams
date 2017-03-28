@@ -98,17 +98,17 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     //Public declaration of variables
 
     AuthCallback authCallback;
-    LinearLayout locationField;
+    String city="abcd";
+    LinearLayout locationField,locationFieldEditText;
     Button loginPressed, registerHandleButton, loginHandleButton;
     Button signupPressed;
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
-    EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile;
+    EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile,signupLocationEditText;
     TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence, successfullRegister, signupLanguageAlternate;
     Spinner signupLanguage, signupGender;
     LocationManager locationManager;
-    private static final int PERMISSION_REQUEST_CODE = 1;
-    String lat, lon, selectedLanguage, selectedGender, name, gender, email, password, confirmPassword, location, mobile, language, login_name, login_password;
+    String lat="0.00", lon="0.00", selectedLanguage, selectedGender, name, gender, email, password, confirmPassword, location, mobile, language, login_name, login_password;
     int code = 123;
     ImageView signupHandleImage, loginHandleImage;
     RequestQueue requestQueue;
@@ -118,13 +118,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     Animation slide_down;
     Drawable dr;
     ProgressDialog dialog;
-    String accessKeyId="AKIAIJUGKGFIXTWNTTQA",
-            secretAccessKey= "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";
-    AWSCredentials credentials;
-    AmazonS3 s3client;
-
-    private FusedLocationProviderApi fusedLocationProviderApi = LocationServices.FusedLocationApi;
-
+    public static boolean available=true;
 
     private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 1000 * 10;
@@ -141,21 +135,34 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         //Set the layout of this activity
         setContentView(R.layout.activity_signup__login);
 
-//        if (!isGooglePlayServicesAvailable()) {
-//            finish();
-//        }
+        locationFieldEditText=(LinearLayout)findViewById(R.id.locationFieldEditText);
+        locationField = (LinearLayout) findViewById(R.id.locationField);
 
+        signupLocationEditText=(EditText)findViewById(R.id.signupLocationEditText);
 
-        createLocationRequest();
+        available=true;
+
+        if (!isGooglePlayServicesAvailable()) {
+            available=false;
+            locationFieldEditText.setVisibility(View.VISIBLE);
+            locationField.setVisibility(View.GONE);
+        }
+        if(available){
+            createLocationRequest();
+            locationFieldEditText.setVisibility(View.GONE);
+            locationField.setVisibility(View.VISIBLE);
+        }
 
         ConstantsDefined.updateAndroidSecurityProvider(this);
         ConstantsDefined.beforeVolleyConnect();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+        if(available){
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+        }
 
         //Shared Preferences for user's selected language
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -198,7 +205,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupLanguage = (Spinner) findViewById(R.id.signupLanguage);
         signupGender = (Spinner) findViewById(R.id.signupGender);
         app_logo = (ImageView) findViewById(R.id.app_logo);
-        locationField = (LinearLayout) findViewById(R.id.locationField);
 
         final Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         registerHandleButton.setTypeface(tff1);
@@ -224,6 +230,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         termsAndConditionsPressed.setTypeface(tff2);
         sentence.setTypeface(tff2);
         signupLanguageAlternate.setTypeface(tff2);
+        signupLocationEditText.setTypeface(tff2);
 
 
         //Set OnClickListener on all buttons used
@@ -669,12 +676,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
             //If location icon is pressed..Call the getCurrentLocation method..
             case R.id.locationField:
-                signupLocation.setText("Ahmedabad");
 
-                lat="23.0509";
-                lon="72.5185";
+                if(available){
+                    getCurrentLocation();
+                }
 
-//                getCurrentLocation();
                 break;
         }
     }
@@ -736,7 +742,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         mobile = signupMobile.getText().toString();
         password = signupPassword.getText().toString();
         confirmPassword = signupConfirmPassword.getText().toString();
-        location = signupLocation.getText().toString();
+        if(available)
+            location = signupLocation.getText().toString();
+        else{
+            location=signupLocationEditText.getText().toString();
+            city=location;
+        }
         language = selectedLanguage;
 
         //If all valid.. signup..
@@ -751,7 +762,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             if (gender.equals("GENDER"))
                 Toast.makeText(this, "Choose your gender", Toast.LENGTH_SHORT).show();
             if (location.equals("LOCATION"))
-                Toast.makeText(this, "Choose your location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Enter your location", Toast.LENGTH_SHORT).show();
             if (signupLanguageAlternate.getVisibility() == View.VISIBLE)
                 Toast.makeText(this, "Choose your language", Toast.LENGTH_SHORT).show();
             if (mobile.length() != 10)
@@ -884,6 +895,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         params.put("language", language);
                         params.put("latitude", lat);
                         params.put("longitude", lon);
+                        params.put("city",city);
+
 //                params.put("profileImageUrl",defaultImage);
                         return params;
                     }
