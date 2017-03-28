@@ -141,9 +141,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         //Set the layout of this activity
         setContentView(R.layout.activity_signup__login);
 
-        if (!isGooglePlayServicesAvailable()) {
-            finish();
-        }
+//        if (!isGooglePlayServicesAvailable()) {
+//            finish();
+//        }
+
+
         createLocationRequest();
 
         ConstantsDefined.updateAndroidSecurityProvider(this);
@@ -667,7 +669,12 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
             //If location icon is pressed..Call the getCurrentLocation method..
             case R.id.locationField:
-                getCurrentLocation();
+                signupLocation.setText("Ahmedabad");
+
+                lat="23.0509";
+                lon="72.5185";
+
+//                getCurrentLocation();
                 break;
         }
     }
