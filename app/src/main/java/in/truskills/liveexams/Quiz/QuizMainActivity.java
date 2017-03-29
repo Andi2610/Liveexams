@@ -253,7 +253,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         timer.setText("Starting.. Please wait..");
 
 
-//        ob.getAllValues();
+
+        ob.getAllValues();
 
         //Set timer.
 
@@ -584,12 +585,18 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     }
 
     @Override
-    public void enableButtons() {
+    public void enableButtons(final int s,final int q) {
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                changeButtonStatus(true);
+                String temp = ob.getValuesForResult(s, q, QuizDatabase.TempAnswerSerialNumber);
+                if(!temp.equals("-1"))
+                    changeButtonStatus(true);
+                else {
+                    setDetailsForNotAnswered(s,q);
+                    Toast.makeText(QuizMainActivity.this, "Please select your answer again..", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

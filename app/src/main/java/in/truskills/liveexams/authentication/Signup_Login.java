@@ -155,14 +155,14 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         ConstantsDefined.updateAndroidSecurityProvider(this);
         ConstantsDefined.beforeVolleyConnect();
-
-        if(available){
+//
+//        if(available){
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
-        }
+//        }
 
         //Shared Preferences for user's selected language
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);

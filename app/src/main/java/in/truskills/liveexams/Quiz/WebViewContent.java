@@ -72,9 +72,13 @@ public class WebViewContent {
                 //Get options ticked..
                 String stringVariable = strl;
                 int myStr = Integer.parseInt(stringVariable);
+                Log.d("values", "myStr=" + myStr);
+
                 //update it in temp answer..
                 ob.updateValuesForResult(mySi, myQi, QuizDatabase.TempAnswerSerialNumber, myStr + "");
                 String temp = ob.getValuesForResult(mySi, myQi, QuizDatabase.TempAnswerSerialNumber);
+                Log.d("values", "myTempStr=" + temp);
+
                 Log.d("myData", "tempStr=" + temp);
 
                 //Also increment no. of toggles for the question by one..
@@ -84,7 +88,8 @@ public class WebViewContent {
                 ob.updateValuesForResult(mySi, myQi, QuizDatabase.NumberOfToggles, numOfTog + "");
                 //Put status of question as not answered.. i.e. in red..
                 //Enable buttons..
-                obb.enableButtons();
+
+                obb.enableButtons(mySi,myQi);
                 int status = Integer.parseInt(ob.getValuesForResult(mySi, myQi, QuizDatabase.QuestionStatus));
                 obb.putDetailsForNotAnswered(mySi, myQi, myFragmentCount);
 

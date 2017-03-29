@@ -105,7 +105,7 @@ public class MyFragment extends Fragment implements Updateable {
 }
 
 interface MyFragmentInterface {
-    public void enableButtons();
+    public void enableButtons(int s,int q);
     public void hideDialog();
     public void putDetailsForNotAnswered(int si, int qi, int fi);
 }

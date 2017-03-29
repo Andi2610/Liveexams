@@ -212,7 +212,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         db.insert(RESULT_TABLE, null, values);
 //        db.close(); // Closing database connection
     }
-
 //    public void setValuesForData(String language,String myDate,String ui,String ei){
 //        SQLiteDatabase db = this.getWritableDatabase();
 //        ContentValues values = new ContentValues();
@@ -268,12 +267,17 @@ public class QuizDatabase extends SQLiteOpenHelper {
         String ans = "";
         String query = "SELECT " + columnName + " FROM " + RESULT_TABLE + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ans = cursor.getString(cursor.getColumnIndex(columnName));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    ans = cursor.getString(cursor.getColumnIndex(columnName));
+                } while (cursor.moveToNext());
+            }
+        }finally{
+//            Log.d("values", "getValuesForResult: "+si+" "+qi+" "+columnName+" "+ans);
+            cursor.close();
         }
-        cursor.close();
+
 //        db.close();
         return ans;
     }
@@ -285,28 +289,52 @@ public class QuizDatabase extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + RESULT_TABLE + " WHERE " + QuestionStatus + "=0 AND " + SectionIndex + "=" + si;
 
         cursor = db.rawQuery(query, null);
-        types.add(cursor.getCount());
-        cursor.close();
+        try{
+            types.add(cursor.getCount());
+        }finally {
+//            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
+            cursor.close();
+        }
 
         query = "SELECT * FROM " + RESULT_TABLE + " WHERE " + QuestionStatus + "=1 AND " + SectionIndex + "=" + si;
         cursor = db.rawQuery(query, null);
-        types.add(cursor.getCount());
-        cursor.close();
+        try{
+            types.add(cursor.getCount());
+        }finally {
+//            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
+
+            cursor.close();
+        }
 
         query = "SELECT * FROM " + RESULT_TABLE + " WHERE " + QuestionStatus + "=2 AND " + SectionIndex + "=" + si;
         cursor = db.rawQuery(query, null);
-        types.add(cursor.getCount());
-        cursor.close();
+        try{
+            types.add(cursor.getCount());
+        }finally {
+//            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
+
+            cursor.close();
+        }
 
         query = "SELECT * FROM " + RESULT_TABLE + " WHERE " + QuestionStatus + "=3 AND " + SectionIndex + "=" + si;
         cursor = db.rawQuery(query, null);
-        types.add(cursor.getCount());
-        cursor.close();
+        try{
+            types.add(cursor.getCount());
+        }finally {
+//            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
+
+            cursor.close();
+        }
 
         query = "SELECT * FROM " + RESULT_TABLE + " WHERE " + QuestionStatus + "=4 AND " + SectionIndex + "=" + si;
         cursor = db.rawQuery(query, null);
-        types.add(cursor.getCount());
-        cursor.close();
+        try{
+            types.add(cursor.getCount());
+        }finally {
+            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
+
+            cursor.close();
+        }
 //        db.close();
 
         return types;
@@ -319,14 +347,20 @@ public class QuizDatabase extends SQLiteOpenHelper {
         String query = "SELECT " + QuestionStatus + " FROM " + RESULT_TABLE + " WHERE " + SectionIndex + "=" + si + " ORDER BY " + FragmentIndex;
 
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                String s = cursor.getString(cursor.getColumnIndex(QuestionStatus));
-                int n = Integer.parseInt(s);
-                types.add(n);
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    String s = cursor.getString(cursor.getColumnIndex(QuestionStatus));
+                    int n = Integer.parseInt(s);
+                    types.add(n);
+                } while (cursor.moveToNext());
+            }
+        }finally {
+
+            cursor.close();
+
         }
-        cursor.close();
+
 
         return types;
     }
@@ -339,13 +373,17 @@ public class QuizDatabase extends SQLiteOpenHelper {
         String query = "SELECT " + FinalAnswerSerialNumber + " FROM " + RESULT_TABLE + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
 
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ans = cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber));
-                type = Integer.parseInt(ans);
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    ans = cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber));
+                    type = Integer.parseInt(ans);
+                } while (cursor.moveToNext());
+            }
+        }finally {
+            cursor.close();
         }
-        cursor.close();
+
 //        db.close();
 
         return type;
@@ -358,16 +396,20 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT  * FROM " + TABLE_PER_SECTION + " WHERE " + SectionIndex + "=" + si;
         Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                map.put("SectionName", cursor.getString(cursor.getColumnIndex(SectionName)));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    map.put("SectionName", cursor.getString(cursor.getColumnIndex(SectionName)));
+                } while (cursor.moveToNext());
+            }
+        }finally {
+            cursor.close();
+
         }
-        cursor.close();
+
 //        db.close();
         return map;
     }
-
 //    public String getDataFromDataTable(String columnName){
 //        SQLiteDatabase db = this.getReadableDatabase();
 //        String ans = "";
@@ -388,12 +430,17 @@ public class QuizDatabase extends SQLiteOpenHelper {
         String ans = "";
         String query = "SELECT " + columnName + " FROM " + TABLE_PER_QUESTION + " WHERE " + FragmentIndex + "=" + fI;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ans = cursor.getString(cursor.getColumnIndex(columnName));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    ans = cursor.getString(cursor.getColumnIndex(columnName));
+                } while (cursor.moveToNext());
+            }
+        }finally {
+            cursor.close();
+
         }
-        cursor.close();
+
 //        db.close();
         return ans;
     }
@@ -403,12 +450,18 @@ public class QuizDatabase extends SQLiteOpenHelper {
         int ans = 0;
         String query = "SELECT " + columnName + " FROM " + TABLE_PER_QUESTION + " WHERE " + FragmentIndex + "=" + fI;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ans = cursor.getInt(cursor.getColumnIndex(columnName));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    ans = cursor.getInt(cursor.getColumnIndex(columnName));
+                } while (cursor.moveToNext());
+            }
+        }finally {
+//            Log.d("values", "getIntValuesPerQuestionByFragmentIndex: "+columnName+" "+ans);
+            cursor.close();
+
         }
-        cursor.close();
+
 //        db.close();
         return ans;
     }
@@ -418,12 +471,18 @@ public class QuizDatabase extends SQLiteOpenHelper {
         int ans = 0;
         String query = "SELECT " + columnName + " FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " AND " + SerialNumber + "=" + srno;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ans = cursor.getInt(cursor.getColumnIndex(columnName));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    ans = cursor.getInt(cursor.getColumnIndex(columnName));
+                } while (cursor.moveToNext());
+            }
+        }finally {
+//            Log.d("values", "getIntValuesPerQuestionBySiAndSrno: "+si+" "+srno+" "+columnName+" "+ans);
+            cursor.close();
+
         }
-        cursor.close();
+
 //        db.close();
         return ans;
     }
@@ -434,14 +493,20 @@ public class QuizDatabase extends SQLiteOpenHelper {
         ArrayList<Integer> fI = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " ORDER BY " + FragmentIndex;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                fI.add(cursor.getInt(cursor.getColumnIndex(FragmentIndex)));
-            } while (cursor.moveToNext());
-        }
-        map.put("FragmentIndexList", fI);
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    fI.add(cursor.getInt(cursor.getColumnIndex(FragmentIndex)));
+                } while (cursor.moveToNext());
+            }
+            map.put("FragmentIndexList", fI);
 
-        cursor.close();
+        }finally {
+
+            cursor.close();
+
+        }
+
 //        db.close();
 
         return map;
@@ -453,14 +518,19 @@ public class QuizDatabase extends SQLiteOpenHelper {
         ArrayList<String> fI = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_PER_SECTION + " ORDER BY " + SerialNumber;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                fI.add(cursor.getString(cursor.getColumnIndex(SectionName)));
-            } while (cursor.moveToNext());
-        }
-        map.put("SectionNameList", fI);
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    fI.add(cursor.getString(cursor.getColumnIndex(SectionName)));
+                } while (cursor.moveToNext());
+            }
+            map.put("SectionNameList", fI);
 
-        cursor.close();
+        }finally {
+            cursor.close();
+
+        }
+
 //        db.close();
 
         return map;
@@ -471,13 +541,19 @@ public class QuizDatabase extends SQLiteOpenHelper {
         String ans = "";
         String query = "SELECT " + columnName + " FROM " + TABLE_PER_SECTION + " WHERE " + SectionIndex + "=" + si;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ans = cursor.getString(cursor.getColumnIndex(columnName));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    ans = cursor.getString(cursor.getColumnIndex(columnName));
+                } while (cursor.moveToNext());
+            }
+
+        }finally {
+//            Log.d("values", "getStringValuesPerSectionBySectionIndex: "+si+" "+columnName+" "+ans);
+
+            cursor.close();
         }
 
-        cursor.close();
 //        db.close();
 
         return ans;
@@ -488,30 +564,48 @@ public class QuizDatabase extends SQLiteOpenHelper {
         int ans = 0;
         String query = "SELECT " + columnName + " FROM " + TABLE_PER_SECTION + " WHERE " + SerialNumber + "=" + srNo;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                ans = cursor.getInt(cursor.getColumnIndex(columnName));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    ans = cursor.getInt(cursor.getColumnIndex(columnName));
+                } while (cursor.moveToNext());
+            }
+        }finally {
+//            Log.d("values", "getIntValuesPerSectionBySerialNumber: "+srNo+" "+columnName+" "+ans);
+            cursor.close();
+
         }
 
-        cursor.close();
+
 //        db.close();
 
         return ans;
     }
 
     public String getOptionIdBySerialNumber(String srno, int si, int qi) {
-        String sr = "";
+        String sr = "-1";
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + OptionId + " FROM " + TABLE_PER_OPTION + " WHERE " + SerialNumber + "=" + srno + " AND " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                sr = cursor.getString(cursor.getColumnIndex(OptionId));
-            } while (cursor.moveToNext());
-        }
+        Log.d("checkForError", "getOptionIdBySerialNumber: "+cursor.getCount());
+        if(cursor!=null){
+            Log.d("checkForError", "getOptionIdBySerialNumber: cursorIsNotNull");
+            try{
+                if (cursor.moveToFirst()) {
+                    do {
+                        sr = cursor.getString(cursor.getColumnIndex(OptionId));
+                    } while (cursor.moveToNext());
+                }
 
-        cursor.close();
+            }finally {
+                Log.d("values", "getOptionIdBySerialNumber: "+srno+" "+si+" "+qi+" "+sr);
+
+                cursor.close();
+
+            }
+        }else{
+            Log.d("checkForError", "getOptionIdBySerialNumber: cursorIsNull");
+        }
 //        db.close();
 
         return sr;
@@ -523,8 +617,14 @@ public class QuizDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_PER_OPTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
         Cursor cursor = db.rawQuery(query, null);
-        num = cursor.getCount();
-        cursor.close();
+        try{
+            num = cursor.getCount();
+
+        }finally {
+//            Log.d("values", "getNoOfOptionsInOneQuestion: "+si+" "+qi+" "+num);
+            cursor.close();
+
+        }
 //        db.close();
         return num;
     }
@@ -534,13 +634,18 @@ public class QuizDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + QuestionText + " FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                text = cursor.getString(cursor.getColumnIndex(QuestionText));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    text = cursor.getString(cursor.getColumnIndex(QuestionText));
+                } while (cursor.moveToNext());
+            }
+        }finally {
+            cursor.close();
+
         }
 
-        cursor.close();
+
 //        db.close();
         return text;
     }
@@ -550,13 +655,18 @@ public class QuizDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + OptionText + " FROM " + TABLE_PER_OPTION + " WHERE " + SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi + " AND " + OptionIndex + "=" + oi;
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            do {
-                text = cursor.getString(cursor.getColumnIndex(OptionText));
-            } while (cursor.moveToNext());
+        try{
+            if (cursor.moveToFirst()) {
+                do {
+                    text = cursor.getString(cursor.getColumnIndex(OptionText));
+                } while (cursor.moveToNext());
+            }
+        }finally {
+            cursor.close();
+
         }
 
-        cursor.close();
+
 //        db.close();
         return text;
     }
@@ -616,82 +726,95 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
         String searchQuery = "SELECT " + SectionId + "," + QuestionId + "," + FinalAnswerId + "," + QuestionStatus + "," + NumberOfToggles + "," + ReadStatus + "," + TimeSpent + " FROM " + RESULT_TABLE;
         Cursor cursor = myDataBase.rawQuery(searchQuery, null);
-
         JSONArray resultSet = new JSONArray();
 
-        cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
 
-            int totalColumn = cursor.getColumnCount();
-            JSONObject rowObject = new JSONObject();
+        try{
 
-            for (int i = 0; i < totalColumn; i++) {
-                if (cursor.getColumnName(i) != null) {
+            cursor.moveToFirst();
+            while (cursor.isAfterLast() == false) {
 
-                    try {
+                int totalColumn = cursor.getColumnCount();
+                JSONObject rowObject = new JSONObject();
 
-                        if (cursor.getString(i) != null) {
-                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
-                        } else {
-                            rowObject.put(cursor.getColumnName(i), "");
+                for (int i = 0; i < totalColumn; i++) {
+                    if (cursor.getColumnName(i) != null) {
+
+                        try {
+
+                            if (cursor.getString(i) != null) {
+                                rowObject.put(cursor.getColumnName(i), cursor.getString(i));
+                            } else {
+                                rowObject.put(cursor.getColumnName(i), "");
+                            }
+                        } catch (Exception e) {
                         }
-                    } catch (Exception e) {
                     }
+
                 }
 
+                resultSet.put(rowObject);
+                cursor.moveToNext();
             }
+        }finally {
+            cursor.close();
 
-            resultSet.put(rowObject);
-            cursor.moveToNext();
         }
 
-        cursor.close();
+
+
         return resultSet;
     }
 
-    public int getNoOfQinOneSec(int si){
+    public int getNoOfQinOneSec(int si)
+    {
         int num = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_PER_QUESTION + " WHERE " + SectionIndex + "=" + si;
         Cursor cursor = db.rawQuery(query, null);
-        num = cursor.getCount();
-        cursor.close();
+        try{
+            num = cursor.getCount();
+
+        }finally {
+            cursor.close();
+
+        }
 //        db.close();
         return num;
     }
-//
-//    public void getAllValues(){
-//        SQLiteDatabase db=this.getReadableDatabase();
-//        String query="SELECT * FROM "+TABLE_PER_SECTION;
-//        Cursor cursor=db.rawQuery(query,null);
-//        if(cursor.moveToFirst()){
-//            do{
-//                Log.d("sectionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(SectionId)));
-//            }while(cursor.moveToNext());
-//        }
-//        query="SELECT * FROM "+TABLE_PER_QUESTION;
-//        cursor=db.rawQuery(query,null);
-//        if(cursor.moveToFirst()){
-//            do{
-//                Log.d("questionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId)));
-//            }while(cursor.moveToNext());
-//        }
-//        query="SELECT * FROM "+TABLE_PER_OPTION;
-//        cursor=db.rawQuery(query,null);
-//        if(cursor.moveToFirst()){
-//            do{
-//                Log.d("questionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(OptionIndex))+"**"+cursor.getString(cursor.getColumnIndex(OptionId)));
-//            }while(cursor.moveToNext());
-//        }
-//        query="SELECT * FROM "+RESULT_TABLE;
-//        cursor=db.rawQuery(query,null);
-//        if(cursor.moveToFirst()){
-//            do{
-//                Log.d("result",cursor.getString(cursor.getColumnIndex(SectionId))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(FinalAnswerId)));
-//            }while(cursor.moveToNext());
-//        }
-//        cursor.close();
-//    }
+
+    public void getAllValues(){
+        SQLiteDatabase db=this.getReadableDatabase();
+        String query="SELECT * FROM "+TABLE_PER_SECTION;
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Log.d("sectionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(SectionId)));
+            }while(cursor.moveToNext());
+        }
+        query="SELECT * FROM "+TABLE_PER_QUESTION;
+        cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Log.d("questionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId)));
+            }while(cursor.moveToNext());
+        }
+        query="SELECT * FROM "+TABLE_PER_OPTION;
+        cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Log.d("questionWise",cursor.getString(cursor.getColumnIndex(SerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(OptionIndex))+"**"+cursor.getString(cursor.getColumnIndex(OptionId)));
+            }while(cursor.moveToNext());
+        }
+        query="SELECT * FROM "+RESULT_TABLE;
+        cursor=db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                Log.d("result",cursor.getString(cursor.getColumnIndex(SectionId))+"**"+cursor.getString(cursor.getColumnIndex(QuestionId))+"**"+cursor.getString(cursor.getColumnIndex(SectionIndex))+"**"+cursor.getString(cursor.getColumnIndex(QuestionIndex))+"**"+cursor.getString(cursor.getColumnIndex(FinalAnswerSerialNumber))+"**"+cursor.getString(cursor.getColumnIndex(FinalAnswerId)));
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+    }
 
 //    public boolean getStatusOfResultTable(){
 //        boolean ans=false;

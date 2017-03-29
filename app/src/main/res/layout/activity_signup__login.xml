@@ -200,6 +200,7 @@
                                 android:textColorHint="@color/light_grey"
                                 android:lines="1"
                                 android:inputType="text"
+                                android:layout_gravity="center"
                                 android:hint="LOCATION"
                                 android:id="@+id/signupLocationEditText" />
 

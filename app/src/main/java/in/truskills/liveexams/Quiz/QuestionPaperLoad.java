@@ -393,6 +393,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                     savebitmap(bitmap,myGroup);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d("save", "onResponse: "+e.toString());
                 }
                 ll.removeFirst();
                 llGroup.removeFirst();
