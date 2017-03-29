@@ -237,68 +237,78 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                 if(dialog!=null)
                 dialog.dismiss();
                 try {
-                    String myResponse = response.getJSONObject("response").toString();
-                    JSONObject jsonObject = new JSONObject(myResponse);
-                    String timestamp = jsonObject.getString("timestamp");
-                    String myJoinedExams = jsonObject.getJSONArray("joinedExams").toString();
-                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExams);
-                    JSONArray arr = new JSONArray(myJoinedExams);
-                    int length = arr.length();
-                    for (int i = 0; i < length; ++i) {
 
-                        //If user is still enrolled to this exam..
-                        if (mapper.get("leftExam").get(i).equals("false")) {
+                    String success=response.getString("success");
+                    if(success.equals("true")){
+                        String myResponse = response.getJSONObject("response").toString();
+                        JSONObject jsonObject = new JSONObject(myResponse);
+                        String timestamp = jsonObject.getString("timestamp");
+                        String myJoinedExams = jsonObject.getJSONArray("joinedExams").toString();
+                        HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExams);
+                        JSONArray arr = new JSONArray(myJoinedExams);
+                        int length = arr.length();
+                        for (int i = 0; i < length; ++i) {
 
-                            myStartDate = mapper.get("StartDate").get(i);
-                            myEndDate = mapper.get("EndDate").get(i);
-                            myDuration = mapper.get("ExamDuration").get(i);
-                            myStartTime = mapper.get("StartTime").get(i);
-                            myEndTime = mapper.get("EndTime").get(i);
+                            //If user is still enrolled to this exam..
+                            if (mapper.get("leftExam").get(i).equals("false")) {
 
-                            myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
-                            myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
-                            myDurationTime = MiscellaneousParser.parseDuration(myDuration);
+                                myStartDate = mapper.get("StartDate").get(i);
+                                myEndDate = mapper.get("EndDate").get(i);
+                                myDuration = mapper.get("ExamDuration").get(i);
+                                myStartTime = mapper.get("StartTime").get(i);
+                                myEndTime = mapper.get("EndTime").get(i);
 
-                            String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
-                            String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
-                            Log.d("myTimestamp=", timestamp);
-                            String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
-                            String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
+                                myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                                myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                                myDurationTime = MiscellaneousParser.parseDuration(myDuration);
 
-                            Log.d("myTimestamp=", myTimestamp);
+                                String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
+                                String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
+                                Log.d("myTimestamp=", timestamp);
+                                String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
+                                String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
 
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                            Date start_date = simpleDateFormat.parse(myDateOfStart);
-                            Date end_date = simpleDateFormat.parse(myDateOfEnd);
-                            Date middle_date = simpleDateFormat.parse(myTimestamp);
+                                Log.d("myTimestamp=", myTimestamp);
 
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
-                            Date start_time = simpleDateFormat2.parse(myTimeOfStart);
-                            Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
-                            Date middle_time = simpleDateFormat2.parse(myTime);
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                Date start_date = simpleDateFormat.parse(myDateOfStart);
+                                Date end_date = simpleDateFormat.parse(myDateOfEnd);
+                                Date middle_date = simpleDateFormat.parse(myTimestamp);
 
-                            if (middle_date.before(start_date)) {
-                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                valuesList.add(values);
-                            } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
-                                if (middle_date.equals(end_date)) {
-                                    if (!middle_time.after(end_time)) {
+                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
+                                Date start_time = simpleDateFormat2.parse(myTimeOfStart);
+                                Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
+                                Date middle_time = simpleDateFormat2.parse(myTime);
+
+                                if (middle_date.before(start_date)) {
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                                    valuesList.add(values);
+                                } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
+                                    if (middle_date.equals(end_date)) {
+                                        if (!middle_time.after(end_time)) {
+                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                                            valuesList.add(values);
+                                        }
+                                    } else {
                                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                         valuesList.add(values);
                                     }
-                                } else {
-                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                    valuesList.add(values);
                                 }
                             }
                         }
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                populateList(valuesList);
+                            }
+                        });
+                    }else{
+
+                        noConnectionLayout.setVisibility(View.VISIBLE);
+                        add.setVisibility(View.GONE);
+                        if(getActivity()!=null)
+                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
                     }
-                    h.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            populateList(valuesList);
-                        }
-                    });
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }

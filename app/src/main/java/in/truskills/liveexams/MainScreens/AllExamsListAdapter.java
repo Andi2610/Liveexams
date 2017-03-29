@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -114,19 +115,27 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                             if(dialog!=null)
                                 dialog.dismiss();
                             try {
-                                HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
-                                final String enrolled = mapper.get("enrolled");
-                                final String timestamp = mapper.get("timestamp");
-                                final String examDetails = mapper.get("examDetails");
-                                final String examGiven = mapper.get("examGiven");
-                                final String examId = value.getExamId();
-                                h = new Handler();
-                                h.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startMyActivity(enrolled, timestamp, examDetails, value.getName(), examId, examGiven);
-                                    }
-                                });
+
+                                JSONObject jsonObject=new JSONObject(response);
+                                String success=jsonObject.getString("success");
+                                if(success.equals("true")){
+                                    HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
+                                    final String enrolled = mapper.get("enrolled");
+                                    final String timestamp = mapper.get("timestamp");
+                                    final String examDetails = mapper.get("examDetails");
+                                    final String examGiven = mapper.get("examGiven");
+                                    final String examId = value.getExamId();
+                                    h = new Handler();
+                                    h.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            startMyActivity(enrolled, timestamp, examDetails, value.getName(), examId, examGiven);
+                                        }
+                                    });
+                                }else{
+                                    if(c!=null)
+                                        Toast.makeText(c, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

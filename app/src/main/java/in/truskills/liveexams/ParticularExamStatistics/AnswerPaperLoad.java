@@ -256,19 +256,25 @@ public class AnswerPaperLoad extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    myUrl=response.getString("response");
-                    Log.d("myDateeeee", "run: "+myUrl);
-                    h.post(new Runnable() {
-                        @Override
-                        public void run() {
+
+                    String success=response.getString("success");
+                    if(success.equals("true")){
+                        myUrl=response.getString("response");
+                        Log.d("myDateeeee", "run: "+myUrl);
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
 //                            Log.d("dateeeee", "run: "+myDate);
 //                            afterResponse(myDate);
 
-                            afterConnect(myUrl);
+                                afterConnect(myUrl);
 
 
-                        }
-                    });
+                            }
+                        });
+                    }else{
+                        Toast.makeText(AnswerPaperLoad.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -315,6 +321,9 @@ public class AnswerPaperLoad extends AppCompatActivity {
                         date = map.get("date");
                         selectedLanguage = map.get("selectedLanguage");
                         setQuestionPaperResponse(questionPaperResponse, selectedLanguage,myUrl);
+                    }else{
+                        Toast.makeText(AnswerPaperLoad.this, "An unexpected error occurred..\n" +
+                                "Please try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -25,6 +25,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -118,35 +119,43 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                                 dialog.dismiss();
 
                             try {
-                                //Parse Exam details..
-                                HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
 
-                                //Get it's variables..
-                                enrolled = mapper.get("enrolled");
-                                timestamp = mapper.get("timestamp");
-                                examDetails = mapper.get("examDetails");
-                                examGiven = mapper.get("examGiven");
+                                JSONObject jsonObject=new JSONObject(response);
+                                String success=jsonObject.getString("success");
+                                if(success.equals("true")){
+                                    //Parse Exam details..
+                                    HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
 
-                                examId = value.getExamId();
+                                    //Get it's variables..
+                                    enrolled = mapper.get("enrolled");
+                                    timestamp = mapper.get("timestamp");
+                                    examDetails = mapper.get("examDetails");
+                                    examGiven = mapper.get("examGiven");
 
-                                h = new Handler();
-                                h.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        //Create a bundle to be passed to particular main activity..
-                                        Bundle b = new Bundle();
-                                        b.putString("enrolled", enrolled);
-                                        b.putString("timestamp", timestamp);
-                                        b.putString("examDetails", examDetails);
-                                        b.putString("name", value.getName());
-                                        b.putString("examId", examId);
-                                        b.putString("examGiven", examGiven);
-                                        Intent i = new Intent(c, ParticularExamMainActivity.class);
-                                        i.putExtra("bundle", b);
-                                        i.putExtra("from", "home");
-                                        ((MainActivity) c).startActivityForResult(i, 10);
-                                    }
-                                });
+                                    examId = value.getExamId();
+
+                                    h = new Handler();
+                                    h.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //Create a bundle to be passed to particular main activity..
+                                            Bundle b = new Bundle();
+                                            b.putString("enrolled", enrolled);
+                                            b.putString("timestamp", timestamp);
+                                            b.putString("examDetails", examDetails);
+                                            b.putString("name", value.getName());
+                                            b.putString("examId", examId);
+                                            b.putString("examGiven", examGiven);
+                                            Intent i = new Intent(c, ParticularExamMainActivity.class);
+                                            i.putExtra("bundle", b);
+                                            i.putExtra("from", "home");
+                                            ((MainActivity) c).startActivityForResult(i, 10);
+                                        }
+                                    });
+                                }else{
+                                    if(c!=null)
+                                        Toast.makeText(c, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

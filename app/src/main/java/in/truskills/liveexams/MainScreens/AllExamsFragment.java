@@ -201,77 +201,85 @@ public class AllExamsFragment extends Fragment{
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    HashMap<String, String> map = MiscellaneousParser.allExamsApiParser(response);
-                    String exams = map.get("exams");
-                    String timestamp = map.get("timestamp");
-                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(exams);
+                    String success=response.getString("success");
+                    if(success.equals("true")){
+                        HashMap<String, String> map = MiscellaneousParser.allExamsApiParser(response);
+
+                        String exams = map.get("exams");
+                        String timestamp = map.get("timestamp");
+                        HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(exams);
+
 //                    Log.d("myExamName",mapper.get("ExamName").get(0)+"");
-                    JSONArray jsonArray = new JSONArray(exams);
-                    int length = jsonArray.length();
-                    if (length == 0) {
-                        filteredList.clear();
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                searchExams.setVisibility(View.VISIBLE);
-                                populateList(filteredList);
-                            }
-                        });
-                    } else {
-                        searchExams.setVisibility(View.GONE);
-                        filteredList = new ArrayList<Values>();
-                        for (int i = 0; i < length; ++i) {
-                            myStartDate = mapper.get("StartDate").get(i);
-                            myEndDate = mapper.get("EndDate").get(i);
-                            myDuration = mapper.get("ExamDuration").get(i);
-                            myStartTime = mapper.get("StartTime").get(i);
-                            myEndTime = mapper.get("EndTime").get(i);
+                        JSONArray jsonArray = new JSONArray(exams);
+                        int length = jsonArray.length();
+                        if (length == 0) {
+                            filteredList.clear();
+                            h.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    searchExams.setVisibility(View.VISIBLE);
+                                    populateList(filteredList);
+                                }
+                            });
+                        } else {
+                            searchExams.setVisibility(View.GONE);
+                            filteredList = new ArrayList<Values>();
+                            for (int i = 0; i < length; ++i) {
+                                myStartDate = mapper.get("StartDate").get(i);
+                                myEndDate = mapper.get("EndDate").get(i);
+                                myDuration = mapper.get("ExamDuration").get(i);
+                                myStartTime = mapper.get("StartTime").get(i);
+                                myEndTime = mapper.get("EndTime").get(i);
 
-                            Log.d("myDate=", myStartDate + " ****** " + myEndDate + " **** " + myDuration);
+                                Log.d("myDate=", myStartDate + " ****** " + myEndDate + " **** " + myDuration);
 
-                            myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
-                            myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
-                            myDurationTime = MiscellaneousParser.parseDuration(myDuration);
+                                myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                                myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                                myDurationTime = MiscellaneousParser.parseDuration(myDuration);
 
-                            String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
-                            String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
-                            Log.d("myTimestamp=", timestamp);
-                            String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
-                            String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
+                                String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
+                                String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
+                                Log.d("myTimestamp=", timestamp);
+                                String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
+                                String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
 
-                            Log.d("myTimestamp=", myTimestamp);
+                                Log.d("myTimestamp=", myTimestamp);
 
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                            Date start_date = simpleDateFormat.parse(myDateOfStart);
-                            Date end_date = simpleDateFormat.parse(myDateOfEnd);
-                            Date middle_date = simpleDateFormat.parse(myTimestamp);
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                Date start_date = simpleDateFormat.parse(myDateOfStart);
+                                Date end_date = simpleDateFormat.parse(myDateOfEnd);
+                                Date middle_date = simpleDateFormat.parse(myTimestamp);
 
-                            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
-                            Date start_time = simpleDateFormat2.parse(myTimeOfStart);
-                            Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
-                            Date middle_time = simpleDateFormat2.parse(myTime);
+                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
+                                Date start_time = simpleDateFormat2.parse(myTimeOfStart);
+                                Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
+                                Date middle_time = simpleDateFormat2.parse(myTime);
 
-                            if (middle_date.before(start_date)) {
-                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                filteredList.add(values);
-                            } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
-                                if (middle_date.equals(end_date)) {
-                                    if (!middle_time.after(end_time)) {
+                                if (middle_date.before(start_date)) {
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                                    filteredList.add(values);
+                                } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
+                                    if (middle_date.equals(end_date)) {
+                                        if (!middle_time.after(end_time)) {
+                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                                            filteredList.add(values);
+                                        }
+                                    } else {
                                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                         filteredList.add(values);
                                     }
-                                } else {
-                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                    filteredList.add(values);
                                 }
                             }
+                            h.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    populateList(filteredList);
+                                }
+                            });
                         }
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                populateList(filteredList);
-                            }
-                        });
+                    }else{
+                        if(getActivity()!=null)
+                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

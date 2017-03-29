@@ -1231,13 +1231,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         SharedPreferences.Editor eeeee=firstTimeForRules.edit();
                         eeeee.clear();
                         eeeee.apply();
-                        Toast.makeText(QuizMainActivity.this, "Your answers for the quiz have been successfully submitted..", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QuizMainActivity.this, result, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
                         finish();
                     } else {
-                        JSONObject jsonObject2 = new JSONObject(result);
+//                        JSONObject jsonObject2 = new JSONObject(result);
                         ob.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
@@ -1247,7 +1247,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         if (f.exists()) {
                             ConstantsDefined.deleteDir(f);
                         }
-                        Toast.makeText(QuizMainActivity.this, jsonObject2.getString("errmsg") + "", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QuizMainActivity.this, result, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);

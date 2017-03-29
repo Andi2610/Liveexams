@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -160,15 +161,28 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             @Override
             public void onResponse(final String result) {
 
-                h.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        download=true;
-                        myResponseResult=result;
-                        asyncTaskRunner=new AsyncTaskRunner();
-                        asyncTaskRunner.execute();
+                try {
+                    JSONObject jsonObject=new JSONObject(result);
+                    String success=jsonObject.getString("success");
+                    if(success.equals("true")){
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                download=true;
+                                myResponseResult=result;
+                                asyncTaskRunner=new AsyncTaskRunner();
+                                asyncTaskRunner.execute();
+                            }
+                        });
+                    }else{
+                        paperGettingDownloadLayout.setVisibility(View.GONE);
+                        paperGettingReadyLayout.setVisibility(View.GONE);
+                        noInternetLayout.setVisibility(View.VISIBLE);
+                        Toast.makeText(QuestionPaperLoad.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
                     }
-                });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
         }, new Response.ErrorListener() {

@@ -340,6 +340,9 @@ public class StartPageFragment extends Fragment {
                                             }
                                         }
                                     });
+                                }else{
+                                    if(getActivity()!=null)
+                                        Toast.makeText(getActivity(), "CAn unexpeted error occurred..\nPlease try again..", Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -563,19 +566,26 @@ public class StartPageFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    final String myResponse = response.getJSONObject("response").toString();
-                    JSONObject jsonObject = new JSONObject(myResponse);
-                    String timestamp = jsonObject.getString("timestamp");
-                    myDate = MiscellaneousParser.parseTimestamp(timestamp);
-                    Log.d("myDateeeee", "run: "+myDate);
-                    h.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Log.d("dateeeee", "run: "+myDate);
-                            afterResponse(myDate);
 
-                        }
-                    });
+                    String success=response.getString("success");
+                    if(success.equals("true")){
+                        final String myResponse = response.getJSONObject("response").toString();
+                        JSONObject jsonObject = new JSONObject(myResponse);
+                        String timestamp = jsonObject.getString("timestamp");
+                        myDate = MiscellaneousParser.parseTimestamp(timestamp);
+                        Log.d("myDateeeee", "run: "+myDate);
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d("dateeeee", "run: "+myDate);
+                                afterResponse(myDate);
+
+                            }
+                        });
+                    }else{
+                        if(getActivity()!=null)
+                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_LONG).show();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ParseException e) {
@@ -614,21 +624,28 @@ public class StartPageFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    myUrl=response.getString("response");
-                    Log.d("myDateeeee", "run: "+myUrl);
-                    h.post(new Runnable() {
-                        @Override
-                        public void run() {
+                    String success=response.getString("success");
+                    if(success.equals("true")){
+                        myUrl=response.getString("response");
+                        Log.d("myDateeeee", "run: "+myUrl);
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
 //                            Log.d("dateeeee", "run: "+myDate);
 //                            afterResponse(myDate);
-                            if(myDialog!=null)
-                            myDialog.dismiss();
+                                if(myDialog!=null)
+                                    myDialog.dismiss();
 
-                            afterConnect(myDate,myUrl);
+                                afterConnect(myDate,myUrl);
 
 
-                        }
-                    });
+                            }
+                        });
+                    }else{
+                        if(getActivity()!=null)
+                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_LONG).show();
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

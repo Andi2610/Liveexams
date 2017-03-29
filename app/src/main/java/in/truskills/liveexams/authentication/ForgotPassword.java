@@ -168,6 +168,8 @@ public class ForgotPassword extends AppCompatActivity {
                                 if (mapper.get("success").equals("true")) {
                                     Toast.makeText(ForgotPassword.this, mapper.get("message"), Toast.LENGTH_SHORT).show();
                                     finish();
+                                }else{
+                                    Toast.makeText(ForgotPassword.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

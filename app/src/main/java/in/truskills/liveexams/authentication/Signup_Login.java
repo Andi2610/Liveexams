@@ -68,6 +68,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -266,13 +267,18 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                             dialog.dismiss();
                         try {
                             //Parse the signup response..
-
-                            signupLanguageAlternate.setVisibility(View.GONE);
-                            signupLanguage.setVisibility(View.VISIBLE);
-                            listOfLanguages = MiscellaneousParser.beforeSignupParser(response);
-                            CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(getApplicationContext(), listOfLanguages);
-                            signupLanguage.setAdapter(customAdapter);
-                            signupLanguage.performClick();
+                            JSONObject jsonObject=new JSONObject(response);
+                            String success=jsonObject.getString("success");
+                            if(success.equals("true")){
+                                signupLanguageAlternate.setVisibility(View.GONE);
+                                signupLanguage.setVisibility(View.VISIBLE);
+                                listOfLanguages = MiscellaneousParser.beforeSignupParser(response);
+                                CustomSpinnerAdapter customAdapter = new CustomSpinnerAdapter(getApplicationContext(), listOfLanguages);
+                                signupLanguage.setAdapter(customAdapter);
+                                signupLanguage.performClick();
+                            }else{
+                                Toast.makeText(Signup_Login.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -849,8 +855,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                                 signupDrawer.close();
                                 loginDrawer.open();
                             } else {
-//                                JSONObject jo = new JSONObject(mapper.get("response"));
-//                                String errmsg = jo.getString("errmsg");
                                 String errmsg=mapper.get("response");
                                 Toast.makeText(Signup_Login.this, "Couldn't Signup: " + errmsg, Toast.LENGTH_SHORT).show();
                             }

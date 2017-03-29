@@ -78,37 +78,42 @@ public class SplashScreen extends Activity {
 
                                 Log.d("version", "onResponse: "+response);
                                 try {
-                                    String myVersion=response.getString("response");
-                                    PackageInfo pInfo = null;
-                                    pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                                    String version = pInfo.versionName;
+                                    String success=response.getString("success");
+                                    if(success.equals("true")){
+                                        String myVersion=response.getString("response");
+                                        PackageInfo pInfo = null;
+                                        pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                        String version = pInfo.versionName;
 
-                                    if (myVersion.equals(version)){
-                                        SharedPreferences prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                                        String state=prefs.getString("login","false");
-                                        //If login=true, start MainActivity.java
-                                        //Else start Signup_Login.java
-                                        if(state.equals("true")){
-                                            Intent i=new Intent(SplashScreen.this,MainActivity.class);
-                                            startActivity(i);
+                                        if (myVersion.equals(version)){
+                                            SharedPreferences prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                                            String state=prefs.getString("login","false");
+                                            //If login=true, start MainActivity.java
+                                            //Else start Signup_Login.java
+                                            if(state.equals("true")){
+                                                Intent i=new Intent(SplashScreen.this,MainActivity.class);
+                                                startActivity(i);
+                                            }else{
+                                                Intent i=new Intent(SplashScreen.this,Signup_Login.class);
+                                                startActivity(i);
+                                            }
                                         }else{
-                                            Intent i=new Intent(SplashScreen.this,Signup_Login.class);
-                                            startActivity(i);
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreen.this, R.style.AppCompatAlertDialogStyle);
+                                            builder.setTitle("Updated App Not Installed");  // GPS not found
+                                            builder.setMessage("You will be directed to play store now..\nPlease update your app"); // Want to enable?
+                                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    Intent ii=new Intent((Intent.ACTION_VIEW));
+                                                    ii.setData(Uri.parse("market://details?id=in.truskills.liveexams"));
+                                                    startActivity(ii);
+                                                    finish();
+                                                }
+                                            });
+                                            builder.setCancelable(false);
+                                            builder.create().show();
                                         }
                                     }else{
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreen.this, R.style.AppCompatAlertDialogStyle);
-                                        builder.setTitle("Updated App Not Installed");  // GPS not found
-                                        builder.setMessage("You will be directed to play store now..\nPlease update your app"); // Want to enable?
-                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                Intent ii=new Intent((Intent.ACTION_VIEW));
-                                                ii.setData(Uri.parse("market://details?id=in.truskills.liveexams"));
-                                                startActivity(ii);
-                                                finish();
-                                            }
-                                        });
-                                        builder.setCancelable(false);
-                                        builder.create().show();
+                                        Toast.makeText(SplashScreen.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
                                     }
 
                                 } catch (JSONException e) {
@@ -121,7 +126,7 @@ public class SplashScreen extends Activity {
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(SplashScreen.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SplashScreen.this, "Sorry no internet connection..Please try again..", Toast.LENGTH_LONG).show();
                                 finish();
                             }
                         });

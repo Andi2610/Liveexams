@@ -149,41 +149,51 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
 
                 noConnectionLayout.setVisibility(View.GONE);
                 try {
-                    HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.analyzedExamsParser(response);
-                    int length = response.getJSONArray("response").length();
-                    Log.d("analyzed", response + "");
-                    if (length == 0) {
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                populateList(valuesList);
-                            }
-                        });
-                    } else {
-                        valuesList = new ArrayList<Values>();
-                        for (int i = 0; i < length; ++i) {
-                            myStartDate = mapper.get("StartDate").get(i);
-                            myEndDate = mapper.get("EndDate").get(i);
-                            myDuration = mapper.get("ExamDuration").get(i);
 
-                            Log.d("myDate=", myStartDate + " ****** " + myEndDate + " **** " + myDuration);
-
-                            myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
-                            myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
-                            myDurationTime = MiscellaneousParser.parseDuration(myDuration);
-
-                            Log.d("myDate=", myDateOfStart + " ****** " + myDateOfEnd + " **** " + myDurationTime);
-
-
-                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                            valuesList.add(values);
+                    String success=response.getString("success");
+                    if(success.equals("true")){
+                        HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.analyzedExamsParser(response);
+                        int length = response.getJSONArray("response").length();
+                        Log.d("analyzed", response + "");
+                        if (length == 0) {
                             h.post(new Runnable() {
                                 @Override
                                 public void run() {
                                     populateList(valuesList);
                                 }
                             });
+                        } else {
+                            valuesList = new ArrayList<Values>();
+                            for (int i = 0; i < length; ++i) {
+                                myStartDate = mapper.get("StartDate").get(i);
+                                myEndDate = mapper.get("EndDate").get(i);
+                                myDuration = mapper.get("ExamDuration").get(i);
+
+                                Log.d("myDate=", myStartDate + " ****** " + myEndDate + " **** " + myDuration);
+
+                                myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
+                                myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
+                                myDurationTime = MiscellaneousParser.parseDuration(myDuration);
+
+                                Log.d("myDate=", myDateOfStart + " ****** " + myDateOfEnd + " **** " + myDurationTime);
+
+
+                                values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                                valuesList.add(values);
+                                h.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        populateList(valuesList);
+                                    }
+                                });
+                            }
                         }
+                    }else{
+
+                        noConnectionLayout.setVisibility(View.VISIBLE);
+                        noExams.setVisibility(View.GONE);
+                        if(getActivity()!=null)
+                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -196,6 +206,7 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
                 if(dialog!=null)
                 dialog.dismiss();
                 noConnectionLayout.setVisibility(View.VISIBLE);
+                noExams.setVisibility(View.GONE);
 
                 Log.d("myError", error + "");
                 if(ConstantsDefined.isOnline(getActivity())){
@@ -273,8 +284,10 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
         statisticsListAdapter.notifyDataSetChanged();
         if (list.isEmpty()) {
             noExams.setVisibility(View.VISIBLE);
+            noConnectionLayout.setVisibility(View.GONE);
         } else {
             noExams.setVisibility(View.GONE);
+            noConnectionLayout.setVisibility(View.GONE);
         }
     }
 
