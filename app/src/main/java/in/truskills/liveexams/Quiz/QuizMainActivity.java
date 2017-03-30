@@ -816,9 +816,10 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                             } catch (Exception e) {
                                 Log.d(SOCKET, "error " + e.toString());
                             }
+
                             if (!isCameraUsebyApp())
                                 socketfromteacher.startStreaming(json.getString("studentSocketId"), json.getString("teacherSocketId"));
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -1341,6 +1342,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         try {
             camera = Camera.open();
         } catch (RuntimeException e) {
+            Log.d(SOCKET,e.toString());
             return true;
         } finally {
             if (camera != null) camera.release();

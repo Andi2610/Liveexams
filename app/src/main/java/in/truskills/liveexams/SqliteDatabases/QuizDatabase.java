@@ -607,7 +607,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
             Log.d("checkForError", "getOptionIdBySerialNumber: cursorIsNull");
         }
 //        db.close();
-
         return sr;
 
     }

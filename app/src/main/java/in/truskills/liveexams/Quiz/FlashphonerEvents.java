@@ -160,17 +160,20 @@ public class FlashphonerEvents implements socketFromTeacher {
 
             studentStream.publish();
             Log.d(ConstantsDefined.FLASHPHONER, "published");
-
+ 
         } catch (Exception e) {
             Log.d(ConstantsDefined.FLASHPHONER, "exception thrown from studentStream setting " + e.toString());
         }
 
     }
-
+//8160443150
     //in/truskills/liveexams/Quiz/QuizMainActivity.java:970
     @Override
     public void stopStreaming() {
-        studentStream.stop();
+        try {
+            studentStream.stop();
+        } catch (Exception e) {
+        }
     }
 
     //in/truskills/liveexams/Quiz/QuizMainActivity.java:929
