@@ -462,13 +462,19 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             }
         } else if (requestCode == REQUEST_CODE_FOR_ALL_SUMMARY) {
             if (data != null) {
-                jumpTo = data.getIntExtra("jumpTo", 0);
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        pager.setCurrentItem(jumpTo, true);
-                    }
-                });
+
+                int s=data.getIntExtra("sI",0);
+                if (quizPrefs.getInt("sI", 0) == s) {
+//                    my_fi = ob.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
+                } else {
+                    jumpTo = data.getIntExtra("jumpTo", 0);
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            pager.setCurrentItem(jumpTo, true);
+                        }
+                    });
+                }
             }
         }
     }
@@ -498,6 +504,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 SharedPreferences.Editor e = quizPrefs.edit();
                 e.putInt("exit", 0);
                 e.apply();
+
+                int num = pager.getCurrentItem();
+                int sI = ob.getIntValuesPerQuestionByFragmentIndex(num, QuizDatabase.SectionIndex);
+                SharedPreferences.Editor editor = quizPrefs.edit();
+                editor.putInt("sI", sI);
+                editor.apply();
 
                 prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
                 Intent i = new Intent(QuizMainActivity.this, AllSectionsSummary.class);

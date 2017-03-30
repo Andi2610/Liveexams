@@ -85,6 +85,7 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
                 // put the message in Intent
                 ArrayList<Integer> myFi = questionArray.get(holder.getAdapterPosition());
                 intentMessage.putExtra("jumpTo", myFi.get(post));
+                intentMessage.putExtra("sI",-1);
                 ((AllSectionsSummary) c).setResult(2, intentMessage);
                 ((AllSectionsSummary) c).finish();
             }
@@ -103,6 +104,7 @@ public class AllSectionsSummaryAdapter extends RecyclerView.Adapter<AllSectionsS
                 int sI = quizDatabase.getIntValuesPerSectionBySerialNumber(mySrNo, QuizDatabase.SectionIndex);
                 int my_fi = quizDatabase.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
                 intentMessage.putExtra("jumpTo", my_fi);
+                intentMessage.putExtra("sI",sI);
                 ((AllSectionsSummary) c).setResult(2, intentMessage);
                 ((AllSectionsSummary) c).finish();
             }
