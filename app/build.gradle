@@ -23,8 +23,8 @@ android {
         applicationId "in.truskills.liveexams"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 9
-        versionName "1.8"
+        versionCode 10
+        versionName "1.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -68,3 +68,5 @@ dependencies {
     compile 'com.amazonaws:aws-android-sdk-ddb:2.2.+'
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'

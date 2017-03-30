@@ -990,11 +990,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     protected void onPause() {
         super.onPause();
 
-        try{
-            socketfromteacher.stopStreaming();
-        }catch(Exception e){
-
-        }
+//        try{
+//            socketfromteacher.stopStreaming();
+//        }catch(Exception e){
+//
+//        }
 
         Log.d(TAG, "onPause: ");
         if (quizPrefs.getInt("exit", 0) == 0) {

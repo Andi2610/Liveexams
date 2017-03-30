@@ -105,12 +105,15 @@ public class MyFragment extends Fragment implements Updateable {
         MyFragmentInterface obb = (MyFragmentInterface) getActivity();
         o = (MyFragmentInterface) getActivity();
         WebViewContent obj = new WebViewContent();
-        QuizDatabase quizDatabase=new QuizDatabase(getActivity());
 
-        String temp = quizDatabase.getValuesForResult(mySi, myQi, QuizDatabase.TempAnswerSerialNumber);
-        int tempp=Integer.parseInt(temp);
+        if(getActivity()!=null){
+            QuizDatabase quizDatabase=new QuizDatabase(getActivity());
 
-        obj.contentGenerator(myQuestion, myOptions, webView, mySi, myQi, getActivity(), obb, myFragmentCount,tempp);
+            String temp = quizDatabase.getValuesForResult(mySi, myQi, QuizDatabase.TempAnswerSerialNumber);
+            int tempp=Integer.parseInt(temp);
+
+            obj.contentGenerator(myQuestion, myOptions, webView, mySi, myQi, getActivity(), obb, myFragmentCount,tempp);
+        }
     }
 }
 
