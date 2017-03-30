@@ -73,24 +73,29 @@ public class MyFragment extends Fragment implements Updateable {
 
         o = (MyFragmentInterface) getActivity();
 
-        if(mySi==0&&myQi==0){
-            webView.setWebViewClient(new WebViewClient() {
-
-                public void onPageFinished(WebView view, String url) {
-                    // do your stuff here
-
-                    o.hideDialog();
-
-                    Log.d("here", "onPageFinished: ");
-
-                }
-            });
-        }
+//        if(mySi==0&&myQi==0){
+//            webView.setWebViewClient(new WebViewClient() {
+//
+//                public void onPageFinished(WebView view, String url) {
+//                    // do your stuff here
+//
+//                    o.hideDialog();
+//
+//                    Log.d("here", "onPageFinished: ");
+//
+//                }
+//            });
+//        }
 
 //        o.hideDialog();
 
+        QuizDatabase quizDatabase=new QuizDatabase(getActivity());
+
+        String temp = quizDatabase.getValuesForResult(mySi, myQi, QuizDatabase.TempAnswerSerialNumber);
+        int tempp=Integer.parseInt(temp);
+
         WebViewContent obj = new WebViewContent();
-        obj.contentGenerator(myQuestion, myOptions, webView, mySi, myQi, getActivity(), obb, myFragmentCount);
+        obj.contentGenerator(myQuestion, myOptions, webView, mySi, myQi, getActivity(), obb, myFragmentCount,tempp);
 
         return v;
     }
@@ -100,7 +105,12 @@ public class MyFragment extends Fragment implements Updateable {
         MyFragmentInterface obb = (MyFragmentInterface) getActivity();
         o = (MyFragmentInterface) getActivity();
         WebViewContent obj = new WebViewContent();
-        obj.contentGenerator(myQuestion, myOptions, webView, mySi, myQi, getActivity(), obb, myFragmentCount);
+        QuizDatabase quizDatabase=new QuizDatabase(getActivity());
+
+        String temp = quizDatabase.getValuesForResult(mySi, myQi, QuizDatabase.TempAnswerSerialNumber);
+        int tempp=Integer.parseInt(temp);
+
+        obj.contentGenerator(myQuestion, myOptions, webView, mySi, myQi, getActivity(), obb, myFragmentCount,tempp);
     }
 }
 

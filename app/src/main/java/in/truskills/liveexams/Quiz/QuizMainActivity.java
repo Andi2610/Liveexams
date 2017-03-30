@@ -250,9 +250,29 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         pager.setAlpha((float)1);
         breakLine.setAlpha((float)1);
 
-        timer.setText("Starting.. Please wait..");
+//        timer.setText("Starting.. Please wait..");
+
+        count = new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
+
+            public void onTick(long millisUntilFinished) {
+
+                timer.setText("" + String.format(FORMAT,
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                timeUntil = millisUntilFinished;
+            }
+
+            public void onFinish() {
+                timer.setText("done!");
+                submit();
+            }
 
 
+        };
+        count.start();
 
         ob.getAllValues();
 
@@ -608,27 +628,27 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //        progressDialog2.hide();
 //        Toast.makeText(this, "fully_loaded", Toast.LENGTH_SHORT).show();
 
-        count = new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
-
-            public void onTick(long millisUntilFinished) {
-
-                timer.setText("" + String.format(FORMAT,
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
-                timeUntil = millisUntilFinished;
-            }
-
-            public void onFinish() {
-                timer.setText("done!");
-                submit();
-            }
-
-
-        };
-        count.start();
+//        count = new CountDownTimer(myTime, 1000) { // adjust the milli seconds here
+//
+//            public void onTick(long millisUntilFinished) {
+//
+//                timer.setText("" + String.format(FORMAT,
+//                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+//                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+//                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+//                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+//                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+//                timeUntil = millisUntilFinished;
+//            }
+//
+//            public void onFinish() {
+//                timer.setText("done!");
+//                submit();
+//            }
+//
+//
+//        };
+//        count.start();
 
     }
 
@@ -1096,7 +1116,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
             pager.setAdapter(pageAdapter);
             total = myFragmentCount + 1;
-            pager.setOffscreenPageLimit(total);
+//            pager.setOffscreenPageLimit(total);
 
             if(firstTime.getInt("firstTime",1)==1){
                 SharedPreferences.Editor e=firstTime.edit();

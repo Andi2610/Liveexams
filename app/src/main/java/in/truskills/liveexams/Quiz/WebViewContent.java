@@ -15,7 +15,7 @@ import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 public class WebViewContent {
 
-    public void contentGenerator(final String question, final ArrayList<String> optionsList, final WebView webView, final int mySi, final int myQi, final Context c, final MyFragmentInterface obb, final int myFragmentCount) {
+    public void contentGenerator(final String question, final ArrayList<String> optionsList, final WebView webView, final int mySi, final int myQi, final Context c, final MyFragmentInterface obb, final int myFragmentCount,int check) {
 
         //Get size of options list..
         int optionsListSize = optionsList.size();
@@ -35,7 +35,11 @@ public class WebViewContent {
 
         //Dynamic radio buttons added depending upon the options list size..
         for (int i = 0; i < optionsListSize; ++i) {
-            x = x + "<input type=\"radio\" id=\"" + i + "\" name=\"options\" value=\"" + i + "\" onclick=\"ok.performClick(this.value);\" style=\"margin:10px\" ><label for=\"" + i + "\">" + formattedOptions.get(i) + "</label></input><br>";
+            if(i==check){
+                x = x + "<input type=\"radio\" checked id=\"" + i + "\" name=\"options\" value=\"" + i + "\" onclick=\"ok.performClick(this.value);\" style=\"margin:10px\" ><label for=\"" + i + "\">" + formattedOptions.get(i) + "</label></input><br>";
+            }else{
+                x = x + "<input type=\"radio\" id=\"" + i + "\" name=\"options\" value=\"" + i + "\" onclick=\"ok.performClick(this.value);\" style=\"margin:10px\" ><label for=\"" + i + "\">" + formattedOptions.get(i) + "</label></input><br>";
+            }
         }
 
         //Generate the html content..
