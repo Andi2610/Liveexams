@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -81,15 +82,15 @@ interface socketFromTeacher {
 public class QuizMainActivity extends AppCompatActivity implements setValueOfPager, View.OnClickListener, MyFragmentInterface, socketFromStudent, ConnectivityReciever.ConnectivityReceiverListener {
 
     private static final String SOCKET = "socket";
-    private static final String TAG = "checkkkkk-InQuiz" ;
-    public static boolean visible=true;
+    private static final String TAG = "checkkkkk-InQuiz";
+    public static boolean visible = true;
     Handler h;
     RelativeLayout activity_quiz_main;
     MyPageAdapter pageAdapter;
     private static final int REQUEST_CODE = 1, REQUEST_CODE_FOR_ALL_SUMMARY = 2;
-    SharedPreferences quizPrefs,dataPrefs;
+    SharedPreferences quizPrefs, dataPrefs;
     long start, end, diff;
-    int my_fi,jumpTo;
+    int my_fi, jumpTo;
     String examId, paperName, selectedLanguage, sectionTitle;
     ArrayList<Fragment> fList;
     TextView sectionName, submittedQuestions, reviewedTickedQuestions, reviewedUntickedQuestions, notAttemptedQuestions, timer, clearedQuestions;
@@ -105,7 +106,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     int mySectionCount = -1, my_section, my_question, myFragmentCount = -1, my_option, questionArray[], noOfSections, num, total, myTime;
     Socket socket;
     socketFromTeacher socketfromteacher;
-    SharedPreferences prefs,firstTime,firstTimeForRules,allow;
+    SharedPreferences prefs, firstTime, firstTimeForRules, allow;
     CountDownTimer count;
     String myDate;
     long timeUntil;
@@ -115,7 +116,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     LinearLayout awareLayoutForSummary;
     TextView textForAwareForSummary;
     ImageView imageForAwareForSummary;
-    RelativeLayout header,listLayout;
+    RelativeLayout header, listLayout;
     TextView breakLine;
     LinearLayout footer;
     AVLoadingIndicatorView avi;
@@ -123,25 +124,25 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
     PercentFrameLayout parentRender;
-    ProgressDialog progressDialog2 ;
+    ProgressDialog progressDialog2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_main);
-        h=new Handler();
+        h = new Handler();
 
-        progressDialog2= new ProgressDialog(QuizMainActivity.this);
+        progressDialog2 = new ProgressDialog(QuizMainActivity.this);
 
 
-        activity_quiz_main=(RelativeLayout)findViewById(R.id.activity_quiz_main);
+        activity_quiz_main = (RelativeLayout) findViewById(R.id.activity_quiz_main);
 
 //        avi=(AVLoadingIndicatorView)findViewById(R.id.avi);
 
-        header=(RelativeLayout)findViewById(R.id.header);
-        listLayout=(RelativeLayout)findViewById(R.id.listLayout);
-        breakLine=(TextView)findViewById(R.id.breakLine);
-        footer=(LinearLayout)findViewById(R.id.footer);
+        header = (RelativeLayout) findViewById(R.id.header);
+        listLayout = (RelativeLayout) findViewById(R.id.listLayout);
+        breakLine = (TextView) findViewById(R.id.breakLine);
+        footer = (LinearLayout) findViewById(R.id.footer);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -163,9 +164,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         selectedLanguage = getIntent().getStringExtra("language");
         myDate = getIntent().getStringExtra("date");
 
-        awareLayoutForSummary=(LinearLayout)findViewById(R.id.awareLayoutForSummary);
-        textForAwareForSummary=(TextView)findViewById(R.id.textForAwareForSummary);
-        imageForAwareForSummary=(ImageView)findViewById(R.id.imageForAwareForSummary);
+        awareLayoutForSummary = (LinearLayout) findViewById(R.id.awareLayoutForSummary);
+        textForAwareForSummary = (TextView) findViewById(R.id.textForAwareForSummary);
+        imageForAwareForSummary = (ImageView) findViewById(R.id.imageForAwareForSummary);
 
 //        Toast.makeText(this, "date:"+myDate, Toast.LENGTH_SHORT).show();
 
@@ -208,11 +209,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         ob = new QuizDatabase(QuizMainActivity.this);
 
-        SharedPreferences.Editor e=dataPrefs.edit();
-        e.putString("date",myDate);
-        e.putString("userId",prefs.getString("userId",""));
-        e.putString("examId",examId);
-        e.putString("selectedLanguage",selectedLanguage);
+        SharedPreferences.Editor e = dataPrefs.edit();
+        e.putString("date", myDate);
+        e.putString("userId", prefs.getString("userId", ""));
+        e.putString("examId", examId);
+        e.putString("selectedLanguage", selectedLanguage);
         e.apply();
 
         /*
@@ -244,11 +245,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public void forQuiz() {
 
         awareLayoutForSummary.setVisibility(View.GONE);
-        header.setAlpha((float)1);
-        listLayout.setAlpha((float)1);
-        footer.setAlpha((float)1);
-        pager.setAlpha((float)1);
-        breakLine.setAlpha((float)1);
+        header.setAlpha((float) 1);
+        listLayout.setAlpha((float) 1);
+        footer.setAlpha((float) 1);
+        pager.setAlpha((float) 1);
+        breakLine.setAlpha((float) 1);
 
 //        timer.setText("Starting.. Please wait..");
 
@@ -419,13 +420,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             public void onClick(View v) {
 
                 SharedPreferences.Editor e = quizPrefs.edit();
-                e.putInt("exit",0);
+                e.putInt("exit", 0);
                 e.apply();
 
                 int num = pager.getCurrentItem();
                 int sI = ob.getIntValuesPerQuestionByFragmentIndex(num, QuizDatabase.SectionIndex);
-                SharedPreferences.Editor editor=quizPrefs.edit();
-                editor.putInt("sI",sI);
+                SharedPreferences.Editor editor = quizPrefs.edit();
+                editor.putInt("sI", sI);
                 editor.apply();
 
                 //Get serial number of this section from PerSectionDetails..
@@ -445,15 +446,15 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 int mySrNo = data.getIntExtra("message", 0);
                 //Get SectionIndex by srNo..
                 int sI = ob.getIntValuesPerSectionBySerialNumber(mySrNo, QuizDatabase.SectionIndex);
-                if(quizPrefs.getInt("sI",0)==sI){
+                if (quizPrefs.getInt("sI", 0) == sI) {
 //                    my_fi = ob.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
-                }else{
+                } else {
                     //Get fragment index with section index= sI and serial number=0 from PerQuestionDetails..
                     my_fi = ob.getIntValuesPerQuestionBySiAndSrno(sI, 0, QuizDatabase.FragmentIndex);
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            pager.setCurrentItem(my_fi,true);
+                            pager.setCurrentItem(my_fi, true);
 
                         }
                     });
@@ -465,7 +466,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        pager.setCurrentItem(jumpTo,true);
+                        pager.setCurrentItem(jumpTo, true);
                     }
                 });
             }
@@ -478,7 +479,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                pager.setCurrentItem(pos,true);
+                pager.setCurrentItem(pos, true);
             }
         });
     }
@@ -495,7 +496,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             case R.id.summaryIcon:
 
                 SharedPreferences.Editor e = quizPrefs.edit();
-                e.putInt("exit",0);
+                e.putInt("exit", 0);
                 e.apply();
 
                 prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
@@ -517,13 +518,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     @Override
     public void onClick(View v) {
-        int ss, qq, n, position,noOfQ;
+        int ss, qq, n, position, noOfQ;
         String temp;
         switch (v.getId()) {
 
             case R.id.submitButton:
-                if(submitButton.isEnabled())
-                vibrator.vibrate(200);
+                if (submitButton.isEnabled())
+                    vibrator.vibrate(200);
                 n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
                 qq = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.QuestionIndex);
@@ -552,7 +553,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 //                ob.getAllValues();
                 break;
             case R.id.clearButton:
-                if(clearButton.isEnabled())
+                if (clearButton.isEnabled())
                     vibrator.vibrate(200);
                 n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
@@ -568,22 +569,22 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 break;
             case R.id.left:
                 Log.d("checking", "onClick: first=" + linearLayoutManager.findFirstCompletelyVisibleItemPosition());
-                position=linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-                if(position<4){
+                position = linearLayoutManager.findFirstCompletelyVisibleItemPosition();
+                if (position < 4) {
                     questionsList.getLayoutManager().scrollToPosition(0);
-                }else{
+                } else {
                     questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findFirstCompletelyVisibleItemPosition() - 4);
                 }
                 break;
             case R.id.right:
-                n=pager.getCurrentItem();
+                n = pager.getCurrentItem();
                 ss = ob.getIntValuesPerQuestionByFragmentIndex(n, QuizDatabase.SectionIndex);
-                noOfQ=ob.getNoOfQinOneSec(ss);
+                noOfQ = ob.getNoOfQinOneSec(ss);
                 Log.d("checking", "onClick: last=" + linearLayoutManager.findLastCompletelyVisibleItemPosition());
-                position=linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                if(position>(noOfQ-4)){
-                    questionsList.getLayoutManager().scrollToPosition(noOfQ-1);
-                }else{
+                position = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                if (position > (noOfQ - 4)) {
+                    questionsList.getLayoutManager().scrollToPosition(noOfQ - 1);
+                } else {
                     questionsList.getLayoutManager().scrollToPosition(linearLayoutManager.findLastCompletelyVisibleItemPosition() + 4);
                 }
                 break;
@@ -605,16 +606,16 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     }
 
     @Override
-    public void enableButtons(final int s,final int q) {
+    public void enableButtons(final int s, final int q) {
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 String temp = ob.getValuesForResult(s, q, QuizDatabase.TempAnswerSerialNumber);
-                if(!temp.equals("-1"))
+                if (!temp.equals("-1"))
                     changeButtonStatus(true);
                 else {
-                    setDetailsForNotAnswered(s,q);
+                    setDetailsForNotAnswered(s, q);
                     Toast.makeText(QuizMainActivity.this, "Please select your answer again..", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -778,9 +779,9 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     public void initSocketConnection() {
         try {
             socket = IO.socket(ConstantsDefined.socketConnectionUrl);
-            Log.d("url", ConstantsDefined.socketConnectionUrl+ "found");
+            Log.d("url", ConstantsDefined.socketConnectionUrl + "found");
         } catch (URISyntaxException e) {
-            Log.d("url", ConstantsDefined.socketConnectionUrl+ " not found");
+            Log.d("url", ConstantsDefined.socketConnectionUrl + " not found");
         }
         //connect to server
         socket.connect();
@@ -803,7 +804,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                             } catch (Exception e) {
                                 Log.d(SOCKET, "error " + e.toString());
                             }
-                            socketfromteacher.startStreaming(json.getString("studentSocketId"), json.getString("teacherSocketId"));
+                            if (!isCameraUsebyApp())
+                                socketfromteacher.startStreaming(json.getString("studentSocketId"), json.getString("teacherSocketId"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -819,7 +821,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 JSONObject data = new JSONObject();
                 try {
                     data.put("userId", prefs.getString("userId", ""));
-                    data.put("userName",prefs.getString("userName",""));
+                    data.put("userName", prefs.getString("userName", ""));
                     data.put("examId", examId);
                     data.put("isTeacher", false);
                 } catch (JSONException e) {
@@ -869,7 +871,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
 
     public void formFragmentListForViewPager() {
-        AsyncTaskRunner asyncTaskRunner=new AsyncTaskRunner();
+        AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner();
         asyncTaskRunner.execute();
 
     }
@@ -878,11 +880,11 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     protected void onResume() {
         super.onResume();
         MyApplication.getInstance().setConnectivityListener(QuizMainActivity.this);
-        SharedPreferences.Editor e=quizPrefs.edit();
-        e.putInt("exit",1);
+        SharedPreferences.Editor e = quizPrefs.edit();
+        e.putInt("exit", 1);
         e.apply();
-        visible=true;
-        if(t!=null&&t.isAlive()){
+        visible = true;
+        if (t != null && t.isAlive()) {
             t.interrupt();
         }
     }
@@ -975,6 +977,13 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     protected void onPause() {
         super.onPause();
+
+        try{
+            socketfromteacher.stopStreaming();
+        }catch(Exception e){
+
+        }
+
         Log.d(TAG, "onPause: ");
         if (quizPrefs.getInt("exit", 0) == 0) {
 //            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
@@ -1109,8 +1118,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         protected void onPostExecute(String result) {
             // execution of result of Long time consuming operation
             //Set the view pager adapter..
-            if(dialog!=null)
-            dialog.dismiss();
+            if (dialog != null)
+                dialog.dismiss();
             activity_quiz_main.setVisibility(View.VISIBLE);
 
             pageAdapter = new MyPageAdapter(getSupportFragmentManager(), fList);
@@ -1118,19 +1127,17 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             total = myFragmentCount + 1;
 //            pager.setOffscreenPageLimit(total);
 
-            if(firstTime.getInt("firstTime",1)==1){
-                SharedPreferences.Editor e=firstTime.edit();
-                e.putInt("firstTime",0);
+            if (firstTime.getInt("firstTime", 1) == 1) {
+                SharedPreferences.Editor e = firstTime.edit();
+                e.putInt("firstTime", 0);
                 e.apply();
-                header.setAlpha((float)0.2);
-                listLayout.setAlpha((float)0.2);
-                footer.setAlpha((float)0.2);
-                pager.setAlpha((float)0.2);
-                breakLine.setAlpha((float)0.2);
+                header.setAlpha((float) 0.2);
+                listLayout.setAlpha((float) 0.2);
+                footer.setAlpha((float) 0.2);
+                pager.setAlpha((float) 0.2);
+                breakLine.setAlpha((float) 0.2);
                 forAware();
-            }
-
-            else
+            } else
                 forQuiz();
         }
 
@@ -1148,15 +1155,15 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     }
 
-    public void forAware(){
+    public void forAware() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     Thread.sleep(5000);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
-                }finally {
+                } finally {
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -1188,8 +1195,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
 //        ob.setSubmitTrue();
 
-        SharedPreferences.Editor e=dataPrefs.edit();
-        e.putInt("submit",1);
+        SharedPreferences.Editor e = dataPrefs.edit();
+        e.putInt("submit", 1);
         e.apply();
 
 //        try {
@@ -1212,7 +1219,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         ConstantsDefined.beforeVolleyConnect();
 
         String myurl = ConstantsDefined.api + "answerPaper";
-        Log.d("myurl", "submit: "+myurl);
+        Log.d("myurl", "submit: " + myurl);
 
         final ProgressDialog progressDialog = new ProgressDialog(QuizMainActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -1239,16 +1246,16 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                             ConstantsDefined.deleteDir(f);
                         }
                         ob.deleteMyTable();
-                        SharedPreferences.Editor e=dataPrefs.edit();
+                        SharedPreferences.Editor e = dataPrefs.edit();
                         e.clear();
                         e.apply();
-                        SharedPreferences.Editor ee=quizPrefs.edit();
+                        SharedPreferences.Editor ee = quizPrefs.edit();
                         ee.clear();
                         ee.apply();
-                        SharedPreferences.Editor eee=firstTime.edit();
+                        SharedPreferences.Editor eee = firstTime.edit();
                         eee.clear();
                         eee.apply();
-                        SharedPreferences.Editor eeeee=firstTimeForRules.edit();
+                        SharedPreferences.Editor eeeee = firstTimeForRules.edit();
                         eeeee.clear();
                         eeeee.apply();
                         Toast.makeText(QuizMainActivity.this, result, Toast.LENGTH_SHORT).show();
@@ -1259,7 +1266,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                     } else {
 //                        JSONObject jsonObject2 = new JSONObject(result);
                         ob.deleteMyTable();
-                        SharedPreferences.Editor e=dataPrefs.edit();
+                        SharedPreferences.Editor e = dataPrefs.edit();
                         e.clear();
                         e.apply();
                         String folder_main = ".LiveExams";
@@ -1283,24 +1290,24 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
-                if(progressDialog!=null)
+                if (progressDialog != null)
                     progressDialog.dismiss();
                 Log.d("error", error.toString() + "");
 
-                    SharedPreferences.Editor e=allow.edit();
-                    e.putInt("allow",0);
-                    e.apply();
-                    Log.d("prefsAllow",allow.getInt("allow",1)+"");
-                    Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
-                    String folder_main = ".LiveExams";
-                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                    if (f.exists()) {
-                        ConstantsDefined.deleteDir(f);
-                    }
-                    Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                    startActivity(intent);
-                    finish();
+                SharedPreferences.Editor e = allow.edit();
+                e.putInt("allow", 0);
+                e.apply();
+                Log.d("prefsAllow", allow.getInt("allow", 1) + "");
+                Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
+                String folder_main = ".LiveExams";
+                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                if (f.exists()) {
+                    ConstantsDefined.deleteDir(f);
+                }
+                Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                startActivity(intent);
+                finish();
             }
         }) {
             @Override
@@ -1308,7 +1315,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
                 //Put all the required parameters for the post request..
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("userId", prefs.getString("userId",""));
+                params.put("userId", prefs.getString("userId", ""));
                 params.put("examId", examId);
                 params.put("answerPaper", jsonObject.toString());
                 return params;
@@ -1317,4 +1324,15 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         requestQueue.add(stringRequest);
     }
 
+    public boolean isCameraUsebyApp() {
+        Camera camera = null;
+        try {
+            camera = Camera.open();
+        } catch (RuntimeException e) {
+            return true;
+        } finally {
+            if (camera != null) camera.release();
+        }
+        return false;
+    }
 }
