@@ -154,7 +154,8 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
                                     });
                                 }else{
                                     if(c!=null)
-                                        Toast.makeText(c, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(c, "Something went wrong..\n" +
+                                                "Please try again..", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

@@ -181,4 +181,10 @@ public class InitialInfo extends AppCompatActivity {
         intent.putExtra("totalStudents", totalStudents);
         startActivity(intent);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

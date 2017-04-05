@@ -231,7 +231,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
 
     public  String format(String str, String examId) {
 
-        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
+        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png|JPG))";
         final String subst = "<img src=\"" + myUrl + "" + examId + "/Images/$2\"/>";
 
         final Pattern pattern = Pattern.compile(regex);
@@ -273,7 +273,8 @@ public class AnswerPaperLoad extends AppCompatActivity {
                             }
                         });
                     }else{
-                        Toast.makeText(AnswerPaperLoad.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AnswerPaperLoad.this, "Something went wrong..\n" +
+                                "Please try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -322,8 +323,8 @@ public class AnswerPaperLoad extends AppCompatActivity {
                         selectedLanguage = map.get("selectedLanguage");
                         setQuestionPaperResponse(questionPaperResponse, selectedLanguage,myUrl);
                     }else{
-                        Toast.makeText(AnswerPaperLoad.this, "An unexpected error occurred..\n" +
-                                "Please try again..", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AnswerPaperLoad.this, "Something went wrong..\n " +
+                        "Please try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -619,5 +620,11 @@ public class AnswerPaperLoad extends AppCompatActivity {
             Log.d("execute", "onBackPressed: false");
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }

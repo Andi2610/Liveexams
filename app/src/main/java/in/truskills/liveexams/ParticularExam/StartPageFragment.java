@@ -65,7 +65,7 @@ public class StartPageFragment extends Fragment {
     TextView descriptionStartPage, start_Time, end_Time, start_Date, end_Date, sponsorText;
     Spinner myLanguage;
     String selectedLanguage, timestamp, examDetails, examId, name, Languages, examGiven,myDate,myUrl;
-    SharedPreferences prefs,dataPrefs;
+    SharedPreferences prefs,dataPrefs,quizPrefs,firstTime,firstTimeForRules;
     Button start_leave_button;
     Bundle b;
     Handler h;
@@ -105,6 +105,9 @@ public class StartPageFragment extends Fragment {
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         dataPrefs = getActivity().getSharedPreferences("dataPrefs", Context.MODE_PRIVATE);
+        quizPrefs = getActivity().getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
+        firstTime = getActivity().getSharedPreferences("firstTime", Context.MODE_PRIVATE);
+        firstTimeForRules = getActivity().getSharedPreferences("firstTimeForRules", Context.MODE_PRIVATE);
 
         ob = (StartPageInterface) getActivity();
         ob.changeTitleForStartPage();
@@ -406,6 +409,15 @@ public class StartPageFragment extends Fragment {
                                 SharedPreferences.Editor e=dataPrefs.edit();
                                 e.clear();
                                 e.apply();
+                                SharedPreferences.Editor ee=quizPrefs.edit();
+                                ee.clear();
+                                ee.apply();
+                                SharedPreferences.Editor eee=firstTime.edit();
+                                eee.clear();
+                                eee.apply();
+                                SharedPreferences.Editor eeeee=firstTimeForRules.edit();
+                                eeeee.clear();
+                                eeeee.apply();
 
                                 getDate();
                             }
@@ -473,6 +485,15 @@ public class StartPageFragment extends Fragment {
                             SharedPreferences.Editor e=dataPrefs.edit();
                             e.clear();
                             e.apply();
+                            SharedPreferences.Editor ee=quizPrefs.edit();
+                            ee.clear();
+                            ee.apply();
+                            SharedPreferences.Editor eee=firstTime.edit();
+                            eee.clear();
+                            eee.apply();
+                            SharedPreferences.Editor eeeee=firstTimeForRules.edit();
+                            eeeee.clear();
+                            eeeee.apply();
 
                             getDate();
                         }
@@ -503,6 +524,15 @@ public class StartPageFragment extends Fragment {
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
+                        SharedPreferences.Editor ee=quizPrefs.edit();
+                        ee.clear();
+                        ee.apply();
+                        SharedPreferences.Editor eee=firstTime.edit();
+                        eee.clear();
+                        eee.apply();
+                        SharedPreferences.Editor eeeee=firstTimeForRules.edit();
+                        eeeee.clear();
+                        eeeee.apply();
 
                         getDate();
                     }
@@ -533,6 +563,15 @@ public class StartPageFragment extends Fragment {
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
+                        SharedPreferences.Editor ee=quizPrefs.edit();
+                        ee.clear();
+                        ee.apply();
+                        SharedPreferences.Editor eee=firstTime.edit();
+                        eee.clear();
+                        eee.apply();
+                        SharedPreferences.Editor eeeee=firstTimeForRules.edit();
+                        eeeee.clear();
+                        eeeee.apply();
 
                         getDate();
                     }
@@ -584,7 +623,8 @@ public class StartPageFragment extends Fragment {
                         });
                     }else{
                         if(getActivity()!=null)
-                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Something went wrong..\n" +
+                                    "Please try again..", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -643,7 +683,8 @@ public class StartPageFragment extends Fragment {
                         });
                     }else{
                         if(getActivity()!=null)
-                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Something went wrong..\n" +
+                                    "Please try again..", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {

@@ -387,4 +387,10 @@ public class AnswersMainActivity extends AppCompatActivity implements setValueOf
             dialog.show();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

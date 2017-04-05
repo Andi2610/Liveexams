@@ -70,6 +70,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     QuizDatabase ob;
     ArrayList<String> urls, groups;
     SharedPreferences prefs,dataPrefs;
+    Handler handler = new Handler();
 
     Button retryButtonForDownload, exitButtonForDownload;
     LinearLayout paperGettingReadyLayout,paperGettingDownloadLayout,noInternetLayout;
@@ -178,7 +179,8 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                         paperGettingDownloadLayout.setVisibility(View.GONE);
                         paperGettingReadyLayout.setVisibility(View.GONE);
                         noInternetLayout.setVisibility(View.VISIBLE);
-                        Toast.makeText(QuestionPaperLoad.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QuestionPaperLoad.this, "Something went wrong..\n" +
+                                "Please try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -250,7 +252,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     }
 
     public void prepareForOfflineForQuestion(String text, int ii, int jj) throws InterruptedException {
-        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
+        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png|JPG))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
         final Matcher matcher1 = pattern.matcher(text);
@@ -273,7 +275,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     }
 
     public void prepareForOfflineForOption(String text, int ii, int jj, int kk) throws InterruptedException {
-        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
+        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png|JPG))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
         final Matcher matcher1 = pattern.matcher(text);
@@ -298,7 +300,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     public String format(String str, String examId) {
 
-        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png))";
+        final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(jpg|gif|png|JPG))";
         final String subst = "<img src=\"" + myUrl + "" + examId + "/Images/$2\"/>";
 
         final Pattern pattern = Pattern.compile(regex);
@@ -340,6 +342,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         super.onResume();
         MyApplication.getInstance().setConnectivityListener(QuestionPaperLoad.this);
         visible=true;
+        handler.removeCallbacks(sendData);
     }
 
     public void startNewActivity() {
@@ -706,41 +709,77 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
         }else{
             visible=false;
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        Thread.sleep(ConstantsDefined.time);
-                    }catch (Exception e){
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try{
+//                        Thread.sleep(ConstantsDefined.time);
+//                    }catch (Exception e){
+//
+//                    }finally {
+//                        h.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if(visible){
+//
+//                                }else{
+//                                    String folder_main = ".LiveExams";
+//                                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+//                                    if (f.exists()) {
+//                                        ConstantsDefined.deleteDir(f);
+//                                    }
+//                                    ob.deleteMyTable();
+//                                    SharedPreferences.Editor e=dataPrefs.edit();
+//                                    e.clear();
+//                                    e.apply();
+//                                    Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
+//                                    Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                    startActivity(intent);
+//                                    finish();
+//                                }
+//                            }
+//                        });
+//                    }
+//                }
+//            }).start();
+            handler.postDelayed(sendData,ConstantsDefined.time);
 
-                    }finally {
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(visible){
-
-                                }else{
-                                    String folder_main = ".LiveExams";
-                                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                                    if (f.exists()) {
-                                        ConstantsDefined.deleteDir(f);
-                                    }
-                                    ob.deleteMyTable();
-                                    SharedPreferences.Editor e=dataPrefs.edit();
-                                    e.clear();
-                                    e.apply();
-                                    Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-                        });
-                    }
-                }
-            }).start();
         }
+    }
+
+    private final Runnable sendData = new Runnable() {
+        public void run() {
+            if (visible) {
+//
+            } else {
+                if(gone){
+
+                }else{
+                    String folder_main = ".LiveExams";
+                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
+                    if (f.exists()) {
+                        ConstantsDefined.deleteDir(f);
+                    }
+                    ob.deleteMyTable();
+                    SharedPreferences.Editor e = dataPrefs.edit();
+                    e.clear();
+                    e.apply();
+                    Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }
+    };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }

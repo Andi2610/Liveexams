@@ -69,7 +69,7 @@ public class SplashScreen extends Activity {
 
                         requestQueue = Volley.newRequestQueue(SplashScreen.this);
 
-                        String url = ConstantsDefined.api + "apkVersionAndroid";
+                        String url = ConstantsDefined.api2 + "apkVersionAndroid";
                         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                                 url, new Response.Listener<JSONObject>() {
 

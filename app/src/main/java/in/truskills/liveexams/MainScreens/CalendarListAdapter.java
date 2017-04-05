@@ -143,7 +143,8 @@ public class CalendarListAdapter extends RecyclerView.Adapter<CalendarListAdapte
                                 });
                             }else{
                                 if(c!=null)
-                                    Toast.makeText(c, "An unexpected error occured..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(c, "Something went wrong..\n" +
+                                            "Please try again..", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

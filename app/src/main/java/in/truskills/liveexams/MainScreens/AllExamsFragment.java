@@ -279,7 +279,8 @@ public class AllExamsFragment extends Fragment{
                         }
                     }else{
                         if(getActivity()!=null)
-                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Something went wrong..\n" +
+                                    "Please try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

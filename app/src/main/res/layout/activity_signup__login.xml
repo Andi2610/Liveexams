@@ -52,7 +52,7 @@
                 android:id="@+id/signupContent"
                 android:background="@color/light_grey"
                 android:isScrollContainer="false"
-                android:layout_marginTop="50dp">
+                android:layout_marginTop="150dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -60,6 +60,47 @@
                     android:orientation="vertical"
                     android:background="@color/light_grey"
                     android:layout_gravity="center_vertical">
+
+                    <!--<EditText-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:padding="10dp"-->
+                        <!--android:background="@color/edit_text_color"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:textColorHint="@color/light_grey"-->
+                        <!--android:lines="1"-->
+                        <!--android:inputType="text"-->
+                        <!--android:hint="FIRST NAME"-->
+                        <!--android:id="@+id/signupFirstName"-->
+                        <!--android:layout_margin="10dp"/>-->
+
+                    <!--<EditText-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:padding="10dp"-->
+                        <!--android:background="@color/edit_text_color"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:textColorHint="@color/light_grey"-->
+                        <!--android:lines="1"-->
+                        <!--android:inputType="text"-->
+                        <!--android:hint="LAST NAME"-->
+                        <!--android:id="@+id/signupLastName"-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_marginBottom="10dp"-->
+                        <!--android:layout_marginRight="10dp"/>-->
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:background="@color/edit_text_color"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/light_grey"
+                        android:lines="1"
+                        android:inputType="text"
+                        android:hint="FULL NAME"
+                        android:id="@+id/signupFullName"
+                        android:layout_margin="10dp"/>
 
                     <EditText
                         android:layout_width="match_parent"
@@ -72,7 +113,9 @@
                         android:inputType="text"
                         android:hint="USERNAME"
                         android:id="@+id/signupName"
-                        android:layout_margin="10dp"/>
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"/>
 
                     <Spinner
                         android:id="@+id/signupGender"

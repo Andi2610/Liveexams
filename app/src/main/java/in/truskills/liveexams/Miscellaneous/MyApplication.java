@@ -24,7 +24,7 @@ public class MyApplication extends MultiDexApplication {
     private static MyApplication mInstance;
     private static final String TWITTER_KEY = "fIx7W5i8xo9stQ8jhOHVLNdFB";
     private static final String TWITTER_SECRET = "JQ9IuPXWecyeMFK8VujoYePRHHfQllXNRvRYC6QatmCNt8l5FH";
-
+    private static boolean activityVisible;
 
     @Override
     public void onCreate() {
@@ -42,6 +42,18 @@ public class MyApplication extends MultiDexApplication {
 
     public void setConnectivityListener(ConnectivityReciever.ConnectivityReceiverListener listener) {
         ConnectivityReciever.connectivityReceiverListener = listener;
+    }
+
+    public static boolean isActivityVisible() {
+        return activityVisible;
+    }
+
+    public static void activityResumed() {
+        activityVisible = true;
+    }
+
+    public static void activityPaused() {
+        activityVisible = false;
     }
 
 }

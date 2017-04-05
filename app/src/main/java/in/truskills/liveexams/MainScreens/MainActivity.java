@@ -63,6 +63,7 @@ import java.io.IOException;
 
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.Miscellaneous.RealPathUtil;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.Signup_Login;
@@ -103,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d("visibility", "onCreate: "+ MyApplication.isActivityVisible());
 
         //Set toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -722,7 +725,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 System.setProperty(SDKGlobalConfiguration.ENFORCE_S3_SIGV4_SYSTEM_PROPERTY, "true");
 //                s3client.
                 // upload file to folder and set it to public
-                String fileName = "Users/" + prefs.getString("userId","")+".jpg";
+                String fileName = "students/" + prefs.getString("userId","")+".jpg";
                 s3client.putObject(new PutObjectRequest("live-exams", fileName,
                         new File(my_path))
                         .withCannedAcl(CannedAccessControlList.PublicRead));
@@ -841,5 +844,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         navigationView.setCheckedItem(R.id.nav_home);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }

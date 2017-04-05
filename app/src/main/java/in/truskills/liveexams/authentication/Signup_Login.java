@@ -105,7 +105,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     Button signupPressed;
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
-    EditText loginName, loginPassword, signupName, signupEmail, signupPassword, signupConfirmPassword, signupMobile,signupLocationEditText;
+    EditText loginName, loginPassword, signupName,signupFullName, signupFirstName,signupLastName,signupEmail, signupPassword, signupConfirmPassword, signupMobile,signupLocationEditText;
     TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence, successfullRegister, signupLanguageAlternate;
     Spinner signupLanguage, signupGender;
     LocationManager locationManager;
@@ -117,6 +117,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     ImageView app_logo;
     ArrayList<String> listOfLanguages;
     Animation slide_down;
+    String firstName,lastName,fullName;
     Drawable dr;
     ProgressDialog dialog;
     public static boolean available=true;
@@ -135,6 +136,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         //Set the layout of this activity
         setContentView(R.layout.activity_signup__login);
+
 
         locationFieldEditText=(LinearLayout)findViewById(R.id.locationFieldEditText);
         locationField = (LinearLayout) findViewById(R.id.locationField);
@@ -196,7 +198,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupLayout = (RelativeLayout) findViewById(R.id.signupLayout);
         loginName = (EditText) findViewById(R.id.loginName);
         loginPassword = (EditText) findViewById(R.id.loginPassword);
+        signupFullName= (EditText) findViewById(R.id.signupFullName);
         signupName = (EditText) findViewById(R.id.signupName);
+//        signupFirstName = (EditText) findViewById(R.id.signupFirstName);
+//        signupLastName = (EditText) findViewById(R.id.signupLastName);
         signupEmail = (EditText) findViewById(R.id.signupEmail);
         signupPassword = (EditText) findViewById(R.id.signupPassword);
         signupConfirmPassword = (EditText) findViewById(R.id.signupConfirmPassword);
@@ -223,6 +228,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         loginPressed.setTypeface(tff2);
         signupPressed.setTypeface(tff2);
         signupName.setTypeface(tff2);
+//        signupFirstName.setTypeface(tff2);
+//        signupLastName.setTypeface(tff2);
         signupMobile.setTypeface(tff2);
         signupEmail.setTypeface(tff2);
         signupPassword.setTypeface(tff2);
@@ -232,6 +239,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         sentence.setTypeface(tff2);
         signupLanguageAlternate.setTypeface(tff2);
         signupLocationEditText.setTypeface(tff2);
+        signupFullName.setTypeface(tff2);
 
 
         //Set OnClickListener on all buttons used
@@ -240,6 +248,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         forgotPasswordPressed.setOnClickListener(this);
         termsAndConditionsPressed.setOnClickListener(this);
         locationField.setOnClickListener(this);
+
+        successfullRegister.setVisibility(View.GONE);
+
 
         signupLanguageAlternate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -277,7 +288,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                                 signupLanguage.setAdapter(customAdapter);
                                 signupLanguage.performClick();
                             }else{
-                                Toast.makeText(Signup_Login.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Signup_Login.this, "Something went wrong..\n" +
+                                        "Please try again..", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -364,6 +376,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Clear the previous content of all the fields..
                 signupName.setText("");
+                signupFullName.setText("");
+//                signupFirstName.setText("");
+//                signupLastName.setText("");
                 signupEmail.setText("");
                 signupMobile.setText("");
                 signupPassword.setText("");
@@ -373,6 +388,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                 //Set the validation message for rest of the fields as null..
                 signupName.setError(null);
+//                signupFirstName.setError(null);
+//                signupLastName.setError(null);
+                signupFullName.setError(null);
                 signupEmail.setError(null);
                 signupMobile.setError(null);
                 signupPassword.setError(null);
@@ -396,8 +414,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         int l = signupName.getText().toString().length();
-                        if (l < 2) {
-                            signupName.setError("Required", dr);
+                        if ((l < 2 && l>20)|| signupName.getText().toString().contains(" ")) {
+                            signupName.setError("No spaces allowed and length should be between 2 and 20 characters", dr);
                         } else {
                             signupName.setError(null);
                         }
@@ -408,6 +426,69 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
                     }
                 });
+
+//                signupFirstName.addTextChangedListener(new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    }
+//
+//                    @Override
+//                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                        int l = signupFirstName.getText().toString().length();
+//                        if ((l < 1)) {
+//                            signupFirstName.setError("Required", dr);
+//                        } else {
+//                            signupFirstName.setError(null);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable editable) {
+//
+//                    }
+//                });
+//
+//                signupLastName.addTextChangedListener(new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    }
+//
+//                    @Override
+//                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                        int l = signupLastName.getText().toString().length();
+//                        if ((l < 1)) {
+//                            signupLastName.setError("Required", dr);
+//                        } else {
+//                            signupLastName.setError(null);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void afterTextChanged(Editable editable) {
+//
+//                    }
+//                });
+                signupFullName.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        int l = signupFullName.getText().toString().length();
+                        if ((l < 1)) {
+                            signupFullName.setError("Required", dr);
+                        } else {
+                            signupFullName.setError(null);
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
                 signupEmail.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -627,6 +708,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                 signupDrawer.setVisibility(View.VISIBLE);
                 app_logo.setVisibility(View.VISIBLE);
                 signupLayout.setBackgroundColor(Color.parseColor("#0C1D36"));
+                successfullRegister.setVisibility(View.GONE);
 
                 //Rechange the arrow button: from down to up again..
                 loginHandleImage.setImageResource(R.drawable.up_arrow);
@@ -743,6 +825,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //Get the value of all the fields..
         name = signupName.getText().toString();
+        int len=name.length();
+//        firstName=signupFirstName.getText().toString();
+//        lastName=signupLastName.getText().toString();
+        fullName=signupFullName.getText().toString();
         gender = selectedGender;
         email = signupEmail.getText().toString();
         mobile = signupMobile.getText().toString();
@@ -757,12 +843,18 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         language = selectedLanguage;
 
         //If all valid.. signup..
-        if (!name.equals("") && !gender.equals("GENDER") && !location.equals("LOCATION") && signupLanguageAlternate.getVisibility() == View.GONE && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
+        if ((len>=2&&len<=20&&(!name.contains(" "))) && !fullName.equals("")&& !gender.equals("GENDER") && !location.equals("LOCATION") && signupLanguageAlternate.getVisibility() == View.GONE && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             signupFunction();
         } else {
             //Else display desired error messages..
-            if (name.equals(""))
-                signupName.setError("Required", dr);
+//            if(firstName.equals(""))
+//                signupFirstName.setError("Required");
+//            if(lastName.equals(""))
+//                signupLastName.setError("Required");
+            if(fullName.equals(""))
+                signupFullName.setError("Required");
+            if ((len < 2 && len>20)|| name.contains(" "))
+                signupName.setError("No spaces allowed and length should be between 2 and 20 characters", dr);
             if (!(!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()))
                 signupEmail.setError("Enter valid email", dr);
             if (gender.equals("GENDER"))

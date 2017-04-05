@@ -68,6 +68,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     LinearLayout awareLayoutForRules;
     TextView textForAwareForRules;
     ImageView imageForAwareForRules;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -296,11 +297,12 @@ public class AllSectionsSummary extends AppCompatActivity {
                         if (f.exists()) {
                             ConstantsDefined.deleteDir(f);
                         }
-                        Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                        startActivity(intent);
-                        finish();
+                        Toast.makeText(AllSectionsSummary.this, "Something went wrong..\n" +
+                                "Paper couldn't be submitted..", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+//                        startActivity(intent);
+//                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -389,49 +391,46 @@ public class AllSectionsSummary extends AppCompatActivity {
 //            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         }else{
             visible=false;
-            t=new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try{
-                        Thread.sleep(ConstantsDefined.time);
-                    }catch (Exception e){
+            handler.postDelayed(sendData,ConstantsDefined.time);
 
-                    }finally {
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(visible){
-
-                                }else{
-                                    JSONArray jsonArray = ob.getQuizResult();
-                                    final JSONObject jsonObject = new JSONObject();
-                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
-                                    String myDate=dataPrefs.getString("date","");
-                                    String userId=dataPrefs.getString("userId","");
-                                    String examId=dataPrefs.getString("examId","");
-
-                                    try {
-                                        jsonObject.put("result", jsonArray);
-                                        jsonObject.put("selectedLanguage", selectedLanguage);
-                                        jsonObject.put("date", myDate);
-
-                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
-                                        submitAnswerPaper.submit(ob,AllSectionsSummary.this,jsonObject.toString(),userId,examId);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-//                                    Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
-//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                    startActivity(intent);
-//                                    finish();
-                                }
-                            }
-                        });
-                    }
-                }
-            });
-            t.start();
+//            t=new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try{
+//                        Thread.sleep(ConstantsDefined.time);
+//                    }catch (Exception e){
+//
+//                    }finally {
+//                        h.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                if(visible){
+//
+//                                }else{
+//                                    JSONArray jsonArray = ob.getQuizResult();
+//                                    final JSONObject jsonObject = new JSONObject();
+//                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
+//                                    String myDate=dataPrefs.getString("date","");
+//                                    String userId=dataPrefs.getString("userId","");
+//                                    String examId=dataPrefs.getString("examId","");
+//
+//                                    try {
+//                                        jsonObject.put("result", jsonArray);
+//                                        jsonObject.put("selectedLanguage", selectedLanguage);
+//                                        jsonObject.put("date", myDate);
+//
+//                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
+//                                        submitAnswerPaper.submit(ob,AllSectionsSummary.this,jsonObject.toString(),userId,examId);
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }
+//                        });
+//                    }
+//                }
+//            });
+//            t.start();
         }
 
     }
@@ -443,8 +442,14 @@ public class AllSectionsSummary extends AppCompatActivity {
         e.putInt("exit",1);
         e.apply();
         visible=true;
-        if(t!=null&&t.isAlive())
-            t.interrupt();
+//        if(t!=null&&t.isAlive())
+//            t.interrupt();
+        handler.removeCallbacks(sendData);
+
+        SharedPreferences.Editor ee = dataPrefs.edit();
+        ee.putInt("submit", 0);
+        ee.apply();
+
     }
 
     @Override
@@ -455,4 +460,41 @@ public class AllSectionsSummary extends AppCompatActivity {
         e.putInt("exit",0);
         e.apply();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
+
+    private final Runnable sendData = new Runnable() {
+        public void run() {
+            if (visible) {
+
+            } else {
+                JSONArray jsonArray = ob.getQuizResult();
+                final JSONObject jsonObject = new JSONObject();
+                String selectedLanguage = dataPrefs.getString("selectedLanguage", "");
+                String myDate = dataPrefs.getString("date", "");
+                String userId = dataPrefs.getString("userId", "");
+                String examId = dataPrefs.getString("examId", "");
+
+                SharedPreferences.Editor ee = dataPrefs.edit();
+                ee.putInt("submit", 1);
+                ee.apply();
+
+                try {
+                    jsonObject.put("result", jsonArray);
+                    jsonObject.put("selectedLanguage", selectedLanguage);
+                    jsonObject.put("date", myDate);
+
+                    SubmitAnswerPaper submitAnswerPaper = new SubmitAnswerPaper();
+                    submitAnswerPaper.submit(ob, AllSectionsSummary.this, jsonObject.toString(), userId, examId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    };
 }

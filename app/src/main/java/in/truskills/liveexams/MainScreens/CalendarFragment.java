@@ -252,7 +252,8 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
                         calendarListAdapter.notifyDataSetChanged();
                     }else{
                         if(getActivity()!=null)
-                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Something went wrong..\n" +
+                                    "Please try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();

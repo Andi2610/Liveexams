@@ -162,4 +162,10 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         }
         return true;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
+    }
 }

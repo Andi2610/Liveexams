@@ -2,6 +2,7 @@ package in.truskills.liveexams.Quiz;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -56,6 +57,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import in.truskills.liveexams.MainScreens.MainActivity;
@@ -120,6 +123,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     TextView breakLine;
     LinearLayout footer;
     AVLoadingIndicatorView avi;
+    Handler handler = new Handler();
 
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
@@ -131,6 +135,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_main);
         h = new Handler();
+
+        Log.d(TAG, "onCreate: ");
 
         progressDialog2 = new ProgressDialog(QuizMainActivity.this);
 
@@ -239,7 +245,39 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         pager = (ViewPager) findViewById(R.id.viewpager);
 
-        formFragmentListForViewPager();
+        handler.removeCallbacks(sendData);
+
+        if(dataPrefs.getInt("shuffle",1)==1){
+            formFragmentListForViewPager();
+            SharedPreferences.Editor ee = dataPrefs.edit();
+            ee.putInt("shuffle", 0);
+            ee.apply();
+        }else{
+            SharedPreferences.Editor ee = quizPrefs.edit();
+            ee.putInt("exit", 0);
+            ee.apply();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(QuizMainActivity.this, R.style.AppCompatAlertDialogStyle);
+            builder.setTitle("Error");  // GPS not found
+            builder.setMessage("Insufficient memory..\nPlease clear your background apps and restart your quiz.."); // Want to enable?
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    SharedPreferences.Editor ee = quizPrefs.edit();
+                    ee.putInt("exit", 0);
+                    ee.apply();
+
+                    Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            builder.setCancelable(false);
+            builder.create().show();
+
+        }
+
     }
 
     public void forQuiz() {
@@ -768,6 +806,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     protected void onDestroy() {
         super.onDestroy();
+            Runtime.getRuntime().gc();
         SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
         JSONObject data = new JSONObject();
         try {
@@ -893,13 +932,20 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     protected void onResume() {
         super.onResume();
         MyApplication.getInstance().setConnectivityListener(QuizMainActivity.this);
+        MyApplication.activityResumed();
         SharedPreferences.Editor e = quizPrefs.edit();
         e.putInt("exit", 1);
         e.apply();
         visible = true;
-        if (t != null && t.isAlive()) {
-            t.interrupt();
-        }
+        SharedPreferences.Editor ee = dataPrefs.edit();
+        ee.putInt("submit", 0);
+        ee.apply();
+//        if (t != null && t.isAlive()) {
+//            t.interrupt();
+//        }
+
+        handler.removeCallbacks(sendData);
+
     }
 
     @Override
@@ -990,6 +1036,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     @Override
     protected void onPause() {
         super.onPause();
+        MyApplication.activityPaused();
 
 //        try{
 //            socketfromteacher.stopStreaming();
@@ -1001,49 +1048,124 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         if (quizPrefs.getInt("exit", 0) == 0) {
 //            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         } else {
+
             visible = false;
-            t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(ConstantsDefined.time);
+            handler.postDelayed(sendData,ConstantsDefined.time);
+//            t = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        Thread.sleep(ConstantsDefined.time);
+//
+//                    } catch (Exception e) {
+//
+//                    } finally {
+//                        h.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                                int f=0;
+//
+//                                for(int i=0;i<10;++i){
+//                                    if(visible){
+//                                        f=1;
+//                                        break;
+//                                    }
+//                                }
+//
+//                                if(f==0){
+//                                    JSONArray jsonArray = ob.getQuizResult();
+//                                    final JSONObject jsonObject = new JSONObject();
+//                                    String selectedLanguage = dataPrefs.getString("selectedLanguage", "");
+//                                    String myDate = dataPrefs.getString("date", "");
+//                                    String userId = dataPrefs.getString("userId", "");
+//                                    String examId = dataPrefs.getString("examId", "");
+//
+//                                    try {
+//                                        jsonObject.put("result", jsonArray);
+//                                        jsonObject.put("selectedLanguage", selectedLanguage);
+//                                        jsonObject.put("date", myDate);
+//
+//                                        SubmitAnswerPaper submitAnswerPaper = new SubmitAnswerPaper();
+//                                        submitAnswerPaper.submit(ob, QuizMainActivity.this, jsonObject.toString(), userId, examId);
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//
+//                                if (visible) {
+//
+//                                } else {
+////                                    JSONArray jsonArray = ob.getQuizResult();
+////                                    final JSONObject jsonObject = new JSONObject();
+////                                    String selectedLanguage = dataPrefs.getString("selectedLanguage", "");
+////                                    String myDate = dataPrefs.getString("date", "");
+////                                    String userId = dataPrefs.getString("userId", "");
+////                                    String examId = dataPrefs.getString("examId", "");
+////
+////                                    try {
+////                                        jsonObject.put("result", jsonArray);
+////                                        jsonObject.put("selectedLanguage", selectedLanguage);
+////                                        jsonObject.put("date", myDate);
+////
+////                                        SubmitAnswerPaper submitAnswerPaper = new SubmitAnswerPaper();
+////                                        submitAnswerPaper.submit(ob, QuizMainActivity.this, jsonObject.toString(), userId, examId);
+////                                    } catch (JSONException e) {
+////                                        e.printStackTrace();
+////                                    }
+//                                }
+//                            }
+//                        });
+//
+//                    }
+//                }
+//            });
+//            t.start();
 
-                    } catch (Exception e) {
 
-                    } finally {
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (visible) {
-
-                                } else {
-                                    JSONArray jsonArray = ob.getQuizResult();
-                                    final JSONObject jsonObject = new JSONObject();
-                                    String selectedLanguage = dataPrefs.getString("selectedLanguage", "");
-                                    String myDate = dataPrefs.getString("date", "");
-                                    String userId = dataPrefs.getString("userId", "");
-                                    String examId = dataPrefs.getString("examId", "");
-
-                                    try {
-                                        jsonObject.put("result", jsonArray);
-                                        jsonObject.put("selectedLanguage", selectedLanguage);
-                                        jsonObject.put("date", myDate);
-
-                                        SubmitAnswerPaper submitAnswerPaper = new SubmitAnswerPaper();
-                                        submitAnswerPaper.submit(ob, QuizMainActivity.this, jsonObject.toString(), userId, examId);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        });
-
-                    }
-                }
-            });
-            t.start();
         }
     }
+
+    private final Runnable sendData = new Runnable(){
+        public void run(){
+            try {
+                //prepare and send the data here..
+
+                if(visible){
+                    //Do nothing..
+                }else{
+                    JSONArray jsonArray = ob.getQuizResult();
+                    final JSONObject jsonObject = new JSONObject();
+                    String selectedLanguage = dataPrefs.getString("selectedLanguage", "");
+                    String myDate = dataPrefs.getString("date", "");
+                    String userId = dataPrefs.getString("userId", "");
+                    String examId = dataPrefs.getString("examId", "");
+
+                    SharedPreferences.Editor ee = dataPrefs.edit();
+                    ee.putInt("submit", 1);
+                    ee.apply();
+
+                    Log.d("paramsInQuiz", "run: "+myDate+" "+userId+" "+examId);
+
+                    try {
+                        jsonObject.put("result", jsonArray);
+                        jsonObject.put("selectedLanguage", selectedLanguage);
+                        jsonObject.put("date", myDate);
+
+                        SubmitAnswerPaper submitAnswerPaper = new SubmitAnswerPaper();
+                        submitAnswerPaper.submit(ob, QuizMainActivity.this, jsonObject.toString(), userId, examId);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+//                handler.postDelayed(this, 60000);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
 
@@ -1287,11 +1409,12 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         if (f.exists()) {
                             ConstantsDefined.deleteDir(f);
                         }
-                        Toast.makeText(QuizMainActivity.this, result, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                        startActivity(intent);
-                        finish();
+                        Toast.makeText(QuizMainActivity.this, "Something went wrong..\n" +
+                                "Paper couldn't be submitted..", Toast.LENGTH_SHORT).show();
+//                        Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+//                        startActivity(intent);
+//                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

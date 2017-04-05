@@ -70,6 +70,7 @@ public class SubmitAnswerPaper {
                     JSONObject jsonObject1=response;
                     Log.d("response", "onResponse: "+response);
                     String success = jsonObject1.getString("success");
+                    Log.d("response", "onResponse: "+success);
                     final String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
                         String folder_main = ".LiveExams";
@@ -104,8 +105,31 @@ public class SubmitAnswerPaper {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         context.startActivity(intent);
 
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                final Intent emptyIntent = new Intent(context,SplashScreen.class);
+                                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(context)
+                                                .setSmallIcon(R.drawable.app_icon)
+                                                .setContentTitle("LiveExams")
+                                                .setContentText(result)
+                                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
+
+                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                                mBuilder.setAutoCancel(true);
+
+                                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.notify(1, mBuilder.build());
+                            }
+                        });
+
                     } else {
-                        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Something went wrong..\n" +
+                                "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
 
                         ob.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
@@ -116,27 +140,30 @@ public class SubmitAnswerPaper {
                         if (f.exists()) {
                             ConstantsDefined.deleteDir(f);
                         }
+
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                final Intent emptyIntent = new Intent(context,SplashScreen.class);
+                                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(context)
+                                                .setSmallIcon(R.drawable.app_icon)
+                                                .setContentTitle("LiveExams")
+                                                .setContentText("Something went wrong..\n" +
+                                                        "Paper couldn't be submitted..")
+                                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
+
+                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                                mBuilder.setAutoCancel(true);
+
+                                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.notify(1, mBuilder.build());
+                            }
+                        });
                     }
-                    h.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            final Intent emptyIntent = new Intent(context,SplashScreen.class);
-                            PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                            NotificationCompat.Builder mBuilder =
-                                    new NotificationCompat.Builder(context)
-                                            .setSmallIcon(R.drawable.app_icon)
-                                            .setContentTitle("LiveExams")
-                                            .setContentText(result)
-                                            .setContentIntent(pendingIntent); //Required on Gingerbread and below
-
-                            mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-
-                            NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
-                            notificationManager.notify(1, mBuilder.build());
-                        }
-                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -152,6 +179,32 @@ public class SubmitAnswerPaper {
                 if (f.exists()) {
                     ConstantsDefined.deleteDir(f);
                 }
+                allow=context.getSharedPreferences("allow",Context.MODE_PRIVATE);
+                SharedPreferences.Editor e=allow.edit();
+                e.putInt("allow",0);
+                e.apply();
+
+                final Intent emptyIntent = new Intent(context,SplashScreen.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(context)
+                                .setSmallIcon(R.drawable.app_icon)
+                                .setContentTitle("LiveExams")
+                                .setContentText("Something went wrong..\n" +
+                                        "Paper couldn't be submitted..\nIt will be submitted once internet resumes..")
+                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
+
+                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                mBuilder.setAutoCancel(true);
+
+                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(1, mBuilder.build());
+
+                Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
             }
         });
         requestQueue.add(stringRequest);

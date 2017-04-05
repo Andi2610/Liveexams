@@ -31,12 +31,12 @@ public class ConstantsDefined {
     //Api used to connect to the server..
     public static final String api = "https://api.liveexams.in/api/";
 //    public static final String api = "http://35.154.110.122:3002/api/";
-//    public static final String api2 = "http://35.154.110.122:3002/api/";
+    public static final String api2 = "http://35.154.110.122:3002/api/";
 
     //Url for image..
     public static final String imageUrl = "https://s3.ap-south-1.amazonaws.com/live-exams/";
 
-    public static final String profileImageUrl="https://s3.ap-south-1.amazonaws.com/live-exams/Users/";
+    public static final String profileImageUrl="https://s3.ap-south-1.amazonaws.com/live-exams/students/";
     //Constants for flashphoner..
     public static final String STARTSTREAMING = "startStreaming";
     public static final String STARTEDSTREAMING = "startedStreaming";

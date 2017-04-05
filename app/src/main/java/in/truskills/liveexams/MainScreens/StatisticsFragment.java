@@ -193,7 +193,8 @@ public class StatisticsFragment extends Fragment implements ConnectivityReciever
                         noConnectionLayout.setVisibility(View.VISIBLE);
                         noExams.setVisibility(View.GONE);
                         if(getActivity()!=null)
-                            Toast.makeText(getActivity(), "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Something went wrong..\n" +
+                                    "Please try again..", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
