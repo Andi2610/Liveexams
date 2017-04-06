@@ -23,12 +23,12 @@
             android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:layout_centerHorizontal="true"
-            android:text="Please wait.. \n Your answer paper is getting ready.."/>
+            android:text="Please wait.. \n Your answer paper is getting ready..\nThis may take few moments.."/>
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/aviForAnswer"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             style="@style/AVLoadingIndicatorView"
             android:visibility="visible"
             app:indicatorName="LineSpinFadeLoaderIndicator"

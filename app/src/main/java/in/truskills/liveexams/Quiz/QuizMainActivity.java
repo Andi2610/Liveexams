@@ -1393,7 +1393,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         SharedPreferences.Editor eeeee = firstTimeForRules.edit();
                         eeeee.clear();
                         eeeee.apply();
-                        Toast.makeText(QuizMainActivity.this, result, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(QuizMainActivity.this, result+"\n" +
+                                "Result will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
@@ -1410,7 +1411,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                             ConstantsDefined.deleteDir(f);
                         }
                         Toast.makeText(QuizMainActivity.this, "Something went wrong..\n" +
-                                "Paper couldn't be submitted..", Toast.LENGTH_SHORT).show();
+                                "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
 //                        Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
 //                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
 //                        startActivity(intent);

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
@@ -74,7 +75,7 @@ public class SubmitAnswerPaper {
                     final String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
                         String folder_main = ".LiveExams";
-                        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, result+"\nResult will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
                         File f = new File(Environment.getExternalStorageDirectory(), folder_main);
                         if (f.exists()) {
                             ConstantsDefined.deleteDir(f);
@@ -112,11 +113,14 @@ public class SubmitAnswerPaper {
                                 final Intent emptyIntent = new Intent(context,SplashScreen.class);
                                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
                                 NotificationCompat.Builder mBuilder =
                                         new NotificationCompat.Builder(context)
                                                 .setSmallIcon(R.drawable.app_icon)
                                                 .setContentTitle("LiveExams")
                                                 .setContentText(result)
+                                                .setSound(defaultSoundUri)
                                                 .setContentIntent(pendingIntent); //Required on Gingerbread and below
 
                                 mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
@@ -148,12 +152,15 @@ public class SubmitAnswerPaper {
                                 final Intent emptyIntent = new Intent(context,SplashScreen.class);
                                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
                                 NotificationCompat.Builder mBuilder =
                                         new NotificationCompat.Builder(context)
                                                 .setSmallIcon(R.drawable.app_icon)
                                                 .setContentTitle("LiveExams")
                                                 .setContentText("Something went wrong..\n" +
                                                         "Paper couldn't be submitted..")
+                                                .setSound(defaultSoundUri)
                                                 .setContentIntent(pendingIntent); //Required on Gingerbread and below
 
                                 mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
@@ -187,12 +194,15 @@ public class SubmitAnswerPaper {
                 final Intent emptyIntent = new Intent(context,SplashScreen.class);
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.drawable.app_icon)
                                 .setContentTitle("LiveExams")
                                 .setContentText("Something went wrong..\n" +
                                         "Paper couldn't be submitted..\nIt will be submitted once internet resumes..")
+                                .setSound(defaultSoundUri)
                                 .setContentIntent(pendingIntent); //Required on Gingerbread and below
 
                 mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));

@@ -281,7 +281,8 @@ public class AllSectionsSummary extends AppCompatActivity {
                         SharedPreferences.Editor eeeee=firstTimeForRules.edit();
                         eeeee.clear();
                         eeeee.apply();
-                        Toast.makeText(AllSectionsSummary.this, result, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AllSectionsSummary.this, result+"\n" +
+                                "Result will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(AllSectionsSummary.this, FeedbackActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
@@ -298,7 +299,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                             ConstantsDefined.deleteDir(f);
                         }
                         Toast.makeText(AllSectionsSummary.this, "Something went wrong..\n" +
-                                "Paper couldn't be submitted..", Toast.LENGTH_SHORT).show();
+                                "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
 //                        Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
 //                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
 //                        startActivity(intent);
