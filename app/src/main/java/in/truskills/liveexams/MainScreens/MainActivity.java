@@ -71,7 +71,7 @@ import in.truskills.liveexams.authentication.Signup_Login;
 import static android.R.attr.key;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface,StreamInterface {
 
     //Declare variables..
     NavigationView navigationView;
@@ -563,12 +563,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         manager = getSupportFragmentManager();
         HomeFragment f = (HomeFragment) manager.findFragmentByTag("HomeFragment");
+        AllExamsFragmentTemp ff = (AllExamsFragmentTemp) manager.findFragmentByTag("AllExamsFragmentFromStream");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (f != null && f.isVisible()) {
             finish();
-        } else {
+        } else if(ff!=null&&ff.isVisible()) {
+            StreamsFragment fragment = new StreamsFragment();
+            FragmentTransaction t = manager.beginTransaction();
+            t.replace(R.id.fragment, fragment, "AllStreamsFragment");
+            t.commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+            getSupportActionBar().setTitle("SELECT YOUR FIELD");
+        }else{
             HomeFragment fragment = new HomeFragment();
             FragmentTransaction t = manager.beginTransaction();
             t.replace(R.id.fragment, fragment, "HomeFragment");
@@ -693,9 +701,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void changeFragmentFromHome(Fragment f) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
-        t.replace(R.id.fragment, f, "AllExamsFragment");
+        t.replace(R.id.fragment, f, "AllStreamsFragment");
         t.commit();
-        String title = "ADD NEW EXAMS";
+        String title = "SELECT YOUR FIELD";
         getSupportActionBar().setTitle(title);
     }
 
@@ -712,6 +720,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
                 matrix, true);
+    }
+
+    @Override
+    public void changeFromStream(Fragment f, String title) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction t = manager.beginTransaction();
+        if(title.equals("ADD NEW EXAMS")){
+            t.replace(R.id.fragment, f, "AllExamsFragmentFromStream");
+            t.commit();
+        }else{
+            t.replace(R.id.fragment, f, "AllAuthorsFragment");
+            t.commit();
+        }
+        getSupportActionBar().setTitle(title);
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {

@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AllExamsFragmentTemp f = new AllExamsFragmentTemp();
+                StreamsFragment f = new StreamsFragment();
                 ob.changeFragmentFromHome(f);
             }
         });
@@ -201,7 +201,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addIcon:
-                AllExamsFragmentTemp f = new AllExamsFragmentTemp();
+                StreamsFragment f = new StreamsFragment();
                 ob.changeFragmentFromHome(f);
                 break;
         }

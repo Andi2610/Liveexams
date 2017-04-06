@@ -141,10 +141,13 @@ public class AnswerPaperLoad extends AppCompatActivity {
         jsonArray = new JSONArray(sectionWiseAttemptedQuestions);
         len = jsonArray.length();
         for (int i = 0; i < len; ++i) {
-            HashMap<String, String> mapper3 = EndStudentAnalyticsParser.sectionWiseAttemptedQuestionsParser(sectionWiseAttemptedQuestions, i);
-            int swaq = Integer.parseInt(mapper3.get("attemptedQuestions"));
-            si = Integer.parseInt(mapper3.get("sectionId"));
-            ob.updateValuesPerSectionById(si, AnalyticsDatabase.SectionWiseAttemptedQuestions, swaq + "");
+            JSONObject jsonObject=jsonArray.getJSONObject(i);
+            if(jsonObject.has("sectionId")){
+                HashMap<String, String> mapper3 = EndStudentAnalyticsParser.sectionWiseAttemptedQuestionsParser(sectionWiseAttemptedQuestions, i);
+                int swaq = Integer.parseInt(mapper3.get("attemptedQuestions"));
+                si = Integer.parseInt(mapper3.get("sectionId"));
+                ob.updateValuesPerSectionById(si, AnalyticsDatabase.SectionWiseAttemptedQuestions, swaq + "");
+            }
         }
     }
 

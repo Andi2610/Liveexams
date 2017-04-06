@@ -2,14 +2,14 @@ package in.truskills.liveexams.firebase;
 
 import android.util.Log;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.FirebaseInstanceIdService;
+//import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.FirebaseInstanceIdService;
 
 /**
  * Created by Shivansh Gupta on 05-04-2017.
  */
 
-public class TokenService {
+public class TokenService{
 //        extends FirebaseInstanceIdService {
 //
 //    @Override

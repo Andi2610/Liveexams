@@ -62,75 +62,80 @@ public class SplashScreen extends Activity {
                     e.printStackTrace();
                 }finally {
 
-                        ConstantsDefined.updateAndroidSecurityProvider(SplashScreen.this);
-                        ConstantsDefined.beforeVolleyConnect();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ConstantsDefined.updateAndroidSecurityProvider(SplashScreen.this);
+                            ConstantsDefined.beforeVolleyConnect();
 
-                        RequestQueue requestQueue;
+                            RequestQueue requestQueue;
 
-                        requestQueue = Volley.newRequestQueue(SplashScreen.this);
+                            requestQueue = Volley.newRequestQueue(SplashScreen.this);
 
-                        String url = ConstantsDefined.api2 + "apkVersionAndroid";
-                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                                url, new Response.Listener<JSONObject>() {
+                            String url = ConstantsDefined.api2 + "apkVersionAndroid";
+                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                                    url, new Response.Listener<JSONObject>() {
 
-                            @Override
-                            public void onResponse(JSONObject response) {
+                                @Override
+                                public void onResponse(JSONObject response) {
 
-                                Log.d("version", "onResponse: "+response);
-                                try {
-                                    String success=response.getString("success");
-                                    if(success.equals("true")){
-                                        String myVersion=response.getString("response");
-                                        PackageInfo pInfo = null;
-                                        pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                                        String version = pInfo.versionName;
+                                    Log.d("version", "onResponse: "+response);
+                                    try {
+                                        String success=response.getString("success");
+                                        if(success.equals("true")){
+                                            String myVersion=response.getString("response");
+                                            PackageInfo pInfo = null;
+                                            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                                            String version = pInfo.versionName;
 
-                                        if (myVersion.equals(version)){
-                                            SharedPreferences prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
-                                            String state=prefs.getString("login","false");
-                                            //If login=true, start MainActivity.java
-                                            //Else start Signup_Login.java
-                                            if(state.equals("true")){
-                                                Intent i=new Intent(SplashScreen.this,MainActivity.class);
-                                                startActivity(i);
+                                            if (myVersion.equals(version)){
+                                                SharedPreferences prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                                                String state=prefs.getString("login","false");
+                                                //If login=true, start MainActivity.java
+                                                //Else start Signup_Login.java
+                                                if(state.equals("true")){
+                                                    Intent i=new Intent(SplashScreen.this,MainActivity.class);
+                                                    startActivity(i);
+                                                }else{
+                                                    Intent i=new Intent(SplashScreen.this,Signup_Login.class);
+                                                    startActivity(i);
+                                                }
                                             }else{
-                                                Intent i=new Intent(SplashScreen.this,Signup_Login.class);
-                                                startActivity(i);
+                                                AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreen.this, R.style.AppCompatAlertDialogStyle);
+                                                builder.setTitle("Updated App Not Installed");  // GPS not found
+                                                builder.setMessage("You will be directed to play store now..\nPlease update your app"); // Want to enable?
+                                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        Intent ii=new Intent((Intent.ACTION_VIEW));
+                                                        ii.setData(Uri.parse("market://details?id=in.truskills.liveexams"));
+                                                        startActivity(ii);
+                                                        finish();
+                                                    }
+                                                });
+                                                builder.setCancelable(false);
+                                                builder.create().show();
                                             }
                                         }else{
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreen.this, R.style.AppCompatAlertDialogStyle);
-                                            builder.setTitle("Updated App Not Installed");  // GPS not found
-                                            builder.setMessage("You will be directed to play store now..\nPlease update your app"); // Want to enable?
-                                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    Intent ii=new Intent((Intent.ACTION_VIEW));
-                                                    ii.setData(Uri.parse("market://details?id=in.truskills.liveexams"));
-                                                    startActivity(ii);
-                                                    finish();
-                                                }
-                                            });
-                                            builder.setCancelable(false);
-                                            builder.create().show();
+                                            Toast.makeText(SplashScreen.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
                                         }
-                                    }else{
-                                        Toast.makeText(SplashScreen.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (PackageManager.NameNotFoundException e) {
+                                        e.printStackTrace();
                                     }
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                } catch (PackageManager.NameNotFoundException e) {
-                                    e.printStackTrace();
                                 }
-
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(SplashScreen.this, "Sorry no internet connection..Please try again..", Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                        });
-                        requestQueue.add(jsonObjectRequest);
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(SplashScreen.this, "Sorry no internet connection..Please try again..", Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                            });
+                            requestQueue.add(jsonObjectRequest);
+                        }
+                    });
                 }
             }
         }).start();
