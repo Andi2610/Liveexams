@@ -30,11 +30,11 @@ public class FCMMessageReceiverService
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        Log.w("fcm", "received notification");
-        sendNotification(remoteMessage.getNotification().getTitle());
+        Log.w("fcm", "received notification"+remoteMessage.getData());
+        sendNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
     }
 
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String messageBody,String body) {
         Intent intent = new Intent(this, SplashScreen.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
@@ -44,8 +44,10 @@ public class FCMMessageReceiverService
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.app_icon)
                 .setContentTitle(messageBody)
+                .setContentText(body)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri);
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

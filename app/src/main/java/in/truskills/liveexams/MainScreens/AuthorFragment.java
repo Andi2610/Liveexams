@@ -64,6 +64,7 @@ public class AuthorFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         authorsList.setLayoutManager(linearLayoutManager);
         authorsList.setItemAnimator(new DefaultItemAnimator());
+        list=new ArrayList<>();
         list=getArguments().getStringArrayList("list");
 
         response=getArguments().getString("response");
@@ -71,11 +72,7 @@ public class AuthorFragment extends Fragment {
 
         authorInterface=(AuthorInterface)getActivity();
 
-        authorsListAdapter = new AuthorsListAdapter(list, getActivity(),authorInterface,response);
-        authorsList.setLayoutManager(linearLayoutManager);
-        authorsList.setItemAnimator(new DefaultItemAnimator());
-        authorsList.setAdapter(authorsListAdapter);
-        authorsListAdapter.notifyDataSetChanged();
+        setList();
     }
 
     @Override
@@ -148,6 +145,7 @@ public class AuthorFragment extends Fragment {
     }
 
     public void setList(){
+        list=new ArrayList<>();
         list=getArguments().getStringArrayList("list");
         authorsListAdapter = new AuthorsListAdapter(list, getActivity(),authorInterface,response);
         authorsList.setLayoutManager(linearLayoutManager);

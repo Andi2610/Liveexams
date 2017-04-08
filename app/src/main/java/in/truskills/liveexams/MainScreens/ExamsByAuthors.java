@@ -168,6 +168,9 @@ public class ExamsByAuthors extends Fragment {
 
 
     public void setList(){
+
+        valuesList=new ArrayList<>();
+
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject jsonObject1=jsonObject.getJSONObject("response");
