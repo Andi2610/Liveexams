@@ -47,6 +47,9 @@ public class MiscellaneousParser {
     private static String Languages = "Languages";
     private static String Language = "Language";
     private static String examGiven = "examGiven";
+    private static String AuthorDetails = "AuthorDetails";
+    private static String Attributes = "Attributes";
+    private static String Name = "Name";
 
     public static ArrayList<String> beforeSignupParser(String result) throws JSONException {
         ArrayList<String> list=new ArrayList<>();
@@ -349,6 +352,114 @@ public class MiscellaneousParser {
 //        JSONObject jsonObject1=jsonArray1.getJSONObject(5);
 //        ans=jsonObject1.getString("long_name");
         return ans;
+    }
+
+    public static ArrayList<String> getStreamNamesParser(JSONObject result) throws JSONException {
+        ArrayList<String> ans=new ArrayList<>();
+        JSONArray jsonArray=result.getJSONArray(response);
+        int len=jsonArray.length();
+        for(int i=0;i<len;++i){
+            ans.add(jsonArray.get(i).toString());
+        }
+        return ans;
+    }
+
+    public static ArrayList<String> searchExamsByStreamNameParser(JSONObject result) throws JSONException {
+        ArrayList<String> ans=new ArrayList<>();
+        HashMap<String,ArrayList<String>> map=new HashMap<>();
+        JSONObject jsonObject3=result.getJSONObject(response);
+        JSONArray jsonArray=jsonObject3.getJSONArray(exams);
+        int len=jsonArray.length();
+        for(int i=0;i<len;++i){
+            JSONObject jsonObject=jsonArray.getJSONObject(i);
+            JSONArray jsonArray1=jsonObject.getJSONArray(AuthorDetails);
+            JSONObject jsonObject1=jsonArray1.getJSONObject(0);
+            JSONObject jsonObject2=jsonObject1.getJSONObject(Attributes);
+            String name=jsonObject2.getString(Name);
+            Log.d("author", "searchExamsByStreamNameParser: "+name);
+            if(!ans.contains(name))
+                ans.add(name);
+            map.put(name,new ArrayList<String>());
+        }
+
+        return ans;
+    }
+
+//    public static HashMap getExamsByAuthors(JSONObject result) throws JSONException {
+//        HashMap<String,ArrayList<String>> map=new HashMap<>();
+//        JSONArray jsonArray=result.getJSONArray(response);
+//        int len=jsonArray.length();
+//        for(int i=0;i<len;++i){
+//            JSONObject jsonObject=jsonArray.getJSONObject(i);
+//            JSONArray jsonArray1=jsonObject.getJSONArray(AuthorDetails);
+//            JSONObject jsonObject1=jsonArray1.getJSONObject(0);
+//            JSONObject jsonObject2=jsonObject1.getJSONObject(Attributes);
+//            String name=jsonObject2.getString(Name);
+//            Log.d("author", "searchExamsByStreamNameParser: "+name);
+//            map.put(name,new ArrayList<String>());
+//        }
+//        for(int i=0;i<len;++i){
+//            JSONObject jsonObject=jsonArray.getJSONObject(i);
+//            JSONArray jsonArray1=jsonObject.getJSONArray(AuthorDetails);
+//            JSONObject jsonObject1=jsonArray1.getJSONObject(0);
+//            JSONObject jsonObject2=jsonObject1.getJSONObject(Attributes);
+//            String name=jsonObject2.getString(Name);
+//            JSONArray jsonArray2=jsonObject.getJSONArray(ExamName);
+//            String examName=jsonArray2.get(0).toString();
+//            ArrayList<String> temp=map.get(name);
+//            temp.add(examName);
+//            map.put(name,temp);
+//            Log.d("size", "searchExamsByStreamNameParser: "+name+" "+temp.size());
+//        }
+//        return map;
+//    }
+
+    public static HashMap<String,ArrayList<String>> getExamsByAuthors(JSONObject result,String value) throws JSONException {
+
+        JSONObject jsonObject3=result.getJSONObject(response);
+        JSONArray jsonArray=jsonObject3.getJSONArray(exams);
+        ArrayList<String> ExamNameList = new ArrayList<>();
+        ArrayList<String> StartDateList = new ArrayList<>();
+        ArrayList<String> EndDateList = new ArrayList<>();
+        ArrayList<String> EndTimeList = new ArrayList<>();
+        ArrayList<String> StartTimeList = new ArrayList<>();
+        ArrayList<String> ExamDurationList = new ArrayList<>();
+        ArrayList<String> ExamIdList = new ArrayList<>();
+        HashMap<String, ArrayList<String>> mapper = new HashMap<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            JSONArray jsonArray1=jsonObject.getJSONArray(AuthorDetails);
+            JSONObject jsonObject1=jsonArray1.getJSONObject(0);
+            JSONObject jsonObject2=jsonObject1.getJSONObject(Attributes);
+            String Aname=jsonObject2.getString(Name);
+
+            if(Aname.equals(value)){
+
+                ExamNameList.add(jsonObject.getJSONArray(ExamName).get(0).toString());
+
+                ExamDurationList.add(jsonObject.getJSONArray(ExamDuration).get(0).toString());
+
+                StartTimeList.add(jsonObject.getJSONArray(StartTime).get(0).toString());
+
+                EndTimeList.add(jsonObject.getJSONArray(EndTime).get(0).toString());
+
+                StartDateList.add(jsonObject.getJSONArray(StartDate).get(0).toString());
+
+                EndDateList.add(jsonObject.getJSONArray(EndDate).get(0).toString());
+
+                ExamIdList.add(jsonObject.getString(id));
+
+            }
+        }
+        mapper.put("ExamName", ExamNameList);
+        mapper.put("ExamDuration", ExamDurationList);
+        mapper.put("StartDate", StartDateList);
+        mapper.put("EndDate", EndDateList);
+        mapper.put("StartTime", StartTimeList);
+        mapper.put("EndTime", EndTimeList);
+        mapper.put("ExamId", ExamIdList);
+        return mapper;
     }
 
 }

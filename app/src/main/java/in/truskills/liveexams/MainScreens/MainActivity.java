@@ -60,6 +60,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
@@ -71,22 +73,23 @@ import in.truskills.liveexams.authentication.Signup_Login;
 import static android.R.attr.key;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface,StreamInterface {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, HomeInterface,StreamInterface,AuthorInterface {
 
     //Declare variables..
     NavigationView navigationView;
     CircularImageView navImage;
     String myOrient="";
-    String my_path;
+    String my_path,vall;
     TextView navName, navEmail;
     static final int REQUEST_CAMERA = 2, SELECT_FILE = 1;
-    String defaultImage;
+    String defaultImage,res;
     Bundle bundle;
     SharedPreferences prefs;
     Bitmap icon,MyBitmap;
     CharSequence[] items;
     FragmentManager manager;
     private String selectedImagePath;
+    ArrayList<String> myL;
     private String filename;
     private final String CAMERA = "camera";
     ActionBarDrawerToggle toggle;
@@ -104,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        myL=new ArrayList<>();
 
         Log.d("visibility", "onCreate: "+ MyApplication.isActivityVisible());
 
@@ -563,20 +568,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         manager = getSupportFragmentManager();
         HomeFragment f = (HomeFragment) manager.findFragmentByTag("HomeFragment");
-        AllExamsFragmentTemp ff = (AllExamsFragmentTemp) manager.findFragmentByTag("AllExamsFragmentFromStream");
+        ExamsByAuthors ff = (ExamsByAuthors) manager.findFragmentByTag("ExamsByAuthorsFragment");
+        AuthorFragment fff = (AuthorFragment) manager.findFragmentByTag("AuthorFragment");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (f != null && f.isVisible()) {
             finish();
-        } else if(ff!=null&&ff.isVisible()) {
+        }
+        else if(ff!=null && ff.isVisible()){
+            AuthorFragment fragment = new AuthorFragment();
+            Bundle b=new Bundle();
+            b.putStringArrayList("list",myL);
+            b.putString("author",vall);
+            b.putString("response",res);
+            fragment.setArguments(b);
+            FragmentTransaction t = manager.beginTransaction();
+            t.replace(R.id.fragment, fragment, "AuthorFragment");
+            t.commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+            getSupportActionBar().setTitle("SELECT YOUR AUTHOR");
+        }
+        else if(fff!=null && fff.isVisible()){
             StreamsFragment fragment = new StreamsFragment();
             FragmentTransaction t = manager.beginTransaction();
             t.replace(R.id.fragment, fragment, "AllStreamsFragment");
             t.commit();
             navigationView.setCheckedItem(R.id.nav_home);
             getSupportActionBar().setTitle("SELECT YOUR FIELD");
-        }else{
+        }else {
             HomeFragment fragment = new HomeFragment();
             FragmentTransaction t = manager.beginTransaction();
             t.replace(R.id.fragment, fragment, "HomeFragment");
@@ -726,14 +746,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void changeFromStream(Fragment f, String title) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
-        if(title.equals("ADD NEW EXAMS")){
-            t.replace(R.id.fragment, f, "AllExamsFragmentFromStream");
-            t.commit();
-        }else{
-            t.replace(R.id.fragment, f, "AllAuthorsFragment");
-            t.commit();
-        }
+        t.replace(R.id.fragment, f, "AuthorFragment");
+        t.commit();
         getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void changeFromAuthor(Fragment f, String title, String resp, String val, ArrayList<String>myList) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction t = manager.beginTransaction();
+        t.replace(R.id.fragment, f, "ExamsByAuthorsFragment");
+//        t.addToBackStack(null);
+        vall=val;
+        res=resp;
+        myL=myList;
+        t.commit();
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {

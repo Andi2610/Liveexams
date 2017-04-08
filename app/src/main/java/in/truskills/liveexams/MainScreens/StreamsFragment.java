@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
@@ -52,14 +53,13 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
 
 
     RecyclerView allStreamsList;
-    FloatingActionButton floatingActionButton;
+//    FloatingActionButton floatingActionButton;
     LinearLayoutManager linearLayoutManager;
     StreamsListAdapter streamsListAdapter;
-    List<String> valuesList, filteredList;
+    List<String> valuesList;
     RequestQueue requestQueue;
     ProgressDialog dialog;
     Handler h;
-    SearchView searchView;
     TextView noStreams;
     LinearLayout noConnectionLayout;
     Button retryButton;
@@ -85,7 +85,7 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
         allStreamsList = (RecyclerView) getActivity().findViewById(R.id.allStreamsListTemp);
         linearLayoutManager = new LinearLayoutManager(getActivity());
 
-        floatingActionButton=(FloatingActionButton)getActivity().findViewById(R.id.fab);
+//        floatingActionButton=(FloatingActionButton)getActivity().findViewById(R.id.fab);
 
         requestQueue = Volley.newRequestQueue(getActivity());
         h = new Handler();
@@ -123,14 +123,14 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
 
         streamInterface=(StreamInterface)getActivity();
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AllExamsFragmentTemp f=new AllExamsFragmentTemp();
-                String title="ADD NEW EXAMS";
-                streamInterface.changeFromStream(f,title);
-            }
-        });
+//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AllExamsFragmentTemp f=new AllExamsFragmentTemp();
+//                String title="ADD NEW EXAMS";
+//                streamInterface.changeFromStream(f,title);
+//            }
+//        });
 
     }
 
@@ -139,127 +139,113 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
 
         valuesList=new ArrayList<>();
 
-        valuesList.add("Engineering");
-        valuesList.add("Medical");
-        valuesList.add("Civil Services");
+        if(getActivity()!=null){
+            dialog.show();
+        }
 
-        populateList(valuesList);
+        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.beforeVolleyConnect();
 
-//        //connect to joinedExams api..
-//        if(getActivity()!=null){
-//            dialog.show();
-//        }
-//
-//        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
-//        ConstantsDefined.beforeVolleyConnect();
-//
-//        String url = "https://api.liveexams.in/data/allexams";
-//        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-//                url, new Response.Listener<JSONObject>() {
-//
-//            @Override
-//            public void onResponse(JSONObject response)
-//            {
-//
-//                Log.d("reached", "onResponse: ");
-//
-//                if(dialog!=null)
-//                    dialog.dismiss();
-//                else{
-//                    Log.d("reached", "onResponse: nullDialog");
-//                }
-//
-//                noConnectionLayout.setVisibility(View.GONE);
-//
-//
-//                try {
-//
-//                    String success=response.getString("success");
-//                    if(success.equals("true")){
-//                        HashMap<String, String> map = MiscellaneousParser.allExamsApiParser(response);
-//                        String exams = map.get("exams");
-//                        String timestamp = map.get("timestamp");
-//                        HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.allExamsParser(exams);
-////                    Log.d("myExamName",mapper.get("ExamName").get(0)+"");
-//                        JSONArray jsonArray = new JSONArray(exams);
-//                        int length = jsonArray.length();
-//                        if (length == 0) {
-//                            valuesList.clear();
-//                            h.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    noStreams.setVisibility(View.VISIBLE);
-//                                    noConnectionLayout.setVisibility(View.GONE);
-//                                    populateList(valuesList);
-//                                }
-//                            });
-//                        } else {
-//                            noStreams.setVisibility(View.GONE);
-//                            noConnectionLayout.setVisibility(View.GONE);
-//
-//                            h.post(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    populateList(valuesList);
-//                                }
-//                            });
-//                        }
-//                    }else{
-//                        noConnectionLayout.setVisibility(View.VISIBLE);
-//                        noStreams.setVisibility(View.GONE);
-//                        valuesList=new ArrayList<>();
-//                        streamsListAdapter = new StreamsListAdapter(valuesList, getActivity());
-//                        allStreamsList.setLayoutManager(linearLayoutManager);
-//                        allStreamsList.setItemAnimator(new DefaultItemAnimator());
-//                        allStreamsList.setAdapter(streamsListAdapter);
-//                        streamsListAdapter.notifyDataSetChanged();
-//                        if(getActivity()!=null)
-//                            Toast.makeText(getActivity(), "Something went wrong..\n" +
-//                                    "Please try again..", Toast.LENGTH_SHORT).show();
-//                    }
-//
-//
-//                }catch(Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//                Log.d("checkForError",error.toString());
-//
-//                noConnectionLayout.setVisibility(View.VISIBLE);
-//                noStreams.setVisibility(View.GONE);
-//                valuesList=new ArrayList<>();
-//                streamsListAdapter = new StreamsListAdapter(valuesList, getActivity());
-//                allStreamsList.setLayoutManager(linearLayoutManager);
-//                allStreamsList.setItemAnimator(new DefaultItemAnimator());
-//                allStreamsList.setAdapter(streamsListAdapter);
-//                streamsListAdapter.notifyDataSetChanged();
-//
-//                if(dialog!=null)
-//                    dialog.dismiss();
-//
-//
-//                if(ConstantsDefined.isOnline(getActivity())){
-//                    //Do nothing..
-//                    if(getActivity()!=null)
-//                        Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-//                }else{
-//                    if(getActivity()!=null)
-//                        Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//        requestQueue.add(jsonObjectRequest);
+        String url = ConstantsDefined.api+"getStreamNames";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                url, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response)
+            {
+
+                Log.d("reached", "onResponse: ");
+
+                if(dialog!=null)
+                    dialog.dismiss();
+                else{
+                    Log.d("reached", "onResponse: nullDialog");
+                }
+
+                noConnectionLayout.setVisibility(View.GONE);
+
+                try {
+
+                    String success=response.getString("success");
+                    if(success.equals("true")){
+                       ArrayList<String> ans= MiscellaneousParser.getStreamNamesParser(response);
+                        int length = ans.size();
+                        if (length == 0) {
+                            valuesList.clear();
+                            h.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    noStreams.setVisibility(View.VISIBLE);
+                                    noConnectionLayout.setVisibility(View.GONE);
+                                    populateList(valuesList);
+                                }
+                            });
+                        } else {
+                            noStreams.setVisibility(View.GONE);
+                            noConnectionLayout.setVisibility(View.GONE);
+                            valuesList=ans;
+
+                            h.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    populateList(valuesList);
+                                }
+                            });
+                        }
+                    }else{
+                        noConnectionLayout.setVisibility(View.VISIBLE);
+                        noStreams.setVisibility(View.GONE);
+                        valuesList=new ArrayList<>();
+                        streamsListAdapter = new StreamsListAdapter(valuesList, getActivity(),streamInterface);
+                        allStreamsList.setLayoutManager(linearLayoutManager);
+                        allStreamsList.setItemAnimator(new DefaultItemAnimator());
+                        allStreamsList.setAdapter(streamsListAdapter);
+                        streamsListAdapter.notifyDataSetChanged();
+                        if(getActivity()!=null)
+                            Toast.makeText(getActivity(), "Something went wrong..\n" +
+                                    "Please try again..", Toast.LENGTH_SHORT).show();
+                    }
 
 
+                }catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Log.d("checkForError",error.toString());
+
+                noConnectionLayout.setVisibility(View.VISIBLE);
+                noStreams.setVisibility(View.GONE);
+                valuesList=new ArrayList<>();
+                streamsListAdapter = new StreamsListAdapter(valuesList, getActivity(),streamInterface);
+                allStreamsList.setLayoutManager(linearLayoutManager);
+                allStreamsList.setItemAnimator(new DefaultItemAnimator());
+                allStreamsList.setAdapter(streamsListAdapter);
+                streamsListAdapter.notifyDataSetChanged();
+
+                if(dialog!=null)
+                    dialog.dismiss();
+
+
+                if(ConstantsDefined.isOnline(getActivity())){
+                    //Do nothing..
+                    if(getActivity()!=null)
+                        Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    if(getActivity()!=null)
+                        Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
     }
 
     public void populateList(List<String> list) {
-        streamsListAdapter = new StreamsListAdapter(list, getActivity());
+        streamsListAdapter = new StreamsListAdapter(list, getActivity(),streamInterface);
         allStreamsList.setLayoutManager(linearLayoutManager);
         allStreamsList.setItemAnimator(new DefaultItemAnimator());
         allStreamsList.setAdapter(streamsListAdapter);
@@ -273,72 +259,6 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
             noStreams.setVisibility(View.GONE);
             noConnectionLayout.setVisibility(View.GONE);
 
-        }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.all_exams_menu, menu);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem = menu.findItem(R.id.searchAllExams);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        MenuItemCompat.setOnActionExpandListener(menuItem,
-                new MenuItemCompat.OnActionExpandListener() {
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                        // Return true to allow the action view to expand
-                        searchView.requestFocus();
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                        // When the action view is collapsed, reset the query
-                        setList();
-                        searchView.clearFocus();
-                        // Return true to allow the action view to collapse
-                        return true;
-                    }
-                });
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
-            searchView.setQueryHint("Type here..");
-
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-
-                    if(s.equals("")){
-                        filteredList = new ArrayList<>();
-                        streamsListAdapter = new StreamsListAdapter(filteredList, getActivity());
-                        allStreamsList.setAdapter(streamsListAdapter);
-                        streamsListAdapter.notifyDataSetChanged();
-
-                    }else{
-                        s = s.toString().toLowerCase();
-                        filteredList = new ArrayList<>();
-
-                        for (int i = 0; i < valuesList.size(); i++) {
-
-                            final String text = valuesList.get(i).toLowerCase();
-                            if (text.contains(s)) {
-
-                                filteredList.add(valuesList.get(i));
-                            }
-                        }
-                        streamsListAdapter = new StreamsListAdapter(filteredList, getActivity());
-                        allStreamsList.setAdapter(streamsListAdapter);
-                        streamsListAdapter.notifyDataSetChanged();
-                    }
-                    return true;
-                }
-            });
         }
     }
 

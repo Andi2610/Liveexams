@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +47,13 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
     Handler h;
     ProgressDialog dialog;
     String value;
+    StreamInterface streamInterface;
+    HashMap<String,ArrayList<String>> map;
 
-    StreamsListAdapter(List<String> myList, Context c) {
+    StreamsListAdapter(List<String> myList, Context c,StreamInterface streamInterface) {
         this.myList = myList;
         this.c = c;
+        this.streamInterface=streamInterface;
         setHasStableIds(true);
     }
 
@@ -94,8 +99,8 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                     ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
                     ConstantsDefined.beforeVolleyConnect();
 
-                    String url = ConstantsDefined.api + "examDetails";
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                    String url = ConstantsDefined.api + "searchExamsByStreamName/"+value;
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET,
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -106,7 +111,21 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                                 JSONObject jsonObject=new JSONObject(response);
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
+                                    ArrayList<String> ans;
+                                    ans=MiscellaneousParser.searchExamsByStreamNameParser(jsonObject);
 
+                                    if(ans.size()==0){
+                                        if(c!=null)
+                                            Toast.makeText(c, "No data found for this ", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        AuthorFragment f=new AuthorFragment();
+                                        Bundle b=new Bundle();
+                                        b.putStringArrayList("list",ans);
+                                        b.putString("response",jsonObject.toString());
+                                        f.setArguments(b);
+                                        String title="SELECT YOUR AUTHOR";
+                                        streamInterface.changeFromStream(f,title);
+                                    }
                                 }else{
                                     if(c!=null)
                                         Toast.makeText(c, "Something went wrong..\n" +
