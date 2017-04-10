@@ -6,6 +6,8 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+
 //import com.google.firebase.iid.FirebaseInstanceId;
 //import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -18,15 +20,15 @@ public class TokenService
 
     @Override
     public void onTokenRefresh() {
-        // Get updated InstanceID token.
+        // Get updated InstanceID token..
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
 
-        Log.d("notification", refreshedToken);
+        Log.d("firebase", refreshedToken);
         sendRegistrationToServer(refreshedToken);
 //        Toast.makeText(this, "myToken"+refreshedToken, Toast.LENGTH_SHORT).show();
     }
 
     private void sendRegistrationToServer(String token) {
-
+        ConstantsDefined.sendToken(getBaseContext(),token);
     }
 }

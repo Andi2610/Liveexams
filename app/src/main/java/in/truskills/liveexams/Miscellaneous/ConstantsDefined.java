@@ -2,10 +2,18 @@ package in.truskills.liveexams.Miscellaneous;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -15,6 +23,8 @@ import java.io.File;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -141,5 +151,46 @@ public class ConstantsDefined {
 
         // The directory is now empty so delete it
         return dir.delete();
+    }
+
+    public static void sendToken(Context c, final String token){
+
+//        ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
+        ConstantsDefined.beforeVolleyConnect();
+
+        final SharedPreferences prefs=c.getSharedPreferences("prefs",Context.MODE_PRIVATE);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(c);
+
+        String myurl = ConstantsDefined.api2+"setFcmId";
+
+        //Make a request..
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                myurl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("firebase", "onResponse: "+response);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("firebase", "onErrorResponse: ");
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                //Put all the required parameters for the post request..
+                Map<String, String> params = new HashMap<String, String>();
+                Log.d("firebase", "getParams: "+prefs.getString("userId",""));
+                Log.d("firebase", "getParams: "+token);
+                params.put("userId",prefs.getString("userId",""));
+                params.put("fcmId",token);
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 }

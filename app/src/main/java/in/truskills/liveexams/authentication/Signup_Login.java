@@ -64,6 +64,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 
@@ -1076,6 +1077,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                                 .putCustomAttribute("userName", mapper.get("userName")));
 
                         getProfileImage(mapper.get("profileImageUrl"), mapper.get("id"));
+
+                        ConstantsDefined.sendToken(Signup_Login.this, FirebaseInstanceId.getInstance().getToken());
 
                     } else {
                         //Display error message..
