@@ -761,6 +761,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         res=resp;
         myL=myList;
         t.commit();
+
+        getSupportActionBar().setTitle(title);
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {

@@ -12,4 +12,16 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:text="No exams available at present"
+        android:textColor="@color/light_grey"
+        android:id="@+id/noExamsPresent"
+        android:layout_centerVertical="true" />
+
 </RelativeLayout>

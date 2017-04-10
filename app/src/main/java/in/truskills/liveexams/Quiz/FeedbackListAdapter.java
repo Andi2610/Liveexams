@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,58 +43,64 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
 
         holder.question.setTypeface(tff2);
 
+        holder.layout1.setVisibility(View.INVISIBLE);
+        holder.layout2.setVisibility(View.INVISIBLE);
+        holder.layout3.setVisibility(View.INVISIBLE);
+        holder.layout4.setVisibility(View.INVISIBLE);
+        holder.layout5.setVisibility(View.INVISIBLE);
+
         holder.l1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.l1.setBackground(c.getResources().getDrawable(R.drawable.l1_clicked));
-                holder.l2.setBackground(c.getResources().getDrawable(R.drawable.l2));
-                holder.l3.setBackground(c.getResources().getDrawable(R.drawable.l3));
-                holder.l4.setBackground(c.getResources().getDrawable(R.drawable.l4));
-                holder.l5.setBackground(c.getResources().getDrawable(R.drawable.l5));
+               holder.layout1.setVisibility(View.VISIBLE);
+               holder.layout2.setVisibility(View.INVISIBLE);
+               holder.layout3.setVisibility(View.INVISIBLE);
+               holder.layout4.setVisibility(View.INVISIBLE);
+               holder.layout5.setVisibility(View.INVISIBLE);
             }
         });
 
         holder.l2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.l1.setBackground(c.getResources().getDrawable(R.drawable.l1));
-                holder.l2.setBackground(c.getResources().getDrawable(R.drawable.l2_clicked));
-                holder.l3.setBackground(c.getResources().getDrawable(R.drawable.l3));
-                holder.l4.setBackground(c.getResources().getDrawable(R.drawable.l4));
-                holder.l5.setBackground(c.getResources().getDrawable(R.drawable.l5));
+                holder.layout1.setVisibility(View.INVISIBLE);
+                holder.layout2.setVisibility(View.VISIBLE);
+                holder.layout3.setVisibility(View.INVISIBLE);
+                holder.layout4.setVisibility(View.INVISIBLE);
+                holder.layout5.setVisibility(View.INVISIBLE);
             }
         });
 
         holder.l3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.l1.setBackground(c.getResources().getDrawable(R.drawable.l1));
-                holder.l2.setBackground(c.getResources().getDrawable(R.drawable.l2));
-                holder.l3.setBackground(c.getResources().getDrawable(R.drawable.l3_clicked));
-                holder.l4.setBackground(c.getResources().getDrawable(R.drawable.l4));
-                holder.l5.setBackground(c.getResources().getDrawable(R.drawable.l5));
+                holder.layout1.setVisibility(View.INVISIBLE);
+                holder.layout2.setVisibility(View.INVISIBLE);
+                holder.layout3.setVisibility(View.VISIBLE);
+                holder.layout4.setVisibility(View.INVISIBLE);
+                holder.layout5.setVisibility(View.INVISIBLE);
             }
         });
 
         holder.l4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.l1.setBackground(c.getResources().getDrawable(R.drawable.l1));
-                holder.l2.setBackground(c.getResources().getDrawable(R.drawable.l2));
-                holder.l3.setBackground(c.getResources().getDrawable(R.drawable.l3));
-                holder.l4.setBackground(c.getResources().getDrawable(R.drawable.l4_clicked));
-                holder.l5.setBackground(c.getResources().getDrawable(R.drawable.l5));
+                holder.layout1.setVisibility(View.INVISIBLE);
+                holder.layout2.setVisibility(View.INVISIBLE);
+                holder.layout3.setVisibility(View.INVISIBLE);
+                holder.layout4.setVisibility(View.VISIBLE);
+                holder.layout5.setVisibility(View.INVISIBLE);
             }
         });
 
         holder.l5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.l1.setBackground(c.getResources().getDrawable(R.drawable.l1));
-                holder.l2.setBackground(c.getResources().getDrawable(R.drawable.l2));
-                holder.l3.setBackground(c.getResources().getDrawable(R.drawable.l3));
-                holder.l4.setBackground(c.getResources().getDrawable(R.drawable.l4));
-                holder.l5.setBackground(c.getResources().getDrawable(R.drawable.l5_clicked));
+                holder.layout1.setVisibility(View.INVISIBLE);
+                holder.layout2.setVisibility(View.INVISIBLE);
+                holder.layout3.setVisibility(View.INVISIBLE);
+                holder.layout4.setVisibility(View.INVISIBLE);
+                holder.layout5.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -106,15 +114,21 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
 
         TextView question;
         Button l1,l2,l3,l4,l5;
+        LinearLayout layout1,layout2,layout3,layout4,layout5;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             question=(TextView)itemView.findViewById(R.id.question);
-            l1=(Button)itemView.findViewById(R.id.l1);
+            l1=(Button) itemView.findViewById(R.id.l1);
             l2=(Button)itemView.findViewById(R.id.l2);
             l3=(Button)itemView.findViewById(R.id.l3);
             l4=(Button)itemView.findViewById(R.id.l4);
             l5=(Button)itemView.findViewById(R.id.l5);
+            layout1=(LinearLayout)itemView.findViewById(R.id.layout1);
+            layout2=(LinearLayout)itemView.findViewById(R.id.layout2);
+            layout3=(LinearLayout)itemView.findViewById(R.id.layout3);
+            layout4=(LinearLayout)itemView.findViewById(R.id.layout4);
+            layout5=(LinearLayout)itemView.findViewById(R.id.layout5);
         }
     }
 }

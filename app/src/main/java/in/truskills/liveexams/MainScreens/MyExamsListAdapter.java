@@ -83,111 +83,114 @@ public class MyExamsListAdapter extends RecyclerView.Adapter<MyExamsListAdapter.
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Intent i =new Intent(c,FeedbackActivity.class);
+                c.startActivity(i);
 //
 //                Intent i=new Intent(c, FeedbackActivity.class);
 //                c.startActivity(i);
-                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
-                Log.d("prefsAllow",allow.getInt("allow",1)+"");
-
-                if(allow.getInt("allow",1)==0){
-                    if(c!=null)
-                    Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
-                }else{
-                    value = myList.get(holder.getAdapterPosition());
-                    requestQueue = Volley.newRequestQueue(c);
-                    prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
-
-                    if(c!=null){
-                        dialog = new ProgressDialog(c);
-                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                        dialog.setMessage("Loading. Please wait...");
-                        dialog.setIndeterminate(true);
-                        dialog.setCancelable(false);
-                        dialog.show();
-                    }
-
-                    ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
-                    ConstantsDefined.beforeVolleyConnect();
-
-                    //Get exam details of the exam on which the user has clicked..
-                    String url = ConstantsDefined.api + "examDetails";
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                            url, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            if(dialog!=null)
-                                dialog.dismiss();
-
-                            try {
-
-                                JSONObject jsonObject=new JSONObject(response);
-                                String success=jsonObject.getString("success");
-                                if(success.equals("true")){
-                                    //Parse Exam details..
-                                    HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
-
-                                    //Get it's variables..
-                                    enrolled = mapper.get("enrolled");
-                                    timestamp = mapper.get("timestamp");
-                                    examDetails = mapper.get("examDetails");
-                                    examGiven = mapper.get("examGiven");
-
-                                    examId = value.getExamId();
-
-                                    h = new Handler();
-                                    h.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            //Create a bundle to be passed to particular main activity..
-                                            Bundle b = new Bundle();
-                                            b.putString("enrolled", enrolled);
-                                            b.putString("timestamp", timestamp);
-                                            b.putString("examDetails", examDetails);
-                                            b.putString("name", value.getName());
-                                            b.putString("examId", examId);
-                                            b.putString("examGiven", examGiven);
-                                            Intent i = new Intent(c, ParticularExamMainActivity.class);
-                                            i.putExtra("bundle", b);
-                                            i.putExtra("from", "home");
-                                            ((MainActivity) c).startActivityForResult(i, 10);
-                                        }
-                                    });
-                                }else{
-                                    if(c!=null)
-                                        Toast.makeText(c, "Something went wrong..\n" +
-                                                "Please try again..", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //If connection couldn't be made..
-                            if(dialog!=null)
-                                dialog.dismiss();
-                            if(ConstantsDefined.isOnline(c)){
-                                //Do nothing..
-                                if(c!=null)
-                                Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-                            }else{
-                                if(c!=null)
-                                Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() {
-                            //Set required parameters..
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("userId", prefs.getString("userId", "abc"));
-                            params.put("examId", value.getExamId());
-                            return params;
-                        }
-                    };
-                    requestQueue.add(stringRequest);
-                }
+//                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
+//                Log.d("prefsAllow",allow.getInt("allow",1)+"");
+//
+//                if(allow.getInt("allow",1)==0){
+//                    if(c!=null)
+//                    Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    value = myList.get(holder.getAdapterPosition());
+//                    requestQueue = Volley.newRequestQueue(c);
+//                    prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+//
+//                    if(c!=null){
+//                        dialog = new ProgressDialog(c);
+//                        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                        dialog.setMessage("Loading. Please wait...");
+//                        dialog.setIndeterminate(true);
+//                        dialog.setCancelable(false);
+//                        dialog.show();
+//                    }
+//
+//                    ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
+//                    ConstantsDefined.beforeVolleyConnect();
+//
+//                    //Get exam details of the exam on which the user has clicked..
+//                    String url = ConstantsDefined.api + "examDetails";
+//                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
+//                            url, new Response.Listener<String>() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            if(dialog!=null)
+//                                dialog.dismiss();
+//
+//                            try {
+//
+//                                JSONObject jsonObject=new JSONObject(response);
+//                                String success=jsonObject.getString("success");
+//                                if(success.equals("true")){
+//                                    //Parse Exam details..
+//                                    HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
+//
+//                                    //Get it's variables..
+//                                    enrolled = mapper.get("enrolled");
+//                                    timestamp = mapper.get("timestamp");
+//                                    examDetails = mapper.get("examDetails");
+//                                    examGiven = mapper.get("examGiven");
+//
+//                                    examId = value.getExamId();
+//
+//                                    h = new Handler();
+//                                    h.post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            //Create a bundle to be passed to particular main activity..
+//                                            Bundle b = new Bundle();
+//                                            b.putString("enrolled", enrolled);
+//                                            b.putString("timestamp", timestamp);
+//                                            b.putString("examDetails", examDetails);
+//                                            b.putString("name", value.getName());
+//                                            b.putString("examId", examId);
+//                                            b.putString("examGiven", examGiven);
+//                                            Intent i = new Intent(c, ParticularExamMainActivity.class);
+//                                            i.putExtra("bundle", b);
+//                                            i.putExtra("from", "home");
+//                                            ((MainActivity) c).startActivityForResult(i, 10);
+//                                        }
+//                                    });
+//                                }else{
+//                                    if(c!=null)
+//                                        Toast.makeText(c, "Something went wrong..\n" +
+//                                                "Please try again..", Toast.LENGTH_SHORT).show();
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }, new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            //If connection couldn't be made..
+//                            if(dialog!=null)
+//                                dialog.dismiss();
+//                            if(ConstantsDefined.isOnline(c)){
+//                                //Do nothing..
+//                                if(c!=null)
+//                                Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+//                            }else{
+//                                if(c!=null)
+//                                Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    }) {
+//                        @Override
+//                        protected Map<String, String> getParams() {
+//                            //Set required parameters..
+//                            Map<String, String> params = new HashMap<String, String>();
+//                            params.put("userId", prefs.getString("userId", "abc"));
+//                            params.put("examId", value.getExamId());
+//                            return params;
+//                        }
+//                    };
+//                    requestQueue.add(stringRequest);
+//                }
             }
         });
     }

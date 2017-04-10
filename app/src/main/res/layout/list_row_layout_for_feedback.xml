@@ -46,43 +46,180 @@
                 android:orientation="horizontal"
                 android:weightSum="100">
 
-                <Button
-                    android:layout_width="5dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/l1"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="20"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/l1"/>
+                    android:layout_margin="10dp">
 
-                <Button
-                    android:layout_width="5dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/l2"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/l2"
-                    android:layout_weight="20"/>
-                <Button
-                    android:layout_width="5dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/l3"
-                    android:layout_margin="10dp"
-                    android:layout_weight="20"
-                    android:background="@drawable/l3"/>
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="2dp"
+                        android:background="@drawable/border"
+                        android:orientation="vertical"
+                        android:id="@+id/layout1"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"/>
 
-                <Button
-                    android:layout_width="5dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/l4"
-                    android:layout_margin="10dp"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true">
+
+                            <Button
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:id="@+id/l1"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:background="@drawable/l1" />
+
+                        </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="20"
-                    android:background="@drawable/l4"/>
-                <Button
-                    android:layout_width="5dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/l5"
-                    android:layout_margin="10dp"
+                    android:layout_margin="10dp">
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="2dp"
+                        android:background="@drawable/border"
+                        android:orientation="vertical"
+                        android:id="@+id/layout2"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/l2"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:background="@drawable/l2" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_weight="20"
-                    android:background="@drawable/l5"/>
+                    android:layout_margin="10dp">
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="2dp"
+                        android:background="@drawable/border"
+                        android:orientation="vertical"
+                        android:id="@+id/layout3"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/l3"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:background="@drawable/l3" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="20"
+                    android:layout_margin="10dp">
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="2dp"
+                        android:background="@drawable/border"
+                        android:orientation="vertical"
+                        android:id="@+id/layout4"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/l4"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:background="@drawable/l4" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="20"
+                    android:layout_margin="10dp">
+
+                    <LinearLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="2dp"
+                        android:background="@drawable/border"
+                        android:orientation="vertical"
+                        android:id="@+id/layout5"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true">
+
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/l5"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:background="@drawable/l5" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
