@@ -18,7 +18,9 @@ import java.util.Map;
 
 import in.truskills.liveexams.ParticularExamStatistics.SectionNamesdisplayAdapterForAnswers;
 
-//This class contains miscellaneous functions and variables used in the entire code..
+/**
+ * MiscellaneousParser for parsing different apis used in code..
+ */
 
 public class MiscellaneousParser {
 
@@ -384,35 +386,6 @@ public class MiscellaneousParser {
 
         return ans;
     }
-
-//    public static HashMap getExamsByAuthors(JSONObject result) throws JSONException {
-//        HashMap<String,ArrayList<String>> map=new HashMap<>();
-//        JSONArray jsonArray=result.getJSONArray(response);
-//        int len=jsonArray.length();
-//        for(int i=0;i<len;++i){
-//            JSONObject jsonObject=jsonArray.getJSONObject(i);
-//            JSONArray jsonArray1=jsonObject.getJSONArray(AuthorDetails);
-//            JSONObject jsonObject1=jsonArray1.getJSONObject(0);
-//            JSONObject jsonObject2=jsonObject1.getJSONObject(Attributes);
-//            String name=jsonObject2.getString(Name);
-//            Log.d("author", "searchExamsByStreamNameParser: "+name);
-//            map.put(name,new ArrayList<String>());
-//        }
-//        for(int i=0;i<len;++i){
-//            JSONObject jsonObject=jsonArray.getJSONObject(i);
-//            JSONArray jsonArray1=jsonObject.getJSONArray(AuthorDetails);
-//            JSONObject jsonObject1=jsonArray1.getJSONObject(0);
-//            JSONObject jsonObject2=jsonObject1.getJSONObject(Attributes);
-//            String name=jsonObject2.getString(Name);
-//            JSONArray jsonArray2=jsonObject.getJSONArray(ExamName);
-//            String examName=jsonArray2.get(0).toString();
-//            ArrayList<String> temp=map.get(name);
-//            temp.add(examName);
-//            map.put(name,temp);
-//            Log.d("size", "searchExamsByStreamNameParser: "+name+" "+temp.size());
-//        }
-//        return map;
-//    }
 
     public static HashMap<String,ArrayList<String>> getExamsByAuthors(JSONObject result,String value) throws JSONException {
 

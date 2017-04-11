@@ -45,13 +45,18 @@ import in.truskills.liveexams.Quiz.AllSectionsSummary;
 import in.truskills.liveexams.R;
 import io.fabric.sdk.android.Fabric;
 
-//This Activity launches in case the user forgets his/her login password..
+/**
+ * This Activity launches in case the user forgets his/her login password..
+ * Functions used:
+ * 1. onCreate
+ * 2. getAuthCallback : to return authCallback instance..
+ * 3. successMethod : called when phone number is successfully verified; it calls changePassword api to reset password..
+ * 4. onRequestPermissionsResult : to check for permissions of sms and call method getVerified..
+ * 5. getVerified : checks and verify phone number through DIGITS implementation..
+ * 6. onSupportNavigationUp : handles the back button press on toolbar of the app..
+ */
 
 public class ForgotPassword extends AppCompatActivity {
-
-
-//    private static final String TWITTER_KEY = "fIx7W5i8xo9stQ8jhOHVLNdFB";
-//    private static final String TWITTER_SECRET = "JQ9IuPXWecyeMFK8VujoYePRHHfQllXNRvRYC6QatmCNt8l5FH";
 
     Button reset;
     String text;
@@ -59,9 +64,6 @@ public class ForgotPassword extends AppCompatActivity {
     ProgressDialog dialog;
     RequestQueue requestQueue;
     TextView heading;
-
-    //Public declaration of variables
-
     Handler h;
     AuthCallback authCallback;
     RelativeLayout containerForgotPassword;
@@ -69,14 +71,13 @@ public class ForgotPassword extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_forgot_password);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
         getSupportActionBar().setTitle("FORGOT PASSWORD");
 
         reset = (Button) findViewById(R.id.reset);
@@ -88,6 +89,7 @@ public class ForgotPassword extends AppCompatActivity {
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         newPassword.setTypeface(tff1);
         heading.setTypeface(tff1);
+
         Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         reset.setTypeface(tff2);
 
@@ -106,6 +108,7 @@ public class ForgotPassword extends AppCompatActivity {
     public void successMethod(final String phoneNumber) {
 
         Toast.makeText(ForgotPassword.this, "Phone Number Verified Successfully..", Toast.LENGTH_SHORT).show();
+
         newPassword.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -114,6 +117,9 @@ public class ForgotPassword extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                //New password should be min of 6 chars..
+
                 int length = newPassword.getText().toString().length();
                 if (length < 6) {
                     newPassword.setError("Minimum 6 characters required");
@@ -127,20 +133,23 @@ public class ForgotPassword extends AppCompatActivity {
 
             }
         });
+
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Get new password and call changePassword api to change it for the current user..
+
                 text = newPassword.getText().toString();
                 if (text.length() < 6) {
+
                     newPassword.setError("Minimum 6 characters required");
+
                 } else {
 
                     ConstantsDefined.updateAndroidSecurityProvider(ForgotPassword.this);
                     ConstantsDefined.beforeVolleyConnect();
-
-
                     requestQueue = Volley.newRequestQueue(getApplicationContext());
-
                     //Call change password api..
                     //Api to be connected to..
                     String url = ConstantsDefined.api + "changePassword";
@@ -225,8 +234,7 @@ public class ForgotPassword extends AppCompatActivity {
     public void getVerified() {
 
         Toast.makeText(this, "Enter your registered mobile number", Toast.LENGTH_LONG).show();
-//        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-//        Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits.Builder().build());
+
         authCallback = new AuthCallback() {
             @Override
             public void success(DigitsSession session, final String phoneNumber) {

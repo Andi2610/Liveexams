@@ -15,7 +15,8 @@ import java.util.List;
 import in.truskills.liveexams.R;
 
 /**
- * Created by Shivansh Gupta on 02-03-2017.
+ * This custom adapter is for the spinner of "Gender" and "Languages"
+ * in Signup_Login.java
  */
 
 public class CustomSpinnerAdapter extends BaseAdapter {

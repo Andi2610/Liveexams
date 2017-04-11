@@ -8,11 +8,8 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 
-//import com.google.firebase.iid.FirebaseInstanceId;
-//import com.google.firebase.iid.FirebaseInstanceIdService;
-
 /**
- * Created by Shivansh Gupta on 05-04-2017.
+ * This is for sending token to firebase for fcm notification..
  */
 
 public class TokenService
@@ -25,7 +22,6 @@ public class TokenService
 
         Log.d("firebase", refreshedToken);
         sendRegistrationToServer(refreshedToken);
-//        Toast.makeText(this, "myToken"+refreshedToken, Toast.LENGTH_SHORT).show();
     }
 
     private void sendRegistrationToServer(String token) {

@@ -12,8 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-//This class is used for json parsing the entire question paper obtained for the quiz..
+/**
+ * This class is used for json parsing the entire question paper obtained for the quiz..
+ */
 
 public class QuestionPaperParser {
 

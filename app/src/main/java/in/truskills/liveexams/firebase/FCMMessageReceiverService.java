@@ -20,18 +20,17 @@ import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.SplashScreen;
 
 /**
- * Created by Shivansh Gupta on 05-04-2017.
+ * It executes when a message is obtained from firebase..
  */
 
 public class FCMMessageReceiverService
         extends FirebaseMessagingService {
 
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        Log.w("fcm", "received notification"+remoteMessage.getData());
         sendNotification(remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
+
     }
 
     private void sendNotification(String messageBody,String body) {

@@ -36,22 +36,25 @@ import in.truskills.liveexams.R;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
+/**
+ * This is the launcher activity displayed for 2 secs..
+ * It checks for apkAndroidVersion of the current app installed in the phone and the latest version in production..
+ * In case of mismatch, it force redirects to play store for updation else the app won't open further..
+ */
+
 public class SplashScreen extends Activity {
-
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "fIx7W5i8xo9stQ8jhOHVLNdFB";
-    private static final String TWITTER_SECRET = "JQ9IuPXWecyeMFK8VujoYePRHHfQllXNRvRYC6QatmCNt8l5FH";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Digits.Builder().build(), new Crashlytics(), new Twitter(authConfig));
+
         setContentView(R.layout.activity_splash_screen);
+
         TextView companyName=(TextView)findViewById(R.id.companyName);
+
         Typeface tff=Typeface.createFromAsset(getAssets(), "fonts/SF-Compact-Display-Light.otf");
         companyName.setTypeface(tff);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -65,11 +68,11 @@ public class SplashScreen extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             ConstantsDefined.updateAndroidSecurityProvider(SplashScreen.this);
                             ConstantsDefined.beforeVolleyConnect();
 
                             RequestQueue requestQueue;
-
                             requestQueue = Volley.newRequestQueue(SplashScreen.this);
 
                             String url = ConstantsDefined.api2 + "apkVersionAndroid";
@@ -150,5 +153,6 @@ public class SplashScreen extends Activity {
 
     @Override
     public void onBackPressed() {
+        //Do nothing on back pressed..
     }
 }
