@@ -25,7 +25,7 @@
             android:gravity="center"
             android:textColor="@color/colorPrimary"
             android:layout_centerHorizontal="true"
-            android:text="Please wait.. \n Your question paper is getting ready..\nThis may take few moments.."/>
+            android:text="Please wait.. \n Your question paper is getting ready..\nThis may take few seconds.."/>
 
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/avi"
@@ -121,6 +121,38 @@
             android:text="Exit"
             android:background="@color/grey"
             android:id="@+id/exitButtonForDownload" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/paperGettingStartedLayout"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/paperGettingStartedMessage"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
+            android:text="Please wait.. \n Starting.."/>
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/aviStarted"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            style="@style/AVLoadingIndicatorView"
+            android:visibility="visible"
+            app:indicatorName="BallClipRotatePulseIndicator"
+            app:indicatorColor="@color/colorPrimary"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center" />
 
     </LinearLayout>
 

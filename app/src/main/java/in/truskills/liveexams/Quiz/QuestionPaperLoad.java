@@ -89,10 +89,10 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     Handler handler = new Handler();
 
     Button retryButtonForDownload, exitButtonForDownload;
-    LinearLayout paperGettingReadyLayout, paperGettingDownloadLayout, noInternetLayout;
-    TextView paperGettingReadyMessage, paperGettingDownloadMessage, noInternetMessage, paperGettingDownloadPercentage;
+    LinearLayout paperGettingReadyLayout, paperGettingDownloadLayout, noInternetLayout,paperGettingStartedLayout;
+    TextView paperGettingReadyMessage, paperGettingDownloadMessage,paperGettingStartedMessage, noInternetMessage, paperGettingDownloadPercentage;
     ProgressBar progressBar;
-    com.wang.avi.AVLoadingIndicatorView avi;
+    com.wang.avi.AVLoadingIndicatorView avi,aviStarted;
 
     Handler h;
     AsyncTaskRunner asyncTaskRunner;
@@ -103,6 +103,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         setContentView(R.layout.activity_my_question_paper_load);
 
         avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
+        aviStarted = (AVLoadingIndicatorView) findViewById(R.id.aviStarted);
         h = new Handler();
 
         key = getKey();
@@ -110,6 +111,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         iv = getIV();
 
         paperGettingDownloadLayout = (LinearLayout) findViewById(R.id.paperGettingDownloadLayout);
+        paperGettingStartedLayout = (LinearLayout) findViewById(R.id.paperGettingStartedLayout);
         noInternetLayout = (LinearLayout) findViewById(R.id.noInternetLayout);
         paperGettingReadyLayout = (LinearLayout) findViewById(R.id.paperGettingReadyLayout);
 
@@ -134,6 +136,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         paperGettingDownloadPercentage = (TextView) findViewById(R.id.paperGettingDownloadPercentage);
         paperGettingDownloadMessage = (TextView) findViewById(R.id.paperGettingDownloadMessage);
         paperGettingReadyMessage = (TextView) findViewById(R.id.paperGettingReadyMessage);
+        paperGettingStartedMessage = (TextView) findViewById(R.id.paperGettingStartedMessage);
 
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         noInternetMessage.setTypeface(tff1);
@@ -142,6 +145,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         retryButtonForDownload.setTypeface(tff1);
         exitButtonForDownload.setTypeface(tff1);
         paperGettingDownloadPercentage.setTypeface(tff1);
+        paperGettingStartedMessage.setTypeface(tff1);
 
         examId = getIntent().getStringExtra("examId");
         paperName = getIntent().getStringExtra("name");
@@ -156,6 +160,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         paperGettingDownloadLayout.setVisibility(View.GONE);
         paperGettingReadyLayout.setVisibility(View.GONE);
         noInternetLayout.setVisibility(View.GONE);
+        paperGettingStartedLayout.setVisibility(View.GONE);
 
         downloadQP();
     }
@@ -169,6 +174,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         paperGettingDownloadLayout.setVisibility(View.GONE);
         paperGettingReadyLayout.setVisibility(View.VISIBLE);
         noInternetLayout.setVisibility(View.GONE);
+        paperGettingStartedLayout.setVisibility(View.GONE);
 
         ConstantsDefined.updateAndroidSecurityProvider(this);
         ConstantsDefined.beforeVolleyConnect();
@@ -198,6 +204,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                         paperGettingDownloadLayout.setVisibility(View.GONE);
                         paperGettingReadyLayout.setVisibility(View.GONE);
                         noInternetLayout.setVisibility(View.VISIBLE);
+                        paperGettingStartedLayout.setVisibility(View.GONE);
                         Toast.makeText(QuestionPaperLoad.this, "Something went wrong..\n" +
                                 "Please try again..", Toast.LENGTH_SHORT).show();
                     }
@@ -215,7 +222,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                 paperGettingDownloadLayout.setVisibility(View.GONE);
                 paperGettingReadyLayout.setVisibility(View.GONE);
                 noInternetLayout.setVisibility(View.VISIBLE);
-
+                paperGettingStartedLayout.setVisibility(View.GONE);
             }
         });
         requestQueue.add(stringRequest);
@@ -484,17 +491,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     private class AsyncTaskRunner2 extends AsyncTask<String, String, String> {
 
-        ProgressDialog d;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            d=new ProgressDialog(QuestionPaperLoad.this);
-            d.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            d.setMessage("Starting..Please wait..");
-            d.setIndeterminate(true);
-            d.setCancelable(false);
-            d.show();
+            paperGettingDownloadLayout.setVisibility(View.GONE);
+            paperGettingReadyLayout.setVisibility(View.GONE);
+            noInternetLayout.setVisibility(View.GONE);
+            paperGettingStartedLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -529,9 +533,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            if(d!=null)
-                d.hide();
-
             gone = true;
 
             Intent intent = new Intent(QuestionPaperLoad.this, QuizMainActivity.class);
@@ -553,16 +554,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
         decryptAndSaveImages();
 
-//        Intent intent = new Intent(QuestionPaperLoad.this, QuizMainActivity.class);
-//        intent.putExtra("examId", examId);
-//        intent.putExtra("name", paperName);
-//        intent.putExtra("language", selectedLanguage);
-//        intent.putExtra("noOfSections", noOfSections);
-//        intent.putExtra("questionArray", questionArray);
-//        intent.putExtra("ExamDuration", myTime);
-//        intent.putExtra("date", myDate);
-//        startActivity(intent);
-//        finish();
 
         Toast.makeText(this, "Completed", Toast.LENGTH_SHORT).show();
 
@@ -606,6 +597,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         paperGettingDownloadLayout.setVisibility(View.VISIBLE);
         paperGettingReadyLayout.setVisibility(View.GONE);
         noInternetLayout.setVisibility(View.GONE);
+        paperGettingStartedLayout.setVisibility(View.GONE);
 
         ir = new ImageRequest(myUrl, new Response.Listener<Bitmap>() {
             @Override
@@ -638,6 +630,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                         paperGettingDownloadLayout.setVisibility(View.GONE);
                         paperGettingReadyLayout.setVisibility(View.GONE);
                         noInternetLayout.setVisibility(View.VISIBLE);
+                        paperGettingStartedLayout.setVisibility(View.GONE);
                     }
                 });
         requestQueue.add(ir);
