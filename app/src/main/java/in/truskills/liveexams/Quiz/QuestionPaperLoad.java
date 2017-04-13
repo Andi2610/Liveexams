@@ -356,12 +356,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         String result=text;
 
         Log.d("result", "prepareForOfflineForQuestionDecrypt: before:"+result);
-//        final Matcher matcher1 = pattern.matcher(text);
-//        String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-//
-//        String subst = "<img src=\"file://" + base + "/.LiveExams/$2\" style=\"max-width:100%;\"\"/>";
-//        String result = matcher1.replaceAll(subst);
-//        ob.updateValuesPerQuestion(ii, jj, QuizDatabase.QuestionText, result);
 
         while (matcher.find()) {
             myCount++;
@@ -555,7 +549,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         decryptAndSaveImages();
 
 
-        Toast.makeText(this, "Completed", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Completed", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -1022,7 +1016,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         }
         return decryptedData;
     }
-
 
     private static byte[]  getKey(){
         KeyGenerator keyGen;
