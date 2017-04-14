@@ -649,12 +649,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ConstantsDefined.deleteDir(f);
             }
 
-            String folder_main2 = ".LiveExams";
-            File f2 = new File(Environment.getExternalStorageDirectory(), folder_main2);
-            if (f2.exists()) {
-                ConstantsDefined.deleteDir(f2);
-            }
-
             String folder_main3 = ".LiveExamsProfileImageRotated";
             File f3 = new File(Environment.getExternalStorageDirectory(), folder_main3);
             if (f3.exists()) {

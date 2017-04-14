@@ -74,12 +74,7 @@ public class SubmitAnswerPaper {
                     Log.d("response", "onResponse: "+success);
                     final String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
-                        String folder_main = ".LiveExams";
                         Toast.makeText(context, result+"\nResult will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
-                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                        if (f.exists()) {
-                            ConstantsDefined.deleteDir(f);
-                        }
                         ob.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
@@ -139,12 +134,6 @@ public class SubmitAnswerPaper {
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
-                        String folder_main = ".LiveExams";
-                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                        if (f.exists()) {
-                            ConstantsDefined.deleteDir(f);
-                        }
-
                         h.post(new Runnable() {
                             @Override
                             public void run() {
@@ -181,11 +170,6 @@ public class SubmitAnswerPaper {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("errors", "onErrorResponse: "+error);
-                String folder_main = ".LiveExams";
-                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                if (f.exists()) {
-                    ConstantsDefined.deleteDir(f);
-                }
                 allow=context.getSharedPreferences("allow",Context.MODE_PRIVATE);
                 SharedPreferences.Editor e=allow.edit();
                 e.putInt("allow",0);

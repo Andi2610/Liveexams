@@ -64,18 +64,19 @@ import in.truskills.liveexams.authentication.SplashScreen;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
-public class QuestionPaperLoad extends AppCompatActivity implements ConnectivityReciever.ConnectivityReceiverListener {
+public class QuestionPaperLoad extends AppCompatActivity {
 
     //Declare the variables..
     int languageArray[][], fragmentIndex[][];
     LinkedList ll = new LinkedList();
+    HashMap<Integer,String> myMap=new HashMap<>();
     byte[] key, iv;
     String html;
     LinkedList llGroup = new LinkedList();
     public static boolean visible = true, gone = false, download = false;
     ImageRequest ir;
     HashMap<String, String> map1, map2, map3, map4, map5, map6, map7, map8, map9, map10, map11, map12;
-    int noOfQuestions = 0, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1, hour, minute, myTime, curCount = 0, myCount = 0, questionArray[];
+    int noOfQuestions = 0, noOfExamName, noOfLanguage, noOfOption, noOfSections, fi = -1, hour, minute, myTime,myC=0, curCount = 0, myCount = 0, questionArray[];
     RequestQueue requestQueue;
     String url, success, response, Paperset, Sections, Section, SectionQuestions, AttributesOfSection, Question, myAskedIn, myExamName, myYear, myLanguage;
     String myQuestionText, myOptions, myOption, nm, nmm, myOp, text, myAt, myAttri, section_id, section_max_marks, section_time, section_description, section_rules;
@@ -105,10 +106,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         avi = (AVLoadingIndicatorView) findViewById(R.id.avi);
         aviStarted = (AVLoadingIndicatorView) findViewById(R.id.aviStarted);
         h = new Handler();
-
-        key = getKey();
-
-        iv = getIV();
 
         paperGettingDownloadLayout = (LinearLayout) findViewById(R.id.paperGettingDownloadLayout);
         paperGettingStartedLayout = (LinearLayout) findViewById(R.id.paperGettingStartedLayout);
@@ -230,21 +227,12 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     public void afterResponse() throws Exception {
 
-        String folder_main = ".LiveExams";
-        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-        if (!f.exists())
-            f.mkdir();
-
         if (ll.isEmpty()) {
-            startNewActivity();
+            setData();
         } else {
             downloadImages();
         }
-//        if (urls.isEmpty()) {
-//            startNewActivity();
-//        } else {
-//            downloadImages();
-//        }
+
         retryButtonForDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,13 +248,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         exitButtonForDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("clicked", "onClick: exit");
-
-                String folder_main = ".LiveExams";
-                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                if (f.exists()) {
-                    ConstantsDefined.deleteDir(f);
-                }
                 ob.deleteMyTable();
                 SharedPreferences.Editor e = dataPrefs.edit();
                 e.clear();
@@ -281,14 +262,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(JPG|jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
-        String result=text;
-//        final Matcher matcher1 = pattern.matcher(text);
-//        String base = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-//
-//        String subst = "<img src=\"file://" + base + "/.LiveExams/$2\" style=\"max-width:100%;\"\"/>";
-//        String result = matcher1.replaceAll(subst);
-//        ob.updateValuesPerQuestion(ii, jj, QuizDatabase.QuestionText, result);
-
         while (matcher.find()) {
             myCount++;
             Log.d("ronaldo", "matcher.findInLoop");
@@ -298,29 +271,13 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             urls.add(imageUrl);
             ll.add(imageUrl);
             llGroup.add(group);
-//            try {
-//                FileInputStream fis = new FileInputStream(Environment.getExternalStorageDirectory()+".LiveExams/"+group);
-//                byte[] bytes=decrypt(key,fis);
-//                String imgageBase64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-//                String image = "data:image/png;base64," + imgageBase64;
-//                final Matcher matcher1 = pattern.matcher(text);
-//                String subst = "<img src=\""+image+" style=\"max-width:100%;\"\"/>";
-//                result = matcher1.replaceAll(subst);
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
         }
-
-//        ob.updateValuesPerQuestion(ii, jj, QuizDatabase.QuestionText, result);
     }
 
     public void prepareForOfflineForOption(String text, int ii, int jj, int kk) throws InterruptedException {
         final String regex = "[ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(JPG|jpg|gif|png))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
-
-        String result=text;
-
         while (matcher.find()) {
             myCount++;
             Log.d("messi", "matcher.findInLoop");
@@ -331,46 +288,20 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
             ll.add(imageUrl);
             llGroup.add(group);
         }
-//            try {
-//                FileInputStream fis = new FileInputStream(Environment.getExternalStorageDirectory()+".LiveExams/"+group);
-//                byte[] bytes=decrypt(key,fis);
-//                String imgageBase64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-//                String image = "data:image/png;base64," + imgageBase64;
-//                final Matcher matcher1 = pattern.matcher(text);
-//                String subst = "<img src=\""+image+" style=\"max-width:100%;\"\"/>";
-//                result = matcher1.replaceAll(subst);
-//
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-
-//        ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, result);
     }
 
-    public void prepareForOfflineForQuestionDecrypt(String text, int ii, int jj) throws InterruptedException {
+    public void setQuestionData(String text, int ii, int jj) throws InterruptedException {
+
         final String regex = "([ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(JPG|jpg|gif|png)))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
         String result=text;
-
-        Log.d("result", "prepareForOfflineForQuestionDecrypt: before:"+result);
-
         while (matcher.find()) {
-            myCount++;
+            myC++;
             Log.d("ronaldo", "matcher.findInLoop");
-            String group = matcher.group(3);
             String myGr=matcher.group(1);
-            try {
-                FileInputStream fis = new FileInputStream(Environment.getExternalStorageDirectory()+"/.LiveExams/"+group);
-                byte[] bytes=decrypt(key,fis);
-                String imgageBase64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-                String image = "data:image/png;base64," + imgageBase64;
-                result = result.replace(myGr,"<img src=\""+image+"\" style=\"max-width:100%;\"/>");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            String image=myMap.get(myC);
+            result = result.replace(myGr,"<img src=\""+image+"\" style=\"max-width:100%;\"/>");
         }
 
         Log.d("result", "prepareForOfflineForQuestionDecrypt: after:"+result);
@@ -378,55 +309,23 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         ob.updateValuesPerQuestion(ii, jj, QuizDatabase.QuestionText, result);
     }
 
-    public void prepareForOfflineForOptionDecrypt(String text, int ii, int jj, int kk) throws InterruptedException {
+    public void setOptionData(String text, int ii, int jj, int kk) throws InterruptedException {
         final String regex = "([ ]?([\\\\]Images[\\\\])?((([\\w])+\\.)(JPG|jpg|gif|png)))";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
-
         String result=text;
-
-        Log.d("result", "prepareForOfflineForOptionDecrypt: before:"+result);
-
-
         while (matcher.find()) {
-            myCount++;
+            myC++;
             Log.d("messi", "matcher.findInLoop");
-            String group = matcher.group(3);
             String myGr=matcher.group(1);
-            try {
-                FileInputStream fis = new FileInputStream(Environment.getExternalStorageDirectory()+"/.LiveExams/"+group);
-                byte[] bytes=decrypt(key,fis);
-                String imgageBase64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-                String image = "data:image/png;base64," + imgageBase64;
-                result = result.replace(myGr,"<img src=\""+image+"\" style=\"max-width:100%;\"/>");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            String image=myMap.get(myC);
+            result = result.replace(myGr,"<img src=\""+image+"\" style=\"max-width:100%;\"/>");
         }
 
         Log.d("result", "prepareForOfflineForOptionDecrypt: after:"+result);
 
         ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, result);
-
-
-//            try {
-//                FileInputStream fis = new FileInputStream(Environment.getExternalStorageDirectory()+".LiveExams/"+group);
-//                byte[] bytes=decrypt(key,fis);
-//                String imgageBase64 = Base64.encodeToString(bytes, Base64.DEFAULT);
-//                String image = "data:image/png;base64," + imgageBase64;
-//                final Matcher matcher1 = pattern.matcher(text);
-//                String subst = "<img src=\""+image+" style=\"max-width:100%;\"\"/>";
-//                result = matcher1.replaceAll(subst);
-//
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//        }
-
-//        ob.updateValuesPerOption(ii, jj, kk, QuizDatabase.OptionText, result);
     }
-
 
     public String format(String str, String examId) {
 
@@ -454,34 +353,14 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
     @Override
     public void onBackPressed() {
-////        Log.d("place", "onBackPressed: of QPL");
-//        String folder_main = "LiveExams";
-//        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-//        if (f.exists()) {
-//            deleteDir(f);
-//        }
-//        ob.deleteMyTable();
-//        SharedPreferences.Editor e=dataPrefs.edit();
-//        e.clear();
-//        e.apply();
-//        finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        MyApplication.getInstance().setConnectivityListener(QuestionPaperLoad.this);
         visible = true;
         handler.removeCallbacks(sendData);
     }
-
-    public void decryptAndSaveImages(){
-
-        AsyncTaskRunner2 a=new AsyncTaskRunner2();
-        a.execute();
-    }
-
-
 
     private class AsyncTaskRunner2 extends AsyncTask<String, String, String> {
 
@@ -497,11 +376,12 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
 
         @Override
         protected String doInBackground(String... params) {
+
             for (int i = 0; i < noOfSections; ++i) {
                 for (int j = 0; j < questionArray[i]; ++j) {
                     String mt = ob.getTextOfOneQuestion(i, j);
                     try {
-                        prepareForOfflineForQuestionDecrypt(mt, i, j);
+                        setQuestionData(mt, i, j);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -511,7 +391,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                         String mo = ob.getTextOfOneOption(i, j, k);
                         Log.d("textHere", "OfOptions" + mo);
                         try {
-                            prepareForOfflineForOptionDecrypt(mo, i, j, k);
+                            setOptionData(mo, i, j, k);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -543,25 +423,11 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         }
     }
 
-    public void startNewActivity() {
+    public void setData() {
 
+        AsyncTaskRunner2 a=new AsyncTaskRunner2();
+        a.execute();
 
-        decryptAndSaveImages();
-
-
-//        Toast.makeText(this, "Completed", Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void onNetworkConnectionChanged(boolean isConnected) {
-//        if (isConnected) {
-//            try {
-//                checkFunction();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     public void downloadImages() throws Exception {
@@ -569,7 +435,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         if (!ll.isEmpty()) {
             myFunc((String) ll.get(0), (String) llGroup.get(0));
         } else {
-            startNewActivity();
+            setData();
         }
 
     }
@@ -580,7 +446,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         } else if (!ll.isEmpty()) {
             downloadImages();
         } else {
-            startNewActivity();
+            setData();
         }
     }
 
@@ -596,14 +462,18 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
         ir = new ImageRequest(myUrl, new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap bitmap) {
-//                Toast.makeText(QuestionPaperLoad.this, "downloaded"+myGroup, Toast.LENGTH_SHORT).show();
                 curCount++;
                 Log.d("count", curCount + " " + myCount);
                 per = (curCount / (float) myCount) * 100;
                 paperGettingDownloadPercentage.setText((int) per + "%");
                 progressBar.setProgress((int) per);
                 try {
-                    savebitmap(bitmap, myGroup);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
+                    String imgageBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                    String image = "data:image/png;base64," + imgageBase64;
+                    myMap.put(curCount,image);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.d("save", "onResponse: " + e.toString());
@@ -613,8 +483,7 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                 if (!ll.isEmpty())
                     myFunc((String) ll.get(0), (String) llGroup.get(0));
                 else {
-//                    Toast.makeText(QuestionPaperLoad.this, "breaking..", Toast.LENGTH_SHORT).show();
-                    startNewActivity();
+                    setData();
                 }
             }
         }, 0, 0, null,
@@ -628,34 +497,6 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
                     }
                 });
         requestQueue.add(ir);
-    }
-
-    public void savebitmap(Bitmap bmp, String grp) throws Exception {
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-
-        encryptFile(byteArray,grp);
-
-//        String folder_main = ".LiveExams";
-//        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-//        bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
-//
-//        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-//        if (!f.exists()) {
-//            f.mkdirs();
-//        }
-//
-//        String pp = f.getAbsolutePath();
-//        File file = new File(pp
-//                + File.separator + grp);
-//        file.createNewFile();
-//        FileOutputStream fo = new FileOutputStream(file);
-//        fo.write(bytes.toByteArray());
-//        fo.close();
-//
-//        return f;
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
@@ -907,28 +748,23 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     @Override
     protected void onPause() {
         super.onPause();
-//        if (gone) {
-//
-//        } else {
-//            visible = false;
-//            handler.postDelayed(sendData, ConstantsDefined.time);
-//
-//        }
+        if (gone) {
+
+        } else {
+            visible = false;
+            handler.postDelayed(sendData, ConstantsDefined.time);
+
+        }
     }
 
     private final Runnable sendData = new Runnable() {
         public void run() {
             if (visible) {
-//
+
             } else {
                 if (gone) {
 
                 } else {
-                    String folder_main = ".LiveExams";
-                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                    if (f.exists()) {
-                        ConstantsDefined.deleteDir(f);
-                    }
                     ob.deleteMyTable();
                     SharedPreferences.Editor e = dataPrefs.edit();
                     e.clear();
@@ -948,94 +784,5 @@ public class QuestionPaperLoad extends AppCompatActivity implements Connectivity
     protected void onDestroy() {
         super.onDestroy();
         Runtime.getRuntime().gc();
-    }
-
-
-    public void encryptFile(byte[] ba,String grp){
-        saveFile(encrypt(key,ba),grp);
-    }
-
-    public void saveFile(byte[] data, String outFileName){
-
-        FileOutputStream fos=null;
-        try {
-            fos=new FileOutputStream(Environment.getExternalStorageDirectory()+ File.separator+".LiveExams/"+outFileName);
-            fos.write(data);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally{
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private byte[] encrypt(byte[] skey, byte[] data){
-        SecretKeySpec skeySpec = new SecretKeySpec(skey, "AES");
-        Cipher cipher;
-        byte[] encrypted=null;
-        try {
-            cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, new IvParameterSpec(iv));
-            encrypted = cipher.doFinal(data);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return encrypted;
-    }
-
-    private byte[] decrypt(byte[] skey, FileInputStream fis){
-        SecretKeySpec skeySpec = new SecretKeySpec(skey, "AES");
-        Cipher cipher;
-        byte[] decryptedData=null;
-        CipherInputStream cis=null;
-        try {
-            cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec, new IvParameterSpec(iv));
-            cis = new CipherInputStream(fis, cipher);
-            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            byte[] data = new byte[2048];
-            while ((cis.read(data)) != -1) {
-                buffer.write(data);
-            }
-            buffer.flush();
-            decryptedData=buffer.toByteArray();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        finally{
-            try {
-                fis.close();
-                cis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return decryptedData;
-    }
-
-    private static byte[]  getKey(){
-        KeyGenerator keyGen;
-        byte[] dataKey=null;
-        try {
-
-            keyGen = KeyGenerator.getInstance("AES");
-            keyGen.init(256);
-            SecretKey secretKey = keyGen.generateKey();
-            dataKey=secretKey.getEncoded();
-
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return dataKey;
-    }
-
-    private static byte[] getIV(){
-        SecureRandom random = new SecureRandom();
-        byte[] iv = random.generateSeed(16);
-        return iv;
     }
 }

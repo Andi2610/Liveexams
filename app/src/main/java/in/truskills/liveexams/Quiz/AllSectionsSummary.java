@@ -263,11 +263,6 @@ public class AllSectionsSummary extends AppCompatActivity {
                     String success = jsonObject1.getString("success");
                     String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
-                        String folder_main = ".LiveExams";
-                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                        if (f.exists()) {
-                            ConstantsDefined.deleteDir(f);
-                        }
                         ob.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
@@ -288,22 +283,12 @@ public class AllSectionsSummary extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-//                        JSONObject jsonObject2 = new JSONObject(result);
                         ob.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
-                        String folder_main = ".LiveExams";
-                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                        if (f.exists()) {
-                            ConstantsDefined.deleteDir(f);
-                        }
                         Toast.makeText(AllSectionsSummary.this, "Something went wrong..\n" +
                                 "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
-//                        Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-//                        startActivity(intent);
-//                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -328,11 +313,6 @@ public class AllSectionsSummary extends AppCompatActivity {
                     e.apply();
                     Log.d("prefsAllow",allow.getInt("allow",1)+"");
                     Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
-                    String folder_main = ".LiveExams";
-                    File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                    if (f.exists()) {
-                        ConstantsDefined.deleteDir(f);
-                    }
                     Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                     startActivity(intent);

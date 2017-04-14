@@ -153,10 +153,6 @@ public class StartPageFragment extends Fragment {
         Typeface tff2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
         start_leave_button.setTypeface(tff2);
 
-//
-//        start_leave_button.setText("START");
-//        start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-
         //Get arguments..
         b = getArguments();
         timestamp = b.getString("timestamp");
@@ -253,9 +249,6 @@ public class StartPageFragment extends Fragment {
                 }
             }
 
-//            start_leave_button.setText("START");
-//            start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
-
             Log.d("newTimestamp=", myTimestamp);
 
             start_Date.setText(myStartDate);
@@ -280,11 +273,8 @@ public class StartPageFragment extends Fragment {
         }
 
         customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(getActivity(), listOfLanguages);
-//        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
         myLanguage.setAdapter(customSpinnerForDetailsAdapter);
 
-//        int index = adapterLanguage.getPosition(prefs.getString("language", "English"));
-//        myLanguage.setSelection(index);
         int index = customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
         myLanguage.setSelection(index);
 
@@ -395,16 +385,6 @@ public class StartPageFragment extends Fragment {
 
                                 Log.d("start", "onClick: 3");
 
-                                //Check if a valid language has been chosen from the list..
-                                Log.d("start", "onClick: 4");
-
-                                String folder_main = ".LiveExams";
-
-                                File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                                if (f.exists()) {
-                                    ConstantsDefined.deleteDir(f);
-                                }
-
                                 o.deleteMyTable();
                                 SharedPreferences.Editor e=dataPrefs.edit();
                                 e.clear();
@@ -473,14 +453,6 @@ public class StartPageFragment extends Fragment {
                         boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
 
                         if(statusForVibrate) {
-
-                            String folder_main = ".LiveExams";
-
-                            File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                            if (f.exists()) {
-                                ConstantsDefined.deleteDir(f);
-                            }
-
                             o.deleteMyTable();
                             SharedPreferences.Editor e=dataPrefs.edit();
                             e.clear();
@@ -513,13 +485,6 @@ public class StartPageFragment extends Fragment {
 
                     if(statusForVibrate) {
 
-                        String folder_main = ".LiveExams";
-
-                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                        if (f.exists()) {
-                            ConstantsDefined.deleteDir(f);
-                        }
-
                         o.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
@@ -550,15 +515,6 @@ public class StartPageFragment extends Fragment {
                     boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
 
                     if(statusForVibrate){
-
-
-                        String folder_main = ".LiveExams";
-
-                        File f = new File(Environment.getExternalStorageDirectory(), folder_main);
-                        if (f.exists()) {
-                            ConstantsDefined.deleteDir(f);
-                        }
-
                         o.deleteMyTable();
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
