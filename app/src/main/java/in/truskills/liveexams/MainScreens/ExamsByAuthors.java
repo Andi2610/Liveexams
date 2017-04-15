@@ -184,11 +184,15 @@ public class ExamsByAuthors extends Fragment {
 
         try {
             JSONObject jsonObject = new JSONObject(response);
+            Log.d("myExams", "setList: "+jsonObject);
+
             JSONObject jsonObject1=jsonObject.getJSONObject("response");
             String timestamp = jsonObject1.getString("timestamp");
             HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.getExamsByAuthors(jsonObject, author);
             JSONArray jsonArray = jsonObject1.getJSONArray("exams");
-            int length = jsonArray.length();
+            Log.d("myExams", "setList: "+jsonArray);
+            ArrayList<String> listForLength=mapper.get("StartDate");
+            int length = listForLength.size();
             if(length==0)
                 noExamsPresent.setVisibility(View.VISIBLE);
             else{

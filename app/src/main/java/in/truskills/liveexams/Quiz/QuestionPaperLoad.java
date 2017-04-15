@@ -173,16 +173,19 @@ public class QuestionPaperLoad extends AppCompatActivity {
         noInternetLayout.setVisibility(View.GONE);
         paperGettingStartedLayout.setVisibility(View.GONE);
 
-        ConstantsDefined.updateAndroidSecurityProvider(this);
-        ConstantsDefined.beforeVolleyConnect();
+//        ConstantsDefined.updateAndroidSecurityProvider(this);
+//        ConstantsDefined.beforeVolleyConnect();
 
         //Api to be connected to get the question paper..
         url = ConstantsDefined.api + "questionPaper/" + examId;
+//        url = ConstantsDefined.api2 + "questionPaper/" + "58f1f0b822857c29f51db394";
         //Make the request..
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
             @Override
             public void onResponse(final String result) {
+
+                Log.d("myResponse", "onResponse: "+result);
 
                 try {
                     JSONObject jsonObject = new JSONObject(result);
@@ -612,29 +615,29 @@ public class QuestionPaperLoad extends AppCompatActivity {
                             map8 = QuestionPaperParser.QuestionParser(Question, j);
 
                             //Get it's variables..
-                            myAskedIn = map8.get("AskedIn");
+//                            myAskedIn = map8.get("AskedIn");
                             myLanguage = map8.get("Language");
                             questionAttributes = map8.get("Attributes");
 
-                            //Parse one section one question askedIn..
-                            map9 = QuestionPaperParser.AskedInParser(myAskedIn);
-
-                            //Get it's variables..
-                            myExamName = map9.get("ExamName");
-                            myYear = map9.get("Year");
-
-                            //Get no. of Exam names in which the question has been asked..
-                            noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
-
-                            Log.d("noOfExamName", noOfExamName + "");
+//                            //Parse one section one question askedIn..
+//                            map9 = QuestionPaperParser.AskedInParser(myAskedIn);
+//
+//                            //Get it's variables..
+//                            myExamName = map9.get("ExamName");
+//                            myYear = map9.get("Year");
+//
+//                            //Get no. of Exam names in which the question has been asked..
+//                            noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
+//
+//                            Log.d("noOfExamName", noOfExamName + "");
 
                             //Loop through the entire exam and year array..
-                            for (int k = 0; k < noOfExamName; ++k) {
-                                //Get exam name one by one..
-                                nm = QuestionPaperParser.getExamNamesOfOneQuestion(myExamName, k);
-                                //Get Year one by one..
-                                nmm = QuestionPaperParser.getYearsOfOneQuestion(myYear, k);
-                            }
+//                            for (int k = 0; k < noOfExamName; ++k) {
+//                                //Get exam name one by one..
+//                                nm = QuestionPaperParser.getExamNamesOfOneQuestion(myExamName, k);
+//                                //Get Year one by one..
+//                                nmm = QuestionPaperParser.getYearsOfOneQuestion(myYear, k);
+//                            }
 
                             //Get length of language array of one question of one section..
                             noOfLanguage = QuestionPaperParser.getLengthOfLanguageOfOneQuestion(myLanguage);

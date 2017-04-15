@@ -209,10 +209,10 @@ public class QuestionPaperParser {
         JSONArray jsonArray=new JSONArray(myQuestion);
         String myAskedIn,myLanguage,myAttributes;
         JSONObject jsonObject=jsonArray.getJSONObject(i);
-        myAskedIn=jsonObject.getJSONArray(AskedIn).get(0).toString();
+//        myAskedIn=jsonObject.getJSONArray(AskedIn).get(0).toString();
         myLanguage=jsonObject.getJSONArray(Language).toString();
         myAttributes=jsonObject.getJSONObject(Attributes).toString();
-        mapper.put("AskedIn",myAskedIn);
+//        mapper.put("AskedIn",myAskedIn);
         mapper.put("Language",myLanguage);
         mapper.put("Attributes",myAttributes);
         return mapper;
@@ -295,6 +295,7 @@ public class QuestionPaperParser {
     public static String getQuestionText(String myQuestion) throws JSONException {
         JSONArray jsonArray=new JSONArray(myQuestion);
         String text=jsonArray.get(0).toString();
+        Log.d("questionText", "getQuestionText: "+text);
         return text;
     }
 

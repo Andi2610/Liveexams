@@ -39,8 +39,8 @@ import javax.net.ssl.X509TrustManager;
 
 public class ConstantsDefined {
     //Api used to connect to the server..
-    public static final String api = "https://api.liveexams.in/api/";
-//    public static final String api = "http://35.154.110.122:3002/api/";
+//    public static final String api = "https://api.liveexams.in/api/";
+    public static final String api = "http://35.154.110.122:3002/api/";
     public static final String api2 = "http://35.154.110.122:3002/api/";
 
     //Url for image..
@@ -148,14 +148,12 @@ public class ConstantsDefined {
                 }
             }
         }
-
         // The directory is now empty so delete it
         return dir.delete();
     }
 
     public static void sendToken(Context c, final String token){
 
-//        ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
         ConstantsDefined.beforeVolleyConnect();
 
         final SharedPreferences prefs=c.getSharedPreferences("prefs",Context.MODE_PRIVATE);

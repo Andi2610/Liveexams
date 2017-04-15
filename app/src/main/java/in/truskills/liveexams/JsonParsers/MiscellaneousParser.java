@@ -250,7 +250,13 @@ public class MiscellaneousParser {
 
     public static String parseDate(String myDate) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        Date date = simpleDateFormat.parse(myDate);
+        Date date;
+        try{
+            date = simpleDateFormat.parse(myDate);
+        }catch (ParseException e){
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+            date = simpleDateFormat2.parse(myDate);
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -285,7 +291,13 @@ public class MiscellaneousParser {
 
     public static String parseTimeForDetails(String myTime) throws ParseException {
         DateFormat f1 = new SimpleDateFormat("HH-mm");
-        Date d = f1.parse(myTime);
+        Date d;
+        try{
+            d = f1.parse(myTime);
+        }catch (ParseException e){
+            DateFormat f3 = new SimpleDateFormat("HH:mm");
+            d = f3.parse(myTime);
+        }
         DateFormat f2 = new SimpleDateFormat("h-mm a");
         String ans=f2.format(d).toLowerCase();
         return ans;
@@ -400,6 +412,7 @@ public class MiscellaneousParser {
         ArrayList<String> ExamIdList = new ArrayList<>();
         HashMap<String, ArrayList<String>> mapper = new HashMap<>();
         for (int i = 0; i < jsonArray.length(); i++) {
+
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
             JSONArray jsonArray1=jsonObject.getJSONArray(AuthorDetails);
