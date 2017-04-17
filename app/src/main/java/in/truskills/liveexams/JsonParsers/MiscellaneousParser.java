@@ -52,6 +52,12 @@ public class MiscellaneousParser {
     private static String AuthorDetails = "AuthorDetails";
     private static String Attributes = "Attributes";
     private static String Name = "Name";
+    private static String question1 = "question1";
+    private static String question2 = "question2";
+    private static String question3 = "question3";
+    private static String Question = "Question";
+    private static String questionText = "questionText";
+    private static String questionTopic = "questionTopic";
 
     public static ArrayList<String> beforeSignupParser(String result) throws JSONException {
         ArrayList<String> list=new ArrayList<>();
@@ -446,6 +452,41 @@ public class MiscellaneousParser {
         mapper.put("EndTime", EndTimeList);
         mapper.put("ExamId", ExamIdList);
         return mapper;
+    }
+
+    public static HashMap feedbackQuestionsParser(String result) throws JSONException {
+        HashMap<String,ArrayList<String>> map=new HashMap<>();
+        ArrayList<String> questionIdList=new ArrayList<>();
+        ArrayList<String> questionTextList=new ArrayList<>();
+        ArrayList<String> questionTopicList=new ArrayList<>();
+
+        JSONObject jsonObject=new JSONObject(result);
+        JSONObject jsonObject1=jsonObject.getJSONObject(response);
+        JSONObject j1=jsonObject1.getJSONObject(question1);
+        JSONObject j2=jsonObject1.getJSONObject(question2);
+        JSONObject j3=jsonObject1.getJSONObject(question3);
+
+        questionIdList.add(j1.getString(id));
+        questionIdList.add(j2.getString(id));
+        questionIdList.add(j3.getString(id));
+
+        JSONObject q1=j1.getJSONObject(Question);
+        JSONObject q2=j2.getJSONObject(Question);
+        JSONObject q3=j3.getJSONObject(Question);
+
+        questionTextList.add(q1.getString(questionText));
+        questionTextList.add(q2.getString(questionText));
+        questionTextList.add(q3.getString(questionText));
+
+        questionTopicList.add(q1.getString(questionTopic));
+        questionTopicList.add(q2.getString(questionTopic));
+        questionTopicList.add(q3.getString(questionTopic));
+
+        map.put("id",questionIdList);
+        map.put("text",questionTextList);
+        map.put("topic",questionTopicList);
+
+        return map;
     }
 
 }

@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.Quiz.FeedbackActivity;
 import in.truskills.liveexams.R;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
@@ -99,6 +100,8 @@ public class SplashScreen extends Activity {
                                                 if(state.equals("true")){
                                                     Intent i=new Intent(SplashScreen.this,MainActivity.class);
                                                     startActivity(i);
+//                                                    Intent i=new Intent(SplashScreen.this,FeedbackActivity.class);
+//                                                    startActivity(i);
                                                 }else{
                                                     Intent i=new Intent(SplashScreen.this,Signup_Login.class);
                                                     startActivity(i);

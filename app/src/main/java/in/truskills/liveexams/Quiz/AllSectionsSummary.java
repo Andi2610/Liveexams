@@ -279,6 +279,8 @@ public class AllSectionsSummary extends AppCompatActivity {
                         Toast.makeText(AllSectionsSummary.this, result+"\n" +
                                 "Result will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(AllSectionsSummary.this, FeedbackActivity.class);
+                        intent.putExtra("examId",examId);
+                        intent.putExtra("userId",userId);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
                         finish();
@@ -289,6 +291,12 @@ public class AllSectionsSummary extends AppCompatActivity {
                         e.apply();
                         Toast.makeText(AllSectionsSummary.this, "Something went wrong..\n" +
                                 "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(AllSectionsSummary.this, FeedbackActivity.class);
+                        intent.putExtra("examId",examId);
+                        intent.putExtra("userId",userId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                        startActivity(intent);
+                        finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -372,46 +380,9 @@ public class AllSectionsSummary extends AppCompatActivity {
 //            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
         }else{
             visible=false;
-            handler.postDelayed(sendData,ConstantsDefined.time);
-
-//            t=new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try{
-//                        Thread.sleep(ConstantsDefined.time);
-//                    }catch (Exception e){
-//
-//                    }finally {
-//                        h.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if(visible){
-//
-//                                }else{
-//                                    JSONArray jsonArray = ob.getQuizResult();
-//                                    final JSONObject jsonObject = new JSONObject();
-//                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
-//                                    String myDate=dataPrefs.getString("date","");
-//                                    String userId=dataPrefs.getString("userId","");
-//                                    String examId=dataPrefs.getString("examId","");
-//
-//                                    try {
-//                                        jsonObject.put("result", jsonArray);
-//                                        jsonObject.put("selectedLanguage", selectedLanguage);
-//                                        jsonObject.put("date", myDate);
-//
-//                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
-//                                        submitAnswerPaper.submit(ob,AllSectionsSummary.this,jsonObject.toString(),userId,examId);
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }
-//                        });
-//                    }
-//                }
-//            });
-//            t.start();
+            int ans=dataPrefs.getInt("submit",0);
+            if(ans!=0)
+                handler.postDelayed(sendData,ConstantsDefined.time);
         }
 
     }

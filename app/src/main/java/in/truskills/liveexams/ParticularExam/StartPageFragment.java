@@ -623,7 +623,7 @@ public class StartPageFragment extends Fragment {
                     String success=response.getString("success");
                     if(success.equals("true")){
                         myUrl=response.getString("response");
-                        myUrl="https://s3.ap-south-1.amazonaws.com/live-exams-local/";
+//                        myUrl="https://s3.ap-south-1.amazonaws.com/live-exams-local/";
                         Log.d("myDateeeee", "run: "+myUrl);
                         h.post(new Runnable() {
                             @Override

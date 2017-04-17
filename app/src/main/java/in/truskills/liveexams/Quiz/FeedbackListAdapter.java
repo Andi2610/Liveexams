@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import in.truskills.liveexams.R;
 
@@ -21,11 +22,16 @@ import in.truskills.liveexams.R;
 
 public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapter.MyViewHolder> {
 
-    ArrayList<String> questionList;
+    ArrayList<String> questionTextList;
+    ArrayList<String> questionIdList;
+    ArrayList<String> questionTopicList;
+    static HashMap<Integer,String> feedback=new HashMap<>();
     Context c;
 
-    FeedbackListAdapter(ArrayList<String> questionList,Context c) {
-        this.questionList = questionList;
+    FeedbackListAdapter(ArrayList<String> questionTextList,ArrayList<String> questionIdList,ArrayList<String> questionTopicList,Context c) {
+        this.questionTextList = questionTextList;
+        this.questionIdList = questionIdList;
+        this.questionTopicList = questionTopicList;
         this.c = c;
     }
 
@@ -38,7 +44,7 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-       holder.question.setText(questionList.get(holder.getAdapterPosition()));
+       holder.question.setText(questionTextList.get(holder.getAdapterPosition()));
         Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
 
         holder.question.setTypeface(tff2);
@@ -49,6 +55,9 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
         holder.layout4.setVisibility(View.INVISIBLE);
         holder.layout5.setVisibility(View.INVISIBLE);
 
+        final int c=holder.getAdapterPosition()+1;
+        feedback.put(c,0+"");
+
         holder.l1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +66,7 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
                holder.layout3.setVisibility(View.INVISIBLE);
                holder.layout4.setVisibility(View.INVISIBLE);
                holder.layout5.setVisibility(View.INVISIBLE);
+                feedback.put(c,1+"");
             }
         });
 
@@ -68,6 +78,8 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
                 holder.layout3.setVisibility(View.INVISIBLE);
                 holder.layout4.setVisibility(View.INVISIBLE);
                 holder.layout5.setVisibility(View.INVISIBLE);
+                feedback.put(c,2+"");
+
             }
         });
 
@@ -79,6 +91,8 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
                 holder.layout3.setVisibility(View.VISIBLE);
                 holder.layout4.setVisibility(View.INVISIBLE);
                 holder.layout5.setVisibility(View.INVISIBLE);
+                feedback.put(c,3+"");
+
             }
         });
 
@@ -90,6 +104,8 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
                 holder.layout3.setVisibility(View.INVISIBLE);
                 holder.layout4.setVisibility(View.VISIBLE);
                 holder.layout5.setVisibility(View.INVISIBLE);
+                feedback.put(c,4+"");
+
             }
         });
 
@@ -101,13 +117,18 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
                 holder.layout3.setVisibility(View.INVISIBLE);
                 holder.layout4.setVisibility(View.INVISIBLE);
                 holder.layout5.setVisibility(View.VISIBLE);
+                feedback.put(c,5+"");
             }
         });
     }
 
+    public static HashMap getFeedback(){
+        return feedback;
+    }
+
     @Override
     public int getItemCount() {
-        return questionList.size();
+        return questionTextList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

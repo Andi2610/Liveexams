@@ -173,8 +173,8 @@ public class QuestionPaperLoad extends AppCompatActivity {
         noInternetLayout.setVisibility(View.GONE);
         paperGettingStartedLayout.setVisibility(View.GONE);
 
-//        ConstantsDefined.updateAndroidSecurityProvider(this);
-//        ConstantsDefined.beforeVolleyConnect();
+        ConstantsDefined.updateAndroidSecurityProvider(this);
+        ConstantsDefined.beforeVolleyConnect();
 
         //Api to be connected to get the question paper..
         url = ConstantsDefined.api + "questionPaper/" + examId;

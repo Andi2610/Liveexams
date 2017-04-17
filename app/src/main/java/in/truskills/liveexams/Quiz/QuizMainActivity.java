@@ -111,7 +111,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     socketFromTeacher socketfromteacher;
     SharedPreferences prefs, firstTime, firstTimeForRules, allow;
     CountDownTimer count;
-    String myDate;
+    String myDate,userId;
     long timeUntil;
     Button left, right;
     Thread t;
@@ -221,6 +221,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         e.putString("examId", examId);
         e.putString("selectedLanguage", selectedLanguage);
         e.apply();
+
+        userId=prefs.getString("userId", "");
 
         /*
         * hidden element where student video will be loaded
@@ -1392,6 +1394,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         Toast.makeText(QuizMainActivity.this, result+"\n" +
                                 "Result will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
+                        intent.putExtra("examId",examId);
+                        intent.putExtra("userId",userId);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
                         finish();
@@ -1403,6 +1407,14 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
                         Toast.makeText(QuizMainActivity.this, "Something went wrong..\n" +
                                 "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
+                        intent.putExtra("examId",examId);
+                        intent.putExtra("userId",userId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                        startActivity(intent);
+                        finish();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -39,8 +39,8 @@ import javax.net.ssl.X509TrustManager;
 
 public class ConstantsDefined {
     //Api used to connect to the server..
-//    public static final String api = "https://api.liveexams.in/api/";
-    public static final String api = "http://35.154.110.122:3002/api/";
+    public static final String api = "https://api.liveexams.in/api/";
+//    public static final String api = "http://35.154.110.122:3002/api/";
     public static final String api2 = "http://35.154.110.122:3002/api/";
 
     //Url for image..
@@ -160,7 +160,7 @@ public class ConstantsDefined {
 
         RequestQueue requestQueue = Volley.newRequestQueue(c);
 
-        String myurl = ConstantsDefined.api2+"setFcmId";
+        String myurl = ConstantsDefined.api+"setFcmId";
 
         //Make a request..
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
