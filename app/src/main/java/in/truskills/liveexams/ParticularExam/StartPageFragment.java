@@ -620,6 +620,7 @@ public class StartPageFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+
                     String success=response.getString("success");
                     if(success.equals("true")){
                         myUrl=response.getString("response");
