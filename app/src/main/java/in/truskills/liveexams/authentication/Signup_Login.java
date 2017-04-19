@@ -39,8 +39,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.services.s3.AmazonS3;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -61,7 +59,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -87,12 +84,20 @@ import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 import io.fabric.sdk.android.Fabric;
 
-//This activity includes the code for Signup and Login
+/**
+ * This Activity includes the code for sign up and login..
+ * Functions used:
+ * 1. onCreate
+ * 2. getAuthCallback : to return authCallback instance..
+ * 3. successMethod : called when phone number is successfully verified; it calls changePassword api to reset password..
+ * 4. onRequestPermissionsResult : to check for permissions of sms and call method getVerified..
+ * 5. getVerified : checks and verify phone number through DIGITS implementation..
+ * 6. onSupportNavigationUp : handles the back button press on toolbar of the app..
+ */
 
 public class Signup_Login extends AppCompatActivity implements View.OnClickListener, com.google.android.gms.location.LocationListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-
 
     private static final String TWITTER_KEY = "fIx7W5i8xo9stQ8jhOHVLNdFB";
     private static final String TWITTER_SECRET = "JQ9IuPXWecyeMFK8VujoYePRHHfQllXNRvRYC6QatmCNt8l5FH";
@@ -106,7 +111,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     Button signupPressed;
     SlidingDrawer signupDrawer, loginDrawer;
     RelativeLayout signupLayout;
-    EditText loginName, loginPassword, signupName,signupFullName, signupFirstName,signupLastName,signupEmail, signupPassword, signupConfirmPassword, signupMobile,signupLocationEditText;
+    EditText loginName, loginPassword, signupName,signupFullName, signupEmail, signupPassword, signupConfirmPassword, signupMobile,signupLocationEditText;
     TextView termsAndConditionsPressed, forgotPasswordPressed, signupLocation, sentence, successfullRegister, signupLanguageAlternate;
     Spinner signupLanguage, signupGender;
     LocationManager locationManager;
@@ -118,7 +123,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     ImageView app_logo;
     ArrayList<String> listOfLanguages;
     Animation slide_down;
-    String firstName,lastName,fullName;
+    String fullName;
     Drawable dr;
     ProgressDialog dialog;
     public static boolean available=true;
@@ -159,16 +164,13 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         ConstantsDefined.updateAndroidSecurityProvider(this);
         ConstantsDefined.beforeVolleyConnect();
-//
-//        if(available){
+
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
-//        }
 
-        //Shared Preferences for user's selected language
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor e = prefs.edit();
@@ -201,8 +203,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         loginPassword = (EditText) findViewById(R.id.loginPassword);
         signupFullName= (EditText) findViewById(R.id.signupFullName);
         signupName = (EditText) findViewById(R.id.signupName);
-//        signupFirstName = (EditText) findViewById(R.id.signupFirstName);
-//        signupLastName = (EditText) findViewById(R.id.signupLastName);
         signupEmail = (EditText) findViewById(R.id.signupEmail);
         signupPassword = (EditText) findViewById(R.id.signupPassword);
         signupConfirmPassword = (EditText) findViewById(R.id.signupConfirmPassword);
@@ -217,11 +217,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         registerHandleButton.setTypeface(tff1);
         loginHandleButton.setTypeface(tff1);
 
-        listOfLanguages = new ArrayList<>();
-        dr = getResources().getDrawable(R.drawable.required_icon);
-        //add an error icon to yur drawable files
-        dr.setBounds(0, 0, 50, 50);
-
         Typeface tff2 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         loginName.setTypeface(tff2);
         loginPassword.setTypeface(tff2);
@@ -229,8 +224,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         loginPressed.setTypeface(tff2);
         signupPressed.setTypeface(tff2);
         signupName.setTypeface(tff2);
-//        signupFirstName.setTypeface(tff2);
-//        signupLastName.setTypeface(tff2);
         signupMobile.setTypeface(tff2);
         signupEmail.setTypeface(tff2);
         signupPassword.setTypeface(tff2);
@@ -242,6 +235,10 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         signupLocationEditText.setTypeface(tff2);
         signupFullName.setTypeface(tff2);
 
+        listOfLanguages = new ArrayList<>();
+        dr = getResources().getDrawable(R.drawable.required_icon);
+        //add an error icon to yur drawable files
+        dr.setBounds(0, 0, 50, 50);
 
         //Set OnClickListener on all buttons used
         loginPressed.setOnClickListener(this);
@@ -1240,31 +1237,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         requestQueue.add(stringRequest);
 
     }
-//
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        Log.d("check", "onLocationChanged: ");
-//        Log.d("location",location.getLatitude()+" "+location.getLongitude());
-//        getAddress(location.getLatitude(),location.getLongitude());
-//    }
-
-//    @Override
-//    public void onStatusChanged(String provider, int status, Bundle extras) {
-//        Log.d("check", "onStatusChanged: ");
-//
-//    }
-//
-//    @Override
-//    public void onProviderEnabled(String provider) {
-//        Log.d("check", "onProviderEnabled: ");
-//
-//    }
-//
-//    @Override
-//    public void onProviderDisabled(String provider) {
-//        Log.d("check", "onProviderDisabled: ");
-//
-//    }
 
     @Override
     public void onStart() {

@@ -463,27 +463,27 @@ public class AnswerPaperLoad extends AppCompatActivity {
                         map8 = QuestionPaperParser.QuestionParser(Question, j);
 
                         //Get it's variables..
-                        myAskedIn = map8.get("AskedIn");
+//                        myAskedIn = map8.get("AskedIn");
                         myLanguage = map8.get("Language");
                         questionAttributes = map8.get("Attributes");
 
                         //Parse one section one question askedIn..
-                        map9 = QuestionPaperParser.AskedInParser(myAskedIn);
+//                        map9 = QuestionPaperParser.AskedInParser(myAskedIn);
 
                         //Get it's variables..
-                        myExamName = map9.get("ExamName");
-                        myYear = map9.get("Year");
+//                        myExamName = map9.get("ExamName");
+//                        myYear = map9.get("Year");
 
                         //Get no. of Exam names in which the question has been asked..
-                        noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
+//                        noOfExamName = QuestionPaperParser.getLengthOfExamName(myExamName);
 
                         //Loop through the entire exam and year array..
-                        for (int k = 0; k < noOfExamName; ++k) {
-                            //Get exam name one by one..
-                            nm = QuestionPaperParser.getExamNamesOfOneQuestion(myExamName, k);
-                            //Get Year one by one..
-                            nmm = QuestionPaperParser.getYearsOfOneQuestion(myYear, k);
-                        }
+//                        for (int k = 0; k < noOfExamName; ++k) {
+//                            //Get exam name one by one..
+//                            nm = QuestionPaperParser.getExamNamesOfOneQuestion(myExamName, k);
+//                            //Get Year one by one..
+//                            nmm = QuestionPaperParser.getYearsOfOneQuestion(myYear, k);
+//                        }
 
                         //Get length of language array of one question of one section..
                         noOfLanguage = QuestionPaperParser.getLengthOfLanguageOfOneQuestion(myLanguage);

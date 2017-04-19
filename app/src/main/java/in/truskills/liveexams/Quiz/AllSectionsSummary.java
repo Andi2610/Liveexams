@@ -446,7 +446,6 @@ public class AllSectionsSummary extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
         }
     };
 }

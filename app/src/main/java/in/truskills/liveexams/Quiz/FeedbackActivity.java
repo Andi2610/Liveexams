@@ -217,8 +217,12 @@ public class FeedbackActivity extends AppCompatActivity {
             j.put("questionNumber",c);
             j.put("feedback",map.get(c));
             array.put(j);
-
         }
+
+
+        Log.d("myResult", "setFeedback: "+array);
+        Log.d("myResult", "setFeedback: "+examId);
+        Log.d("myResult", "setFeedback: "+userId);
 
         ConstantsDefined.updateAndroidSecurityProvider(FeedbackActivity.this);
         ConstantsDefined.beforeVolleyConnect();
@@ -231,7 +235,7 @@ public class FeedbackActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.d("myResponse", "onResponse: "+response);
+                Log.d("myResponseFeedback", "onResponse: "+response);
 
                 if(dialog!=null)
                     dialog.dismiss();
@@ -264,6 +268,8 @@ public class FeedbackActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                Log.d("myResponseFeedback", "onErrorResponse: "+error);
                 //In case the connection to the Api couldn't be established..
                 if(dialog!=null)
                 dialog.dismiss();

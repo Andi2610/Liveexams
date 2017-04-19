@@ -412,16 +412,32 @@ public class QuestionPaperLoad extends AppCompatActivity {
 
             gone = true;
 
-            Intent intent = new Intent(QuestionPaperLoad.this, QuizMainActivity.class);
-            intent.putExtra("examId", examId);
-            intent.putExtra("name", paperName);
-            intent.putExtra("language", selectedLanguage);
-            intent.putExtra("noOfSections", noOfSections);
-            intent.putExtra("questionArray", questionArray);
-            intent.putExtra("ExamDuration", myTime);
-            intent.putExtra("date", myDate);
-            startActivity(intent);
-            finish();
+            if(visible){
+                Intent intent = new Intent(QuestionPaperLoad.this, QuizMainActivity.class);
+                intent.putExtra("examId", examId);
+                intent.putExtra("name", paperName);
+                intent.putExtra("language", selectedLanguage);
+                intent.putExtra("noOfSections", noOfSections);
+                intent.putExtra("questionArray", questionArray);
+                intent.putExtra("ExamDuration", myTime);
+                intent.putExtra("date", myDate);
+                startActivity(intent);
+                finish();
+
+            }else{
+
+                ob.deleteMyTable();
+                SharedPreferences.Editor e = dataPrefs.edit();
+                e.clear();
+                e.apply();
+                Toast.makeText(QuestionPaperLoad.this, "Couldn't start your quiz.. Please try again..", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(QuestionPaperLoad.this, SplashScreen.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+
+            }
 
         }
     }
