@@ -58,6 +58,7 @@ public class MiscellaneousParser {
     private static String Question = "Question";
     private static String questionText = "questionText";
     private static String questionTopic = "questionTopic";
+    private static String questionNumber = "questionNumber";
 
     public static ArrayList<String> beforeSignupParser(String result) throws JSONException {
         ArrayList<String> list=new ArrayList<>();
@@ -459,6 +460,7 @@ public class MiscellaneousParser {
         ArrayList<String> questionIdList=new ArrayList<>();
         ArrayList<String> questionTextList=new ArrayList<>();
         ArrayList<String> questionTopicList=new ArrayList<>();
+        ArrayList<String> questionNumberList=new ArrayList<>();
 
         JSONObject jsonObject=new JSONObject(result);
         JSONObject jsonObject1=jsonObject.getJSONObject(response);
@@ -482,9 +484,14 @@ public class MiscellaneousParser {
         questionTopicList.add(q2.getString(questionTopic));
         questionTopicList.add(q3.getString(questionTopic));
 
+        questionNumberList.add(q1.getString(questionNumber));
+        questionNumberList.add(q2.getString(questionNumber));
+        questionNumberList.add(q3.getString(questionNumber));
+
         map.put("id",questionIdList);
         map.put("text",questionTextList);
         map.put("topic",questionTopicList);
+        map.put("number",questionNumberList);
 
         return map;
     }

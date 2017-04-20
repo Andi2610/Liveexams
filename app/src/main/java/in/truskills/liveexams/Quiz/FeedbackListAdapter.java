@@ -25,13 +25,15 @@ public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapte
     ArrayList<String> questionTextList;
     ArrayList<String> questionIdList;
     ArrayList<String> questionTopicList;
+    ArrayList<String> questionNumberList;
     static HashMap<Integer,String> feedback=new HashMap<>();
     Context c;
 
-    FeedbackListAdapter(ArrayList<String> questionTextList,ArrayList<String> questionIdList,ArrayList<String> questionTopicList,Context c) {
+    FeedbackListAdapter(ArrayList<String> questionTextList,ArrayList<String> questionIdList,ArrayList<String> questionTopicList,ArrayList<String> questionNumberList,Context c) {
         this.questionTextList = questionTextList;
         this.questionIdList = questionIdList;
         this.questionTopicList = questionTopicList;
+        this.questionNumberList=questionNumberList;
         this.c = c;
     }
 

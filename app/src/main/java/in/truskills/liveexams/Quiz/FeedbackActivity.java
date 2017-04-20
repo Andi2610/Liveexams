@@ -49,6 +49,7 @@ public class FeedbackActivity extends AppCompatActivity {
     ArrayList<String> questionIdList=new ArrayList<>();
     ArrayList<String> questionTextList=new ArrayList<>();
     ArrayList<String> questionTopicList=new ArrayList<>();
+    ArrayList<String> questionNumberList=new ArrayList<>();
     Handler h;
     JSONArray array;
     ProgressDialog dialog;
@@ -158,10 +159,11 @@ public class FeedbackActivity extends AppCompatActivity {
                         questionIdList=map.get("id");
                         questionTextList=map.get("text");
                         questionTopicList=map.get("topic");
+                        questionNumberList=map.get("number");
                         h.post(new Runnable() {
                             @Override
                             public void run() {
-                                feedbackListAdapter= new FeedbackListAdapter(questionTextList,questionIdList,questionTopicList, FeedbackActivity.this);
+                                feedbackListAdapter= new FeedbackListAdapter(questionTextList,questionIdList,questionTopicList,questionNumberList, FeedbackActivity.this);
                                 feedbackList.setAdapter(feedbackListAdapter);
                                 feedbackListAdapter.notifyDataSetChanged();
                             }
@@ -214,7 +216,7 @@ public class FeedbackActivity extends AppCompatActivity {
             j.put("questionId",questionIdList.get(i));
             j.put("questionTopic",questionTopicList.get(i));
             int c=i+1;
-            j.put("questionNumber",c);
+            j.put("questionNumber",questionNumberList.get(i));
             j.put("feedback",map.get(c));
             array.put(j);
         }

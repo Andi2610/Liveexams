@@ -293,6 +293,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                 }else{
                     Toast.makeText(AnswerPaperLoad.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                 }
+                finish();
             }
         });
         requestQueue.add(jsonObjectRequest);
