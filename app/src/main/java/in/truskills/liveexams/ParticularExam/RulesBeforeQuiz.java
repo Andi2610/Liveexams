@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import in.truskills.liveexams.Quiz.QuestionPaperLoad;
+import in.truskills.liveexams.Quiz.QuestionPaperLoadDevelopment;
 import in.truskills.liveexams.R;
 
 public class RulesBeforeQuiz extends AppCompatActivity {
@@ -72,7 +73,7 @@ public class RulesBeforeQuiz extends AppCompatActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(RulesBeforeQuiz.this, QuestionPaperLoad.class);
+                Intent i = new Intent(RulesBeforeQuiz.this, QuestionPaperLoadDevelopment.class);
                 i.putExtra("examId", examId);
                 i.putExtra("name", name);
                 i.putExtra("language", selectedLanguage);

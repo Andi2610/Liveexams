@@ -23,8 +23,8 @@ android {
         applicationId "in.truskills.liveexams"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 13
-        versionName "2.0.2"
+        versionCode 14
+        versionName "2.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
