@@ -26,6 +26,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +117,7 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
 
                                     if(ans.size()==0){
                                         if(c!=null)
-                                            Toast.makeText(c, "No data found for this ", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(c, "No exams available for this stream at present", Toast.LENGTH_LONG).show();
                                     }else{
                                         AuthorFragment f=new AuthorFragment();
                                         Bundle b=new Bundle();
@@ -132,6 +133,8 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                                                 "Please try again..", Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                         }

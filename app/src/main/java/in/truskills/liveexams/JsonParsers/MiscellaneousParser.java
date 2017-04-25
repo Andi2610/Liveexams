@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import in.truskills.liveexams.MainScreens.Values;
 import in.truskills.liveexams.ParticularExamStatistics.SectionNamesdisplayAdapterForAnswers;
 
 /**
@@ -385,22 +386,67 @@ public class MiscellaneousParser {
         return ans;
     }
 
-    public static ArrayList<String> searchExamsByStreamNameParser(JSONObject result) throws JSONException {
+    public static ArrayList<String> searchExamsByStreamNameParser(JSONObject result) throws JSONException, ParseException {
         ArrayList<String> ans=new ArrayList<>();
         HashMap<String,ArrayList<String>> map=new HashMap<>();
         JSONObject jsonObject3=result.getJSONObject(response);
         JSONArray jsonArray=jsonObject3.getJSONArray(exams);
+        String timestamp = jsonObject3.getString("timestamp");
+        String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime,myTimeOfStart,myTimeOfEnd;
+        String myTimestamp,myTime;
+
         int len=jsonArray.length();
         for(int i=0;i<len;++i){
             JSONObject jsonObject=jsonArray.getJSONObject(i);
+
             JSONArray jsonArray1=jsonObject.getJSONArray(AuthorDetails);
             JSONObject jsonObject1=jsonArray1.getJSONObject(0);
             JSONObject jsonObject2=jsonObject1.getJSONObject(Attributes);
             String name=jsonObject2.getString(Name);
             Log.d("author", "searchExamsByStreamNameParser: "+name);
-            if(!ans.contains(name))
-                ans.add(name);
-            map.put(name,new ArrayList<String>());
+
+            myStartTime=jsonObject.getJSONArray(StartTime).get(0).toString();
+            myEndTime=jsonObject.getJSONArray(EndTime).get(0).toString();
+            myStartDate=jsonObject.getJSONArray(StartDate).get(0).toString();
+            myEndDate=jsonObject.getJSONArray(EndDate).get(0).toString();
+
+            myDateOfStart = parseDate(myStartDate);
+            myDateOfEnd = parseDate(myEndDate);
+            myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
+            myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
+            myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
+            myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date start_date = simpleDateFormat.parse(myDateOfStart);
+            Date end_date = simpleDateFormat.parse(myDateOfEnd);
+            Date middle_date = simpleDateFormat.parse(myTimestamp);
+
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
+            Date start_time = simpleDateFormat2.parse(myTimeOfStart);
+            Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
+            Date middle_time = simpleDateFormat2.parse(myTime);
+
+            if (middle_date.before(start_date)) {
+               //...
+                if(!ans.contains(name))
+                    ans.add(name);
+                map.put(name,new ArrayList<String>());
+            } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
+                if (middle_date.equals(end_date)) {
+                    if (!middle_time.after(end_time)) {
+                       //..
+                        if(!ans.contains(name))
+                            ans.add(name);
+                        map.put(name,new ArrayList<String>());
+                    }
+                } else {
+                   //..
+                    if(!ans.contains(name))
+                        ans.add(name);
+                    map.put(name,new ArrayList<String>());
+                }
+            }
         }
 
         return ans;
