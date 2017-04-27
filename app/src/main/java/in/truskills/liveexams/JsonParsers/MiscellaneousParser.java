@@ -74,7 +74,7 @@ public class MiscellaneousParser {
         return list;
     }
 
-    public static HashMap signupParser(String result) throws JSONException {
+    public static HashMap<String,String> signupParser(String result) throws JSONException {
         JSONObject jsonObject = new JSONObject(result);
         HashMap<String, String> mapper = new HashMap<>();
         mapper.put("response", jsonObject.getString(response));
@@ -82,7 +82,7 @@ public class MiscellaneousParser {
         return mapper;
     }
 
-    public static HashMap loginParser(String result) throws JSONException {
+    public static HashMap<String,String> loginParser(String result) throws JSONException {
         JSONObject jsonOb = new JSONObject(result);
         JSONObject jsonObject = jsonOb.optJSONObject(response);
         HashMap<String, String> mapper = new HashMap<>();

@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
@@ -760,13 +759,11 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
         if (mGoogleApiClient.isConnected()) {
             pendingResult = LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-        Log.d(TAG, "Location update started ..............: ");
     }
 
     protected void stopLocationUpdates() {
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            Log.d(TAG, "Location update stopped .......................");
             mGoogleApiClient.disconnect();
         }
     }
@@ -968,7 +965,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                     protected Map<String, String> getParams() {
 
                         //Attach parameters required..
-                        Map<String, String> params = new HashMap<String, String>();
+                        Map<String, String> params = new HashMap<>();
                         params.put("userName", name);
                         params.put("gender", gender);
                         params.put("password", password);
@@ -1096,9 +1093,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
                         //Display error message..
                         Toast.makeText(Signup_Login.this, mapper.get("response"), Toast.LENGTH_SHORT).show();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
+                }  catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -1125,7 +1120,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             protected Map<String, String> getParams() throws AuthFailureError {
 
                 //Put all the required parameters for the post request..
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("userName", loginName.getText().toString());
                 params.put("password", loginPassword.getText().toString());
                 return params;
@@ -1304,7 +1299,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             case CheckForPermissions.SMS_PERMISSION_CODE:
                 //If permission is granted
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    //Do nothing..
                 } else {
                     //Displaying another toast if permission is not granted
                     Toast.makeText(this, "Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
@@ -1365,6 +1360,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLocationChanged(Location location) {
+
+        //Get desired data and call updateUI method..
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateUI();
@@ -1373,6 +1370,8 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
+
+        //If connnected.. start location updates..
         if (mGoogleApiClient.isConnected()) {
             startLocationUpdates();
         }
