@@ -37,13 +37,19 @@ import in.truskills.liveexams.R;
 
 /**
  * This Activity launches in case the user forgets his/her login password..
+ *
  * Functions used:
+ *
  * 1. onCreate() : check for sms permissions.. If not present, call onRequestPermissionsResult().. else call getVerified() method.
- * 2. onRequestPermissionsResult() : to check for permissions of sms and call method getVerified() whether permissions present or not..
- * 3. getAuthCallback() : to return authCallback instance..
+ * 2. getAuthCallback() : to return authCallback instance..
+ * 3. successMethod() : called when phone number is successfully verified; it calls changePassword api to reset password..
  * 4. getVerified() : checks and verify phone number through DIGITS implementation..
- * 5. successMethod() : called when phone number is successfully verified; it calls changePassword api to reset password..
+ * 5. onRequestPermissionsResult() : to check for permissions of sms and call method getVerified() whether permissions present or not..
  * 6. onSupportNavigationUp() : handles the back button press on toolbar of the app..
+ *
+ * API calls made:
+ *
+ * 1. /api/changePassword (POST request with parameters: mobileNumber, newPassword) : to change user's registered password..
  */
 
 public class ForgotPassword extends AppCompatActivity {
@@ -154,7 +160,7 @@ public class ForgotPassword extends AppCompatActivity {
                     ConstantsDefined.updateAndroidSecurityProvider(ForgotPassword.this);
                     ConstantsDefined.beforeVolleyConnect();
 
-                    //Initialise requestQueue instance and url to be connected to..
+                    //Initialise requestQueue instance and url to be connected to for Volley connection..
                     requestQueue = Volley.newRequestQueue(getApplicationContext());
                     String url = ConstantsDefined.api + "changePassword";
 
@@ -228,23 +234,6 @@ public class ForgotPassword extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case CheckForPermissions.SMS_PERMISSION_CODE:
-                //If permission is granted
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //Do nothing..
-                } else {
-                    //Displaying another toast if permission is not granted
-                    Toast.makeText(this, "Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
-                }
-                //Call getVerified method always irrespective of permissions present or not..
-                getVerified();
-                break;
-        }
-    }
-
     public void getVerified() {
 
         //Display desired toast to let user know that only registered mobile number should be entered..
@@ -281,6 +270,23 @@ public class ForgotPassword extends AppCompatActivity {
                 .withAuthCallBack(authCallback)
                 .withPhoneNumber("+91");
         Digits.authenticate(authConfigBuilder.build());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case CheckForPermissions.SMS_PERMISSION_CODE:
+                //If permission is granted
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Do nothing..
+                } else {
+                    //Displaying another toast if permission is not granted
+                    Toast.makeText(this, "Oops you have denied the permission for sms\nGo to settings and grant them to automatic read OTP", Toast.LENGTH_LONG).show();
+                }
+                //Call getVerified method always irrespective of permissions present or not..
+                getVerified();
+                break;
+        }
     }
 
     @Override
