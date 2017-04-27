@@ -49,7 +49,7 @@ import io.fabric.sdk.android.services.concurrency.AsyncTask;
  * 3. onBackPressed() : disable back button.. so do nothing here..
  *
  * API calls made:
- * 1.
+ * 1. http://35.154.110.122:3002/api/apkVersionAndroid (GET request) : to get latest apk version from server to compare it with user's android version..
  */
 
 public class SplashScreen extends Activity {
