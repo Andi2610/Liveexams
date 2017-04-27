@@ -143,7 +143,6 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
     Drawable dr;
     ProgressDialog dialog;
     public static boolean available=true;
-    private static final String TAG = "LocationActivity";
     private static final long INTERVAL = 1000 * 10;
     private static final long FASTEST_INTERVAL = 1000 * 5;
     LocationRequest mLocationRequest;

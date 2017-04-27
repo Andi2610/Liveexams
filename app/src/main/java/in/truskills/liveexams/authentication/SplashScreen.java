@@ -41,6 +41,15 @@ import io.fabric.sdk.android.services.concurrency.AsyncTask;
  * This is the launcher activity displayed for 2 secs..
  * It checks for apkAndroidVersion of the current app installed in the phone and the latest version in production..
  * In case of mismatch, it force redirects to play store for updation else the app won't open further..
+ *
+ * Functions used:
+ *
+ * 1. onCreate() : to show splash screen for 2 secs and the check android apk version..
+ * 2. onPause() : finish this activity to ensure that this activity doesn't gets added to backstack..
+ * 3. onBackPressed() : disable back button.. so do nothing here..
+ *
+ * API calls made:
+ * 1.
  */
 
 public class SplashScreen extends Activity {
@@ -49,13 +58,17 @@ public class SplashScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Render layout file..
         setContentView(R.layout.activity_splash_screen);
 
+        //Render elements from layout..
         TextView companyName=(TextView)findViewById(R.id.companyName);
 
+        //Set typeface for desired texts in layout..
         Typeface tff=Typeface.createFromAsset(getAssets(), "fonts/SF-Compact-Display-Light.otf");
         companyName.setTypeface(tff);
 
+        //Start a thread which runs for 2 secs and then do desired actions..
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -66,16 +79,21 @@ public class SplashScreen extends Activity {
                     e.printStackTrace();
                 }finally {
 
+                    //After 2 secs.. compare current APK version of app and the latest one available..
+                    //In case of mismatch, notify the user accordingly..
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
 
+                            //For https connection..
                             ConstantsDefined.updateAndroidSecurityProvider(SplashScreen.this);
                             ConstantsDefined.beforeVolleyConnect();
 
+                            //Initialise requestQueue instance..
                             RequestQueue requestQueue;
                             requestQueue = Volley.newRequestQueue(SplashScreen.this);
 
+                            //Api to be connected to..
                             String url = ConstantsDefined.api2 + "apkVersionAndroid";
                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                                     url, new Response.Listener<JSONObject>() {
@@ -83,15 +101,17 @@ public class SplashScreen extends Activity {
                                 @Override
                                 public void onResponse(JSONObject response) {
 
-                                    Log.d("version", "onResponse: "+response);
                                     try {
+                                        //Parse the response..
                                         String success=response.getString("success");
                                         if(success.equals("true")){
+                                            //If successful, compare the versions..
                                             String myVersion=response.getString("response");
                                             PackageInfo pInfo = null;
                                             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
                                             String version = pInfo.versionName;
 
+                                            //If match found, start next activity..
                                             if (myVersion.equals(version)){
                                                 SharedPreferences prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
                                                 String state=prefs.getString("login","false");
@@ -107,6 +127,7 @@ public class SplashScreen extends Activity {
                                                     startActivity(i);
                                                 }
                                             }else{
+                                                //Else direct user to playstore for updation..
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreen.this, R.style.AppCompatAlertDialogStyle);
                                                 builder.setTitle("Updated App Not Installed");  // GPS not found
                                                 builder.setMessage("You will be directed to play store now..\nPlease update your app"); // Want to enable?
@@ -122,9 +143,9 @@ public class SplashScreen extends Activity {
                                                 builder.create().show();
                                             }
                                         }else{
+                                            //Else display error message..
                                             Toast.makeText(SplashScreen.this, "An unexpected error occurred..\nPlease try again..", Toast.LENGTH_SHORT).show();
                                         }
-
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     } catch (PackageManager.NameNotFoundException e) {
@@ -135,6 +156,8 @@ public class SplashScreen extends Activity {
                             }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+
+                                    //If could not connect to api, display error message and close the app..
                                     Toast.makeText(SplashScreen.this, "Sorry no internet connection..Please try again..", Toast.LENGTH_LONG).show();
                                     finish();
                                 }
