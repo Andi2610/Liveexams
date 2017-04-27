@@ -5,12 +5,9 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import in.truskills.liveexams.R;
 
@@ -23,12 +20,12 @@ public class CustomSpinnerAdapter extends BaseAdapter {
 
     Context context;
     ArrayList<String> names;
-    LayoutInflater inflter;
+    LayoutInflater inflater;
 
     public CustomSpinnerAdapter(Context applicationContext, ArrayList<String> names) {
         this.context = applicationContext;
         this.names = names;
-        inflter = (LayoutInflater.from(applicationContext));
+        inflater = (LayoutInflater.from(applicationContext));
     }
 
     @Override
@@ -48,7 +45,7 @@ public class CustomSpinnerAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        view = inflter.inflate(R.layout.custom_spinner_layout, null);
+        view = inflater.inflate(R.layout.custom_spinner_layout, null);
         TextView namesTv = (TextView) view.findViewById(R.id.textForSpinner);
         namesTv.setText(names.get(position));
         Typeface tff2 = Typeface.createFromAsset(context.getAssets(), "fonts/Comfortaa-Regular.ttf");
