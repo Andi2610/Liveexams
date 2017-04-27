@@ -55,6 +55,7 @@ public class AllSectionsSummary extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     AllSectionsSummaryAdapter allSectionsSummaryAdapter;
     RecyclerView allSectionsList;
+    long start, end, diff;
     ArrayList<String> sectionName;
     ArrayList<ArrayList<Integer>> questionArray;
     QuizDatabase ob;
@@ -82,6 +83,8 @@ public class AllSectionsSummary extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        start=getIntent().getLongExtra("start",0);
 
         prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
         dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
@@ -205,6 +208,9 @@ public class AllSectionsSummary extends AppCompatActivity {
     }
 
     public void submit() {
+
+        updateTimeForPreviousPage();
+
 //        ob.getAllValues();
         JSONArray jsonArray = ob.getQuizResult();
         final JSONObject jsonObject = new JSONObject();
@@ -448,4 +454,25 @@ public class AllSectionsSummary extends AppCompatActivity {
             }
         }
     };
+
+    public void updateTimeForPreviousPage(){
+
+        int preIndex = quizPrefs.getInt("previousIndex", 0);
+        int preSi = ob.getIntValuesPerQuestionByFragmentIndex(preIndex, QuizDatabase.SectionIndex);
+        int preQi = ob.getIntValuesPerQuestionByFragmentIndex(preIndex, QuizDatabase.QuestionIndex);
+        int prevTempSr = Integer.parseInt(ob.getValuesForResult(preSi, preQi, QuizDatabase.TempAnswerSerialNumber));
+        int prevQS = Integer.parseInt(ob.getValuesForResult(preSi, preQi, QuizDatabase.QuestionStatus));
+
+        Log.d("myData", prevTempSr + " " + prevQS);
+
+        //Update time spent..
+        end = System.currentTimeMillis();
+        diff = end - start;
+        diff = diff / 1000;
+        String myTime = ob.getValuesForResult(preSi, preQi, QuizDatabase.TimeSpent);
+        long time = Long.parseLong(myTime);
+        time = time + diff;
+        ob.updateValuesForResult(preSi, preQi, QuizDatabase.TimeSpent, time + "");
+
+    }
 }

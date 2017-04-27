@@ -392,28 +392,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             public void onPageSelected(int position) {
 
                 //For previous page..
-                int preIndex = quizPrefs.getInt("previousIndex", 0);
-                int preSi = ob.getIntValuesPerQuestionByFragmentIndex(preIndex, QuizDatabase.SectionIndex);
-                int preQi = ob.getIntValuesPerQuestionByFragmentIndex(preIndex, QuizDatabase.QuestionIndex);
-                int prevTempSr = Integer.parseInt(ob.getValuesForResult(preSi, preQi, QuizDatabase.TempAnswerSerialNumber));
-                int prevQS = Integer.parseInt(ob.getValuesForResult(preSi, preQi, QuizDatabase.QuestionStatus));
-
-                Log.d("myData", prevTempSr + " " + prevQS);
-
-                if ((prevTempSr == -1 && prevQS != 2) || prevQS == 4 || prevQS == 3) {
-                    setDetailsForNotAnswered(preSi, preQi);
-                    MyFragment fragment = (MyFragment) pageAdapter.getItem(preIndex);
-                    fragment.update();
-                }
-
-                //Update time spent..
-                end = System.currentTimeMillis();
-                diff = end - start;
-                diff = diff / 1000;
-                String myTime = ob.getValuesForResult(preSi, preQi, QuizDatabase.TimeSpent);
-                long time = Long.parseLong(myTime);
-                time = time + diff;
-                ob.updateValuesForResult(preSi, preQi, QuizDatabase.TimeSpent, time + "");
+                updateTimeForPreviousPage();
 
                 //For current page..
                 int SI = ob.getIntValuesPerQuestionByFragmentIndex(position, QuizDatabase.SectionIndex);
@@ -557,6 +536,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 i.putExtra("userId", prefs.getString("userId", ""));
                 i.putExtra("selectedLanguage", selectedLanguage);
                 i.putExtra("date", myDate);
+                i.putExtra("start",start);
                 startActivityForResult(i, REQUEST_CODE_FOR_ALL_SUMMARY);
                 break;
         }
@@ -1316,6 +1296,8 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     public void submit() {
 
+        updateTimeForPreviousPage();
+
         RequestQueue requestQueue;
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -1466,5 +1448,32 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             if (camera != null) camera.release();
         }
         return false;
+    }
+
+    public void updateTimeForPreviousPage(){
+
+        int preIndex = quizPrefs.getInt("previousIndex", 0);
+        int preSi = ob.getIntValuesPerQuestionByFragmentIndex(preIndex, QuizDatabase.SectionIndex);
+        int preQi = ob.getIntValuesPerQuestionByFragmentIndex(preIndex, QuizDatabase.QuestionIndex);
+        int prevTempSr = Integer.parseInt(ob.getValuesForResult(preSi, preQi, QuizDatabase.TempAnswerSerialNumber));
+        int prevQS = Integer.parseInt(ob.getValuesForResult(preSi, preQi, QuizDatabase.QuestionStatus));
+
+        Log.d("myData", prevTempSr + " " + prevQS);
+
+        if ((prevTempSr == -1 && prevQS != 2) || prevQS == 4 || prevQS == 3) {
+            setDetailsForNotAnswered(preSi, preQi);
+            MyFragment fragment = (MyFragment) pageAdapter.getItem(preIndex);
+            fragment.update();
+        }
+
+        //Update time spent..
+        end = System.currentTimeMillis();
+        diff = end - start;
+        diff = diff / 1000;
+        String myTime = ob.getValuesForResult(preSi, preQi, QuizDatabase.TimeSpent);
+        long time = Long.parseLong(myTime);
+        time = time + diff;
+        ob.updateValuesForResult(preSi, preQi, QuizDatabase.TimeSpent, time + "");
+
     }
 }
