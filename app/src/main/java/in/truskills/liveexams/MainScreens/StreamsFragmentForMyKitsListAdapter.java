@@ -40,7 +40,7 @@ import in.truskills.liveexams.R;
  * Created by Shivansh Gupta on 06-04-2017.
  */
 
-public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.MyViewHolder> {
+public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<StreamsFragmentForMyKitsListAdapter.MyViewHolder> {
 
     List<String> myList;
     Context c;
@@ -48,10 +48,10 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
     Handler h;
     ProgressDialog dialog;
     String value;
-    StreamInterface streamInterface;
+    StreamInterfaceForMyKits streamInterface;
     HashMap<String,ArrayList<String>> map;
 
-    StreamsListAdapter(List<String> myList, Context c,StreamInterface streamInterface) {
+    StreamsFragmentForMyKitsListAdapter(List<String> myList, Context c,StreamInterfaceForMyKits streamInterface) {
         this.myList = myList;
         this.c = c;
         this.streamInterface=streamInterface;
@@ -59,7 +59,7 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
     }
 
     @Override
-    public StreamsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StreamsFragmentForMyKitsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_row_layout_my_streams, parent, false);
 
@@ -76,13 +76,13 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
             @Override
             public void onClick(View view) {
 
-                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
-
-                Log.d("prefsAllow",allow.getInt("allow",1)+"");
-                if(allow.getInt("allow",1)==0){
-                    if(c!=null)
-                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
-                }else{
+//                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
+//
+//                Log.d("prefsAllow",allow.getInt("allow",1)+"");
+//                if(allow.getInt("allow",1)==0){
+//                    if(c!=null)
+//                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
+//                }else{
                     value = myList.get(holder.getAdapterPosition());
 
                     final RequestQueue requestQueue = Volley.newRequestQueue(c);
@@ -100,13 +100,18 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                     ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
                     ConstantsDefined.beforeVolleyConnect();
 
-                    value=value.replaceAll(" ","");
+                Log.d("kit", "onClick: "+value);
 
-                    String url = ConstantsDefined.api + "searchExamsByStreamName/"+value;
+                value=value.replaceAll(" ","");
+
+                    String url = ConstantsDefined.apiForKit + "searchProductKitsByStreamName/"+value;
+                Log.d("kit", "onClick: "+url);
                     StringRequest stringRequest = new StringRequest(Request.Method.GET,
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            Log.d("kit", "onResponse: "+response);
+
                             if(dialog!=null)
                                 dialog.dismiss();
                             try {
@@ -115,19 +120,19 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
                                     ArrayList<String> ans;
-                                    ans=MiscellaneousParser.searchExamsByStreamNameParser(jsonObject);
+                                    ans=MiscellaneousParser.searchExamsByStreamNameParserForMyKits(jsonObject);
 
                                     if(ans.size()==0){
                                         if(c!=null)
-                                            Toast.makeText(c, "No exams available for this stream at present", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(c, "No kits available for this stream at present", Toast.LENGTH_LONG).show();
                                     }else{
-                                        AuthorFragment f=new AuthorFragment();
+                                        AuthorFragmentForMyKits f=new AuthorFragmentForMyKits();
                                         Bundle b=new Bundle();
                                         b.putStringArrayList("list",ans);
                                         b.putString("response",jsonObject.toString());
                                         f.setArguments(b);
                                         String title="SELECT YOUR AUTHOR";
-                                        streamInterface.changeFromStream(f,title);
+                                        streamInterface.changeFromStreamForMyKits(f,title);
                                     }
                                 }else{
                                     if(c!=null)
@@ -143,6 +148,8 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+
+                            Log.d("kit", "onErrorResponse: "+error);
                             if(dialog!=null)
                                 dialog.dismiss();
                             if(ConstantsDefined.isOnline(c)){
@@ -163,7 +170,7 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                         }
                     };
                     requestQueue.add(stringRequest);
-                }
+//                }
             }
         });
     }

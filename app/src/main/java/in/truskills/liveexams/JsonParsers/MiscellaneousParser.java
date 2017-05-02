@@ -60,6 +60,11 @@ public class MiscellaneousParser {
     private static String questionText = "questionText";
     private static String questionTopic = "questionTopic";
     private static String questionNumber = "questionNumber";
+    private static String productKits = "productKits";
+    private static String authorDetails = "authorDetails";
+    private static String name = "name";
+    private static String startDate = "startDate";
+    private static String endDate = "endDate";
 
     public static ArrayList<String> beforeSignupParser(String result) throws JSONException {
         ArrayList<String> list=new ArrayList<>();
@@ -386,6 +391,16 @@ public class MiscellaneousParser {
         return ans;
     }
 
+    public static ArrayList<String> getStreamNamesForMyKitsParser(JSONObject result) throws JSONException {
+        ArrayList<String> ans=new ArrayList<>();
+        JSONArray jsonArray=result.getJSONArray(response);
+        int len=jsonArray.length();
+        for(int i=0;i<len;++i){
+            ans.add(jsonArray.get(i).toString());
+        }
+        return ans;
+    }
+
     public static ArrayList<String> searchExamsByStreamNameParser(JSONObject result) throws JSONException, ParseException {
         ArrayList<String> ans=new ArrayList<>();
         HashMap<String,ArrayList<String>> map=new HashMap<>();
@@ -452,6 +467,27 @@ public class MiscellaneousParser {
         return ans;
     }
 
+    public static ArrayList<String> searchExamsByStreamNameParserForMyKits(JSONObject result) throws JSONException, ParseException {
+        ArrayList<String> ans=new ArrayList<>();
+        HashMap<String,ArrayList<String>> map=new HashMap<>();
+        JSONObject jsonObject3=result.getJSONObject(response);
+        JSONArray jsonArray=jsonObject3.getJSONArray(productKits);
+        int len=jsonArray.length();
+        for(int i=0;i<len;++i){
+            JSONObject jsonObject=jsonArray.getJSONObject(i);
+
+            JSONObject jsonObject1=jsonObject.getJSONObject(authorDetails);
+            String name=jsonObject1.getString(Name);
+            Log.d("author", "searchExamsByStreamNameParser: "+name);
+            if(!ans.contains(name))
+                ans.add(name);
+            map.put(name,new ArrayList<String>());
+
+        }
+
+        return ans;
+    }
+
     public static HashMap<String,ArrayList<String>> getExamsByAuthors(JSONObject result,String value) throws JSONException {
 
         JSONObject jsonObject3=result.getJSONObject(response);
@@ -501,6 +537,41 @@ public class MiscellaneousParser {
         return mapper;
     }
 
+    public static HashMap<String,ArrayList<String>> getKitsByAuthors(JSONObject result,String value) throws JSONException {
+
+        JSONObject jsonObject3=result.getJSONObject(response);
+        JSONArray jsonArray=jsonObject3.getJSONArray(productKits);
+        ArrayList<String> ExamNameList = new ArrayList<>();
+        ArrayList<String> StartDateList = new ArrayList<>();
+        ArrayList<String> EndDateList = new ArrayList<>();
+        ArrayList<String> ExamIdList = new ArrayList<>();
+        HashMap<String, ArrayList<String>> mapper = new HashMap<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+            JSONObject jsonObject1=jsonObject.getJSONObject(authorDetails);
+            String Aname=jsonObject1.getString(Name);
+
+            if(Aname.equals(value)){
+
+                ExamNameList.add(jsonObject.getString(name));
+
+                StartDateList.add(jsonObject.getString(startDate));
+
+                EndDateList.add(jsonObject.getString(endDate));
+
+                ExamIdList.add(jsonObject.getString(id));
+
+            }
+        }
+        mapper.put("ExamName", ExamNameList);
+        mapper.put("StartDate", StartDateList);
+        mapper.put("EndDate", EndDateList);
+        mapper.put("ExamId", ExamIdList);
+        return mapper;
+    }
+
     public static HashMap feedbackQuestionsParser(String result) throws JSONException {
         HashMap<String,ArrayList<String>> map=new HashMap<>();
         ArrayList<String> questionIdList=new ArrayList<>();
@@ -540,6 +611,26 @@ public class MiscellaneousParser {
         map.put("number",questionNumberList);
 
         return map;
+    }
+
+    public static String parseDateForKit(String myDate) throws ParseException {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        Date date;
+        try{
+            date = simpleDateFormat.parse(myDate);
+        }catch (ParseException e){
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
+            date = simpleDateFormat2.parse(myDate);
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        month++;
+        String myParsedDate = day + "/" + month + "/" + year;
+        return myParsedDate;
     }
 
 }

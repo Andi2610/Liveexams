@@ -42,6 +42,7 @@ public class ConstantsDefined {
 //    public static final String api = "https://api.liveexams.in/api/";
     public static final String api = "http://35.154.110.122:3002/api/";
     public static final String api2 = "http://35.154.110.122:3002/api/";
+    public static final String apiForKit = "http://35.154.110.122:3002/access/";
 
     //Url for image..
     public static final String imageUrl = "https://s3.ap-south-1.amazonaws.com/live-exams/";
