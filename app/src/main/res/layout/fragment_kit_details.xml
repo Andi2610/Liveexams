@@ -1,13 +1,144 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.truskills.liveexams.MainScreens.KitDetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/header"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_centerHorizontal="true">
 
-</FrameLayout>
+        <TextView
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="START DATE:"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:id="@+id/startDateText"/>
+
+        <TextView
+            android:textSize="19dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/light_sea_blue"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/startDateValue"/>
+
+        <TextView
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="END DATE:"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:id="@+id/endDateText"/>
+
+        <TextView
+            android:textSize="19dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/endDateValue"/>
+
+        <TextView
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="DESCRIPTION:"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:id="@+id/descriptionText"/>
+
+        <TextView
+            android:textSize="19dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/descriptionValue"/>
+
+        <TextView
+            android:textSize="20dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="PRICE:"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:id="@+id/priceText"/>
+
+        <TextView
+            android:textSize="19dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/priceValue"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:weightSum="100"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@color/grey"
+            android:text="USE PROMO CODE"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:id="@+id/promo"
+            android:padding="2dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@color/colorPrimary"
+            android:text="BUY KIT"
+            android:id="@+id/buy"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:padding="2dp"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

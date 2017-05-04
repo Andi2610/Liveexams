@@ -114,6 +114,8 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            Log.d("responseInFragment", "onResponse: "+response);
+
                             if(dialog!=null)
                                 dialog.dismiss();
                             try {
@@ -124,7 +126,8 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
 
                                     KitDetailsFragment f=new KitDetailsFragment();
                                     Bundle b=new Bundle();
-                                    b.putString(jsonObject.getJSONObject("response").toString(),"");
+                                    Log.d("responseInFragment", "onResponse: "+jsonObject.getJSONObject("response").toString());
+                                    b.putString("response",jsonObject.getJSONObject("response").toString());
                                     f.setArguments(b);
                                     ob.changeFromKitsByAuthors(f,value.getName());
 

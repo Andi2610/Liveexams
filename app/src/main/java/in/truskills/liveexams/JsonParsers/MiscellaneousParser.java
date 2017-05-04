@@ -2,6 +2,8 @@ package in.truskills.liveexams.JsonParsers;
 
 import android.util.Log;
 
+import com.google.gson.JsonArray;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,6 +67,15 @@ public class MiscellaneousParser {
     private static String name = "name";
     private static String startDate = "startDate";
     private static String endDate = "endDate";
+    private static String courses = "courses";
+    private static String paid = "paid";
+    private static String examName = "examName";
+    private static String examId = "examId";
+    private static String courseId = "courseId";
+    private static String courseName = "courseName";
+    private static String description = "description";
+    private static String price = "price";
+    private static String amount = "amount";
 
     public static ArrayList<String> beforeSignupParser(String result) throws JSONException {
         ArrayList<String> list=new ArrayList<>();
@@ -631,6 +642,57 @@ public class MiscellaneousParser {
         month++;
         String myParsedDate = day + "/" + month + "/" + year;
         return myParsedDate;
+    }
+
+    public static HashMap<String,ArrayList<String>> getExamsAndCoursesOfOneKit(String result) throws JSONException {
+        HashMap<String,ArrayList<String>> hashMap=new HashMap<>();
+        JSONObject jsonObject=new JSONObject(result);
+        JSONArray jsonArray=jsonObject.getJSONArray(exams);
+        JSONArray jsonArray1=jsonObject.getJSONArray(courses);
+        ArrayList<String> examsPaidName=new ArrayList<>();
+        ArrayList<String> examsFreeName=new ArrayList<>();
+        ArrayList<String> examsPaidId=new ArrayList<>();
+        ArrayList<String> examsFreeId=new ArrayList<>();
+        ArrayList<String> coursesName=new ArrayList<>();
+        ArrayList<String> coursesId=new ArrayList<>();
+        for(int i=0;i<jsonArray.length();++i){
+            JSONObject jsonObject1=jsonArray.getJSONObject(i);
+            String Paid = jsonObject1.getString(paid);
+            if(Paid.equals("true")){
+                examsPaidName.add(jsonObject1.getJSONArray(examName).get(0).toString());
+                examsPaidId.add(jsonObject1.getString(examId));
+            }else{
+                examsFreeName.add(jsonObject1.getJSONArray(examName).get(0).toString());
+                examsFreeId.add(jsonObject1.getString(examId));
+            }
+        }
+        for(int i=0;i<jsonArray1.length();++i){
+            JSONObject jsonObject1=jsonArray1.getJSONObject(i);
+//            coursesName.add(jsonObject1.getString(courseName));
+//            coursesId.add(jsonObject1.getString(courseId));
+            coursesName.add("courseName");
+            coursesId.add("courseId");
+        }
+
+        hashMap.put("examsPaidName",examsPaidName);
+        hashMap.put("examsPaidId",examsPaidId);
+        hashMap.put("examsFreeName",examsFreeName);
+        hashMap.put("examsFreeId",examsFreeId);
+        hashMap.put("coursesName",coursesName);
+        hashMap.put("coursesId",coursesId);
+        return hashMap;
+    }
+
+    public static HashMap<String,String> getDetailsOfOneKit(String result) throws JSONException {
+        HashMap<String,String> map=new HashMap<>();
+        JSONObject jsonObject1=new JSONObject(result);
+        map.put("description",jsonObject1.getString(description));
+        map.put("startDate",jsonObject1.getString(startDate));
+        map.put("endDate",jsonObject1.getString(endDate));
+        JSONArray jsonArray=jsonObject1.getJSONArray(price);
+        JSONObject jsonObject11=jsonArray.getJSONObject(0);
+        map.put("price",jsonObject11.getString(amount));
+        return map;
     }
 
 }
