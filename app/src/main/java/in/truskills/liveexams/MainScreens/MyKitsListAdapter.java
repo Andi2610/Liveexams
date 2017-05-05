@@ -133,7 +133,7 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
                                     b.putString("response",jsonObject.getJSONObject("response").toString());
                                     b.putString("from","home");
                                     f.setArguments(b);
-                                    ob.changeFragmentFromMyKits(f,value.getName());
+                                    ob.changeFragmentFromMyKits(f,value.getName(),"KitDetailsFragmentFromHome");
 
                                 }else{
                                     if(c!=null)

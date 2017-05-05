@@ -475,15 +475,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
             fragTransaction.replace(R.id.fragment, f, "HomeFragment");
             fragTransaction.commit();
-        } else if(requestCode == 13){
-            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment);
-            frameLayout.removeAllViewsInLayout();
-            MyKitsFragment f = new MyKitsFragment();
-            FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
-            fragTransaction.replace(R.id.fragment, f, "MyKitsFragment");
-            fragTransaction.commit();
-            navigationView.setCheckedItem(R.id.nav_kit);
-            getSupportActionBar().setTitle("MY KITS");
         }
 
     }
@@ -586,6 +577,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         KitsByAuthors ffffff=(KitsByAuthors) manager.findFragmentByTag("KitsByAuthorsFragment");
         KitDetailsFragment fffffff=(KitDetailsFragment) manager.findFragmentByTag("KitDetailsFragment");
         ExamDetailsFragment ffffffff=(ExamDetailsFragment) manager.findFragmentByTag("detailsOfOneExam");
+        KitDetailsFragment fffffffff=(KitDetailsFragment) manager.findFragmentByTag("KitDetailsFragmentFromHome");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -605,6 +597,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             t.commit();
             navigationView.setCheckedItem(R.id.nav_home);
             getSupportActionBar().setTitle("SELECT YOUR FIELD");
+
         }else if(ffffff!=null && ffffff.isVisible()){
             AuthorFragmentForMyKits fragment = new AuthorFragmentForMyKits();
             Bundle b=new Bundle();
@@ -632,6 +625,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else if(ffffffff!=null && ffffffff.isVisible()){
             KitDetailsFragment kitDetailsFragment=new KitDetailsFragment();
             Bundle b=new Bundle();
+            Log.d("transfer", "changeFromKitDetails: "+From+" "+Response+" "+Title);
             b.putString("response",Response);
             b.putString("from",From);
             kitDetailsFragment.setArguments(b);
@@ -641,6 +635,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             t.commit();
             navigationView.setCheckedItem(R.id.nav_kit);
             getSupportActionBar().setTitle(Title);
+        }else if(fffffffff!=null && fffffffff.isVisible()){
+            MyKitsFragment fragment = new MyKitsFragment();
+            FragmentTransaction t = manager.beginTransaction();
+            t.replace(R.id.fragment, fragment, "MyKitsFragment");
+            t.commit();
+            navigationView.setCheckedItem(R.id.nav_kit);
+            getSupportActionBar().setTitle("MY KITS");
         }
         else if(ff!=null && ff.isVisible()){
             AuthorFragment fragment = new AuthorFragment();
@@ -836,10 +837,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void changeFragmentFromMyKits(Fragment f,String title) {
+    public void changeFragmentFromMyKits(Fragment f,String title,String tag) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
-        t.replace(R.id.fragment, f, "StreamsFragmentForMyKits");
+        t.replace(R.id.fragment, f, tag);
         t.commit();
         getSupportActionBar().setTitle(title);
     }
@@ -851,6 +852,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         t.replace(R.id.fragment, f, "AuthorFragmentForMyKits");
         t.commit();
         getSupportActionBar().setTitle(title);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
     }
 
     @Override
@@ -880,6 +883,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         From=from;
         Response=response;
         Title=title;
+
+        Log.d("transfer", "changeFromKitDetails: "+From+" "+Response+" "+Title);
+
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
         t.replace(R.id.fragment, f, "detailsOfOneExam");
@@ -1023,5 +1029,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         Runtime.getRuntime().gc();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

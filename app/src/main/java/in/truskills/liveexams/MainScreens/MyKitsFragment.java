@@ -115,7 +115,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
             @Override
             public void onClick(View view) {
                 StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
-                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD");
+                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD","StreamsFragmentForMyKits");
             }
         });
 
@@ -202,7 +202,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
         switch (item.getItemId()) {
             case R.id.addIcon:
                 StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
-                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD");
+                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD","StreamsFragmentForMyKits");
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -326,5 +326,5 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
 }
 
 interface MyKitsInterface {
-    public void changeFragmentFromMyKits(Fragment f,String title);
+    public void changeFragmentFromMyKits(Fragment f,String title,String tag);
 }

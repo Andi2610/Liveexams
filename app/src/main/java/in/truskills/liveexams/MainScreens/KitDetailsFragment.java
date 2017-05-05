@@ -82,6 +82,8 @@ public class KitDetailsFragment extends Fragment {
         response=b.getString("response");
         from=b.getString("from");
 
+        Log.d("transfer", "changeFromKitDetails: "+from+" "+response);
+
         Log.d("responseInFragment", "onActivityCreated: "+response);
 
         startDateText=(TextView) getActivity().findViewById(R.id.startDateText);
@@ -180,6 +182,7 @@ public class KitDetailsFragment extends Fragment {
 
                 values=new Values(examsPaidName.get(i),examsPaidStartDate.get(i),examsPaidEndDate.get(i),examsPaidExamDuration.get(i),examsPaidId.get(i));
                 valuesListForPaidExams.add(values);
+
             }
             if(valuesListForPaidExams.isEmpty()){
                 examsIncludedInKitLayout.setVisibility(View.GONE);
