@@ -75,7 +75,7 @@ import static android.R.attr.key;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         HomeInterface,StreamInterface,AuthorInterface,MyKitsInterface,StreamInterfaceForMyKits,AuthorInterfaceForMyKits
-        ,KitsByAuthorsInterface{
+        ,KitsByAuthorsInterface,KitDetailsInterface{
 
     //Declare variables..
     NavigationView navigationView;
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String my_path,vall;
     TextView navName, navEmail;
     static final int REQUEST_CAMERA = 2, SELECT_FILE = 1;
-    String defaultImage,res;
+    String defaultImage,res,From,Response,Title;
     Bundle bundle;
     SharedPreferences prefs;
     Bitmap icon,MyBitmap;
@@ -475,6 +475,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
             fragTransaction.replace(R.id.fragment, f, "HomeFragment");
             fragTransaction.commit();
+        } else if(requestCode == 13){
+            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment);
+            frameLayout.removeAllViewsInLayout();
+            MyKitsFragment f = new MyKitsFragment();
+            FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+            fragTransaction.replace(R.id.fragment, f, "MyKitsFragment");
+            fragTransaction.commit();
+            navigationView.setCheckedItem(R.id.nav_kit);
+            getSupportActionBar().setTitle("MY KITS");
         }
 
     }
@@ -576,6 +585,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AuthorFragmentForMyKits fffff=(AuthorFragmentForMyKits) manager.findFragmentByTag("AuthorFragmentForMyKits");
         KitsByAuthors ffffff=(KitsByAuthors) manager.findFragmentByTag("KitsByAuthorsFragment");
         KitDetailsFragment fffffff=(KitDetailsFragment) manager.findFragmentByTag("KitDetailsFragment");
+        ExamDetailsFragment ffffffff=(ExamDetailsFragment) manager.findFragmentByTag("detailsOfOneExam");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -619,6 +629,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             t.commit();
             navigationView.setCheckedItem(R.id.nav_home);
             getSupportActionBar().setTitle("ADD NEW KITS");
+        }else if(ffffffff!=null && ffffffff.isVisible()){
+            KitDetailsFragment kitDetailsFragment=new KitDetailsFragment();
+            Bundle b=new Bundle();
+            b.putString("response",Response);
+            b.putString("from",From);
+            kitDetailsFragment.setArguments(b);
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction t = manager.beginTransaction();
+            t.replace(R.id.fragment, kitDetailsFragment, "KitDetailsFragment");
+            t.commit();
+            navigationView.setCheckedItem(R.id.nav_kit);
+            getSupportActionBar().setTitle(Title);
         }
         else if(ff!=null && ff.isVisible()){
             AuthorFragment fragment = new AuthorFragment();
@@ -814,12 +836,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void changeFragmentFromMyKits(Fragment f) {
+    public void changeFragmentFromMyKits(Fragment f,String title) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
         t.replace(R.id.fragment, f, "StreamsFragmentForMyKits");
         t.commit();
-        String title = "SELECT YOUR FIELD";
         getSupportActionBar().setTitle(title);
     }
 
@@ -850,6 +871,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction t = manager.beginTransaction();
         t.replace(R.id.fragment, f, "KitDetailsFragment");
+        t.commit();
+        getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void changeFromKitDetails(Fragment f, String title,String from,String response) {
+        From=from;
+        Response=response;
+        Title=title;
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction t = manager.beginTransaction();
+        t.replace(R.id.fragment, f, "detailsOfOneExam");
         t.commit();
         getSupportActionBar().setTitle(title);
     }

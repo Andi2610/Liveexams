@@ -39,7 +39,7 @@ import in.truskills.liveexams.R;
 
 //This is the list adapter for my enrolled exams which will direct to start page whenever an item in the list is clicked..
 
-public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.MyViewHolder> {
+public class ExamsIncludedInKitListAdapter extends RecyclerView.Adapter<ExamsIncludedInKitListAdapter.MyViewHolder> {
 
     //Declare variables..
     List<Values> myList;
@@ -49,19 +49,21 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
     ProgressDialog dialog;
     Handler h;
     RequestQueue requestQueue;
-    String enrolled, timestamp, examDetails, examId, examGiven;
-    MyKitsInterface ob;
+    String enrolled, timestamp, examDetails, examId, examGiven,from,response;
+    KitDetailsInterface ob;
 
-    MyKitsListAdapter(List<Values> myList, Context c,MyKitsInterface ob) {
+    ExamsIncludedInKitListAdapter(List<Values> myList, Context c,KitDetailsInterface ob,String from,String response) {
         this.myList = myList;
         this.c = c;
+        this.from=from;
         this.ob=ob;
+        this.response=response;
     }
 
     @Override
-    public MyKitsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ExamsIncludedInKitListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_layout_for_kit, parent, false);
+                .inflate(R.layout.list_row_layout_my_exams, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -77,11 +79,11 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
         holder.startDatevalue.setTypeface(tff);
         holder.endDateValue.setText(value.getEndDateValue());
         holder.endDateValue.setTypeface(tff);
-//        holder.durationValue.setText(value.getDurationValue());
-//        holder.durationValue.setTypeface(tff);
+        holder.durationValue.setText(value.getDurationValue());
+        holder.durationValue.setTypeface(tff);
         holder.startDateText.setTypeface(tff);
         holder.endDateText.setTypeface(tff);
-//        holder.durationText.setTypeface(tff);
+        holder.durationText.setTypeface(tff);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,29 +114,55 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
                     ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
                     ConstantsDefined.beforeVolleyConnect();
 
-                    String url = ConstantsDefined.apiForKit + "getProductKitDetails/"+ value.getExamId()+"/"+prefs.getString("userId","");
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                    //Get exam details of the exam on which the user has clicked..
+                    String url = ConstantsDefined.api + "examDetails";
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
                             url, new Response.Listener<String>() {
                         @Override
-                        public void onResponse(String response) {
-                            Log.d("responseInFragment", "onResponse: "+response);
-
+                        public void onResponse(final String response) {
                             if(dialog!=null)
                                 dialog.dismiss();
+
                             try {
 
                                 JSONObject jsonObject=new JSONObject(response);
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
+                                    //Parse Exam details..
+                                    HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
 
-                                    KitDetailsFragment f=new KitDetailsFragment();
-                                    Bundle b=new Bundle();
-                                    Log.d("responseInFragment", "onResponse: "+jsonObject.getJSONObject("response").toString());
-                                    b.putString("response",jsonObject.getJSONObject("response").toString());
-                                    b.putString("from","home");
-                                    f.setArguments(b);
-                                    ob.changeFragmentFromMyKits(f,value.getName());
+                                    //Get it's variables..
+                                    enrolled = mapper.get("enrolled");
+                                    timestamp = mapper.get("timestamp");
+                                    examDetails = mapper.get("examDetails");
+                                    examGiven = mapper.get("examGiven");
 
+                                    examId = value.getExamId();
+
+                                    h = new Handler();
+                                    h.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //Create a bundle to be passed to particular main activity..
+
+                                            if(from.equals("home")){
+                                                Bundle b = new Bundle();
+                                                b.putString("enrolled", enrolled);
+                                                b.putString("timestamp", timestamp);
+                                                b.putString("examDetails", examDetails);
+                                                b.putString("name", value.getName());
+                                                b.putString("examId", examId);
+                                                b.putString("examGiven", examGiven);
+                                                Intent i = new Intent(c, ParticularExamMainActivity.class);
+                                                i.putExtra("bundle", b);
+                                                i.putExtra("from", "homeOfKit");
+                                                ((MainActivity) c).startActivityForResult(i, 13);
+                                            }else{
+                                                ExamDetailsFragment f=new ExamDetailsFragment();
+                                                ob.changeFromKitDetails(f,value.getName(),from,response);
+                                            }
+                                        }
+                                    });
                                 }else{
                                     if(c!=null)
                                         Toast.makeText(c, "Something went wrong..\n" +
@@ -147,6 +175,7 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            //If connection couldn't be made..
                             if(dialog!=null)
                                 dialog.dismiss();
                             if(ConstantsDefined.isOnline(c)){
@@ -158,7 +187,16 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
                                     Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    });
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            //Set required parameters..
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("userId", prefs.getString("userId", "abc"));
+                            params.put("examId", value.getExamId());
+                            return params;
+                        }
+                    };
                     requestQueue.add(stringRequest);
                 }
             }
@@ -180,10 +218,10 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
             name = (TextView) itemView.findViewById(R.id.name);
             startDatevalue = (TextView) itemView.findViewById(R.id.startDateValue);
             endDateValue = (TextView) itemView.findViewById(R.id.endDateValue);
-//            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
+            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
             startDateText = (TextView) itemView.findViewById(R.id.startDateText);
             endDateText = (TextView) itemView.findViewById(R.id.endDateText);
-//            durationText = (TextView) itemView.findViewById(R.id.durationText);
+            durationText = (TextView) itemView.findViewById(R.id.durationText);
             container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }

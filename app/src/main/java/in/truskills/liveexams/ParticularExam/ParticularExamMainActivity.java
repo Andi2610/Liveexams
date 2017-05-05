@@ -133,6 +133,8 @@ public class ParticularExamMainActivity extends AppCompatActivity implements Sta
         } else {
             if (from.equals("home")) {
                 setResult(10, null);
+            }else if(from.equals("homeOfKit")){
+                setResult(13, null);
             }
             super.onBackPressed();
         }

@@ -31,15 +31,18 @@ import in.truskills.liveexams.R;
 public class KitDetailsFragment extends Fragment {
 
 
-    String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit;
+    String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit,from;
 
     RecyclerView tryForFreeExamsList,examsIncludedInKitList,coursesIncludedInKitList;
-    LinearLayoutManager linearLayoutManager;
+    LinearLayoutManager linearLayoutManager,linearLayoutManagerForPaidExams;
 
     TryForFreeExamsListAdapter tryForFreeExamsListAdapter;
+    ExamsIncludedInKitListAdapter examsIncludedInKitListAdapter;
 
-    List<Values> valuesList;
+    List<Values> valuesList,valuesListForPaidExams,valuesListForCourses;
     Values values;
+
+    KitDetailsInterface ob;
 
     ArrayList<String> examsPaidName=new ArrayList<>();
     ArrayList<String> examsFreeName=new ArrayList<>();
@@ -58,7 +61,7 @@ public class KitDetailsFragment extends Fragment {
 
     TextView startDateText,endDateText,startDateValue,endDateValue,descriptionText,descriptionValue,priceText,priceValue;
     TextView tryForFreeText,examsIncludedInKitText,coursesIncludedInKitText;
-    LinearLayout footer,tryForFreeLayout;
+    LinearLayout footer,tryForFreeLayout,examsIncludedInKitLayout;
 
     public KitDetailsFragment() {
         // Required empty public constructor
@@ -77,6 +80,7 @@ public class KitDetailsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         b=getArguments();
         response=b.getString("response");
+        from=b.getString("from");
 
         Log.d("responseInFragment", "onActivityCreated: "+response);
 
@@ -94,12 +98,16 @@ public class KitDetailsFragment extends Fragment {
 
         footer=(LinearLayout)getActivity().findViewById(R.id.footerForKit);
         tryForFreeLayout=(LinearLayout)getActivity().findViewById(R.id.tryForFreeLayout);
+        examsIncludedInKitLayout=(LinearLayout)getActivity().findViewById(R.id.examsIncludedInKitLayout);
 
         tryForFreeExamsList=(RecyclerView)getActivity().findViewById(R.id.tryForFreeExamsList);
         examsIncludedInKitList=(RecyclerView)getActivity().findViewById(R.id.examsIncludedInKitList);
         coursesIncludedInKitList=(RecyclerView)getActivity().findViewById(R.id.coursesIncludedInKitList);
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManagerForPaidExams = new LinearLayoutManager(getActivity());
+
+        ob=(KitDetailsInterface)getActivity();
 
         Typeface tff1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         startDateText.setTypeface(tff1);
@@ -150,10 +158,10 @@ public class KitDetailsFragment extends Fragment {
             }
 
             valuesList=new ArrayList<>();
+            valuesListForPaidExams=new ArrayList<>();
 
             for(int i=0;i<examsFreeId.size();++i){
 
-                Log.d("data", "onActivityCreated: "+examsFreeName.get(i)+" "+examsFreeStartDate.get(i)+" "+examsFreeEndDate.get(i)+" "+examsFreeExamDuration.get(i)+" "+examsFreeId.get(i));
                 values=new Values(examsFreeName.get(i),examsFreeStartDate.get(i),examsFreeEndDate.get(i),examsFreeExamDuration.get(i),examsFreeId.get(i));
                 valuesList.add(values);
             }
@@ -161,11 +169,27 @@ public class KitDetailsFragment extends Fragment {
                 tryForFreeLayout.setVisibility(View.GONE);
             }else{
                 tryForFreeLayout.setVisibility(View.VISIBLE);
-                tryForFreeExamsListAdapter=new TryForFreeExamsListAdapter(valuesList,getActivity());
+                tryForFreeExamsListAdapter=new TryForFreeExamsListAdapter(valuesList,getActivity(),from,response);
                 tryForFreeExamsList.setLayoutManager(linearLayoutManager);
                 tryForFreeExamsList.setItemAnimator(new DefaultItemAnimator());
                 tryForFreeExamsList.setAdapter(tryForFreeExamsListAdapter);
                 tryForFreeExamsListAdapter.notifyDataSetChanged();
+            }
+
+            for(int i=0;i<examsPaidId.size();++i){
+
+                values=new Values(examsPaidName.get(i),examsPaidStartDate.get(i),examsPaidEndDate.get(i),examsPaidExamDuration.get(i),examsPaidId.get(i));
+                valuesListForPaidExams.add(values);
+            }
+            if(valuesListForPaidExams.isEmpty()){
+                examsIncludedInKitLayout.setVisibility(View.GONE);
+            }else{
+                examsIncludedInKitLayout.setVisibility(View.VISIBLE);
+                examsIncludedInKitListAdapter=new ExamsIncludedInKitListAdapter(valuesListForPaidExams,getActivity(),ob,from,response);
+                examsIncludedInKitList.setLayoutManager(linearLayoutManagerForPaidExams);
+                examsIncludedInKitList.setItemAnimator(new DefaultItemAnimator());
+                examsIncludedInKitList.setAdapter(examsIncludedInKitListAdapter);
+                examsIncludedInKitListAdapter.notifyDataSetChanged();
             }
 
         } catch (JSONException e) {
@@ -173,5 +197,10 @@ public class KitDetailsFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
     }
+}
+
+interface KitDetailsInterface{
+    public void changeFromKitDetails(Fragment f,String title,String from,String response);
 }

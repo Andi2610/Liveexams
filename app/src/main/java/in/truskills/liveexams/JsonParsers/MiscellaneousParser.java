@@ -668,18 +668,27 @@ public class MiscellaneousParser {
             String Paid = jsonObject1.getString(paid);
             String myStartDate=MiscellaneousParser.parseDate(jsonObject1.getJSONArray(startDate).get(0).toString());
             String myEndDate=MiscellaneousParser.parseDate(jsonObject1.getJSONArray(endDate).get(0).toString());
+            String eName=jsonObject1.getJSONArray(examName).get(0).toString();
+            String eId=jsonObject1.getString(examId);
+            String eDuration=jsonObject1.getJSONArray(ExamDuration).get(0).toString();
+
             if(Paid.equals("true")){
-                examsPaidName.add(jsonObject1.getJSONArray(examName).get(0).toString());
-                examsPaidId.add(jsonObject1.getString(examId));
+
+                Log.d("namesOfExams", "getExamsAndCoursesOfOneKit: Paid:"+eName);
+                examsPaidName.add(eName);
+                examsPaidId.add(eId);
                 examsPaidStartDate.add(myStartDate);
                 examsPaidEndDate.add(myEndDate);
-                examsPaidExamDuration.add(jsonObject1.getJSONArray(ExamDuration).get(0).toString());
+                examsPaidExamDuration.add(eDuration);
             }else{
-                examsFreeName.add(jsonObject1.getJSONArray(examName).get(0).toString());
-                examsFreeId.add(jsonObject1.getString(examId));
+
+                Log.d("namesOfExams", "getExamsAndCoursesOfOneKit: Free:"+eName);
+
+                examsFreeName.add(eName);
+                examsFreeId.add(eId);
                 examsFreeStartDate.add(myStartDate);
                 examsFreeEndDate.add(myEndDate);
-                examsFreeExamDuration.add(jsonObject1.getJSONArray(ExamDuration).get(0).toString());
+                examsFreeExamDuration.add(eDuration);
             }
         }
         for(int i=0;i<jsonArray1.length();++i){

@@ -109,13 +109,13 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
         linearLayoutManager = new LinearLayoutManager(getActivity());
         ob = (MyKitsInterface) getActivity();
 
-//        setList();
+        setList();
 
         addForMyKits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
-                ob.changeFragmentFromMyKits(f);
+                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD");
             }
         });
 
@@ -170,7 +170,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
 
                         if(s.equals("")){
                             filteredList = new ArrayList<>();
-                            myKitsListAdapter = new MyKitsListAdapter(filteredList, getActivity());
+                            myKitsListAdapter = new MyKitsListAdapter(filteredList, getActivity(),ob);
                             myKitsList.setAdapter(myKitsListAdapter);
                             myKitsListAdapter.notifyDataSetChanged();
 
@@ -186,7 +186,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
                                     filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
                                 }
                             }
-                            myKitsListAdapter = new MyKitsListAdapter(filteredList, getActivity());
+                            myKitsListAdapter = new MyKitsListAdapter(filteredList, getActivity(),ob);
                             myKitsList.setAdapter(myKitsListAdapter);
                             myKitsListAdapter.notifyDataSetChanged();
                         }
@@ -202,7 +202,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
         switch (item.getItemId()) {
             case R.id.addIcon:
                 StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
-                ob.changeFragmentFromMyKits(f);
+                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD");
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -226,7 +226,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
         ConstantsDefined.updateAndroidSecurityProvider(getActivity());
         ConstantsDefined.beforeVolleyConnect();
 
-        String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "");
+        String url = ConstantsDefined.apiForKit + "getUserProductKits/" + prefs.getString("userId", "");
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, new Response.Listener<JSONObject>() {
 
@@ -240,61 +240,14 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
 
                     String success=response.getString("success");
                     if(success.equals("true")){
-                        String myResponse = response.getJSONObject("response").toString();
-                        JSONObject jsonObject = new JSONObject(myResponse);
-                        String timestamp = jsonObject.getString("timestamp");
-                        String myJoinedExams = jsonObject.getJSONArray("joinedExams").toString();
-                        HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.myExamsParser(myJoinedExams);
-                        JSONArray arr = new JSONArray(myJoinedExams);
-                        int length = arr.length();
-                        for (int i = 0; i < length; ++i) {
 
-                            //If user is still enrolled to this exam..
-                            if (mapper.get("leftExam").get(i).equals("false")) {
-
-                                myStartDate = mapper.get("StartDate").get(i);
-                                myEndDate = mapper.get("EndDate").get(i);
-                                myDuration = mapper.get("ExamDuration").get(i);
-                                myStartTime = mapper.get("StartTime").get(i);
-                                myEndTime = mapper.get("EndTime").get(i);
-
-                                myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
-                                myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
-                                myDurationTime = MiscellaneousParser.parseDuration(myDuration);
-
-                                String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
-                                String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
-                                Log.d("myTimestamp=", timestamp);
-                                String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
-                                String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
-
-                                Log.d("myTimestamp=", myTimestamp);
-
-                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                Date start_date = simpleDateFormat.parse(myDateOfStart);
-                                Date end_date = simpleDateFormat.parse(myDateOfEnd);
-                                Date middle_date = simpleDateFormat.parse(myTimestamp);
-
-                                SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
-                                Date start_time = simpleDateFormat2.parse(myTimeOfStart);
-                                Date end_time = simpleDateFormat2.parse(myTimeOfEnd);
-                                Date middle_time = simpleDateFormat2.parse(myTime);
-
-                                if (middle_date.before(start_date)) {
-                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                    valuesList.add(values);
-                                } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
-                                    if (middle_date.equals(end_date)) {
-                                        if (!middle_time.after(end_time)) {
-                                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                            valuesList.add(values);
-                                        }
-                                    } else {
-                                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                                        valuesList.add(values);
-                                    }
-                                }
-                            }
+                        JSONArray jsonArray=response.getJSONArray("response");
+                        for(int i=0;i<jsonArray.length();++i){
+                            JSONObject jsonObject1=jsonArray.getJSONObject(i);
+                            myDateOfStart=MiscellaneousParser.parseDateForKit(jsonObject1.getString("startDate"));
+                            myDateOfEnd=MiscellaneousParser.parseDateForKit(jsonObject1.getString("endDate"));
+                            values=new Values(jsonObject1.getString("name"),myDateOfStart,myDateOfEnd,"",jsonObject1.getString("productKitId"));
+                            valuesList.add(values);
                         }
                         h.post(new Runnable() {
                             @Override
@@ -341,7 +294,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
     }
 
     public void populateList(List<Values> list) {
-        myKitsListAdapter = new MyKitsListAdapter(list, getActivity());
+        myKitsListAdapter = new MyKitsListAdapter(list, getActivity(),ob);
         myKitsList.setLayoutManager(linearLayoutManager);
         myKitsList.setItemAnimator(new DefaultItemAnimator());
         myKitsList.setAdapter(myKitsListAdapter);
@@ -373,5 +326,5 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
 }
 
 interface MyKitsInterface {
-    public void changeFragmentFromMyKits(Fragment f);
+    public void changeFragmentFromMyKits(Fragment f,String title);
 }

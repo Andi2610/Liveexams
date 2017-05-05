@@ -128,6 +128,7 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
                                     Bundle b=new Bundle();
                                     Log.d("responseInFragment", "onResponse: "+jsonObject.getJSONObject("response").toString());
                                     b.putString("response",jsonObject.getJSONObject("response").toString());
+                                    b.putString("from","search");
                                     f.setArguments(b);
                                     ob.changeFromKitsByAuthors(f,value.getName());
 

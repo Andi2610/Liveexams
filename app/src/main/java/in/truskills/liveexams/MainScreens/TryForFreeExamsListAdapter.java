@@ -49,11 +49,13 @@ public class TryForFreeExamsListAdapter extends RecyclerView.Adapter<TryForFreeE
     ProgressDialog dialog;
     Handler h;
     RequestQueue requestQueue;
-    String enrolled, timestamp, examDetails, examId, examGiven;
+    String enrolled, timestamp, examDetails, examId, examGiven,from,response;
 
-    TryForFreeExamsListAdapter(List<Values> myList, Context c) {
+    TryForFreeExamsListAdapter(List<Values> myList, Context c,String from,String response) {
         this.myList = myList;
         this.c = c;
+        this.from=from;
+        this.response=response;
     }
 
     @Override
@@ -149,8 +151,8 @@ public class TryForFreeExamsListAdapter extends RecyclerView.Adapter<TryForFreeE
                                             b.putString("examGiven", examGiven);
                                             Intent i = new Intent(c, ParticularExamMainActivity.class);
                                             i.putExtra("bundle", b);
-                                            i.putExtra("from", "home");
-                                            ((MainActivity) c).startActivityForResult(i, 10);
+                                            i.putExtra("from", "tryForFree");
+                                            ((MainActivity) c).startActivity(i);
                                         }
                                     });
                                 }else{
