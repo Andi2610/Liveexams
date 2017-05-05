@@ -34,39 +34,38 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.ParticularExam.ParticularExamMainActivity;
+import in.truskills.liveexams.Quiz.FeedbackActivity;
 import in.truskills.liveexams.R;
 
-/**
- * Created by 6155dx on 22-01-2017.
- */
+//This is the list adapter for my enrolled exams which will direct to start page whenever an item in the list is clicked..
 
-public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.MyViewHolder> {
+public class TryForFreeExamsListAdapter extends RecyclerView.Adapter<TryForFreeExamsListAdapter.MyViewHolder> {
 
+    //Declare variables..
     List<Values> myList;
     Context c;
-    SharedPreferences prefs;
-    Handler h;
-    ProgressDialog dialog;
     Values value;
-    KitsByAuthorsInterface ob;
+    SharedPreferences prefs;
+    ProgressDialog dialog;
+    Handler h;
+    RequestQueue requestQueue;
+    String enrolled, timestamp, examDetails, examId, examGiven;
 
-    AllKitsListAdapter(List<Values> myList, Context c,KitsByAuthorsInterface ob) {
+    TryForFreeExamsListAdapter(List<Values> myList, Context c) {
         this.myList = myList;
         this.c = c;
-        setHasStableIds(true);
-        this.ob=ob;
     }
 
     @Override
-    public AllKitsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TryForFreeExamsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_layout_for_kit, parent, false);
-
+                .inflate(R.layout.list_row_layout_my_exams, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+
         value = myList.get(position);
         Typeface tff = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
         Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
@@ -76,25 +75,27 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
         holder.startDatevalue.setTypeface(tff);
         holder.endDateValue.setText(value.getEndDateValue());
         holder.endDateValue.setTypeface(tff);
-//        holder.durationValue.setText(value.getDurationValue());
-//        holder.durationValue.setTypeface(tff);
+        holder.durationValue.setText(value.getDurationValue());
+        holder.durationValue.setTypeface(tff);
         holder.startDateText.setTypeface(tff);
         holder.endDateText.setTypeface(tff);
-//        holder.durationText.setTypeface(tff);
+        holder.durationText.setTypeface(tff);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-//                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
 //
-//                Log.d("prefsAllow",allow.getInt("allow",1)+"");
-//                if(allow.getInt("allow",1)==0){
-//                    if(c!=null)
-//                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
-//                }else{
-                    value = myList.get(holder.getAdapterPosition());
+//                Intent i =new Intent(c,FeedbackActivity.class);
+//                c.startActivity(i);
 
-                    final RequestQueue requestQueue = Volley.newRequestQueue(c);
+                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
+                Log.d("prefsAllow",allow.getInt("allow",1)+"");
+
+                if(allow.getInt("allow",1)==0){
+                    if(c!=null)
+                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
+                }else{
+                    value = myList.get(holder.getAdapterPosition());
+                    requestQueue = Volley.newRequestQueue(c);
                     prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
                     if(c!=null){
@@ -109,28 +110,49 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
                     ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
                     ConstantsDefined.beforeVolleyConnect();
 
-                    String url = ConstantsDefined.apiForKit + "getProductKitDetails/"+ value.getExamId()+"/"+prefs.getString("userId","");
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                    //Get exam details of the exam on which the user has clicked..
+                    String url = ConstantsDefined.api + "examDetails";
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d("responseInFragment", "onResponse: "+response);
-
                             if(dialog!=null)
                                 dialog.dismiss();
+
                             try {
 
                                 JSONObject jsonObject=new JSONObject(response);
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
+                                    //Parse Exam details..
+                                    HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
 
-                                    KitDetailsFragment f=new KitDetailsFragment();
-                                    Bundle b=new Bundle();
-                                    Log.d("responseInFragment", "onResponse: "+jsonObject.getJSONObject("response").toString());
-                                    b.putString("response",jsonObject.getJSONObject("response").toString());
-                                    f.setArguments(b);
-                                    ob.changeFromKitsByAuthors(f,value.getName());
+                                    //Get it's variables..
+                                    enrolled = mapper.get("enrolled");
+                                    timestamp = mapper.get("timestamp");
+                                    examDetails = mapper.get("examDetails");
+                                    examGiven = mapper.get("examGiven");
 
+                                    examId = value.getExamId();
+
+                                    h = new Handler();
+                                    h.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //Create a bundle to be passed to particular main activity..
+                                            Bundle b = new Bundle();
+                                            b.putString("enrolled", enrolled);
+                                            b.putString("timestamp", timestamp);
+                                            b.putString("examDetails", examDetails);
+                                            b.putString("name", value.getName());
+                                            b.putString("examId", examId);
+                                            b.putString("examGiven", examGiven);
+                                            Intent i = new Intent(c, ParticularExamMainActivity.class);
+                                            i.putExtra("bundle", b);
+                                            i.putExtra("from", "home");
+                                            ((MainActivity) c).startActivityForResult(i, 10);
+                                        }
+                                    });
                                 }else{
                                     if(c!=null)
                                         Toast.makeText(c, "Something went wrong..\n" +
@@ -143,6 +165,7 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            //If connection couldn't be made..
                             if(dialog!=null)
                                 dialog.dismiss();
                             if(ConstantsDefined.isOnline(c)){
@@ -154,9 +177,18 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
                                     Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    });
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() {
+                            //Set required parameters..
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("userId", prefs.getString("userId", "abc"));
+                            params.put("examId", value.getExamId());
+                            return params;
+                        }
+                    };
                     requestQueue.add(stringRequest);
-//                }
+                }
             }
         });
     }
@@ -164,16 +196,6 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
     @Override
     public int getItemCount() {
         return myList.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -186,12 +208,11 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
             name = (TextView) itemView.findViewById(R.id.name);
             startDatevalue = (TextView) itemView.findViewById(R.id.startDateValue);
             endDateValue = (TextView) itemView.findViewById(R.id.endDateValue);
-//            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
+            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
             startDateText = (TextView) itemView.findViewById(R.id.startDateText);
             endDateText = (TextView) itemView.findViewById(R.id.endDateText);
-//            durationText = (TextView) itemView.findViewById(R.id.durationText);
+            durationText = (TextView) itemView.findViewById(R.id.durationText);
             container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }
-
 }

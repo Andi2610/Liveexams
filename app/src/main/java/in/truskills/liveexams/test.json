@@ -45,6 +45,12 @@
         "_id": "5902cafdd19d876e14ea7ba5",
         "examName": [
           "Demo1"
+        ],
+        "startDate": [
+          "3/29/2017"
+        ],
+        "endDate": [
+          "3/29/2017"
         ]
       },
       {
@@ -53,6 +59,12 @@
         "_id": "5902cafdd19d876e14ea7ba4",
         "examName": [
           "Demo2"
+        ],
+        "startDate": [
+          "3/29/2017"
+        ],
+        "endDate": [
+          "3/30/2017"
         ]
       }
     ],
@@ -65,7 +77,8 @@
       "JEE 2015",
       "Physics",
       "Chemistry"
-    ]
+    ],
+    "boughtProductKit": true
   },
   "success": "true"
 }

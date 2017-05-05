@@ -76,6 +76,7 @@ public class MiscellaneousParser {
     private static String description = "description";
     private static String price = "price";
     private static String amount = "amount";
+    private static String boughtProductKit = "boughtProductKit";
 
     public static ArrayList<String> beforeSignupParser(String result) throws JSONException {
         ArrayList<String> list=new ArrayList<>();
@@ -644,7 +645,7 @@ public class MiscellaneousParser {
         return myParsedDate;
     }
 
-    public static HashMap<String,ArrayList<String>> getExamsAndCoursesOfOneKit(String result) throws JSONException {
+    public static HashMap<String,ArrayList<String>> getExamsAndCoursesOfOneKit(String result) throws JSONException, ParseException {
         HashMap<String,ArrayList<String>> hashMap=new HashMap<>();
         JSONObject jsonObject=new JSONObject(result);
         JSONArray jsonArray=jsonObject.getJSONArray(exams);
@@ -655,15 +656,30 @@ public class MiscellaneousParser {
         ArrayList<String> examsFreeId=new ArrayList<>();
         ArrayList<String> coursesName=new ArrayList<>();
         ArrayList<String> coursesId=new ArrayList<>();
+        ArrayList<String> examsPaidStartDate=new ArrayList<>();
+        ArrayList<String> examsFreeStartDate=new ArrayList<>();
+        ArrayList<String> examsPaidEndDate=new ArrayList<>();
+        ArrayList<String> examsFreeEndDate=new ArrayList<>();
+        ArrayList<String> examsFreeExamDuration=new ArrayList<>();
+        ArrayList<String> examsPaidExamDuration=new ArrayList<>();
+
         for(int i=0;i<jsonArray.length();++i){
             JSONObject jsonObject1=jsonArray.getJSONObject(i);
             String Paid = jsonObject1.getString(paid);
+            String myStartDate=MiscellaneousParser.parseDate(jsonObject1.getJSONArray(startDate).get(0).toString());
+            String myEndDate=MiscellaneousParser.parseDate(jsonObject1.getJSONArray(endDate).get(0).toString());
             if(Paid.equals("true")){
                 examsPaidName.add(jsonObject1.getJSONArray(examName).get(0).toString());
                 examsPaidId.add(jsonObject1.getString(examId));
+                examsPaidStartDate.add(myStartDate);
+                examsPaidEndDate.add(myEndDate);
+                examsPaidExamDuration.add(jsonObject1.getJSONArray(ExamDuration).get(0).toString());
             }else{
                 examsFreeName.add(jsonObject1.getJSONArray(examName).get(0).toString());
                 examsFreeId.add(jsonObject1.getString(examId));
+                examsFreeStartDate.add(myStartDate);
+                examsFreeEndDate.add(myEndDate);
+                examsFreeExamDuration.add(jsonObject1.getJSONArray(ExamDuration).get(0).toString());
             }
         }
         for(int i=0;i<jsonArray1.length();++i){
@@ -680,6 +696,12 @@ public class MiscellaneousParser {
         hashMap.put("examsFreeId",examsFreeId);
         hashMap.put("coursesName",coursesName);
         hashMap.put("coursesId",coursesId);
+        hashMap.put("examsPaidStartDate",examsPaidStartDate);
+        hashMap.put("examsFreeStartDate",examsFreeStartDate);
+        hashMap.put("examsPaidEndDate",examsPaidEndDate);
+        hashMap.put("examsFreeEndDate",examsFreeEndDate);
+        hashMap.put("examsFreeExamDuration",examsFreeExamDuration);
+        hashMap.put("examsPaidExamDuration",examsPaidExamDuration);
         return hashMap;
     }
 
@@ -692,6 +714,7 @@ public class MiscellaneousParser {
         JSONArray jsonArray=jsonObject1.getJSONArray(price);
         JSONObject jsonObject11=jsonArray.getJSONObject(0);
         map.put("price",jsonObject11.getString(amount));
+        map.put("boughtProductKit",jsonObject1.getString(boughtProductKit));
         return map;
     }
 
