@@ -160,6 +160,9 @@ public class ExamsIncludedInKitListAdapter extends RecyclerView.Adapter<ExamsInc
 
                                             }else{
                                                 ExamDetailsFragment f=new ExamDetailsFragment();
+                                                Bundle b=new Bundle();
+                                                b.putString("examDetails",examDetails);
+                                                f.setArguments(b);
                                                 ob.changeFromKitDetails(f,value.getName(),from,response);
                                             }
                                         }

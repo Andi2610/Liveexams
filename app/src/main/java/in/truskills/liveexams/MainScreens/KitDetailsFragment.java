@@ -82,7 +82,7 @@ public class KitDetailsFragment extends Fragment {
         response=b.getString("response");
         from=b.getString("from");
 
-        Log.d("transfer", "changeFromKitDetails: "+from+" "+response);
+        Log.d("transfer", "onActivityCreated: "+from+" "+response);
 
         Log.d("responseInFragment", "onActivityCreated: "+response);
 

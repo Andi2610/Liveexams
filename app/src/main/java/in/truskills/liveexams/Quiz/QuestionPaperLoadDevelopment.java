@@ -177,8 +177,8 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
         ConstantsDefined.beforeVolleyConnect();
 
         //Api to be connected to get the question paper..
-        url = ConstantsDefined.api + "questionPaper/" + "58f9b54e1618b709aea6908d";
-//        url = ConstantsDefined.api2 + "questionPaper/" + examId;
+//        url = ConstantsDefined.api + "questionPaper/" + "58f9b54e1618b709aea6908d";
+        url = ConstantsDefined.api2 + "questionPaper/" + examId;
         //Make the request..
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 url, new Response.Listener<String>() {
