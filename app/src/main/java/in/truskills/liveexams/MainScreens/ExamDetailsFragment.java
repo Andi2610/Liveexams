@@ -144,22 +144,5 @@ public class ExamDetailsFragment extends Fragment {
 
         customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(getActivity(), listOfLanguages);
         myLanguageJoinPage.setAdapter(customSpinnerForDetailsAdapter);
-        int index = customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
-        myLanguageJoinPage.setSelection(index);
-
-        myLanguageJoinPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedLanguage = adapterView.getSelectedItem().toString();
-                SharedPreferences.Editor e = prefs.edit();
-                e.putString("language", selectedLanguage);
-                e.apply();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
     }
 }
