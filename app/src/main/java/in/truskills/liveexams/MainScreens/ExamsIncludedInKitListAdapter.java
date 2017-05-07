@@ -50,13 +50,11 @@ public class ExamsIncludedInKitListAdapter extends RecyclerView.Adapter<ExamsInc
     Handler h;
     RequestQueue requestQueue;
     String enrolled, timestamp, examDetails, examId, examGiven,from,response;
-    KitDetailsInterface ob;
 
-    ExamsIncludedInKitListAdapter(List<Values> myList, Context c,KitDetailsInterface ob,String from,String response) {
+    ExamsIncludedInKitListAdapter(List<Values> myList, Context c,String from,String response) {
         this.myList = myList;
         this.c = c;
         this.from=from;
-        this.ob=ob;
         this.response=response;
     }
 
@@ -159,11 +157,13 @@ public class ExamsIncludedInKitListAdapter extends RecyclerView.Adapter<ExamsInc
                                                 ((MainActivity) c).startActivity(i);
 
                                             }else{
-                                                ExamDetailsFragment f=new ExamDetailsFragment();
+
+                                                Intent i =new Intent(c,DetailsOfExamsIncludedInKitActivity.class);
                                                 Bundle b=new Bundle();
                                                 b.putString("examDetails",examDetails);
-                                                f.setArguments(b);
-                                                ob.changeFromKitDetails(f,value.getName(),from,response);
+                                                b.putString("name", value.getName());
+                                                i.putExtra("bundle",b);
+                                                c.startActivity(i);
                                             }
                                         }
                                     });

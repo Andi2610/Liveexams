@@ -1,24 +1,16 @@
 package in.truskills.liveexams.MainScreens;
 
-
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 
 import org.json.JSONException;
 
@@ -30,11 +22,7 @@ import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.ParticularExam.CustomSpinnerForDetailsAdapter;
 import in.truskills.liveexams.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ExamDetailsFragment extends Fragment {
-
+public class DetailsOfExamsIncludedInKitActivity extends AppCompatActivity {
 
     //Declare variables..
     TextView start_TimeJoinPage, end_TimeJoinPage, start_DateJoinPage, end_DateJoinPage, descriptionJoinPage, sponsorTextJoinPage;
@@ -48,31 +36,26 @@ public class ExamDetailsFragment extends Fragment {
     ViewFlipper viewFlipperJoinPage;
     CustomSpinnerForDetailsAdapter customSpinnerForDetailsAdapter;
 
-    public ExamDetailsFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exam_details, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_details_of_exams_included_in_kit);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        start_DateJoinPage = (TextView) getActivity().findViewById(R.id.startDateDetailsPage);
-        end_DateJoinPage = (TextView) getActivity().findViewById(R.id.endDateDetailsPage);
-        start_TimeJoinPage = (TextView) getActivity().findViewById(R.id.startTimeDetailsPage);
-        end_TimeJoinPage = (TextView) getActivity().findViewById(R.id.endTimeDetailsPage);
-        sponsorTextJoinPage = (TextView) getActivity().findViewById(R.id.sponsorTextDetailsPage);
-        descriptionJoinPage = (TextView) getActivity().findViewById(R.id.descriptionDetailsPage);
-        myLanguageJoinPage = (Spinner) getActivity().findViewById(R.id.myLanguageDetailsPage);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
 
-        viewFlipperJoinPage = (ViewFlipper) getActivity().findViewById(R.id.viewFlipperDetailsPage);
+        start_DateJoinPage = (TextView) findViewById(R.id.startDateDetailsPage);
+        end_DateJoinPage = (TextView) findViewById(R.id.endDateDetailsPage);
+        start_TimeJoinPage = (TextView) findViewById(R.id.startTimeDetailsPage);
+        end_TimeJoinPage = (TextView) findViewById(R.id.endTimeDetailsPage);
+        sponsorTextJoinPage = (TextView) findViewById(R.id.sponsorTextDetailsPage);
+        descriptionJoinPage = (TextView) findViewById(R.id.descriptionDetailsPage);
+        myLanguageJoinPage = (Spinner) findViewById(R.id.myLanguageDetailsPage);
+
+        viewFlipperJoinPage = (ViewFlipper) findViewById(R.id.viewFlipperDetailsPage);
 
         int[] resources = {
                 R.drawable.first,
@@ -82,19 +65,19 @@ public class ExamDetailsFragment extends Fragment {
         };
 
         for (int i = 0; i < resources.length; i++) {
-            ImageView imageView = new ImageView(getActivity());
+            ImageView imageView = new ImageView(this);
             imageView.setImageResource(resources[i]);
             viewFlipperJoinPage.addView(imageView);
         }
 
-        viewFlipperJoinPage.setInAnimation(getActivity(), android.R.anim.fade_in);
-        viewFlipperJoinPage.setOutAnimation(getActivity(), android.R.anim.fade_out);
+        viewFlipperJoinPage.setInAnimation(this, android.R.anim.fade_in);
+        viewFlipperJoinPage.setOutAnimation(this, android.R.anim.fade_out);
 
         viewFlipperJoinPage.setAutoStart(true);
         viewFlipperJoinPage.setFlipInterval(2000);
 
 
-        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         start_DateJoinPage.setTypeface(tff);
         end_DateJoinPage.setTypeface(tff);
         start_TimeJoinPage.setTypeface(tff);
@@ -103,8 +86,10 @@ public class ExamDetailsFragment extends Fragment {
         sponsorTextJoinPage.setTypeface(tff);
 
         //Get arguments..
-        b = getArguments();
+        b = getIntent().getBundleExtra("bundle");
         examDetails = b.getString("examDetails");
+        String name=b.getString("name");
+        getSupportActionBar().setTitle(name);
 
         h = new Handler();
 
@@ -142,7 +127,13 @@ public class ExamDetailsFragment extends Fragment {
             e.printStackTrace();
         }
 
-        customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(getActivity(), listOfLanguages);
+        customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(this, listOfLanguages);
         myLanguageJoinPage.setAdapter(customSpinnerForDetailsAdapter);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

@@ -124,13 +124,14 @@ public class AllKitsListAdapter extends RecyclerView.Adapter<AllKitsListAdapter.
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
 
-                                    KitDetailsFragment f=new KitDetailsFragment();
                                     Bundle b=new Bundle();
                                     Log.d("responseInFragment", "onResponse: "+jsonObject.getJSONObject("response").toString());
                                     b.putString("response",jsonObject.getJSONObject("response").toString());
                                     b.putString("from","search");
-                                    f.setArguments(b);
-                                    ob.changeFromKitsByAuthors(f,value.getName());
+                                    b.putString("name",value.getName());
+                                    Intent i =new Intent(c,KitDetailsActivity.class);
+                                    i.putExtra("bundle",b);
+                                    c.startActivity(i);
 
                                 }else{
                                     if(c!=null)

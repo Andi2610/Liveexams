@@ -1,28 +1,16 @@
 package in.truskills.liveexams.MainScreens;
 
-
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,17 +31,12 @@ import java.util.List;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class StreamsFragment extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
-
+public class AllStreamsActivity extends AppCompatActivity implements ConnectivityReciever.ConnectivityReceiverListener{
 
     RecyclerView allStreamsList;
-//    FloatingActionButton floatingActionButton;
+    //    FloatingActionButton floatingActionButton;
     LinearLayoutManager linearLayoutManager;
     StreamsListAdapter streamsListAdapter;
     List<String> valuesList;
@@ -63,44 +46,40 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
     TextView noStreams;
     LinearLayout noConnectionLayout;
     Button retryButton;
-    StreamInterface streamInterface;
-
-
-    public StreamsFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_streams, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_streams);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
-        allStreamsList = (RecyclerView) getActivity().findViewById(R.id.allStreamsListTemp);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
+        getSupportActionBar().setTitle("SELECT YOUR FIELD");
+
+        allStreamsList = (RecyclerView) findViewById(R.id.allStreamsListTemp);
+        linearLayoutManager = new LinearLayoutManager(AllStreamsActivity.this);
 
 //        floatingActionButton=(FloatingActionButton)getActivity().findViewById(R.id.fab);
 
-        requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue = Volley.newRequestQueue(AllStreamsActivity.this);
         h = new Handler();
 
-        noStreams = (TextView) getActivity().findViewById(R.id.noStreams);
-        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        noStreams = (TextView) findViewById(R.id.noStreams);
+        Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         noStreams.setTypeface(tff);
 
-        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayoutForStreams);
-        retryButton=(Button)getActivity().findViewById(R.id.retryButtonForStreams);
+        noConnectionLayout=(LinearLayout)findViewById(R.id.noConnectionLayoutForStreams);
+        retryButton=(Button)findViewById(R.id.retryButtonForStreams);
 
         noStreams.setVisibility(View.GONE);
         noConnectionLayout.setVisibility(View.GONE);
 
-        dialog = new ProgressDialog(getActivity());
+        dialog = new ProgressDialog(AllStreamsActivity.this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Fetching data.. Please wait...");
         dialog.setIndeterminate(true);
@@ -121,17 +100,6 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
 
         setList();
 
-        streamInterface=(StreamInterface)getActivity();
-
-//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AllExamsFragmentTemp f=new AllExamsFragmentTemp();
-//                String title="ADD NEW EXAMS";
-//                streamInterface.changeFromStream(f,title);
-//            }
-//        });
-
     }
 
     public void setList(){
@@ -139,11 +107,9 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
 
         valuesList=new ArrayList<>();
 
-        if(getActivity()!=null){
             dialog.show();
-        }
 
-        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.updateAndroidSecurityProvider(this);
         ConstantsDefined.beforeVolleyConnect();
 
         String url = ConstantsDefined.api+"getStreamNames";
@@ -168,7 +134,7 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
 
                     String success=response.getString("success");
                     if(success.equals("true")){
-                       ArrayList<String> ans= MiscellaneousParser.getStreamNamesParser(response);
+                        ArrayList<String> ans= MiscellaneousParser.getStreamNamesParser(response);
                         int length = ans.size();
                         if (length == 0) {
                             valuesList.clear();
@@ -196,13 +162,12 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
                         noConnectionLayout.setVisibility(View.VISIBLE);
                         noStreams.setVisibility(View.GONE);
                         valuesList=new ArrayList<>();
-                        streamsListAdapter = new StreamsListAdapter(valuesList, getActivity(),streamInterface);
+                        streamsListAdapter = new StreamsListAdapter(valuesList, AllStreamsActivity.this);
                         allStreamsList.setLayoutManager(linearLayoutManager);
                         allStreamsList.setItemAnimator(new DefaultItemAnimator());
                         allStreamsList.setAdapter(streamsListAdapter);
                         streamsListAdapter.notifyDataSetChanged();
-                        if(getActivity()!=null)
-                            Toast.makeText(getActivity(), "Something went wrong..\n" +
+                            Toast.makeText(AllStreamsActivity.this, "Something went wrong..\n" +
                                     "Please try again..", Toast.LENGTH_SHORT).show();
                     }
 
@@ -221,7 +186,7 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 noStreams.setVisibility(View.GONE);
                 valuesList=new ArrayList<>();
-                streamsListAdapter = new StreamsListAdapter(valuesList, getActivity(),streamInterface);
+                streamsListAdapter = new StreamsListAdapter(valuesList, AllStreamsActivity.this);
                 allStreamsList.setLayoutManager(linearLayoutManager);
                 allStreamsList.setItemAnimator(new DefaultItemAnimator());
                 allStreamsList.setAdapter(streamsListAdapter);
@@ -231,13 +196,11 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
                     dialog.dismiss();
 
 
-                if(ConstantsDefined.isOnline(getActivity())){
+                if(ConstantsDefined.isOnline(AllStreamsActivity.this)){
                     //Do nothing..
-                    if(getActivity()!=null)
-                        Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        Toast.makeText(AllStreamsActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
-                    if(getActivity()!=null)
-                        Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AllStreamsActivity.this, "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -245,7 +208,7 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
     }
 
     public void populateList(List<String> list) {
-        streamsListAdapter = new StreamsListAdapter(list, getActivity(),streamInterface);
+        streamsListAdapter = new StreamsListAdapter(list, this);
         allStreamsList.setLayoutManager(linearLayoutManager);
         allStreamsList.setItemAnimator(new DefaultItemAnimator());
         allStreamsList.setAdapter(streamsListAdapter);
@@ -276,8 +239,10 @@ public class StreamsFragment extends Fragment implements ConnectivityReciever.Co
         valuesList = new ArrayList<>();
         setList();
     }
-}
 
-interface StreamInterface{
-    public void changeFromStream(Fragment f,String title);
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }

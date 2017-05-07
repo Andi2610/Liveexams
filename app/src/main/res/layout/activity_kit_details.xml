@@ -1,0 +1,237 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="in.truskills.liveexams.MainScreens.KitDetailsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <include
+        layout="@layout/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/header"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="START DATE:"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:id="@+id/startDateText"/>
+
+            <TextView
+                android:textSize="19dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/light_sea_blue"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/startDateValue"/>
+
+            <TextView
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="END DATE:"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:id="@+id/endDateText"/>
+
+            <TextView
+                android:textSize="19dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/light_sea_blue"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/endDateValue"/>
+
+            <TextView
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="DESCRIPTION:"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:id="@+id/descriptionText"/>
+
+            <TextView
+                android:textSize="19dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/light_sea_blue"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/descriptionValue"/>
+
+            <TextView
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="PRICE:"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:id="@+id/priceText"/>
+
+            <TextView
+                android:textSize="19dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/light_sea_blue"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/priceValue"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/tryForFreeLayout"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:textSize="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="TRY FOR FREE:"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:id="@+id/tryForFreeText"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tryForFreeExamsList"
+                    android:layout_marginTop="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/examsIncludedInKitLayout"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:textSize="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="EXAMS INCLUDED IN KIT:"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:id="@+id/examsIncludedInKitText"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/examsIncludedInKitList"
+                    android:layout_marginTop="5dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:textSize="20dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="COURSES INCLUDED IN KIT:"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:id="@+id/coursesIncludedInKitText"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/coursesIncludedInKitList"
+                android:layout_marginTop="5dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom"
+        android:id="@+id/footerForKit"
+        android:layout_gravity="bottom"
+        android:weightSum="100"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@color/grey"
+            android:text="USE PROMO CODE"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:id="@+id/promo"
+            android:padding="2dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@color/colorPrimary"
+            android:text="BUY KIT"
+            android:id="@+id/buy"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:padding="2dp"/>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -114,8 +115,11 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
         addForMyKits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
-                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD","StreamsFragmentForMyKits");
+//                StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
+//                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD","StreamsFragmentForMyKits");
+
+                Intent i =new Intent(getActivity(),AllStreamsForKitActivity.class);
+                startActivity(i);
             }
         });
 
@@ -201,8 +205,11 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addIcon:
-                StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
-                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD","StreamsFragmentForMyKits");
+//                StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
+//                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD","StreamsFragmentForMyKits");
+                Intent i =new Intent(getActivity(),AllStreamsForKitActivity.class);
+                startActivity(i);
+
                 break;
         }
         return super.onOptionsItemSelected(item);

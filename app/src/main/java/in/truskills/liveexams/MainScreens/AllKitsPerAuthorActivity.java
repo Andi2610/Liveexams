@@ -1,27 +1,24 @@
 package in.truskills.liveexams.MainScreens;
 
-
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,9 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,11 +38,7 @@ import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class KitsByAuthors extends Fragment {
-
+public class AllKitsPerAuthorActivity extends AppCompatActivity {
 
     RecyclerView examsByAuthorsList;
     LinearLayoutManager linearLayoutManager;
@@ -64,36 +55,33 @@ public class KitsByAuthors extends Fragment {
     Button retryButton;
     String author, response;
     KitsByAuthorsInterface ob;
-
-
-    public KitsByAuthors() {
-        // Required empty public constructor
-    }
-
+    Bundle b;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_kits_by_authors, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_kits_per_author);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        examsByAuthorsList = (RecyclerView) getActivity().findViewById(R.id.kitsByAuthorsList);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
+        getSupportActionBar().setTitle("ADD NEW KITS");
+
+
+        examsByAuthorsList = (RecyclerView) findViewById(R.id.kitsByAuthorsList);
+        linearLayoutManager = new LinearLayoutManager(this);
         examsByAuthorsList.setLayoutManager(linearLayoutManager);
         examsByAuthorsList.setItemAnimator(new DefaultItemAnimator());
-        author = getArguments().getString("author");
-        response = getArguments().getString("response");
+        b=getIntent().getBundleExtra("bundle");
+        author = b.getString("author");
+        response = b.getString("response");
 
-        ob=(KitsByAuthorsInterface)getActivity();
+        noExamsPresent=(TextView)findViewById(R.id.noKitsPresent);
 
-        noExamsPresent=(TextView)getActivity().findViewById(R.id.noKitsPresent);
-
-        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         noExamsPresent.setTypeface(tff);
         noExamsPresent.setVisibility(View.GONE);
 
@@ -102,10 +90,11 @@ public class KitsByAuthors extends Fragment {
         h=new Handler();
 
         setList();
+
     }
 
     public void populateList(List<Values> list) {
-        allExamsListAdapter = new AllKitsListAdapter(list, getActivity(),ob);
+        allExamsListAdapter = new AllKitsListAdapter(list, this,ob);
         examsByAuthorsList.setAdapter(allExamsListAdapter);
         allExamsListAdapter.notifyDataSetChanged();
         if(list.size()==0)
@@ -115,13 +104,17 @@ public class KitsByAuthors extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.all_exams_menu, menu);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem = menu.findItem(R.id.searchAllExams);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        MenuItemCompat.setOnActionExpandListener(menuItem,
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.all_exams_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.searchAllExams).getActionView();
+        searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()) );
+
+        final MenuItem searchItem = menu.findItem(R.id.searchAllExams);
+
+        MenuItemCompat.setOnActionExpandListener(searchItem,
                 new MenuItemCompat.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionExpand(MenuItem menuItem) {
@@ -139,10 +132,10 @@ public class KitsByAuthors extends Fragment {
                         return true;
                     }
                 });
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
-            searchView.setQueryHint("Type here..");
 
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getApplicationContext()), SearchResultsActivity.class)));
+            searchView.setQueryHint("Type here..");
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -154,7 +147,7 @@ public class KitsByAuthors extends Fragment {
 
                     if(s.equals("")){
                         filteredList = new ArrayList<>();
-                        allExamsListAdapter = new AllKitsListAdapter(filteredList, getActivity(),ob);
+                        allExamsListAdapter = new AllKitsListAdapter(filteredList, AllKitsPerAuthorActivity.this,ob);
                         examsByAuthorsList.setAdapter(allExamsListAdapter);
                         allExamsListAdapter.notifyDataSetChanged();
 
@@ -170,7 +163,7 @@ public class KitsByAuthors extends Fragment {
                                 filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
                             }
                         }
-                        allExamsListAdapter = new AllKitsListAdapter(filteredList, getActivity(),ob);
+                        allExamsListAdapter = new AllKitsListAdapter(filteredList, AllKitsPerAuthorActivity.this,ob);
                         examsByAuthorsList.setAdapter(allExamsListAdapter);
                         allExamsListAdapter.notifyDataSetChanged();
                     }
@@ -178,6 +171,8 @@ public class KitsByAuthors extends Fragment {
                 }
             });
         }
+
+        return super.onCreateOptionsMenu(menu);
     }
 
 
@@ -224,8 +219,10 @@ public class KitsByAuthors extends Fragment {
             e.printStackTrace();
         }
     }
-}
 
-interface KitsByAuthorsInterface{
-    public void changeFromKitsByAuthors(Fragment f,String title);
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }

@@ -1,17 +1,14 @@
 package in.truskills.liveexams.MainScreens;
 
-
 import android.graphics.Typeface;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,11 +22,7 @@ import java.util.List;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class KitDetailsFragment extends Fragment {
-
+public class KitDetailsActivity extends AppCompatActivity {
 
     String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit,from;
 
@@ -41,8 +34,6 @@ public class KitDetailsFragment extends Fragment {
 
     List<Values> valuesList,valuesListForPaidExams,valuesListForCourses;
     Values values;
-
-    KitDetailsInterface ob;
 
     ArrayList<String> examsPaidName=new ArrayList<>();
     ArrayList<String> examsFreeName=new ArrayList<>();
@@ -63,55 +54,54 @@ public class KitDetailsFragment extends Fragment {
     TextView tryForFreeText,examsIncludedInKitText,coursesIncludedInKitText;
     LinearLayout footer,tryForFreeLayout,examsIncludedInKitLayout;
 
-    public KitDetailsFragment() {
-        // Required empty public constructor
-    }
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_kit_details, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_kit_details);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        b=getArguments();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
+        b=getIntent().getBundleExtra("bundle");
         response=b.getString("response");
         from=b.getString("from");
+        String name=b.getString("name");
+
+        getSupportActionBar().setTitle(name);
 
         Log.d("transfer", "onActivityCreated: "+from+" "+response);
 
         Log.d("responseInFragment", "onActivityCreated: "+response);
 
-        startDateText=(TextView) getActivity().findViewById(R.id.startDateText);
-        endDateText=(TextView) getActivity().findViewById(R.id.endDateText);
-        startDateValue=(TextView) getActivity().findViewById(R.id.startDateValue);
-        endDateValue=(TextView) getActivity().findViewById(R.id.endDateValue);
-        descriptionText=(TextView) getActivity().findViewById(R.id.descriptionText);
-        descriptionValue=(TextView) getActivity().findViewById(R.id.descriptionValue);
-        priceText=(TextView) getActivity().findViewById(R.id.priceText);
-        priceValue=(TextView) getActivity().findViewById(R.id.priceValue);
-        tryForFreeText=(TextView) getActivity().findViewById(R.id.tryForFreeText);
-        examsIncludedInKitText=(TextView) getActivity().findViewById(R.id.examsIncludedInKitText);
-        coursesIncludedInKitText=(TextView) getActivity().findViewById(R.id.coursesIncludedInKitText);
+        startDateText=(TextView) findViewById(R.id.startDateText);
+        endDateText=(TextView) findViewById(R.id.endDateText);
+        startDateValue=(TextView) findViewById(R.id.startDateValue);
+        endDateValue=(TextView) findViewById(R.id.endDateValue);
+        descriptionText=(TextView) findViewById(R.id.descriptionText);
+        descriptionValue=(TextView) findViewById(R.id.descriptionValue);
+        priceText=(TextView) findViewById(R.id.priceText);
+        priceValue=(TextView) findViewById(R.id.priceValue);
+        tryForFreeText=(TextView) findViewById(R.id.tryForFreeText);
+        examsIncludedInKitText=(TextView) findViewById(R.id.examsIncludedInKitText);
+        coursesIncludedInKitText=(TextView) findViewById(R.id.coursesIncludedInKitText);
 
-        footer=(LinearLayout)getActivity().findViewById(R.id.footerForKit);
-        tryForFreeLayout=(LinearLayout)getActivity().findViewById(R.id.tryForFreeLayout);
-        examsIncludedInKitLayout=(LinearLayout)getActivity().findViewById(R.id.examsIncludedInKitLayout);
+        footer=(LinearLayout)findViewById(R.id.footerForKit);
+        tryForFreeLayout=(LinearLayout)findViewById(R.id.tryForFreeLayout);
+        examsIncludedInKitLayout=(LinearLayout)findViewById(R.id.examsIncludedInKitLayout);
 
-        tryForFreeExamsList=(RecyclerView)getActivity().findViewById(R.id.tryForFreeExamsList);
-        examsIncludedInKitList=(RecyclerView)getActivity().findViewById(R.id.examsIncludedInKitList);
-        coursesIncludedInKitList=(RecyclerView)getActivity().findViewById(R.id.coursesIncludedInKitList);
+        tryForFreeExamsList=(RecyclerView)findViewById(R.id.tryForFreeExamsList);
+        examsIncludedInKitList=(RecyclerView)findViewById(R.id.examsIncludedInKitList);
+        coursesIncludedInKitList=(RecyclerView)findViewById(R.id.coursesIncludedInKitList);
 
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManagerForPaidExams = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManagerForPaidExams = new LinearLayoutManager(this);
 
-        ob=(KitDetailsInterface)getActivity();
 
-        Typeface tff1 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         startDateText.setTypeface(tff1);
         endDateText.setTypeface(tff1);
         startDateValue.setTypeface(tff1);
@@ -171,7 +161,7 @@ public class KitDetailsFragment extends Fragment {
                 tryForFreeLayout.setVisibility(View.GONE);
             }else{
                 tryForFreeLayout.setVisibility(View.VISIBLE);
-                tryForFreeExamsListAdapter=new TryForFreeExamsListAdapter(valuesList,getActivity(),from,response);
+                tryForFreeExamsListAdapter=new TryForFreeExamsListAdapter(valuesList,this,from,response);
                 tryForFreeExamsList.setLayoutManager(linearLayoutManager);
                 tryForFreeExamsList.setItemAnimator(new DefaultItemAnimator());
                 tryForFreeExamsList.setAdapter(tryForFreeExamsListAdapter);
@@ -188,7 +178,7 @@ public class KitDetailsFragment extends Fragment {
                 examsIncludedInKitLayout.setVisibility(View.GONE);
             }else{
                 examsIncludedInKitLayout.setVisibility(View.VISIBLE);
-                examsIncludedInKitListAdapter=new ExamsIncludedInKitListAdapter(valuesListForPaidExams,getActivity(),ob,from,response);
+                examsIncludedInKitListAdapter=new ExamsIncludedInKitListAdapter(valuesListForPaidExams,this,from,response);
                 examsIncludedInKitList.setLayoutManager(linearLayoutManagerForPaidExams);
                 examsIncludedInKitList.setItemAnimator(new DefaultItemAnimator());
                 examsIncludedInKitList.setAdapter(examsIncludedInKitListAdapter);
@@ -202,8 +192,10 @@ public class KitDetailsFragment extends Fragment {
         }
 
     }
-}
 
-interface KitDetailsInterface{
-    public void changeFromKitDetails(Fragment f,String title,String from,String response);
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }

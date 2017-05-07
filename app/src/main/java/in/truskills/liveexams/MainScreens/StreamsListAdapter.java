@@ -3,6 +3,7 @@ package in.truskills.liveexams.MainScreens;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -48,13 +49,11 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
     Handler h;
     ProgressDialog dialog;
     String value;
-    StreamInterface streamInterface;
     HashMap<String,ArrayList<String>> map;
 
-    StreamsListAdapter(List<String> myList, Context c,StreamInterface streamInterface) {
+    StreamsListAdapter(List<String> myList, Context c) {
         this.myList = myList;
         this.c = c;
-        this.streamInterface=streamInterface;
         setHasStableIds(true);
     }
 
@@ -121,13 +120,12 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                                         if(c!=null)
                                             Toast.makeText(c, "No exams available for this stream at present", Toast.LENGTH_LONG).show();
                                     }else{
-                                        AuthorFragment f=new AuthorFragment();
                                         Bundle b=new Bundle();
                                         b.putStringArrayList("list",ans);
                                         b.putString("response",jsonObject.toString());
-                                        f.setArguments(b);
-                                        String title="SELECT YOUR AUTHOR";
-                                        streamInterface.changeFromStream(f,title);
+                                        Intent i = new Intent(c,AllAuthorsPerFieldActivity.class);
+                                        i.putExtra("bundle",b);
+                                        c.startActivity(i);
                                     }
                                 }else{
                                     if(c!=null)

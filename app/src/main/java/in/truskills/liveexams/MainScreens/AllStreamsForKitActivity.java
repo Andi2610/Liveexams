@@ -1,28 +1,16 @@
 package in.truskills.liveexams.MainScreens;
 
-
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,14 +31,9 @@ import java.util.List;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class StreamsFragmentForMyKits extends Fragment implements ConnectivityReciever.ConnectivityReceiverListener{
-
+public class AllStreamsForKitActivity extends AppCompatActivity implements ConnectivityReciever.ConnectivityReceiverListener{
 
     RecyclerView allStreamsList;
     //    FloatingActionButton floatingActionButton;
@@ -65,42 +48,38 @@ public class StreamsFragmentForMyKits extends Fragment implements ConnectivityRe
     Button retryButton;
     StreamInterfaceForMyKits streamInterface;
 
-
-    public StreamsFragmentForMyKits() {
-        // Required empty public constructor
-    }
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_streams_fragment_for_my_kits, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_streams_for_kit);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        allStreamsList = (RecyclerView) getActivity().findViewById(R.id.allStreamsForMyKitsListTemp);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
+        getSupportActionBar().setTitle("SELECT YOUR FIELD");
+
+        allStreamsList = (RecyclerView) findViewById(R.id.allStreamsForMyKitsListTemp);
+        linearLayoutManager = new LinearLayoutManager(this);
 
 //        floatingActionButton=(FloatingActionButton)getActivity().findViewById(R.id.fab);
 
-        requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue = Volley.newRequestQueue(this);
         h = new Handler();
 
-        noStreams = (TextView) getActivity().findViewById(R.id.noStreams);
-        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        noStreams = (TextView) findViewById(R.id.noStreams);
+        Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         noStreams.setTypeface(tff);
 
-        noConnectionLayout=(LinearLayout)getActivity().findViewById(R.id.noConnectionLayoutForStreamsForMyKits);
-        retryButton=(Button)getActivity().findViewById(R.id.retryButtonForStreamsForMyKits);
+        noConnectionLayout=(LinearLayout)findViewById(R.id.noConnectionLayoutForStreamsForMyKits);
+        retryButton=(Button)findViewById(R.id.retryButtonForStreamsForMyKits);
 
         noStreams.setVisibility(View.GONE);
         noConnectionLayout.setVisibility(View.GONE);
 
-        dialog = new ProgressDialog(getActivity());
+        dialog = new ProgressDialog(AllStreamsForKitActivity.this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Fetching data.. Please wait...");
         dialog.setIndeterminate(true);
@@ -121,17 +100,6 @@ public class StreamsFragmentForMyKits extends Fragment implements ConnectivityRe
 
         setList();
 
-        streamInterface=(StreamInterfaceForMyKits) getActivity();
-
-//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AllExamsFragmentTemp f=new AllExamsFragmentTemp();
-//                String title="ADD NEW EXAMS";
-//                streamInterface.changeFromStream(f,title);
-//            }
-//        });
-
     }
 
     public void setList(){
@@ -139,11 +107,9 @@ public class StreamsFragmentForMyKits extends Fragment implements ConnectivityRe
 
         valuesList=new ArrayList<>();
 
-        if(getActivity()!=null){
-            dialog.show();
-        }
+        dialog.show();
 
-        ConstantsDefined.updateAndroidSecurityProvider(getActivity());
+        ConstantsDefined.updateAndroidSecurityProvider(this);
         ConstantsDefined.beforeVolleyConnect();
 
         String url = ConstantsDefined.apiForKit+"getStreamNames";
@@ -196,13 +162,12 @@ public class StreamsFragmentForMyKits extends Fragment implements ConnectivityRe
                         noConnectionLayout.setVisibility(View.VISIBLE);
                         noStreams.setVisibility(View.GONE);
                         valuesList=new ArrayList<>();
-                        streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(valuesList, getActivity(),streamInterface);
+                        streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(valuesList, AllStreamsForKitActivity.this,streamInterface);
                         allStreamsList.setLayoutManager(linearLayoutManager);
                         allStreamsList.setItemAnimator(new DefaultItemAnimator());
                         allStreamsList.setAdapter(streamsListAdapter);
                         streamsListAdapter.notifyDataSetChanged();
-                        if(getActivity()!=null)
-                            Toast.makeText(getActivity(), "Something went wrong..\n" +
+                        Toast.makeText(AllStreamsForKitActivity.this, "Something went wrong..\n" +
                                     "Please try again..", Toast.LENGTH_SHORT).show();
                     }
 
@@ -221,7 +186,7 @@ public class StreamsFragmentForMyKits extends Fragment implements ConnectivityRe
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 noStreams.setVisibility(View.GONE);
                 valuesList=new ArrayList<>();
-                streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(valuesList, getActivity(),streamInterface);
+                streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(valuesList, AllStreamsForKitActivity.this,streamInterface);
                 allStreamsList.setLayoutManager(linearLayoutManager);
                 allStreamsList.setItemAnimator(new DefaultItemAnimator());
                 allStreamsList.setAdapter(streamsListAdapter);
@@ -231,13 +196,11 @@ public class StreamsFragmentForMyKits extends Fragment implements ConnectivityRe
                     dialog.dismiss();
 
 
-                if(ConstantsDefined.isOnline(getActivity())){
+                if(ConstantsDefined.isOnline(AllStreamsForKitActivity.this)){
                     //Do nothing..
-                    if(getActivity()!=null)
-                        Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AllStreamsForKitActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
-                    if(getActivity()!=null)
-                        Toast.makeText(getActivity(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AllStreamsForKitActivity.this, "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -245,7 +208,7 @@ public class StreamsFragmentForMyKits extends Fragment implements ConnectivityRe
     }
 
     public void populateList(List<String> list) {
-        streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(list, getActivity(),streamInterface);
+        streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(list, AllStreamsForKitActivity.this,streamInterface);
         allStreamsList.setLayoutManager(linearLayoutManager);
         allStreamsList.setItemAnimator(new DefaultItemAnimator());
         allStreamsList.setAdapter(streamsListAdapter);
@@ -276,8 +239,10 @@ public class StreamsFragmentForMyKits extends Fragment implements ConnectivityRe
         valuesList = new ArrayList<>();
         setList();
     }
-}
 
-interface StreamInterfaceForMyKits{
-    public void changeFromStreamForMyKits(Fragment f,String title);
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 }

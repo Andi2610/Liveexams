@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="in.truskills.liveexams.MainScreens.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <include
+        layout="@layout/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Sponsored By :"
+                android:id="@+id/sponsorTextDetailsPage"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_margin="10dp"
+                android:gravity="center"/>
+
+            <ViewFlipper
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:id="@+id/viewFlipperDetailsPage"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp">
+
+            </ViewFlipper>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:weightSum="100">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_weight="50"
+                    android:background="@color/sea_blue">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/startDateDetailsPage"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:padding="2dp"
+                        android:gravity="center" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/startTimeDetailsPage"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:padding="2dp"
+                        android:gravity="center" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_weight="50"
+                    android:background="@color/light_sea_blue">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/endDateDetailsPage"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:padding="2dp"
+                        android:gravity="center" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/endTimeDetailsPage"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:padding="2dp"
+                        android:gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/myLanguageDetailsPage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/descriptionDetailsPage"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:gravity="center"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -152,7 +152,7 @@ public class TryForFreeExamsListAdapter extends RecyclerView.Adapter<TryForFreeE
                                             Intent i = new Intent(c, ParticularExamMainActivity.class);
                                             i.putExtra("bundle", b);
                                             i.putExtra("from", "tryForFree");
-                                            ((MainActivity) c).startActivity(i);
+                                            c.startActivity(i);
                                         }
                                     });
                                 }else{

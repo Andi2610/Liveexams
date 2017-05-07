@@ -163,7 +163,14 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Quiz.QuestionPaperLoadDevelopment"></activity>
+        <activity android:name=".Quiz.QuestionPaperLoadDevelopment" />
+        <activity android:name=".MainScreens.AllStreamsForKitActivity" />
+        <activity android:name=".MainScreens.AllAuthorsPerFieldForKitActivity" />
+        <activity android:name=".MainScreens.AllKitsPerAuthorActivity" />
+        <activity android:name=".MainScreens.KitDetailsActivity" />
+        <activity android:name=".MainScreens.DetailsOfExamsIncludedInKitActivity" />
+        <activity android:name=".MainScreens.AllStreamsActivity" />
+        <activity android:name=".MainScreens.AllAuthorsPerFieldActivity"></activity>
     </application>
 
 </manifest>

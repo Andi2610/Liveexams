@@ -3,6 +3,7 @@ package in.truskills.liveexams.MainScreens;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -77,28 +78,12 @@ public class AuthorsListAdapterForMyKits extends RecyclerView.Adapter<AuthorsLis
             @Override
             public void onClick(View view) {
 
-//                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
-//
-//                Log.d("prefsAllow",allow.getInt("allow",1)+"");
-//                if(allow.getInt("allow",1)==0){
-//                    if(c!=null)
-//                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
-//                }else{
-//                    value = myList.get(holder.getAdapterPosition());
-////                    ArrayList<String> names=map.get(value);
-////
-////                    for (int i=0;i<names.size();++i){
-////                        Log.d("names", "onClick: "+names.get(i));
-////                    }
-
-                    KitsByAuthors f=new KitsByAuthors();
-                    Bundle b=new Bundle();
-                    b.putString("author",value);
-                    b.putString("response",response);
-                    f.setArguments(b);
-                    String title="ADD NEW KITS";
-                    authorInterface.changeFromAuthorForMyKits(f,title,response,value,myList);
-//                }
+                Bundle b=new Bundle();
+                b.putString("author",value);
+                b.putString("response",response);
+                Intent i = new Intent(c,AllKitsPerAuthorActivity.class);
+                i.putExtra("bundle",b);
+                c.startActivity(i);
             }
         });
     }

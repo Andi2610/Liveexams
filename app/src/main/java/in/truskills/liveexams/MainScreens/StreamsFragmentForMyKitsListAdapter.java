@@ -3,6 +3,7 @@ package in.truskills.liveexams.MainScreens;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -126,13 +127,13 @@ public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<St
                                         if(c!=null)
                                             Toast.makeText(c, "No kits available for this stream at present", Toast.LENGTH_LONG).show();
                                     }else{
-                                        AuthorFragmentForMyKits f=new AuthorFragmentForMyKits();
+
+                                        Intent i =new Intent(c,AllAuthorsPerFieldForKitActivity.class);
                                         Bundle b=new Bundle();
                                         b.putStringArrayList("list",ans);
                                         b.putString("response",jsonObject.toString());
-                                        f.setArguments(b);
-                                        String title="SELECT YOUR AUTHOR";
-                                        streamInterface.changeFromStreamForMyKits(f,title);
+                                        i.putExtra("bundle",b);
+                                        c.startActivity(i);
                                     }
                                 }else{
                                     if(c!=null)
