@@ -1,45 +1,29 @@
 package in.truskills.liveexams.MainScreens;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
-import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
 /**
  * Created by Shivansh Gupta on 08-04-2017.
  */
 
-public class AuthorsListAdapter extends RecyclerView.Adapter<AuthorsListAdapter.MyViewHolder> {
+public class AllAuthorsPerFieldForKitActivityListAdapter extends RecyclerView.Adapter<AllAuthorsPerFieldForKitActivityListAdapter.MyViewHolder> {
 
     ArrayList<String> myList;
     Context c;
@@ -47,20 +31,18 @@ public class AuthorsListAdapter extends RecyclerView.Adapter<AuthorsListAdapter.
     Handler h;
     ProgressDialog dialog;
     String value;
-    AuthorInterface authorInterface;
     HashMap<String,ArrayList<String>> map;
     String response;
 
-    AuthorsListAdapter(ArrayList<String> myList, Context c,AuthorInterface authorInterface,String response) {
+    AllAuthorsPerFieldForKitActivityListAdapter(ArrayList<String> myList, Context c, String response) {
         this.myList = myList;
         this.c = c;
-        this.authorInterface=authorInterface;
         setHasStableIds(true);
         this.response=response;
     }
 
     @Override
-    public AuthorsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AllAuthorsPerFieldForKitActivityListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_row_layout_my_streams, parent, false);
 
@@ -77,28 +59,12 @@ public class AuthorsListAdapter extends RecyclerView.Adapter<AuthorsListAdapter.
             @Override
             public void onClick(View view) {
 
-                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
-
-                Log.d("prefsAllow",allow.getInt("allow",1)+"");
-                if(allow.getInt("allow",1)==0){
-                    if(c!=null)
-                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
-                }else{
-                    value = myList.get(holder.getAdapterPosition());
-//                    ArrayList<String> names=map.get(value);
-//
-//                    for (int i=0;i<names.size();++i){
-//                        Log.d("names", "onClick: "+names.get(i));
-//                    }
-
-                    ExamsByAuthors f=new ExamsByAuthors();
-                    Bundle b=new Bundle();
-                    b.putString("author",value);
-                    b.putString("response",response);
-                    f.setArguments(b);
-                    String title="ADD NEW EXAMS";
-                    authorInterface.changeFromAuthor(f,title,response,value,myList);
-                 }
+                Bundle b=new Bundle();
+                b.putString("author",value);
+                b.putString("response",response);
+                Intent i = new Intent(c,AllKitsPerAuthorActivity.class);
+                i.putExtra("bundle",b);
+                c.startActivity(i);
             }
         });
     }

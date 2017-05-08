@@ -41,7 +41,7 @@ import in.truskills.liveexams.R;
  * Created by Shivansh Gupta on 06-04-2017.
  */
 
-public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<StreamsFragmentForMyKitsListAdapter.MyViewHolder> {
+public class AllStreamsActivityListAdapter extends RecyclerView.Adapter<AllStreamsActivityListAdapter.MyViewHolder> {
 
     List<String> myList;
     Context c;
@@ -49,18 +49,16 @@ public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<St
     Handler h;
     ProgressDialog dialog;
     String value;
-    StreamInterfaceForMyKits streamInterface;
     HashMap<String,ArrayList<String>> map;
 
-    StreamsFragmentForMyKitsListAdapter(List<String> myList, Context c,StreamInterfaceForMyKits streamInterface) {
+    AllStreamsActivityListAdapter(List<String> myList, Context c) {
         this.myList = myList;
         this.c = c;
-        this.streamInterface=streamInterface;
         setHasStableIds(true);
     }
 
     @Override
-    public StreamsFragmentForMyKitsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AllStreamsActivityListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_row_layout_my_streams, parent, false);
 
@@ -77,13 +75,13 @@ public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<St
             @Override
             public void onClick(View view) {
 
-//                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
-//
-//                Log.d("prefsAllow",allow.getInt("allow",1)+"");
-//                if(allow.getInt("allow",1)==0){
-//                    if(c!=null)
-//                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
-//                }else{
+                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
+
+                Log.d("prefsAllow",allow.getInt("allow",1)+"");
+                if(allow.getInt("allow",1)==0){
+                    if(c!=null)
+                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
+                }else{
                     value = myList.get(holder.getAdapterPosition());
 
                     final RequestQueue requestQueue = Volley.newRequestQueue(c);
@@ -101,18 +99,13 @@ public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<St
                     ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
                     ConstantsDefined.beforeVolleyConnect();
 
-                Log.d("kit", "onClick: "+value);
+                    value=value.replaceAll(" ","");
 
-                value=value.replaceAll(" ","");
-
-                    String url = ConstantsDefined.apiForKit + "searchProductKitsByStreamName/"+value;
-                Log.d("kit", "onClick: "+url);
+                    String url = ConstantsDefined.api + "searchExamsByStreamName/"+value;
                     StringRequest stringRequest = new StringRequest(Request.Method.GET,
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d("kit", "onResponse: "+response);
-
                             if(dialog!=null)
                                 dialog.dismiss();
                             try {
@@ -121,17 +114,15 @@ public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<St
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
                                     ArrayList<String> ans;
-                                    ans=MiscellaneousParser.searchExamsByStreamNameParserForMyKits(jsonObject);
-
+                                    ans=MiscellaneousParser.searchExamsByStreamNameParser(jsonObject);
                                     if(ans.size()==0){
                                         if(c!=null)
-                                            Toast.makeText(c, "No kits available for this stream at present", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(c, "No exams available for this stream at present", Toast.LENGTH_LONG).show();
                                     }else{
-
-                                        Intent i =new Intent(c,AllAuthorsPerFieldForKitActivity.class);
                                         Bundle b=new Bundle();
                                         b.putStringArrayList("list",ans);
                                         b.putString("response",jsonObject.toString());
+                                        Intent i = new Intent(c,AllAuthorsPerFieldActivity.class);
                                         i.putExtra("bundle",b);
                                         c.startActivity(i);
                                     }
@@ -149,8 +140,6 @@ public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<St
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-
-                            Log.d("kit", "onErrorResponse: "+error);
                             if(dialog!=null)
                                 dialog.dismiss();
                             if(ConstantsDefined.isOnline(c)){
@@ -171,7 +160,7 @@ public class StreamsFragmentForMyKitsListAdapter extends RecyclerView.Adapter<St
                         }
                     };
                     requestQueue.add(stringRequest);
-//                }
+                }
             }
         });
     }

@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="in.truskills.liveexams.MainScreens.AllKitsPerAuthorActivity">
+    tools:context="in.truskills.liveexams.MainScreens.AllExamsPerAuthorActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +22,7 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/kitsByAuthorsList"
+                android:id="@+id/examsByAuthorsList"
                 android:layout_marginTop="5dp">
 
             </android.support.v7.widget.RecyclerView>
@@ -33,12 +34,12 @@
                 android:layout_centerHorizontal="true"
                 android:textSize="30dp"
                 android:gravity="center"
-                android:text="No kits available at present"
+                android:text="No exams available at present"
                 android:textColor="@color/light_grey"
-                android:id="@+id/noKitsPresent"
+                android:id="@+id/noExamsPresent"
                 android:layout_centerVertical="true" />
-
         </RelativeLayout>
 
     </LinearLayout>
+
 </RelativeLayout>

@@ -154,7 +154,7 @@ public class ExamsIncludedInKitListAdapter extends RecyclerView.Adapter<ExamsInc
                                                 Intent i = new Intent(c, ParticularExamMainActivity.class);
                                                 i.putExtra("bundle", b);
                                                 i.putExtra("from", "homeOfKit");
-                                                ((MainActivity) c).startActivity(i);
+                                                c.startActivity(i);
 
                                             }else{
 

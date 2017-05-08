@@ -27,64 +27,74 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
+import in.truskills.liveexams.ParticularExam.ParticularExamMainActivity;
 import in.truskills.liveexams.R;
 
-/**
- * Created by Shivansh Gupta on 06-04-2017.
- */
+//This is the list adapter for my enrolled exams which will direct to start page whenever an item in the list is clicked..
 
-public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.MyViewHolder> {
+public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.MyViewHolder> {
 
-    List<String> myList;
+    //Declare variables..
+    List<Values> myList;
     Context c;
+    Values value;
     SharedPreferences prefs;
-    Handler h;
     ProgressDialog dialog;
-    String value;
-    HashMap<String,ArrayList<String>> map;
+    Handler h;
+    RequestQueue requestQueue;
+    String enrolled, timestamp, examDetails, examId, examGiven;
 
-    StreamsListAdapter(List<String> myList, Context c) {
+    HomeListAdapter(List<Values> myList, Context c) {
         this.myList = myList;
         this.c = c;
-        setHasStableIds(true);
     }
 
     @Override
-    public StreamsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public HomeListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_layout_my_streams, parent, false);
-
+                .inflate(R.layout.list_row_layout_my_exams, parent, false);
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+
         value = myList.get(position);
         Typeface tff = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
-        holder.name.setText(value);
-        holder.name.setTypeface(tff);
+        Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
+        holder.name.setText(value.getName());
+        holder.name.setTypeface(tff2);
+        holder.startDatevalue.setText(value.getStartDateValue());
+        holder.startDatevalue.setTypeface(tff);
+        holder.endDateValue.setText(value.getEndDateValue());
+        holder.endDateValue.setTypeface(tff);
+        holder.durationValue.setText(value.getDurationValue());
+        holder.durationValue.setTypeface(tff);
+        holder.startDateText.setTypeface(tff);
+        holder.endDateText.setTypeface(tff);
+        holder.durationText.setTypeface(tff);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//
+//                Intent i =new Intent(c,FeedbackActivity.class);
+//                c.startActivity(i);
 
                 SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
-
                 Log.d("prefsAllow",allow.getInt("allow",1)+"");
+
                 if(allow.getInt("allow",1)==0){
                     if(c!=null)
-                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
                 }else{
                     value = myList.get(holder.getAdapterPosition());
-
-                    final RequestQueue requestQueue = Volley.newRequestQueue(c);
+                    requestQueue = Volley.newRequestQueue(c);
                     prefs = c.getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
                     if(c!=null){
@@ -99,34 +109,49 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                     ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
                     ConstantsDefined.beforeVolleyConnect();
 
-                    value=value.replaceAll(" ","");
-
-                    String url = ConstantsDefined.api + "searchExamsByStreamName/"+value;
-                    StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                    //Get exam details of the exam on which the user has clicked..
+                    String url = ConstantsDefined.api + "examDetails";
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             if(dialog!=null)
                                 dialog.dismiss();
+
                             try {
 
                                 JSONObject jsonObject=new JSONObject(response);
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
-                                    ArrayList<String> ans;
-                                    ans=MiscellaneousParser.searchExamsByStreamNameParser(jsonObject);
+                                    //Parse Exam details..
+                                    HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
 
-                                    if(ans.size()==0){
-                                        if(c!=null)
-                                            Toast.makeText(c, "No exams available for this stream at present", Toast.LENGTH_LONG).show();
-                                    }else{
-                                        Bundle b=new Bundle();
-                                        b.putStringArrayList("list",ans);
-                                        b.putString("response",jsonObject.toString());
-                                        Intent i = new Intent(c,AllAuthorsPerFieldActivity.class);
-                                        i.putExtra("bundle",b);
-                                        c.startActivity(i);
-                                    }
+                                    //Get it's variables..
+                                    enrolled = mapper.get("enrolled");
+                                    timestamp = mapper.get("timestamp");
+                                    examDetails = mapper.get("examDetails");
+                                    examGiven = mapper.get("examGiven");
+
+                                    examId = value.getExamId();
+
+                                    h = new Handler();
+                                    h.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //Create a bundle to be passed to particular main activity..
+                                            Bundle b = new Bundle();
+                                            b.putString("enrolled", enrolled);
+                                            b.putString("timestamp", timestamp);
+                                            b.putString("examDetails", examDetails);
+                                            b.putString("name", value.getName());
+                                            b.putString("examId", examId);
+                                            b.putString("examGiven", examGiven);
+                                            Intent i = new Intent(c, ParticularExamMainActivity.class);
+                                            i.putExtra("bundle", b);
+                                            i.putExtra("from", "home");
+                                            ((MainActivity) c).startActivityForResult(i, 10);
+                                        }
+                                    });
                                 }else{
                                     if(c!=null)
                                         Toast.makeText(c, "Something went wrong..\n" +
@@ -134,29 +159,30 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            } catch (ParseException e) {
-                                e.printStackTrace();
                             }
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            //If connection couldn't be made..
                             if(dialog!=null)
                                 dialog.dismiss();
                             if(ConstantsDefined.isOnline(c)){
                                 //Do nothing..
                                 if(c!=null)
-                                    Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                                Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                             }else{
                                 if(c!=null)
-                                    Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
+                            //Set required parameters..
                             Map<String, String> params = new HashMap<String, String>();
-
+                            params.put("userId", prefs.getString("userId", "abc"));
+                            params.put("examId", value.getExamId());
                             return params;
                         }
                     };
@@ -171,24 +197,20 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
         return myList.size();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name;
+        public TextView name, startDatevalue, endDateValue, durationValue, startDateText, endDateText, durationText;
         LinearLayout container;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
+            startDatevalue = (TextView) itemView.findViewById(R.id.startDateValue);
+            endDateValue = (TextView) itemView.findViewById(R.id.endDateValue);
+            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
+            startDateText = (TextView) itemView.findViewById(R.id.startDateText);
+            endDateText = (TextView) itemView.findViewById(R.id.endDateText);
+            durationText = (TextView) itemView.findViewById(R.id.durationText);
             container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }

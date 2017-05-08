@@ -1,6 +1,5 @@
 package in.truskills.liveexams.MainScreens;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,30 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
-import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
 /**
  * Created by Shivansh Gupta on 08-04-2017.
  */
 
-public class AuthorsListAdapterForMyKits extends RecyclerView.Adapter<AuthorsListAdapterForMyKits.MyViewHolder> {
+public class AllAuthorsPerFieldActivityListAdapter extends RecyclerView.Adapter<AllAuthorsPerFieldActivityListAdapter.MyViewHolder> {
 
     ArrayList<String> myList;
     Context c;
@@ -48,20 +33,18 @@ public class AuthorsListAdapterForMyKits extends RecyclerView.Adapter<AuthorsLis
     Handler h;
     ProgressDialog dialog;
     String value;
-    AuthorInterfaceForMyKits authorInterface;
     HashMap<String,ArrayList<String>> map;
     String response;
 
-    AuthorsListAdapterForMyKits(ArrayList<String> myList, Context c,AuthorInterfaceForMyKits authorInterface,String response) {
+    AllAuthorsPerFieldActivityListAdapter(ArrayList<String> myList, Context c, String response) {
         this.myList = myList;
         this.c = c;
-        this.authorInterface=authorInterface;
         setHasStableIds(true);
         this.response=response;
     }
 
     @Override
-    public AuthorsListAdapterForMyKits.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AllAuthorsPerFieldActivityListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_row_layout_my_streams, parent, false);
 
@@ -78,12 +61,21 @@ public class AuthorsListAdapterForMyKits extends RecyclerView.Adapter<AuthorsLis
             @Override
             public void onClick(View view) {
 
-                Bundle b=new Bundle();
-                b.putString("author",value);
-                b.putString("response",response);
-                Intent i = new Intent(c,AllKitsPerAuthorActivity.class);
-                i.putExtra("bundle",b);
-                c.startActivity(i);
+                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
+
+                Log.d("prefsAllow",allow.getInt("allow",1)+"");
+                if(allow.getInt("allow",1)==0){
+                    if(c!=null)
+                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
+                }else{
+                    value = myList.get(holder.getAdapterPosition());
+                    Intent i =new Intent(c,AllExamsPerAuthorActivity.class);
+                    Bundle b=new Bundle();
+                    b.putString("author",value);
+                    b.putString("response",response);
+                    i.putExtra("bundle",b);
+                    c.startActivity(i);
+                 }
             }
         });
     }

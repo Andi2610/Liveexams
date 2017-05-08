@@ -25,8 +25,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
 
     RecyclerView authorsList;
     LinearLayoutManager linearLayoutManager;
-    AuthorsListAdapterForMyKits authorsListAdapter;
-    AuthorInterfaceForMyKits authorInterface;
+    AllAuthorsPerFieldForKitActivityListAdapter authorsListAdapter;
     ArrayList<String> list,filteredList;
     String response;
     HashMap<String,ArrayList<String>> map;
@@ -104,7 +103,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
 
                     if(s.equals("")){
                         filteredList = new ArrayList<>();
-                        authorsListAdapter = new AuthorsListAdapterForMyKits(filteredList, AllAuthorsPerFieldForKitActivity.this,authorInterface,response);
+                        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(filteredList, AllAuthorsPerFieldForKitActivity.this,response);
                         authorsList.setAdapter(authorsListAdapter);
                         authorsListAdapter.notifyDataSetChanged();
 
@@ -120,7 +119,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
                                 filteredList.add(list.get(i));
                             }
                         }
-                        authorsListAdapter = new AuthorsListAdapterForMyKits(filteredList, AllAuthorsPerFieldForKitActivity.this,authorInterface,response);
+                        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(filteredList, AllAuthorsPerFieldForKitActivity.this,response);
                         authorsList.setAdapter(authorsListAdapter);
                         authorsListAdapter.notifyDataSetChanged();
                     }
@@ -135,7 +134,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
     public void setList(){
         list=new ArrayList<>();
         list=b.getStringArrayList("list");
-        authorsListAdapter = new AuthorsListAdapterForMyKits(list, AllAuthorsPerFieldForKitActivity.this,authorInterface,response);
+        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(list, AllAuthorsPerFieldForKitActivity.this,response);
         authorsList.setLayoutManager(linearLayoutManager);
         authorsList.setItemAnimator(new DefaultItemAnimator());
         authorsList.setAdapter(authorsListAdapter);

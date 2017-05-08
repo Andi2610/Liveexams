@@ -62,7 +62,6 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
     MyKitsListAdapter myKitsListAdapter;
     List<Values> valuesList, filteredList;
     Values values;
-    MyKitsInterface ob;
     String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
     SharedPreferences prefs;
     RequestQueue requestQueue;
@@ -108,7 +107,6 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
         myKitsList = (RecyclerView) getActivity().findViewById(R.id.myKitsList);
 //        add.setVisibility(View.GONE);
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        ob = (MyKitsInterface) getActivity();
 
         setList();
 
@@ -174,7 +172,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
 
                         if(s.equals("")){
                             filteredList = new ArrayList<>();
-                            myKitsListAdapter = new MyKitsListAdapter(filteredList, getActivity(),ob);
+                            myKitsListAdapter = new MyKitsListAdapter(filteredList, getActivity());
                             myKitsList.setAdapter(myKitsListAdapter);
                             myKitsListAdapter.notifyDataSetChanged();
 
@@ -190,7 +188,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
                                     filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
                                 }
                             }
-                            myKitsListAdapter = new MyKitsListAdapter(filteredList, getActivity(),ob);
+                            myKitsListAdapter = new MyKitsListAdapter(filteredList, getActivity());
                             myKitsList.setAdapter(myKitsListAdapter);
                             myKitsListAdapter.notifyDataSetChanged();
                         }
@@ -301,7 +299,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
     }
 
     public void populateList(List<Values> list) {
-        myKitsListAdapter = new MyKitsListAdapter(list, getActivity(),ob);
+        myKitsListAdapter = new MyKitsListAdapter(list, getActivity());
         myKitsList.setLayoutManager(linearLayoutManager);
         myKitsList.setItemAnimator(new DefaultItemAnimator());
         myKitsList.setAdapter(myKitsListAdapter);
@@ -330,8 +328,4 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
             }
         }
     }
-}
-
-interface MyKitsInterface {
-    public void changeFragmentFromMyKits(Fragment f,String title,String tag);
 }

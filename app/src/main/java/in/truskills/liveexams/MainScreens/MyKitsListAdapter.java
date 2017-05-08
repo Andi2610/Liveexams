@@ -50,12 +50,10 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
     Handler h;
     RequestQueue requestQueue;
     String enrolled, timestamp, examDetails, examId, examGiven;
-    MyKitsInterface ob;
 
-    MyKitsListAdapter(List<Values> myList, Context c,MyKitsInterface ob) {
+    MyKitsListAdapter(List<Values> myList, Context c) {
         this.myList = myList;
         this.c = c;
-        this.ob=ob;
     }
 
     @Override
@@ -127,13 +125,14 @@ public class MyKitsListAdapter extends RecyclerView.Adapter<MyKitsListAdapter.My
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
 
-                                    KitDetailsFragment f=new KitDetailsFragment();
+                                    Intent i = new Intent(c,KitDetailsActivity.class);
                                     Bundle b=new Bundle();
                                     Log.d("responseInFragment", "onResponse: "+jsonObject.getJSONObject("response").toString());
                                     b.putString("response",jsonObject.getJSONObject("response").toString());
                                     b.putString("from","home");
-                                    f.setArguments(b);
-                                    ob.changeFragmentFromMyKits(f,value.getName(),"KitDetailsFragmentFromHome");
+                                    b.putString("name",value.getName());
+                                    i.putExtra("bundle",b);
+                                    c.startActivity(i);
 
                                 }else{
                                     if(c!=null)

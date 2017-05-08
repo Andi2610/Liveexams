@@ -38,7 +38,7 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
     RecyclerView allStreamsList;
     //    FloatingActionButton floatingActionButton;
     LinearLayoutManager linearLayoutManager;
-    StreamsListAdapter streamsListAdapter;
+    AllStreamsActivityListAdapter streamsListAdapter;
     List<String> valuesList;
     RequestQueue requestQueue;
     ProgressDialog dialog;
@@ -162,7 +162,7 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
                         noConnectionLayout.setVisibility(View.VISIBLE);
                         noStreams.setVisibility(View.GONE);
                         valuesList=new ArrayList<>();
-                        streamsListAdapter = new StreamsListAdapter(valuesList, AllStreamsActivity.this);
+                        streamsListAdapter = new AllStreamsActivityListAdapter(valuesList, AllStreamsActivity.this);
                         allStreamsList.setLayoutManager(linearLayoutManager);
                         allStreamsList.setItemAnimator(new DefaultItemAnimator());
                         allStreamsList.setAdapter(streamsListAdapter);
@@ -186,7 +186,7 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 noStreams.setVisibility(View.GONE);
                 valuesList=new ArrayList<>();
-                streamsListAdapter = new StreamsListAdapter(valuesList, AllStreamsActivity.this);
+                streamsListAdapter = new AllStreamsActivityListAdapter(valuesList, AllStreamsActivity.this);
                 allStreamsList.setLayoutManager(linearLayoutManager);
                 allStreamsList.setItemAnimator(new DefaultItemAnimator());
                 allStreamsList.setAdapter(streamsListAdapter);
@@ -208,7 +208,7 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
     }
 
     public void populateList(List<String> list) {
-        streamsListAdapter = new StreamsListAdapter(list, this);
+        streamsListAdapter = new AllStreamsActivityListAdapter(list, this);
         allStreamsList.setLayoutManager(linearLayoutManager);
         allStreamsList.setItemAnimator(new DefaultItemAnimator());
         allStreamsList.setAdapter(streamsListAdapter);

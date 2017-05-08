@@ -27,38 +27,40 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.ParticularExam.ParticularExamMainActivity;
 import in.truskills.liveexams.R;
 
 /**
- * Created by 6155dx on 22-01-2017.
+ * Created by Shivansh Gupta on 06-04-2017.
  */
 
-public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapter.MyViewHolder> {
+public class AllStreamsForKitActivityListActivity extends RecyclerView.Adapter<AllStreamsForKitActivityListActivity.MyViewHolder> {
 
-    List<Values> myList;
+    List<String> myList;
     Context c;
     SharedPreferences prefs;
     Handler h;
     ProgressDialog dialog;
-    Values value;
+    String value;
+    HashMap<String,ArrayList<String>> map;
 
-    AllExamsListAdapter(List<Values> myList, Context c) {
+    AllStreamsForKitActivityListActivity(List<String> myList, Context c) {
         this.myList = myList;
         this.c = c;
         setHasStableIds(true);
     }
 
     @Override
-    public AllExamsListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AllStreamsForKitActivityListActivity.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_row_layout_my_exams, parent, false);
+                .inflate(R.layout.list_row_layout_my_streams, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -67,29 +69,19 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         value = myList.get(position);
         Typeface tff = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
-        Typeface tff2 = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Bold.ttf");
-        holder.name.setText(value.getName());
-        holder.name.setTypeface(tff2);
-        holder.startDatevalue.setText(value.getStartDateValue());
-        holder.startDatevalue.setTypeface(tff);
-        holder.endDateValue.setText(value.getEndDateValue());
-        holder.endDateValue.setTypeface(tff);
-        holder.durationValue.setText(value.getDurationValue());
-        holder.durationValue.setTypeface(tff);
-        holder.startDateText.setTypeface(tff);
-        holder.endDateText.setTypeface(tff);
-        holder.durationText.setTypeface(tff);
+        holder.name.setText(value);
+        holder.name.setTypeface(tff);
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
-
-                Log.d("prefsAllow",allow.getInt("allow",1)+"");
-                if(allow.getInt("allow",1)==0){
-                    if(c!=null)
-                    Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
-                }else{
+//                SharedPreferences allow=c.getSharedPreferences("allow",Context.MODE_PRIVATE);
+//
+//                Log.d("prefsAllow",allow.getInt("allow",1)+"");
+//                if(allow.getInt("allow",1)==0){
+//                    if(c!=null)
+//                        Toast.makeText(c, "Your last paper submission is pending..\nPlease wait for few seconds before continuing..", Toast.LENGTH_SHORT).show();
+//                }else{
                     value = myList.get(holder.getAdapterPosition());
 
                     final RequestQueue requestQueue = Volley.newRequestQueue(c);
@@ -107,11 +99,18 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                     ConstantsDefined.updateAndroidSecurityProvider((Activity) c);
                     ConstantsDefined.beforeVolleyConnect();
 
-                    String url = ConstantsDefined.api + "examDetails";
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Log.d("kit", "onClick: "+value);
+
+                value=value.replaceAll(" ","");
+
+                    String url = ConstantsDefined.apiForKit + "searchProductKitsByStreamName/"+value;
+                Log.d("kit", "onClick: "+url);
+                    StringRequest stringRequest = new StringRequest(Request.Method.GET,
                             url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            Log.d("kit", "onResponse: "+response);
+
                             if(dialog!=null)
                                 dialog.dismiss();
                             try {
@@ -119,19 +118,21 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                                 JSONObject jsonObject=new JSONObject(response);
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
-                                    HashMap<String, String> mapper = MiscellaneousParser.examDetailsParser(response);
-                                    final String enrolled = mapper.get("enrolled");
-                                    final String timestamp = mapper.get("timestamp");
-                                    final String examDetails = mapper.get("examDetails");
-                                    final String examGiven = mapper.get("examGiven");
-                                    final String examId = value.getExamId();
-                                    h = new Handler();
-                                    h.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            startMyActivity(enrolled, timestamp, examDetails, value.getName(), examId, examGiven);
-                                        }
-                                    });
+                                    ArrayList<String> ans;
+                                    ans=MiscellaneousParser.searchExamsByStreamNameParserForMyKits(jsonObject);
+
+                                    if(ans.size()==0){
+                                        if(c!=null)
+                                            Toast.makeText(c, "No kits available for this stream at present", Toast.LENGTH_LONG).show();
+                                    }else{
+
+                                        Intent i =new Intent(c,AllAuthorsPerFieldForKitActivity.class);
+                                        Bundle b=new Bundle();
+                                        b.putStringArrayList("list",ans);
+                                        b.putString("response",jsonObject.toString());
+                                        i.putExtra("bundle",b);
+                                        c.startActivity(i);
+                                    }
                                 }else{
                                     if(c!=null)
                                         Toast.makeText(c, "Something went wrong..\n" +
@@ -139,33 +140,36 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+
+                            Log.d("kit", "onErrorResponse: "+error);
                             if(dialog!=null)
                                 dialog.dismiss();
                             if(ConstantsDefined.isOnline(c)){
                                 //Do nothing..
                                 if(c!=null)
-                                Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(c, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                             }else{
                                 if(c!=null)
-                                Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(c, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }) {
                         @Override
                         protected Map<String, String> getParams() {
                             Map<String, String> params = new HashMap<String, String>();
-                            params.put("userId", prefs.getString("userId", "abc"));
-                            params.put("examId", value.getExamId());
+
                             return params;
                         }
                     };
                     requestQueue.add(stringRequest);
-                }
+//                }
             }
         });
     }
@@ -187,34 +191,13 @@ public class AllExamsListAdapter extends RecyclerView.Adapter<AllExamsListAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, startDatevalue, endDateValue, durationValue, startDateText, endDateText, durationText;
+        public TextView name;
         LinearLayout container;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name);
-            startDatevalue = (TextView) itemView.findViewById(R.id.startDateValue);
-            endDateValue = (TextView) itemView.findViewById(R.id.endDateValue);
-            durationValue = (TextView) itemView.findViewById(R.id.durationValue);
-            startDateText = (TextView) itemView.findViewById(R.id.startDateText);
-            endDateText = (TextView) itemView.findViewById(R.id.endDateText);
-            durationText = (TextView) itemView.findViewById(R.id.durationText);
             container = (LinearLayout) itemView.findViewById(R.id.container);
         }
-    }
-
-    public void startMyActivity(String enrolled, String timestamp, String examDetails, String name, String examId, String examGiven) {
-
-        Bundle b = new Bundle();
-        b.putString("enrolled", enrolled);
-        b.putString("timestamp", timestamp);
-        b.putString("examDetails", examDetails);
-        b.putString("name", name);
-        b.putString("examId", examId);
-        b.putString("examGiven", examGiven);
-        Intent i = new Intent(c, ParticularExamMainActivity.class);
-        i.putExtra("bundle", b);
-        i.putExtra("from", "allExams");
-        c.startActivity(i);
     }
 }

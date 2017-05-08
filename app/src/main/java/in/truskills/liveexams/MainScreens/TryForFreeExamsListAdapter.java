@@ -34,7 +34,6 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.ParticularExam.ParticularExamMainActivity;
-import in.truskills.liveexams.Quiz.FeedbackActivity;
 import in.truskills.liveexams.R;
 
 //This is the list adapter for my enrolled exams which will direct to start page whenever an item in the list is clicked..
@@ -51,7 +50,7 @@ public class TryForFreeExamsListAdapter extends RecyclerView.Adapter<TryForFreeE
     RequestQueue requestQueue;
     String enrolled, timestamp, examDetails, examId, examGiven,from,response;
 
-    TryForFreeExamsListAdapter(List<Values> myList, Context c,String from,String response) {
+    TryForFreeExamsListAdapter(List<Values> myList, Context c, String from, String response) {
         this.myList = myList;
         this.c = c;
         this.from=from;

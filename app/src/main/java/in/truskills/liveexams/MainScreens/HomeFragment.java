@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -58,10 +59,9 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     Button add;
     RecyclerView myExamsList;
     LinearLayoutManager linearLayoutManager;
-    MyExamsListAdapter myExamsListAdapter;
+    HomeListAdapter myExamsListAdapter;
     List<Values> valuesList, filteredList;
     Values values;
-    HomeInterface ob;
     String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
     SharedPreferences prefs;
     RequestQueue requestQueue;
@@ -107,15 +107,15 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
         myExamsList = (RecyclerView) getActivity().findViewById(R.id.myExamsList);
 //        add.setVisibility(View.GONE);
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        ob = (HomeInterface) getActivity();
 
         setList();
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StreamsFragment f = new StreamsFragment();
-                ob.changeFragmentFromHome(f);
+
+                Intent i =new Intent(getActivity(),AllStreamsActivity.class);
+                startActivity(i);
             }
         });
 
@@ -170,7 +170,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
 
                         if(s.equals("")){
                             filteredList = new ArrayList<>();
-                            myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
+                            myExamsListAdapter = new HomeListAdapter(filteredList, getActivity());
                             myExamsList.setAdapter(myExamsListAdapter);
                             myExamsListAdapter.notifyDataSetChanged();
 
@@ -186,7 +186,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                                     filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
                                 }
                             }
-                            myExamsListAdapter = new MyExamsListAdapter(filteredList, getActivity());
+                            myExamsListAdapter = new HomeListAdapter(filteredList, getActivity());
                             myExamsList.setAdapter(myExamsListAdapter);
                             myExamsListAdapter.notifyDataSetChanged();
                         }
@@ -201,8 +201,10 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addIcon:
-                StreamsFragment f = new StreamsFragment();
-                ob.changeFragmentFromHome(f);
+
+                Intent i =new Intent(getActivity(),AllStreamsActivity.class);
+                startActivity(i);
+
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -341,7 +343,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     }
 
     public void populateList(List<Values> list) {
-        myExamsListAdapter = new MyExamsListAdapter(list, getActivity());
+        myExamsListAdapter = new HomeListAdapter(list, getActivity());
         myExamsList.setLayoutManager(linearLayoutManager);
         myExamsList.setItemAnimator(new DefaultItemAnimator());
         myExamsList.setAdapter(myExamsListAdapter);
@@ -372,6 +374,3 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     }
 }
 
-interface HomeInterface {
-    public void changeFragmentFromHome(Fragment f);
-}

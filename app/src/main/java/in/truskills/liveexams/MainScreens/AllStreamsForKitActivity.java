@@ -38,7 +38,7 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
     RecyclerView allStreamsList;
     //    FloatingActionButton floatingActionButton;
     LinearLayoutManager linearLayoutManager;
-    StreamsFragmentForMyKitsListAdapter streamsListAdapter;
+    AllStreamsForKitActivityListActivity streamsListAdapter;
     List<String> valuesList;
     RequestQueue requestQueue;
     ProgressDialog dialog;
@@ -46,7 +46,6 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
     TextView noStreams;
     LinearLayout noConnectionLayout;
     Button retryButton;
-    StreamInterfaceForMyKits streamInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +161,7 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
                         noConnectionLayout.setVisibility(View.VISIBLE);
                         noStreams.setVisibility(View.GONE);
                         valuesList=new ArrayList<>();
-                        streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(valuesList, AllStreamsForKitActivity.this,streamInterface);
+                        streamsListAdapter = new AllStreamsForKitActivityListActivity(valuesList, AllStreamsForKitActivity.this);
                         allStreamsList.setLayoutManager(linearLayoutManager);
                         allStreamsList.setItemAnimator(new DefaultItemAnimator());
                         allStreamsList.setAdapter(streamsListAdapter);
@@ -186,7 +185,7 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 noStreams.setVisibility(View.GONE);
                 valuesList=new ArrayList<>();
-                streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(valuesList, AllStreamsForKitActivity.this,streamInterface);
+                streamsListAdapter = new AllStreamsForKitActivityListActivity(valuesList, AllStreamsForKitActivity.this);
                 allStreamsList.setLayoutManager(linearLayoutManager);
                 allStreamsList.setItemAnimator(new DefaultItemAnimator());
                 allStreamsList.setAdapter(streamsListAdapter);
@@ -208,7 +207,7 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
     }
 
     public void populateList(List<String> list) {
-        streamsListAdapter = new StreamsFragmentForMyKitsListAdapter(list, AllStreamsForKitActivity.this,streamInterface);
+        streamsListAdapter = new AllStreamsForKitActivityListActivity(list, AllStreamsForKitActivity.this);
         allStreamsList.setLayoutManager(linearLayoutManager);
         allStreamsList.setItemAnimator(new DefaultItemAnimator());
         allStreamsList.setAdapter(streamsListAdapter);

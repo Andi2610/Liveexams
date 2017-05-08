@@ -73,8 +73,7 @@ import in.truskills.liveexams.authentication.Signup_Login;
 import static android.R.attr.key;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        HomeInterface,AuthorInterface,MyKitsInterface{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     //Declare variables..
     NavigationView navigationView;
@@ -569,26 +568,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         manager = getSupportFragmentManager();
         HomeFragment f = (HomeFragment) manager.findFragmentByTag("HomeFragment");
-        ExamsByAuthors ff = (ExamsByAuthors) manager.findFragmentByTag("ExamsByAuthorsFragment");
-        AuthorFragment fff = (AuthorFragment) manager.findFragmentByTag("AuthorFragment");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (f != null && f.isVisible()) {
             finish();
-        }
-        else if(ff!=null && ff.isVisible()){
-            AuthorFragment fragment = new AuthorFragment();
-            Bundle b=new Bundle();
-            b.putStringArrayList("list",myL);
-            b.putString("author",vall);
-            b.putString("response",res);
-            fragment.setArguments(b);
-            FragmentTransaction t = manager.beginTransaction();
-            t.replace(R.id.fragment, fragment, "AuthorFragment");
-            t.commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-            getSupportActionBar().setTitle("SELECT YOUR AUTHOR");
         }else {
             HomeFragment fragment = new HomeFragment();
             FragmentTransaction t = manager.beginTransaction();
@@ -713,17 +697,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    //Whenever a new fragment is loaded, when home fragment is initially visible..
-    @Override
-    public void changeFragmentFromHome(Fragment f) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction t = manager.beginTransaction();
-        t.replace(R.id.fragment, f, "AllStreamsFragment");
-        t.commit();
-        String title = "SELECT YOUR FIELD";
-        getSupportActionBar().setTitle(title);
-    }
-
     // capture image orientation
 
     public void uploadImageToServer(){
@@ -737,29 +710,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
                 matrix, true);
-    }
-
-    @Override
-    public void changeFromAuthor(Fragment f, String title, String resp, String val, ArrayList<String>myList) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction t = manager.beginTransaction();
-        t.replace(R.id.fragment, f, "ExamsByAuthorsFragment");
-//        t.addToBackStack(null);
-        vall=val;
-        res=resp;
-        myL=myList;
-        t.commit();
-
-        getSupportActionBar().setTitle(title);
-    }
-
-    @Override
-    public void changeFragmentFromMyKits(Fragment f,String title,String tag) {
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction t = manager.beginTransaction();
-        t.replace(R.id.fragment, f, tag);
-        t.commit();
-        getSupportActionBar().setTitle(title);
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {

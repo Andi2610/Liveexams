@@ -16,7 +16,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -42,7 +41,7 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
 
     RecyclerView examsByAuthorsList;
     LinearLayoutManager linearLayoutManager;
-    AllKitsListAdapter allExamsListAdapter;
+    AllKitsPerAuthorActivityListAdapter allExamsListAdapter;
     List<Values> valuesList, filteredList;
     Values values;
     RequestQueue requestQueue;
@@ -54,7 +53,6 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
     LinearLayout noConnectionLayout;
     Button retryButton;
     String author, response;
-    KitsByAuthorsInterface ob;
     Bundle b;
 
     @Override
@@ -94,7 +92,7 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
     }
 
     public void populateList(List<Values> list) {
-        allExamsListAdapter = new AllKitsListAdapter(list, this,ob);
+        allExamsListAdapter = new AllKitsPerAuthorActivityListAdapter(list, this);
         examsByAuthorsList.setAdapter(allExamsListAdapter);
         allExamsListAdapter.notifyDataSetChanged();
         if(list.size()==0)
@@ -147,7 +145,7 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
 
                     if(s.equals("")){
                         filteredList = new ArrayList<>();
-                        allExamsListAdapter = new AllKitsListAdapter(filteredList, AllKitsPerAuthorActivity.this,ob);
+                        allExamsListAdapter = new AllKitsPerAuthorActivityListAdapter(filteredList, AllKitsPerAuthorActivity.this);
                         examsByAuthorsList.setAdapter(allExamsListAdapter);
                         allExamsListAdapter.notifyDataSetChanged();
 
@@ -163,7 +161,7 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
                                 filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
                             }
                         }
-                        allExamsListAdapter = new AllKitsListAdapter(filteredList, AllKitsPerAuthorActivity.this,ob);
+                        allExamsListAdapter = new AllKitsPerAuthorActivityListAdapter(filteredList, AllKitsPerAuthorActivity.this);
                         examsByAuthorsList.setAdapter(allExamsListAdapter);
                         allExamsListAdapter.notifyDataSetChanged();
                     }

@@ -1,32 +1,34 @@
 package in.truskills.liveexams.MainScreens;
 
-
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,18 +42,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ExamsByAuthors extends Fragment {
-
+public class AllExamsPerAuthorActivity extends AppCompatActivity implements ConnectivityReciever.ConnectivityReceiverListener {
 
     RecyclerView examsByAuthorsList;
     LinearLayoutManager linearLayoutManager;
-    AllExamsListAdapter allExamsListAdapter;
+    AllExamsPerAuthorActivityListAdapter allExamsListAdapter;
     List<Values> valuesList, filteredList;
     Values values;
     RequestQueue requestQueue;
@@ -63,34 +63,33 @@ public class ExamsByAuthors extends Fragment {
     LinearLayout noConnectionLayout;
     Button retryButton;
     String author, response;
-
-
-    public ExamsByAuthors() {
-        // Required empty public constructor
-    }
+    Bundle b;
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_exams_by_authors, container, false);
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_all_exams_per_author);
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        examsByAuthorsList = (RecyclerView) getActivity().findViewById(R.id.examsByAuthorsList);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+
+        getSupportActionBar().setTitle("ADD NEW EXAMS");
+
+        examsByAuthorsList = (RecyclerView) findViewById(R.id.examsByAuthorsList);
+        linearLayoutManager = new LinearLayoutManager(this);
         examsByAuthorsList.setLayoutManager(linearLayoutManager);
         examsByAuthorsList.setItemAnimator(new DefaultItemAnimator());
-        author = getArguments().getString("author");
-        response = getArguments().getString("response");
+        b=getIntent().getBundleExtra("bundle");
+        author = b.getString("author");
+        response = b.getString("response");
 
-        noExamsPresent=(TextView)getActivity().findViewById(R.id.noExamsPresent);
+        noExamsPresent=(TextView)findViewById(R.id.noExamsPresent);
 
-        Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
+        Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         noExamsPresent.setTypeface(tff);
         noExamsPresent.setVisibility(View.GONE);
 
@@ -100,83 +99,6 @@ public class ExamsByAuthors extends Fragment {
 
         setList();
     }
-
-    public void populateList(List<Values> list) {
-        allExamsListAdapter = new AllExamsListAdapter(list, getActivity());
-        examsByAuthorsList.setAdapter(allExamsListAdapter);
-        allExamsListAdapter.notifyDataSetChanged();
-        if(list.size()==0)
-            noExamsPresent.setVisibility(View.VISIBLE);
-        else
-            noExamsPresent.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.all_exams_menu, menu);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem = menu.findItem(R.id.searchAllExams);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        MenuItemCompat.setOnActionExpandListener(menuItem,
-                new MenuItemCompat.OnActionExpandListener() {
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
-                        // Return true to allow the action view to expand
-                        searchView.requestFocus();
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
-                        // When the action view is collapsed, reset the query
-                        setList();
-                        searchView.clearFocus();
-                        // Return true to allow the action view to collapse
-                        return true;
-                    }
-                });
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getActivity().getApplicationContext()), SearchResultsActivity.class)));
-            searchView.setQueryHint("Type here..");
-
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-
-                    if(s.equals("")){
-                        filteredList = new ArrayList<>();
-                        allExamsListAdapter = new AllExamsListAdapter(filteredList, getActivity());
-                        examsByAuthorsList.setAdapter(allExamsListAdapter);
-                        allExamsListAdapter.notifyDataSetChanged();
-
-                    }else{
-                        s = s.toString().toLowerCase();
-                        filteredList = new ArrayList<>();
-
-                        for (int i = 0; i < valuesList.size(); i++) {
-
-                            final String text = valuesList.get(i).name.toLowerCase();
-                            if (text.contains(s)) {
-
-                                filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
-                            }
-                        }
-                        allExamsListAdapter = new AllExamsListAdapter(filteredList, getActivity());
-                        examsByAuthorsList.setAdapter(allExamsListAdapter);
-                        allExamsListAdapter.notifyDataSetChanged();
-                    }
-                    return true;
-                }
-            });
-        }
-    }
-
 
     public void setList(){
 
@@ -252,10 +174,114 @@ public class ExamsByAuthors extends Fragment {
                 });
             }
 
+
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public void populateList(List<Values> list) {
+        allExamsListAdapter = new AllExamsPerAuthorActivityListAdapter(list, this);
+        examsByAuthorsList.setAdapter(allExamsListAdapter);
+        allExamsListAdapter.notifyDataSetChanged();
+        if(list.size()==0)
+            noExamsPresent.setVisibility(View.VISIBLE);
+        else
+            noExamsPresent.setVisibility(View.GONE);
+    }
+
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if (isConnected) {
+            if (valuesList.isEmpty()) {
+                setList();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        valuesList = new ArrayList<>();
+        setList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.all_exams_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.searchAllExams).getActionView();
+        searchView.setSearchableInfo( searchManager.getSearchableInfo(getComponentName()) );
+
+        final MenuItem searchItem = menu.findItem(R.id.searchAllExams);
+
+        MenuItemCompat.setOnActionExpandListener(searchItem,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                        // Return true to allow the action view to expand
+                        searchView.requestFocus();
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                        // When the action view is collapsed, reset the query
+                        setList();
+                        searchView.clearFocus();
+                        // Return true to allow the action view to collapse
+                        return true;
+                    }
+                });
+
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName((getApplicationContext()), SearchResultsActivity.class)));
+            searchView.setQueryHint("Type here..");
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String s) {
+
+                    if(s.equals("")){
+                        filteredList = new ArrayList<>();
+                        allExamsListAdapter = new AllExamsPerAuthorActivityListAdapter(filteredList, AllExamsPerAuthorActivity.this);
+                        examsByAuthorsList.setAdapter(allExamsListAdapter);
+                        allExamsListAdapter.notifyDataSetChanged();
+
+                    }else{
+                        s = s.toString().toLowerCase();
+                        filteredList = new ArrayList<>();
+
+                        for (int i = 0; i < valuesList.size(); i++) {
+
+                            final String text = valuesList.get(i).name.toLowerCase();
+                            if (text.contains(s)) {
+
+                                filteredList.add(new Values(valuesList.get(i).name, valuesList.get(i).startDateValue, valuesList.get(i).endDateValue, valuesList.get(i).durationValue, valuesList.get(i).examId));
+                            }
+                        }
+                        allExamsListAdapter = new AllExamsPerAuthorActivityListAdapter(filteredList, AllExamsPerAuthorActivity.this);
+                        examsByAuthorsList.setAdapter(allExamsListAdapter);
+                        allExamsListAdapter.notifyDataSetChanged();
+                    }
+                    return true;
+                }
+            });
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }
