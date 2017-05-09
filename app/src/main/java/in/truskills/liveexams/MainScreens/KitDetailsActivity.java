@@ -1,5 +1,6 @@
 package in.truskills.liveexams.MainScreens;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +27,8 @@ import in.truskills.liveexams.R;
 public class KitDetailsActivity extends AppCompatActivity {
 
     String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit,from;
+
+    Button buy,promo;
 
     RecyclerView tryForFreeExamsList,examsIncludedInKitList,coursesIncludedInKitList;
     LinearLayoutManager linearLayoutManager,linearLayoutManagerForPaidExams;
@@ -77,6 +81,8 @@ public class KitDetailsActivity extends AppCompatActivity {
 
         Log.d("responseInFragment", "onActivityCreated: "+response);
 
+        buy=(Button)findViewById(R.id.buy);
+        promo=(Button)findViewById(R.id.promo);
         startDateText=(TextView) findViewById(R.id.startDateText);
         endDateText=(TextView) findViewById(R.id.endDateText);
         startDateValue=(TextView) findViewById(R.id.startDateValue);
@@ -113,6 +119,8 @@ public class KitDetailsActivity extends AppCompatActivity {
         tryForFreeText.setTypeface(tff1);
         examsIncludedInKitText.setTypeface(tff1);
         coursesIncludedInKitText.setTypeface(tff1);
+        buy.setTypeface(tff1);
+        promo.setTypeface(tff1);
 
         try {
             HashMap<String,String> map= MiscellaneousParser.getDetailsOfOneKit(response);
@@ -191,6 +199,20 @@ public class KitDetailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        buy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(KitDetailsActivity.this,InitialActivityForPayment.class);
+                startActivity(i);
+            }
+        });
+
+        promo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

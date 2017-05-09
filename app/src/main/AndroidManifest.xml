@@ -163,15 +163,28 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Quiz.QuestionPaperLoadDevelopment" />
-        <activity android:name=".MainScreens.AllStreamsForKitActivity" />
-        <activity android:name=".MainScreens.AllAuthorsPerFieldForKitActivity" />
-        <activity android:name=".MainScreens.AllKitsPerAuthorActivity" />
-        <activity android:name=".MainScreens.KitDetailsActivity" />
-        <activity android:name=".MainScreens.DetailsOfExamsIncludedInKitActivity" />
-        <activity android:name=".MainScreens.AllStreamsActivity" />
-        <activity android:name=".MainScreens.AllAuthorsPerFieldActivity" />
-        <activity android:name=".MainScreens.AllExamsPerAuthorActivity"></activity>
+        <activity android:name=".Quiz.QuestionPaperLoadDevelopment"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.AllStreamsForKitActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.AllAuthorsPerFieldForKitActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.AllKitsPerAuthorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.KitDetailsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.DetailsOfExamsIncludedInKitActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.AllStreamsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.AllAuthorsPerFieldActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.AllExamsPerAuthorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.InitialActivityForPayment"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainScreens.BillingShippingActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
