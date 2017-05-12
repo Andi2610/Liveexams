@@ -108,4 +108,13 @@ You are free to terminate your use of the Company Products at any time. You can 
 (v) No Agency. Nothing in these Terms shall be construed as making either party the partner, joint venture, agent, legal representative, employer, contractor or employee of the other. Neither the Company nor any other party to this Agreement shall have, or hold itself out to any third party as having, any authority to make any statements, representations or commitments of any kind, or to take any action that shall be binding on the other except as provided for herein or authorized in writing by the party to be bound.
 
 </string>
+
+    <string name="access_code">Access Code</string>
+    <string name="pay_button">Pay</string>
+    <string name="merchant_id">Merchant Id</string>
+    <string name="currency">Currency</string>
+    <string name="amount">Amount</string>
+    <string name="redirect_url">Redirect Url</string>
+    <string name="cancel_url">Cancel Url</string>
+    <string name="rsa_url">RSA Key Url</string>
 </resources>

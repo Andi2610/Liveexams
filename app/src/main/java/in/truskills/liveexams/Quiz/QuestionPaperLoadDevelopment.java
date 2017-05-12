@@ -262,7 +262,7 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
     }
 
     public void prepareForOfflineForQuestion(String text, int ii, int jj) throws InterruptedException {
-        final String regex = "(src=\")([0-9A-Za-z.\\/:\\-]+)";
+        final String regex = "(src=\")([0-9A-Za-z.\\/:\\-%]+)";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {
@@ -278,7 +278,7 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
     }
 
     public void prepareForOfflineForOption(String text, int ii, int jj, int kk) throws InterruptedException {
-        final String regex = "(src=\")([0-9A-Za-z.\\/:\\-]+)";
+        final String regex = "(src=\")([0-9A-Za-z.\\/:\\-%]+)";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
         while (matcher.find()) {

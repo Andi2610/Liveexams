@@ -202,7 +202,7 @@ public class KitDetailsActivity extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(KitDetailsActivity.this,InitialActivityForPayment.class);
+                Intent i =new Intent(KitDetailsActivity.this, InitialScreenActivity.class);
                 startActivity(i);
             }
         });
