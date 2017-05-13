@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <include
+        <include
         layout="@layout/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></include>
@@ -22,8 +22,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="60dp">
+
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/header"
                     android:orientation="vertical"
@@ -98,29 +99,6 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:id="@+id/descriptionValue"/>
-
-                    <TextView
-                        android:textSize="20dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:text="PRICE:"
-                        android:textStyle="bold"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:id="@+id/priceText"/>
-
-                    <TextView
-                        android:textSize="19dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:textColor="@color/light_sea_blue"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:id="@+id/priceValue"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -199,7 +177,85 @@
                         android:id="@+id/coursesIncludedInKitList"
                         android:layout_marginTop="5dp"/>
 
+                    <TextView
+                        android:textSize="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:text="PRICE:"
+                        android:textStyle="bold"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:id="@+id/priceText"/>
+
+                    <TextView
+                        android:textSize="19dp"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/light_sea_blue"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:id="@+id/priceValue"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/discountLayout"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textSize="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:text="DISCOUNT OFFERED:"
+                            android:textStyle="bold"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:id="@+id/discountOfferedText"/>
+
+                        <TextView
+                            android:textSize="19dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/light_sea_blue"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:id="@+id/discountOfferedValue"/>
+
+                        <TextView
+                            android:textSize="20dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:text="PRICE AFTER DISCOUNT:"
+                            android:textStyle="bold"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:id="@+id/priceAfterDiscountText"/>
+
+                        <TextView
+                            android:textSize="19dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/light_sea_blue"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:id="@+id/priceAfterDiscountValue"/>
+
+                    </LinearLayout>
+
                 </LinearLayout>
+
             </ScrollView>
 
             <LinearLayout
@@ -235,6 +291,7 @@
                     android:padding="2dp"/>
 
             </LinearLayout>
+
         </RelativeLayout>
 
     </LinearLayout>

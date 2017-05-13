@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //Declare variables..
     NavigationView navigationView;
     CircularImageView navImage;
+    String pausedFrom="home";
     String myOrient="";
     String my_path,vall;
     TextView navName, navEmail;
@@ -126,15 +127,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         s3client.setRegion( (com.amazonaws.services.s3.model.Region.AP_Mumbai).toAWSRegion() );
 
         bundle = new Bundle();
-
-        //Initially load Home fragment..
-        HomeFragment fragment = new HomeFragment();
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction trans = manager.beginTransaction();
-        trans.replace(R.id.fragment, fragment, "HomeFragment");
-        trans.commit();
-
-        getSupportActionBar().setTitle("HOME");
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -473,6 +465,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
             fragTransaction.replace(R.id.fragment, f, "HomeFragment");
             fragTransaction.commit();
+            pausedFrom="home";
         }
 
     }
@@ -580,6 +573,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             t.commit();
             navigationView.setCheckedItem(R.id.nav_home);
             getSupportActionBar().setTitle("HOME");
+            pausedFrom="home";
         }
     }
 
@@ -601,6 +595,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_home);
                 getSupportActionBar().setTitle("HOME");
+                pausedFrom="home";
             }
         }else if(id == R.id.nav_kit){
             MyKitsFragment f = (MyKitsFragment) manager.findFragmentByTag("MyKitsFragment");
@@ -611,6 +606,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_kit);
                 getSupportActionBar().setTitle("MY KITS");
+                pausedFrom="kit";
             }
         }else if (id == R.id.nav_calendar) {
             CalendarFragment f = (CalendarFragment) manager.findFragmentByTag("CalendarFragment");
@@ -622,6 +618,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_calendar);
                 getSupportActionBar().setTitle("CALENDAR");
+                pausedFrom="calendar";
             }
         } else if (id == R.id.nav_logout) {
             Answers.getInstance().logCustom(new CustomEvent("Logout button clicked")
@@ -655,6 +652,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_statistics);
                 getSupportActionBar().setTitle("STATISTICS");
+                pausedFrom="statistics";
             }
         }else if(id==R.id.nav_share){
 
@@ -688,6 +686,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 t.commit();
                 navigationView.setCheckedItem(R.id.nav_faq);
                 getSupportActionBar().setTitle("USER GUIDE");
+                pausedFrom="home";
             }
 
         }
@@ -841,7 +840,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        navigationView.setCheckedItem(R.id.nav_home);
+
+        if(pausedFrom.equals("home")){
+            navigationView.setCheckedItem(R.id.nav_home);
+            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment);
+            frameLayout.removeAllViewsInLayout();
+            HomeFragment f = new HomeFragment();
+            FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+            fragTransaction.replace(R.id.fragment, f, "HomeFragment");
+            fragTransaction.commit();
+            getSupportActionBar().setTitle("HOME");
+        }else if(pausedFrom.equals("kit")){
+            navigationView.setCheckedItem(R.id.nav_kit);
+            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment);
+            frameLayout.removeAllViewsInLayout();
+            MyKitsFragment f = new MyKitsFragment();
+            FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+            fragTransaction.replace(R.id.fragment, f, "MyKitsFragment");
+            fragTransaction.commit();
+            getSupportActionBar().setTitle("MY KITS");
+        }else if(pausedFrom.equals("statistics")){
+            navigationView.setCheckedItem(R.id.nav_statistics);
+            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment);
+            frameLayout.removeAllViewsInLayout();
+            StatisticsFragment f = new StatisticsFragment();
+            FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+            fragTransaction.replace(R.id.fragment, f, "StatisticsFragment");
+            fragTransaction.commit();
+            getSupportActionBar().setTitle("STATISTICS");
+        }else if(pausedFrom.equals("calendar")){
+            navigationView.setCheckedItem(R.id.nav_calendar);
+            FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fragment);
+            frameLayout.removeAllViewsInLayout();
+            CalendarFragment f = new CalendarFragment();
+            FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+            fragTransaction.replace(R.id.fragment, f, "CalendarFragment");
+            fragTransaction.commit();
+            getSupportActionBar().setTitle("CALENDAR");
+        }
     }
 
     @Override
@@ -855,4 +891,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         onBackPressed();
         return true;
     }
+
 }

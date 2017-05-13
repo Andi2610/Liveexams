@@ -1,7 +1,9 @@
 package in.truskills.liveexams.MainScreens;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,16 +15,29 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.authentication.ForgotPassword;
 
 public class KitDetailsActivity extends AppCompatActivity {
 
@@ -32,12 +47,15 @@ public class KitDetailsActivity extends AppCompatActivity {
 
     RecyclerView tryForFreeExamsList,examsIncludedInKitList,coursesIncludedInKitList;
     LinearLayoutManager linearLayoutManager,linearLayoutManagerForPaidExams;
+    LinearLayout discountLayout;
 
     TryForFreeExamsListAdapter tryForFreeExamsListAdapter;
     ExamsIncludedInKitListAdapter examsIncludedInKitListAdapter;
 
     List<Values> valuesList,valuesListForPaidExams,valuesListForCourses;
     Values values;
+
+    ProgressDialog dialog;
 
     ArrayList<String> examsPaidName=new ArrayList<>();
     ArrayList<String> examsFreeName=new ArrayList<>();
@@ -54,8 +72,10 @@ public class KitDetailsActivity extends AppCompatActivity {
 
     Bundle b=new Bundle();
 
+    Handler h;
+
     TextView startDateText,endDateText,startDateValue,endDateValue,descriptionText,descriptionValue,priceText,priceValue;
-    TextView tryForFreeText,examsIncludedInKitText,coursesIncludedInKitText;
+    TextView tryForFreeText,examsIncludedInKitText,coursesIncludedInKitText,discountOfferedText,discountOfferedValue,priceAfterDiscountText,priceAfterDiscountValue;
     LinearLayout footer,tryForFreeLayout,examsIncludedInKitLayout;
 
 
@@ -66,6 +86,8 @@ public class KitDetailsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        h=new Handler();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
@@ -81,6 +103,12 @@ public class KitDetailsActivity extends AppCompatActivity {
 
         Log.d("responseInFragment", "onActivityCreated: "+response);
 
+        discountLayout=(LinearLayout)findViewById(R.id.discountLayout);
+        discountLayout.setVisibility(View.GONE);
+        discountOfferedText=(TextView)findViewById(R.id.discountOfferedText);
+        discountOfferedValue=(TextView)findViewById(R.id.discountOfferedValue);
+        priceAfterDiscountText=(TextView)findViewById(R.id.priceAfterDiscountText);
+        priceAfterDiscountValue=(TextView)findViewById(R.id.priceAfterDiscountValue);
         buy=(Button)findViewById(R.id.buy);
         promo=(Button)findViewById(R.id.promo);
         startDateText=(TextView) findViewById(R.id.startDateText);
@@ -121,6 +149,10 @@ public class KitDetailsActivity extends AppCompatActivity {
         coursesIncludedInKitText.setTypeface(tff1);
         buy.setTypeface(tff1);
         promo.setTypeface(tff1);
+        discountOfferedText.setTypeface(tff1);
+        discountOfferedValue.setTypeface(tff1);
+        priceAfterDiscountValue.setTypeface(tff1);
+        priceAfterDiscountText.setTypeface(tff1);
 
         try {
             HashMap<String,String> map= MiscellaneousParser.getDetailsOfOneKit(response);
@@ -210,7 +242,7 @@ public class KitDetailsActivity extends AppCompatActivity {
         promo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getPromoCode();
             }
         });
     }
@@ -219,5 +251,90 @@ public class KitDetailsActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    public void getPromoCode(){
+
+        RequestQueue requestQueue;
+
+        String url=ConstantsDefined.api+"applyPromocode/5902cafdd19d876e14ea7b9e/IPLT20";
+        ConstantsDefined.updateAndroidSecurityProvider(KitDetailsActivity.this);
+        ConstantsDefined.beforeVolleyConnect();
+
+        //Initialise requestQueue instance and url to be connected to for Volley connection..
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        //While api is being connected to, display apppropriate dialog box..
+        dialog = new ProgressDialog(KitDetailsActivity.this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("Applying your promo code.. Please wait...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        //Make a request..
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                //Dismiss dialog box on successful response..
+                if (dialog != null)
+                    dialog.dismiss();
+
+                Log.d("promoResponse", "onResponse: "+response);
+                try {
+                    JSONObject jsonObject=new JSONObject(response);
+                    String success=jsonObject.getString("success");
+                    if(success.equals("true")){
+
+                        JSONObject jsonObject1=jsonObject.getJSONObject("response");
+                        String active=jsonObject1.getString("active");
+                        if(active.equals("true")){
+                            final String percentageDiscount=jsonObject1.getString("percentageDiscount");
+                            Log.d("discount", "onResponse: "+percentageDiscount);
+                            Toast.makeText(KitDetailsActivity.this, "Discount applied successfully..", Toast.LENGTH_SHORT).show();
+                            h.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    discountLayout.setVisibility(View.VISIBLE);
+                                    discountOfferedValue.setText(percentageDiscount+"%");
+                                    double pd=Double.parseDouble(percentageDiscount);
+                                    double pr=Double.parseDouble(price);
+                                    double finalPr=pr-(pd/100*pr);
+                                    priceAfterDiscountValue.setText(finalPr+"");
+                                }
+                            });
+                        }else{
+                            Toast.makeText(KitDetailsActivity.this, "Sorry! This Promocode has expired", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }else{
+                        Toast.makeText(KitDetailsActivity.this, "Something went wrong..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                //In case the connection to the Api couldn't be established..
+
+                //Dismiss the dialog box..
+                if (dialog != null)
+                    dialog.dismiss();
+
+                //Display appropriate toast message depending upon internet connectivity was a reason for failure or something else..
+                if(ConstantsDefined.isOnline(KitDetailsActivity.this)){
+                    Toast.makeText(KitDetailsActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(KitDetailsActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        requestQueue.add(stringRequest);
     }
 }
