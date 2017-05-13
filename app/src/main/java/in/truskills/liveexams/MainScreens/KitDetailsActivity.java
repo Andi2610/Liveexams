@@ -48,11 +48,12 @@ public class KitDetailsActivity extends AppCompatActivity {
     Button buy,promo;
 
     RecyclerView tryForFreeExamsList,examsIncludedInKitList,coursesIncludedInKitList;
-    LinearLayoutManager linearLayoutManager,linearLayoutManagerForPaidExams;
+    LinearLayoutManager linearLayoutManager,linearLayoutManagerForPaidExams,linearLayoutManagerForCourses;
     LinearLayout discountLayout;
 
     TryForFreeExamsListAdapter tryForFreeExamsListAdapter;
     ExamsIncludedInKitListAdapter examsIncludedInKitListAdapter;
+    CoursesIncludedInKitListAdapter coursesIncludedInKitListAdapter;
 
     List<Values> valuesList,valuesListForPaidExams,valuesListForCourses;
     Values values;
@@ -79,7 +80,7 @@ public class KitDetailsActivity extends AppCompatActivity {
 
     TextView startDateText,endDateText,startDateValue,endDateValue,descriptionText,descriptionValue,priceText,priceValue;
     TextView tryForFreeText,examsIncludedInKitText,coursesIncludedInKitText,discountOfferedText,discountOfferedValue,priceAfterDiscountText,priceAfterDiscountValue;
-    LinearLayout footer,tryForFreeLayout,examsIncludedInKitLayout;
+    LinearLayout footer,tryForFreeLayout,examsIncludedInKitLayout,coursesIncludedInKitLayout;
 
 
     @Override
@@ -129,6 +130,7 @@ public class KitDetailsActivity extends AppCompatActivity {
         footer=(LinearLayout)findViewById(R.id.footerForKit);
         tryForFreeLayout=(LinearLayout)findViewById(R.id.tryForFreeLayout);
         examsIncludedInKitLayout=(LinearLayout)findViewById(R.id.examsIncludedInKitLayout);
+        coursesIncludedInKitLayout=(LinearLayout)findViewById(R.id.coursesIncludedInKitLayout);
 
         tryForFreeExamsList=(RecyclerView)findViewById(R.id.tryForFreeExamsList);
         examsIncludedInKitList=(RecyclerView)findViewById(R.id.examsIncludedInKitList);
@@ -136,7 +138,7 @@ public class KitDetailsActivity extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManagerForPaidExams = new LinearLayoutManager(this);
-
+        linearLayoutManagerForCourses = new LinearLayoutManager(this);
 
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         startDateText.setTypeface(tff1);
@@ -229,6 +231,18 @@ public class KitDetailsActivity extends AppCompatActivity {
                 examsIncludedInKitListAdapter.notifyDataSetChanged();
             }
 
+            if(coursesId.isEmpty()){
+                coursesIncludedInKitLayout.setVisibility(View.GONE);
+            }else{
+                coursesIncludedInKitLayout.setVisibility(View.VISIBLE);
+                coursesIncludedInKitListAdapter=new CoursesIncludedInKitListAdapter(coursesName,coursesId,this);
+                coursesIncludedInKitList.setLayoutManager(linearLayoutManagerForCourses);
+                coursesIncludedInKitList.setItemAnimator(new DefaultItemAnimator());
+                coursesIncludedInKitList.setAdapter(coursesIncludedInKitListAdapter);
+                coursesIncludedInKitListAdapter.notifyDataSetChanged();
+            }
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -238,20 +252,20 @@ public class KitDetailsActivity extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Integer randomNum = ServiceUtility.randInt(0, 9999999);
                 String orderId=randomNum.toString();
-
-                Intent intent =new Intent(KitDetailsActivity.this, WebViewActivity.class);
+                Intent intent = new Intent(KitDetailsActivity.this, WebViewActivity.class);
                 intent.putExtra(AvenuesParams.ACCESS_CODE, ConstantsDefined.accessCode);
                 intent.putExtra(AvenuesParams.MERCHANT_ID, ConstantsDefined.merchantId);
                 intent.putExtra(AvenuesParams.ORDER_ID, orderId);
                 intent.putExtra(AvenuesParams.CURRENCY, ConstantsDefined.currency);
                 intent.putExtra(AvenuesParams.AMOUNT, finalPrice);
-
                 intent.putExtra(AvenuesParams.REDIRECT_URL, ConstantsDefined.redirectUrl);
                 intent.putExtra(AvenuesParams.CANCEL_URL, ConstantsDefined.cancelUrl);
                 intent.putExtra(AvenuesParams.RSA_KEY_URL, ConstantsDefined.rsaUrl);
                 startActivity(intent);
+
             }
         });
 

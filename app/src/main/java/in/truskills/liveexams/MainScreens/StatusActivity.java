@@ -18,5 +18,6 @@ public class StatusActivity extends Activity {
 		Intent mainIntent = getIntent();
 		TextView tv4 = (TextView) findViewById(R.id.textView1);
 		tv4.setText(mainIntent.getStringExtra("transStatus"));
+		Toast.makeText(this, "Status:"+mainIntent.getStringExtra("transStatus"), Toast.LENGTH_SHORT).show();
 	}
 } 
