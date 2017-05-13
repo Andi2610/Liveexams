@@ -38,6 +38,8 @@ import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.authentication.ForgotPassword;
+import in.truskills.liveexams.utility.AvenuesParams;
+import in.truskills.liveexams.utility.ServiceUtility;
 
 public class KitDetailsActivity extends AppCompatActivity {
 
@@ -56,6 +58,7 @@ public class KitDetailsActivity extends AppCompatActivity {
     Values values;
 
     ProgressDialog dialog;
+    String finalPrice="";
 
     ArrayList<String> examsPaidName=new ArrayList<>();
     ArrayList<String> examsFreeName=new ArrayList<>();
@@ -157,6 +160,7 @@ public class KitDetailsActivity extends AppCompatActivity {
         try {
             HashMap<String,String> map= MiscellaneousParser.getDetailsOfOneKit(response);
             price=map.get("price");
+            finalPrice=price;
             description=map.get("description");
             startDate=map.get("startDate");
             endDate=map.get("endDate");
@@ -234,8 +238,20 @@ public class KitDetailsActivity extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(KitDetailsActivity.this, InitialScreenActivity.class);
-                startActivity(i);
+                Integer randomNum = ServiceUtility.randInt(0, 9999999);
+                String orderId=randomNum.toString();
+
+                Intent intent =new Intent(KitDetailsActivity.this, WebViewActivity.class);
+                intent.putExtra(AvenuesParams.ACCESS_CODE, ConstantsDefined.accessCode);
+                intent.putExtra(AvenuesParams.MERCHANT_ID, ConstantsDefined.merchantId);
+                intent.putExtra(AvenuesParams.ORDER_ID, orderId);
+                intent.putExtra(AvenuesParams.CURRENCY, ConstantsDefined.currency);
+                intent.putExtra(AvenuesParams.AMOUNT, finalPrice);
+
+                intent.putExtra(AvenuesParams.REDIRECT_URL, ConstantsDefined.redirectUrl);
+                intent.putExtra(AvenuesParams.CANCEL_URL, ConstantsDefined.cancelUrl);
+                intent.putExtra(AvenuesParams.RSA_KEY_URL, ConstantsDefined.rsaUrl);
+                startActivity(intent);
             }
         });
 
@@ -303,6 +319,7 @@ public class KitDetailsActivity extends AppCompatActivity {
                                     double pr=Double.parseDouble(price);
                                     double finalPr=pr-(pd/100*pr);
                                     priceAfterDiscountValue.setText(finalPr+"");
+                                    finalPrice=finalPr+"";
                                 }
                             });
                         }else{

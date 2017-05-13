@@ -47,6 +47,10 @@ public class ConstantsDefined {
     public static String accessCode="AVYH69EC95CJ91HYJC";
     public static String workingKey="DDEF305F5B417483D35E56BF860FAF0B";
     public static String merchantId="6223";
+    public static String rsaUrl="http://rsa.liveexams.in/GetRSA.php";
+    public static String cancelUrl="http://122.182.6.216/merchant/ccavResponseHandler.jsp";
+    public static String redirectUrl="http://122.182.6.216/merchant/ccavResponseHandler.jsp";
+    public static String currency="INR";
 
     //Url for image..
     public static final String imageUrl = "https://s3.ap-south-1.amazonaws.com/live-exams/";
