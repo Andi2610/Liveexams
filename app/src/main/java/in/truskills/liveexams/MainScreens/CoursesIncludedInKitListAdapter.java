@@ -2,6 +2,7 @@ package in.truskills.liveexams.MainScreens;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -75,7 +76,6 @@ public class CoursesIncludedInKitListAdapter extends RecyclerView.Adapter<Course
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 }
             });

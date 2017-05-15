@@ -724,6 +724,7 @@ public class MiscellaneousParser {
         JSONObject jsonObject11=jsonArray.getJSONObject(0);
         map.put("price",jsonObject11.getString(amount));
         map.put("boughtProductKit",jsonObject1.getString(boughtProductKit));
+        map.put("id",jsonObject1.getString(id));
         return map;
     }
 

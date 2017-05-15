@@ -261,32 +261,19 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
 
     }
 
-    public void prepareForOfflineForQuestion(String text, int ii, int jj) throws InterruptedException {
-        final String regex = "(src=\")([0-9A-Za-z.\\/:\\-%]+)";
+    public void prepareForOffline(String text) throws InterruptedException {
+        final String regex = "src=\"([\\w\\W]+)\"";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
+
         while (matcher.find()) {
             myCount++;
             Log.d("ronaldo", "matcher.findInLoop");
-            String group = matcher.group(2);
-            String imageUrl = group;
-            Log.d("imageUrl", "prepareForOfflineForQuestion: "+imageUrl);
-            urls.add(imageUrl);
-            ll.add(imageUrl);
-            llGroup.add(group);
-        }
-    }
-
-    public void prepareForOfflineForOption(String text, int ii, int jj, int kk) throws InterruptedException {
-        final String regex = "(src=\")([0-9A-Za-z.\\/:\\-%\\.]+)";
-        final Pattern pattern = Pattern.compile(regex);
-        final Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            myCount++;
-            Log.d("messi", "matcher.findInLoop");
-            String group = matcher.group(2);
-            String imageUrl = group;
-            Log.d("imageDownload", imageUrl);
+            String group = matcher.group(1);
+            int bi=group.indexOf('"');
+            Log.d("myData", "prepareForOfflineForQuestion: "+group+" "+bi);
+            String imageUrl = group.substring(0,bi);
+            Log.d("myData", "prepareForOfflineForQuestion: "+imageUrl);
             urls.add(imageUrl);
             ll.add(imageUrl);
             llGroup.add(group);
@@ -295,16 +282,19 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
 
     public void setQuestionData(String text, int ii, int jj) throws InterruptedException {
 
-        final String regex = "(src=\")([0-9A-Za-z.\\/:\\-\\.]+)";
+        final String regex = "src=\"([\\w\\W]+)\"";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
         String result=text;
         while (matcher.find()) {
             myC++;
             Log.d("ronaldo", "matcher.findInLoop");
-            String myGr=matcher.group(2);
+            String myGr=matcher.group(1);
+            int bi=myGr.indexOf('"');
+            Log.d("myData", "prepareForOfflineForQuestion: "+myGr+" "+bi);
+            String imageUrl = myGr.substring(0,bi);
             String image=myMap.get(myC);
-            result = result.replace(myGr,image);
+            result = result.replace(imageUrl,image);
         }
 
         Log.d("result", "prepareForOfflineForQuestionDecrypt: after:"+result);
@@ -313,16 +303,20 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
     }
 
     public void setOptionData(String text, int ii, int jj, int kk) throws InterruptedException {
-        final String regex = "(src=\")([0-9A-Za-z.\\/:\\-]+)";
+        final String regex = "src=\"([\\w\\W]+)\"";
         final Pattern pattern = Pattern.compile(regex);
         final Matcher matcher = pattern.matcher(text);
+
         String result=text;
         while (matcher.find()) {
             myC++;
             Log.d("messi", "matcher.findInLoop");
-            String myGr=matcher.group(2);
+            String myGr=matcher.group(1);
+            int bi=myGr.indexOf('"');
+            Log.d("myData", "prepareForOfflineForQuestion: "+myGr+" "+bi);
+            String imageUrl = myGr.substring(0,bi);
             String image=myMap.get(myC);
-            result = result.replace(myGr,image);
+            result = result.replace(imageUrl,image);
         }
 
         Log.d("result", "prepareForOfflineForOptionDecrypt: after:"+result);
@@ -731,7 +725,7 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
                 for (int j = 0; j < questionArray[i]; ++j) {
                     String mt = ob.getTextOfOneQuestion(i, j);
                     try {
-                        prepareForOfflineForQuestion(mt, i, j);
+                        prepareForOffline(mt);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -741,7 +735,7 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
                         String mo = ob.getTextOfOneOption(i, j, k);
                         Log.d("textHere", "OfOptions" + mo);
                         try {
-                            prepareForOfflineForOption(mo, i, j, k);
+                            prepareForOffline(mo);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

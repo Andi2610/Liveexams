@@ -43,7 +43,7 @@ import in.truskills.liveexams.utility.ServiceUtility;
 
 public class KitDetailsActivity extends AppCompatActivity {
 
-    String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit,from;
+    String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit,from,id;
 
     Button buy,promo;
 
@@ -166,6 +166,7 @@ public class KitDetailsActivity extends AppCompatActivity {
             description=map.get("description");
             startDate=map.get("startDate");
             endDate=map.get("endDate");
+            id=map.get("id");
             boughtProductKit=map.get("boughtProductKit");
             myDateOfStart=MiscellaneousParser.parseDateForKit(startDate);
             myDateOfEnd=MiscellaneousParser.parseDateForKit(endDate);
@@ -264,6 +265,7 @@ public class KitDetailsActivity extends AppCompatActivity {
                 intent.putExtra(AvenuesParams.REDIRECT_URL, ConstantsDefined.redirectUrl);
                 intent.putExtra(AvenuesParams.CANCEL_URL, ConstantsDefined.cancelUrl);
                 intent.putExtra(AvenuesParams.RSA_KEY_URL, ConstantsDefined.rsaUrl);
+                intent.putExtra("productKitId",id);
                 startActivity(intent);
 
             }

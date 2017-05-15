@@ -100,7 +100,6 @@ public class WebViewActivity extends Activity {
 								vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.CURRENCY, mainIntent.getStringExtra(AvenuesParams.CURRENCY)));
 								encVal = RSAUtility.encrypt(vEncVal.substring(0, vEncVal.length() - 1), myResponse);
 
-//			@SuppressWarnings("unused")
 								class MyJavaScriptInterface
 								{
 									@JavascriptInterface
@@ -108,10 +107,12 @@ public class WebViewActivity extends Activity {
 									{
 										// process the html as needed by the app
 										String status = null;
+										boolean add=false;
 										if(html.indexOf("Failure")!=-1){
 											status = "Transaction Declined!";
 										}else if(html.indexOf("Success")!=-1){
 											status = "Transaction Successful!";
+											add=true;
 										}else if(html.indexOf("Aborted")!=-1){
 											status = "Transaction Cancelled!";
 										}else{
@@ -120,6 +121,9 @@ public class WebViewActivity extends Activity {
 										//Toast.makeText(getApplicationContext(), status, Toast.LENGTH_SHORT).show();
 										Intent intent = new Intent(getApplicationContext(),StatusActivity.class);
 										intent.putExtra("transStatus", status);
+										intent.putExtra("add",add);
+										intent.putExtra("amount",mainIntent.getStringExtra(AvenuesParams.AMOUNT));
+										intent.putExtra("productKitId",mainIntent.getStringExtra("productKitId"));
 										startActivity(intent);
 									}
 								}
