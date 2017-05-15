@@ -2,25 +2,21 @@ package in.truskills.liveexams.MainScreens;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EncodingUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -34,12 +30,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import javax.crypto.Cipher;
+
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-import in.truskills.liveexams.utility.AvenuesParams;
-import in.truskills.liveexams.utility.Constants;
-import in.truskills.liveexams.utility.RSAUtility;
-import in.truskills.liveexams.utility.ServiceHandler;
-import in.truskills.liveexams.utility.ServiceUtility;
 
 import in.truskills.liveexams.R;
 
@@ -67,7 +60,7 @@ public class WebViewActivity extends Activity {
 		dialog.setCancelable(false);
 		dialog.show();
 
-			String url=mainIntent.getStringExtra(AvenuesParams.RSA_KEY_URL);
+			String url=mainIntent.getStringExtra(ConstantsDefined.RSA_KEY_URL);
 
 			ConstantsDefined.beforeVolleyConnect();
 
@@ -96,9 +89,9 @@ public class WebViewActivity extends Activity {
 								finish();
 							}else{
 								StringBuffer vEncVal = new StringBuffer("");
-								vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.AMOUNT, mainIntent.getStringExtra(AvenuesParams.AMOUNT)));
-								vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.CURRENCY, mainIntent.getStringExtra(AvenuesParams.CURRENCY)));
-								encVal = RSAUtility.encrypt(vEncVal.substring(0, vEncVal.length() - 1), myResponse);
+								vEncVal.append(addToPostParams(ConstantsDefined.AMOUNT, mainIntent.getStringExtra(ConstantsDefined.AMOUNT)));
+								vEncVal.append(addToPostParams(ConstantsDefined.CURRENCY, mainIntent.getStringExtra(ConstantsDefined.CURRENCY)));
+								encVal = encrypt(vEncVal.substring(0, vEncVal.length() - 1), myResponse);
 
 								class MyJavaScriptInterface
 								{
@@ -124,7 +117,7 @@ public class WebViewActivity extends Activity {
 										Intent intent = new Intent(getApplicationContext(),StatusActivity.class);
 										intent.putExtra("transStatus", status);
 										intent.putExtra("add",add);
-										intent.putExtra("amount",mainIntent.getStringExtra(AvenuesParams.AMOUNT));
+										intent.putExtra("amount",mainIntent.getStringExtra(ConstantsDefined.AMOUNT));
 										intent.putExtra("productKitId",mainIntent.getStringExtra("productKitId"));
 										startActivity(intent);
 									}
@@ -137,7 +130,7 @@ public class WebViewActivity extends Activity {
 									@Override
 									public void onPageFinished(WebView view, String url) {
 										super.onPageFinished(webview, url);
-										if(url.indexOf("/ccavResponseHandler.js")!=-1){
+										if(url.indexOf("/ccavResponseHandler.php")!=-1){
 											webview.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 										}
 									}
@@ -150,14 +143,14 @@ public class WebViewActivity extends Activity {
 
 			/* An instance of this class will be registered as a JavaScript interface */
 								StringBuffer params = new StringBuffer();
-								params.append(ServiceUtility.addToPostParams(AvenuesParams.ACCESS_CODE,mainIntent.getStringExtra(AvenuesParams.ACCESS_CODE)));
-								params.append(ServiceUtility.addToPostParams(AvenuesParams.MERCHANT_ID,mainIntent.getStringExtra(AvenuesParams.MERCHANT_ID)));
-								params.append(ServiceUtility.addToPostParams(AvenuesParams.ORDER_ID,mainIntent.getStringExtra(AvenuesParams.ORDER_ID)));
-								params.append(ServiceUtility.addToPostParams(AvenuesParams.REDIRECT_URL,mainIntent.getStringExtra(AvenuesParams.REDIRECT_URL)));
-								params.append(ServiceUtility.addToPostParams(AvenuesParams.CANCEL_URL,mainIntent.getStringExtra(AvenuesParams.CANCEL_URL)));
+								params.append(addToPostParams(ConstantsDefined.ACCESS_CODE,mainIntent.getStringExtra(ConstantsDefined.ACCESS_CODE)));
+								params.append(addToPostParams(ConstantsDefined.MERCHANT_ID,mainIntent.getStringExtra(ConstantsDefined.MERCHANT_ID)));
+								params.append(addToPostParams(ConstantsDefined.ORDER_ID,mainIntent.getStringExtra(ConstantsDefined.ORDER_ID)));
+								params.append(addToPostParams(ConstantsDefined.REDIRECT_URL,mainIntent.getStringExtra(ConstantsDefined.REDIRECT_URL)));
+								params.append(addToPostParams(ConstantsDefined.CANCEL_URL,mainIntent.getStringExtra(ConstantsDefined.CANCEL_URL)));
 								try {
 									Log.d("valBefore", "onPostExecute: ");
-									params.append(ServiceUtility.addToPostParams(AvenuesParams.ENC_VAL,URLEncoder.encode(encVal,"UTF-8")));
+									params.append(addToPostParams(ConstantsDefined.ENC_VAL,URLEncoder.encode(encVal,"UTF-8")));
 								} catch (UnsupportedEncodingException e) {
 									e.printStackTrace();
 									Log.d("vallll", "onPostExecute: "+e.toString());
@@ -165,7 +158,7 @@ public class WebViewActivity extends Activity {
 
 								String vPostParams = params.substring(0,params.length()-1);
 								try {
-									webview.postUrl(Constants.TRANS_URL, EncodingUtils.getBytes(vPostParams, "UTF-8"));
+									webview.postUrl(ConstantsDefined.TRANS_URL, EncodingUtils.getBytes(vPostParams, "UTF-8"));
 								} catch (Exception e) {
 									Toast.makeText(WebViewActivity.this, "Exception occured while opening webview.", Toast.LENGTH_SHORT).show();
 								}
@@ -201,11 +194,32 @@ public class WebViewActivity extends Activity {
 
 					//Put all the required parameters for the post request..
 					Map<String, String> params = new HashMap<String, String>();
-					params.put(AvenuesParams.ORDER_ID,mainIntent.getStringExtra(AvenuesParams.ORDER_ID));
+					params.put(ConstantsDefined.ORDER_ID,mainIntent.getStringExtra(ConstantsDefined.ORDER_ID));
 					return params;
 				}
 			};
 			requestQueue.add(stringRequest);
 
 	}
+
+	public String encrypt(String plainText, String key){
+		try{
+			PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Base64.decode(key, Base64.DEFAULT)));
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			return Base64.encodeToString(cipher.doFinal(plainText.getBytes("UTF-8")),Base64.DEFAULT);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String addToPostParams(String paramKey, String paramValue){
+		if(paramValue!=null)
+			return paramKey.concat(ConstantsDefined.PARAMETER_EQUALS).concat(paramValue)
+					.concat(ConstantsDefined.PARAMETER_SEP);
+		return "";
+	}
+
+
 } 

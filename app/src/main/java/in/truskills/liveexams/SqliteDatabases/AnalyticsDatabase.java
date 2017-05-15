@@ -9,13 +9,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 /**
- * Created by Shivansh Gupta on 25-02-2017.
+ *
  */
 
 public class AnalyticsDatabase extends SQLiteOpenHelper {
 
     Context c;
-
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
@@ -126,7 +125,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(SectionIndex, si);
         db.insert(TABLE_PER_SECTION, null, values);
-//        db.close(); // Closing database connection
     }
 
     public void setValuesPerQuestion(int si, int qi) {
@@ -135,7 +133,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         values.put(SectionIndex, si);
         values.put(QuestionIndex, qi);
         db.insert(TABLE_PER_QUESTION, null, values);
-//        db.close(); // Closing database connection
     }
 
     public void setValuesPerOption(int si, int qi, int oi) {
@@ -145,7 +142,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         values.put(QuestionIndex, qi);
         values.put(OptionIndex, oi);
         db.insert(TABLE_PER_OPTION, null, values);
-//        db.close(); // Closing database connection
     }
 
     public void updateValuesPerSection(int si, String columnName, String value) {
@@ -153,7 +149,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(TABLE_PER_SECTION, contentValues, SectionIndex + "=" + si, null);
-//        db.close();
     }
 
     public void updateValuesPerQuestion(int si, int qi, String columnName, String value) {
@@ -161,7 +156,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(TABLE_PER_QUESTION, contentValues, SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi, null);
-//        db.close();
     }
 
     public void updateValuesPerOption(int si, int qi, int oi, String columnName, String value) {
@@ -169,7 +163,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(TABLE_PER_OPTION, contentValues, SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi + " AND " + OptionIndex + "=" + oi, null);
-//        db.close();
     }
 
     public void updateValuesPerSectionById(int si, String columnName, String value) {
@@ -177,7 +170,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(TABLE_PER_SECTION, contentValues, SectionId + "='" + si + "'", null);
-//        db.close();
     }
 
     public void updateValuesPerQuestionById(int si, int qi, String columnName, String value) {
@@ -185,7 +177,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(TABLE_PER_QUESTION, contentValues, SectionId + "='" + si + "' AND " + QuestionId + "='" + qi + "'", null);
-//        db.close();
     }
 
     public int getNoOfOptionsInOneQuestion(int si, int qi) {
@@ -195,7 +186,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         num = cursor.getCount();
         cursor.close();
-//        db.close();
         return num;
     }
 
@@ -211,7 +201,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         }
 
         cursor.close();
-//        db.close();
         return text;
     }
 
@@ -227,7 +216,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         }
 
         cursor.close();
-//        db.close();
         return text;
     }
 
@@ -242,7 +230,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-//        db.close();
         return ans;
     }
 
@@ -302,7 +289,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-
         return types;
     }
 
@@ -334,10 +320,7 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         cursor = db.rawQuery(query, null);
         types.add(cursor.getCount());
         cursor.close();
-//        db.close();
-
         return types;
-
     }
 
     public int getNoOfQinOneSec(int si){
@@ -347,7 +330,6 @@ public class AnalyticsDatabase extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         num = cursor.getCount();
         cursor.close();
-//        db.close();
         return num;
     }
 

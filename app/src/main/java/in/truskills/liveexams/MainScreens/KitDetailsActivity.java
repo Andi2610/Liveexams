@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,14 +31,11 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
-import in.truskills.liveexams.authentication.ForgotPassword;
-import in.truskills.liveexams.utility.AvenuesParams;
-import in.truskills.liveexams.utility.ServiceUtility;
 
 public class KitDetailsActivity extends AppCompatActivity {
 
@@ -254,17 +250,17 @@ public class KitDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Integer randomNum = ServiceUtility.randInt(0, 9999999);
+                Integer randomNum = randInt(0, 9999999);
                 String orderId=randomNum.toString();
                 Intent intent = new Intent(KitDetailsActivity.this, WebViewActivity.class);
-                intent.putExtra(AvenuesParams.ACCESS_CODE, ConstantsDefined.accessCode);
-                intent.putExtra(AvenuesParams.MERCHANT_ID, ConstantsDefined.merchantId);
-                intent.putExtra(AvenuesParams.ORDER_ID, orderId);
-                intent.putExtra(AvenuesParams.CURRENCY, ConstantsDefined.currency);
-                intent.putExtra(AvenuesParams.AMOUNT, finalPrice);
-                intent.putExtra(AvenuesParams.REDIRECT_URL, ConstantsDefined.redirectUrl);
-                intent.putExtra(AvenuesParams.CANCEL_URL, ConstantsDefined.cancelUrl);
-                intent.putExtra(AvenuesParams.RSA_KEY_URL, ConstantsDefined.rsaUrl);
+                intent.putExtra(ConstantsDefined.ACCESS_CODE, ConstantsDefined.accessCode);
+                intent.putExtra(ConstantsDefined.MERCHANT_ID, ConstantsDefined.merchantId);
+                intent.putExtra(ConstantsDefined.ORDER_ID, orderId);
+                intent.putExtra(ConstantsDefined.CURRENCY, ConstantsDefined.currency);
+                intent.putExtra(ConstantsDefined.AMOUNT, finalPrice);
+                intent.putExtra(ConstantsDefined.REDIRECT_URL, ConstantsDefined.redirectUrl);
+                intent.putExtra(ConstantsDefined.CANCEL_URL, ConstantsDefined.cancelUrl);
+                intent.putExtra(ConstantsDefined.RSA_KEY_URL, ConstantsDefined.rsaUrl);
                 intent.putExtra("productKitId",id);
                 startActivity(intent);
 
@@ -369,5 +365,17 @@ public class KitDetailsActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(stringRequest);
+    }
+
+    public static int randInt(int min, int max) {
+        // Usually this should be a field rather than a method variable so
+        // that it is not re-seeded every call.
+        Random rand = new Random();
+
+        // nextInt is normally exclusive of the top value,
+        // so add 1 to make it inclusive
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
     }
 }

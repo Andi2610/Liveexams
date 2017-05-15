@@ -120,8 +120,6 @@ public class SplashScreen extends Activity {
                                                 if(state.equals("true")){
                                                     Intent i=new Intent(SplashScreen.this,MainActivity.class);
                                                     startActivity(i);
-//                                                    Intent i=new Intent(SplashScreen.this,FeedbackActivity.class);
-//                                                    startActivity(i);
                                                 }else{
                                                     Intent i=new Intent(SplashScreen.this,Signup_Login.class);
                                                     startActivity(i);

@@ -71,16 +71,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
     public static final String examId = "examId";
     public static final String submit = "submit";
 
-
-//    String CREATE_MY_TABLE_FOR_DATA =
-//            "CREATE TABLE " + DATA_TABLE + "("
-//                    + selectedLanguage + " TEXT,"
-//                    + date + " TEXT,"
-//                    + userId + " TEXT,"
-//                    + submit + " TEXT DEFAULT '0',"
-//                    + examId + " TEXT"
-//                    + ")";
-
     String CREATE_MY_TABLE_PER_SECTION =
             "CREATE TABLE " + TABLE_PER_SECTION + "("
                     + SerialNumber + " TEXT DEFAULT '-1',"
@@ -154,7 +144,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         db.execSQL(CREATE_MY_TABLE_PER_SECTION);
         db.execSQL(CREATE_MY_TABLE_PER_OPTION);
         db.execSQL(CREATE_MY_RESULT_TABLE);
-//        db.execSQL(CREATE_MY_TABLE_FOR_DATA);
     }
 
     @Override
@@ -174,7 +163,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_PER_QUESTION);
         db.execSQL("DELETE FROM " + TABLE_PER_OPTION);
         db.execSQL("DELETE FROM " + RESULT_TABLE);
-//        db.execSQL("DELETE FROM " + DATA_TABLE);
     }
 
     public void setValuesPerSection(int si) {
@@ -182,7 +170,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(SectionIndex, si);
         db.insert(TABLE_PER_SECTION, null, values);
-//        db.close(); // Closing database connection
     }
 
     public void setValuesPerQuestion(int si, int qi) {
@@ -191,7 +178,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         values.put(SectionIndex, si);
         values.put(QuestionIndex, qi);
         db.insert(TABLE_PER_QUESTION, null, values);
-//        db.close(); // Closing database connection
     }
 
     public void setValuesPerOption(int si, int qi, int oi) {
@@ -201,7 +187,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         values.put(QuestionIndex, qi);
         values.put(OptionIndex, oi);
         db.insert(TABLE_PER_OPTION, null, values);
-//        db.close(); // Closing database connection
     }
 
     public void setValuesForResult(int si, int qi) {
@@ -210,31 +195,13 @@ public class QuizDatabase extends SQLiteOpenHelper {
         values.put(SectionIndex, si);
         values.put(QuestionIndex, qi);
         db.insert(RESULT_TABLE, null, values);
-//        db.close(); // Closing database connection
     }
-//    public void setValuesForData(String language,String myDate,String ui,String ei){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put(selectedLanguage, language);
-//        values.put(date, myDate);
-//        values.put(userId, ui);
-//        values.put(examId, ei);
-//        db.insert(DATA_TABLE, null, values);
-//    }
-
-//    public void setSubmitTrue(){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put(submit, 1+"");
-//        db.insert(DATA_TABLE, null, values);
-//    }
 
     public void updateValuesPerSection(int si, String columnName, String value) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(TABLE_PER_SECTION, contentValues, SectionIndex + "=" + si, null);
-//        db.close();
     }
 
     public void updateValuesPerQuestion(int si, int qi, String columnName, String value) {
@@ -242,7 +209,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(TABLE_PER_QUESTION, contentValues, SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi, null);
-//        db.close();
     }
 
     public void updateValuesPerOption(int si, int qi, int oi, String columnName, String value) {
@@ -250,7 +216,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(TABLE_PER_OPTION, contentValues, SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi + " AND " + OptionIndex + "=" + oi, null);
-//        db.close();
     }
 
     public void updateValuesForResult(int si, int qi, String columnName, String value) {
@@ -259,7 +224,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(columnName, value);
         db.update(RESULT_TABLE, contentValues, SectionIndex + "=" + si + " AND " + QuestionIndex + "=" + qi, null);
-//        db.close();
     }
 
     public String getValuesForResult(int si, int qi, String columnName) {
@@ -274,11 +238,8 @@ public class QuizDatabase extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         }finally{
-//            Log.d("values", "getValuesForResult: "+si+" "+qi+" "+columnName+" "+ans);
             cursor.close();
         }
-
-//        db.close();
         return ans;
     }
 
@@ -292,7 +253,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         try{
             types.add(cursor.getCount());
         }finally {
-//            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
             cursor.close();
         }
 
@@ -301,8 +261,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         try{
             types.add(cursor.getCount());
         }finally {
-//            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
-
             cursor.close();
         }
 
@@ -311,8 +269,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         try{
             types.add(cursor.getCount());
         }finally {
-//            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
-
             cursor.close();
         }
 
@@ -321,8 +277,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         try{
             types.add(cursor.getCount());
         }finally {
-//            Log.d("values", "getTypes: "+si+" "+cursor.getCount());
-
             cursor.close();
         }
 
@@ -335,8 +289,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
             cursor.close();
         }
-//        db.close();
-
         return types;
 
     }
@@ -356,9 +308,7 @@ public class QuizDatabase extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         }finally {
-
             cursor.close();
-
         }
 
 
@@ -383,9 +333,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         }finally {
             cursor.close();
         }
-
-//        db.close();
-
         return type;
 
     }
@@ -406,24 +353,8 @@ public class QuizDatabase extends SQLiteOpenHelper {
             cursor.close();
 
         }
-
-//        db.close();
         return map;
     }
-//    public String getDataFromDataTable(String columnName){
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        String ans = "";
-//        String query = "SELECT " + columnName + " FROM " + DATA_TABLE ;
-//        Cursor cursor = db.rawQuery(query, null);
-//        if (cursor.moveToFirst()) {
-//            do {
-//                ans = cursor.getString(cursor.getColumnIndex(columnName));
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-////        db.close();
-//        return ans;
-//    }
 
     public String getStringValuesPerQuestionByFragmentIndex(int fI, String columnName) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -440,8 +371,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
             cursor.close();
 
         }
-
-//        db.close();
         return ans;
     }
 
@@ -457,12 +386,10 @@ public class QuizDatabase extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         }finally {
-//            Log.d("values", "getIntValuesPerQuestionByFragmentIndex: "+columnName+" "+ans);
             cursor.close();
 
         }
 
-//        db.close();
         return ans;
     }
 
@@ -478,12 +405,10 @@ public class QuizDatabase extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         }finally {
-//            Log.d("values", "getIntValuesPerQuestionBySiAndSrno: "+si+" "+srno+" "+columnName+" "+ans);
             cursor.close();
 
         }
 
-//        db.close();
         return ans;
     }
 
@@ -507,8 +432,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
         }
 
-//        db.close();
-
         return map;
     }
 
@@ -531,8 +454,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
         }
 
-//        db.close();
-
         return map;
     }
 
@@ -549,12 +470,8 @@ public class QuizDatabase extends SQLiteOpenHelper {
             }
 
         }finally {
-//            Log.d("values", "getStringValuesPerSectionBySectionIndex: "+si+" "+columnName+" "+ans);
-
             cursor.close();
         }
-
-//        db.close();
 
         return ans;
     }
@@ -571,13 +488,8 @@ public class QuizDatabase extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
         }finally {
-//            Log.d("values", "getIntValuesPerSectionBySerialNumber: "+srNo+" "+columnName+" "+ans);
             cursor.close();
-
         }
-
-
-//        db.close();
 
         return ans;
     }
@@ -606,7 +518,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
         }else{
             Log.d("checkForError", "getOptionIdBySerialNumber: cursorIsNull");
         }
-//        db.close();
         return sr;
 
     }
@@ -620,11 +531,9 @@ public class QuizDatabase extends SQLiteOpenHelper {
             num = cursor.getCount();
 
         }finally {
-//            Log.d("values", "getNoOfOptionsInOneQuestion: "+si+" "+qi+" "+num);
             cursor.close();
 
         }
-//        db.close();
         return num;
     }
 
@@ -644,8 +553,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
         }
 
-
-//        db.close();
         return text;
     }
 
@@ -665,55 +572,7 @@ public class QuizDatabase extends SQLiteOpenHelper {
 
         }
 
-
-//        db.close();
         return text;
-    }
-
-    public JSONArray getResults(String table_name) {
-
-//        String myPath = DATABASE_NAME;// Set path to your database
-        File path = c.getDatabasePath(DATABASE_NAME);
-        String db_path = path.getAbsolutePath();
-
-        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(db_path, null, SQLiteDatabase.OPEN_READONLY);
-
-
-        String searchQuery = "SELECT  * FROM " + table_name;
-        Cursor cursor = myDataBase.rawQuery(searchQuery, null);
-
-        JSONArray resultSet = new JSONArray();
-        JSONObject returnObj = new JSONObject();
-
-        cursor.moveToFirst();
-        while (cursor.isAfterLast() == false) {
-
-            int totalColumn = cursor.getColumnCount();
-            JSONObject rowObject = new JSONObject();
-
-            for (int i = 0; i < totalColumn; i++) {
-                if (cursor.getColumnName(i) != null) {
-
-                    try {
-
-                        if (cursor.getString(i) != null) {
-                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
-                        } else {
-                            rowObject.put(cursor.getColumnName(i), "");
-                        }
-                    } catch (Exception e) {
-                    }
-                }
-
-            }
-
-            resultSet.put(rowObject);
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return resultSet;
-
     }
 
     public JSONArray getQuizResult() {
@@ -778,7 +637,6 @@ public class QuizDatabase extends SQLiteOpenHelper {
             cursor.close();
 
         }
-//        db.close();
         return num;
     }
 
@@ -814,24 +672,5 @@ public class QuizDatabase extends SQLiteOpenHelper {
         }
         cursor.close();
     }
-
-//    public boolean getStatusOfResultTable(){
-//        boolean ans=false;
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        String query = "SELECT " + submit + " FROM " + DATA_TABLE;
-//        Cursor cursor = db.rawQuery(query, null);
-//        if (cursor.moveToFirst()) {
-//            do {
-//                String text = cursor.getString(cursor.getColumnIndex(submit));
-//                Log.d("status", "getStatusOfResultTable: "+text);
-//                if(text.equals("1"))
-//                    ans=true;
-//            } while (cursor.moveToNext());
-//        }
-//
-//        cursor.close();
-////        db.close();
-//        return ans;
-//    }
 
 }

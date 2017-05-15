@@ -32,8 +32,6 @@ public class EndStudentAnalyticsParser {
     private static final String sectionWiseMarks="sectionWiseMarks";
     private static final String rank="rank";
 
-
-
     public static HashMap<String,String> responseParser(String myResponse) throws JSONException {
         HashMap<String,String> map=new HashMap<>();
         JSONObject jsonObject=new JSONObject(myResponse);
