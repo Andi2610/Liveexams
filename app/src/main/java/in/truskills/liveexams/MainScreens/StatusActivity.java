@@ -50,7 +50,7 @@ public class StatusActivity extends Activity {
 		prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
 		retryButtonForKit=(Button)findViewById(R.id.retryButtonForKit);
-		noInternetMessageForKit=(TextView) findViewById(R.id.noInternetMessage);
+		noInternetMessageForKit=(TextView) findViewById(R.id.noInternetMessageForKit);
 		noInternetLayoutForKit=(LinearLayout) findViewById(R.id.noInternetLayoutForKit);
 
 		noInternetLayoutForKit.setVisibility(View.GONE);

@@ -7,10 +7,9 @@
 
     <TextView
         android:id="@+id/message"
-        android:layout_width="238dp"
-        android:layout_height="40dp"
-        android:layout_x="55dp"
-        android:layout_y="157dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 
