@@ -339,7 +339,7 @@ public class KitDetailsActivity extends AppCompatActivity {
                                 }
                             });
                         }else{
-                            Toast.makeText(KitDetailsActivity.this, "Sorry! This Promocode has expired", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(KitDetailsActivity.this, "Sorry! No such promocode exists!", Toast.LENGTH_SHORT).show();
                         }
 
                     }else{
