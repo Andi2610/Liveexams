@@ -38,7 +38,7 @@ public class StatusActivity extends Activity {
 	ProgressDialog dialog;
 	SharedPreferences prefs;
 	Intent mainIntent;
-	TextView message,noInternetMessageForKit;
+	TextView noInternetMessageForKit;
 	Button retryButtonForKit;
 	LinearLayout noInternetLayoutForKit;
 
@@ -50,20 +50,19 @@ public class StatusActivity extends Activity {
 		prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
 		retryButtonForKit=(Button)findViewById(R.id.retryButtonForKit);
-		message=(TextView) findViewById(R.id.message);
 		noInternetMessageForKit=(TextView) findViewById(R.id.noInternetMessage);
 		noInternetLayoutForKit=(LinearLayout) findViewById(R.id.noInternetLayoutForKit);
 
 		noInternetLayoutForKit.setVisibility(View.GONE);
 
 		Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
-		message.setTypeface(tff1);
 		noInternetMessageForKit.setTypeface(tff1);
 		retryButtonForKit.setTypeface(tff1);
 
 		mainIntent = getIntent();
-		TextView tv4 = (TextView) findViewById(R.id.textView1);
+		TextView tv4 = (TextView) findViewById(R.id.message);
 		tv4.setText(mainIntent.getStringExtra("transStatus"));
+		tv4.setTypeface(tff1);
 		Toast.makeText(this, "Status:"+mainIntent.getStringExtra("transStatus"), Toast.LENGTH_SHORT).show();
 
 		boolean add=mainIntent.getBooleanExtra("add",false);
