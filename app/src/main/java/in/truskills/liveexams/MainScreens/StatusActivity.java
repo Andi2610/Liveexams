@@ -155,6 +155,7 @@ public class StatusActivity extends Activity {
 				params.put("userId",prefs.getString("userId",""));
 				params.put("amount",prefs.getString("userId",""));
 				params.put("productKitId",mainIntent.getStringExtra("productKitId"));
+				params.put("timePeriod","4");
 				return params;
 			}
 		};
