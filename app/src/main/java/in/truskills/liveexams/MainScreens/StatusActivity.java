@@ -5,8 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +38,9 @@ public class StatusActivity extends Activity {
 	ProgressDialog dialog;
 	SharedPreferences prefs;
 	Intent mainIntent;
+	TextView message,noInternetMessageForKit;
+	Button retryButtonForKit;
+	LinearLayout noInternetLayoutForKit;
 
 	@Override
 	public void onCreate(Bundle bundle) {
@@ -41,7 +48,19 @@ public class StatusActivity extends Activity {
 		setContentView(R.layout.activity_status);
 
 		prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
-		
+
+		retryButtonForKit=(Button)findViewById(R.id.retryButtonForKit);
+		message=(TextView) findViewById(R.id.message);
+		noInternetMessageForKit=(TextView) findViewById(R.id.noInternetMessage);
+		noInternetLayoutForKit=(LinearLayout) findViewById(R.id.noInternetLayoutForKit);
+
+		noInternetLayoutForKit.setVisibility(View.GONE);
+
+		Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
+		message.setTypeface(tff1);
+		noInternetMessageForKit.setTypeface(tff1);
+		retryButtonForKit.setTypeface(tff1);
+
 		mainIntent = getIntent();
 		TextView tv4 = (TextView) findViewById(R.id.textView1);
 		tv4.setText(mainIntent.getStringExtra("transStatus"));
@@ -50,80 +69,96 @@ public class StatusActivity extends Activity {
 		boolean add=mainIntent.getBooleanExtra("add",false);
 
 		if(add){
-
-			//Required for https connection..
-			ConstantsDefined.updateAndroidSecurityProvider(StatusActivity.this);
-			ConstantsDefined.beforeVolleyConnect();
-
-			//Initialise requestQueue instance and url to be connected to for Volley connection..
-			RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-			String url = ConstantsDefined.apiForKit + "purchaseProductKit";
-
-			//While api is being connected to, display apppropriate dialog box..
-			dialog = new ProgressDialog(StatusActivity.this);
-			dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			dialog.setMessage("Adding this kit in your database of purchased kit..Please wait..");
-			dialog.setIndeterminate(true);
-			dialog.setCancelable(false);
-			dialog.show();
-
-			//Make a request..
-			StringRequest stringRequest = new StringRequest(Request.Method.POST,
-					url, new Response.Listener<String>() {
-				@Override
-				public void onResponse(String response) {
-
-					//Dismiss dialog box on successful response..
-					if (dialog != null)
-						dialog.dismiss();
-
-					Log.d("purchaseResponse", "onResponse: "+response);
-					Toast.makeText(StatusActivity.this, "response"+response, Toast.LENGTH_SHORT).show();
-
-					try {
-						JSONObject jsonObject=new JSONObject(response);
-						String success=jsonObject.getString("success");
-						if(success.equals("true")){
-							Toast.makeText(StatusActivity.this, "Success", Toast.LENGTH_LONG).show();
-						}else{
-							Toast.makeText(StatusActivity.this, "Something went wrong..", Toast.LENGTH_LONG).show();
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-
-				}
-			}, new Response.ErrorListener() {
-				@Override
-				public void onErrorResponse(VolleyError error) {
-
-					//In case the connection to the Api couldn't be established..
-
-					//Dismiss the dialog box..
-					if (dialog != null)
-						dialog.dismiss();
-
-					//Display appropriate toast message depending upon internet connectivity was a reason for failure or something else..
-					if(ConstantsDefined.isOnline(StatusActivity.this)){
-						Toast.makeText(StatusActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-					}else{
-						Toast.makeText(StatusActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
-					}
-				}
-			}) {
-				@Override
-				protected Map<String, String> getParams() throws AuthFailureError {
-
-					//Put all the required parameters for the post request..
-					Map<String, String> params = new HashMap<String, String>();
-					params.put("userId",prefs.getString("userId",""));
-					params.put("amount",prefs.getString("userId",""));
-					params.put("productKitId",mainIntent.getStringExtra("productKitId"));
-					return params;
-				}
-			};
-			requestQueue.add(stringRequest);
-
+			addFunc();
 		}
+
+		retryButtonForKit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				addFunc();
+			}
+		});
+	}
+
+	public void addFunc(){
+
+		noInternetLayoutForKit.setVisibility(View.GONE);
+		//Required for https connection..
+		ConstantsDefined.updateAndroidSecurityProvider(StatusActivity.this);
+		ConstantsDefined.beforeVolleyConnect();
+
+		//Initialise requestQueue instance and url to be connected to for Volley connection..
+		RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+		String url = ConstantsDefined.apiForKit + "purchaseProductKit";
+
+		//While api is being connected to, display apppropriate dialog box..
+		dialog = new ProgressDialog(StatusActivity.this);
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dialog.setMessage("Adding this kit in your database of purchased kit..Please wait..");
+		dialog.setIndeterminate(true);
+		dialog.setCancelable(false);
+		dialog.show();
+
+		//Make a request..
+		StringRequest stringRequest = new StringRequest(Request.Method.POST,
+				url, new Response.Listener<String>() {
+			@Override
+			public void onResponse(String response) {
+
+				noInternetLayoutForKit.setVisibility(View.GONE);
+
+				//Dismiss dialog box on successful response..
+				if (dialog != null)
+					dialog.dismiss();
+
+				Log.d("purchaseResponse", "onResponse: "+response);
+				Toast.makeText(StatusActivity.this, "response"+response, Toast.LENGTH_SHORT).show();
+
+				try {
+					JSONObject jsonObject=new JSONObject(response);
+					String success=jsonObject.getString("success");
+					if(success.equals("true")){
+						Toast.makeText(StatusActivity.this, "Success", Toast.LENGTH_LONG).show();
+					}else{
+						Toast.makeText(StatusActivity.this, "Something went wrong..", Toast.LENGTH_LONG).show();
+						noInternetLayoutForKit.setVisibility(View.VISIBLE);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+
+				//In case the connection to the Api couldn't be established..
+
+				noInternetLayoutForKit.setVisibility(View.VISIBLE);
+
+				//Dismiss the dialog box..
+				if (dialog != null)
+					dialog.dismiss();
+
+				//Display appropriate toast message depending upon internet connectivity was a reason for failure or something else..
+				if(ConstantsDefined.isOnline(StatusActivity.this)){
+					Toast.makeText(StatusActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+				}else{
+					Toast.makeText(StatusActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+				}
+			}
+		}) {
+			@Override
+			protected Map<String, String> getParams() throws AuthFailureError {
+
+				//Put all the required parameters for the post request..
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("userId",prefs.getString("userId",""));
+				params.put("amount",prefs.getString("userId",""));
+				params.put("productKitId",mainIntent.getStringExtra("productKitId"));
+				return params;
+			}
+		};
+		requestQueue.add(stringRequest);
 	}
 } 

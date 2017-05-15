@@ -85,7 +85,7 @@ public class CoursesIncludedInKitListAdapter extends RecyclerView.Adapter<Course
 
                 if(from.equals("home")){
 
-                    boolean isAppInstalled = appInstalledOrNot("com.check.application");
+                    boolean isAppInstalled = appInstalledOrNot("in.truskills.truteach");
 
                     if(isAppInstalled) {
                         //This intent will help you to launch if the package is already installed
@@ -94,8 +94,6 @@ public class CoursesIncludedInKitListAdapter extends RecyclerView.Adapter<Course
                         c.startActivity(LaunchIntent);
 
                         Toast.makeText(c, "app installed", Toast.LENGTH_SHORT).show();
-
-
 
                     } else {
                         // Do whatever we want to do if application not installed
@@ -113,7 +111,6 @@ public class CoursesIncludedInKitListAdapter extends RecyclerView.Adapter<Course
                         builder.setCancelable(true);
                         builder.create().show();
 
-                        Toast.makeText(c, "app not installed", Toast.LENGTH_SHORT).show();
                     }
 
                 }

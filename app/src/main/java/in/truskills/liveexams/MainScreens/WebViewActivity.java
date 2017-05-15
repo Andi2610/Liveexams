@@ -137,7 +137,7 @@ public class WebViewActivity extends Activity {
 									@Override
 									public void onPageFinished(WebView view, String url) {
 										super.onPageFinished(webview, url);
-										if(url.indexOf("/ccavResponseHandler.jsp")!=-1){
+										if(url.indexOf("/ccavResponseHandler.js")!=-1){
 											webview.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 										}
 									}
