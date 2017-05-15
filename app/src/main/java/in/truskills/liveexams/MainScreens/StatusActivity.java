@@ -19,6 +19,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,6 +79,18 @@ public class StatusActivity extends Activity {
 
 					Log.d("purchaseResponse", "onResponse: "+response);
 					Toast.makeText(StatusActivity.this, "response"+response, Toast.LENGTH_SHORT).show();
+
+					try {
+						JSONObject jsonObject=new JSONObject(response);
+						String success=jsonObject.getString("success");
+						if(success.equals("true")){
+							Toast.makeText(StatusActivity.this, "Success", Toast.LENGTH_LONG).show();
+						}else{
+							Toast.makeText(StatusActivity.this, "Something went wrong..", Toast.LENGTH_LONG).show();
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 
 				}
 			}, new Response.ErrorListener() {

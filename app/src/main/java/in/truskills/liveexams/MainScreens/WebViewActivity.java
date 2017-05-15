@@ -106,6 +106,8 @@ public class WebViewActivity extends Activity {
 									public void processHTML(String html)
 									{
 										// process the html as needed by the app
+
+										Log.d("myHtml", "processHTML: "+html);
 										String status = null;
 										boolean add=false;
 										if(html.indexOf("Failure")!=-1){

@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +41,7 @@ import java.util.Map;
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.authentication.SplashScreen;
 
 /**
  * Created by Shivansh Gupta on 13-05-2017.
@@ -49,13 +54,14 @@ public class CoursesIncludedInKitListAdapter extends RecyclerView.Adapter<Course
     SharedPreferences prefs;
     Handler h;
     ProgressDialog dialog;
-    String value;
+    String value,from;
     HashMap<String,ArrayList<String>> map;
 
-    CoursesIncludedInKitListAdapter(ArrayList<String> myList,ArrayList<String> ids, Context c) {
+    CoursesIncludedInKitListAdapter(ArrayList<String> myList,ArrayList<String> ids, Context c,String from) {
         this.myList = myList;
         this.c = c;
         this.ids=ids;
+        this.from=from;
         setHasStableIds(true);
     }
 
@@ -76,6 +82,41 @@ public class CoursesIncludedInKitListAdapter extends RecyclerView.Adapter<Course
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(from.equals("home")){
+
+                    boolean isAppInstalled = appInstalledOrNot("com.check.application");
+
+                    if(isAppInstalled) {
+                        //This intent will help you to launch if the package is already installed
+                        Intent LaunchIntent = c.getPackageManager()
+                                .getLaunchIntentForPackage("in.truskills.truteach");
+                        c.startActivity(LaunchIntent);
+
+                        Toast.makeText(c, "app installed", Toast.LENGTH_SHORT).show();
+
+
+
+                    } else {
+                        // Do whatever we want to do if application not installed
+                        // For example, Redirect to play store
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(c, R.style.AppCompatAlertDialogStyle);
+                        builder.setTitle("TruTeach App Not Installed");  // GPS not found
+                        builder.setMessage("You will be directed to play store now..\nPlease install the app"); // Want to enable?
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent ii=new Intent((Intent.ACTION_VIEW));
+                                ii.setData(Uri.parse("market://details?id=in.truskills.truteach"));
+                                c.startActivity(ii);
+                            }
+                        });
+                        builder.setCancelable(true);
+                        builder.create().show();
+
+                        Toast.makeText(c, "app not installed", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
 
                 }
             });
@@ -107,5 +148,17 @@ public class CoursesIncludedInKitListAdapter extends RecyclerView.Adapter<Course
             container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }
+
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager pm = c.getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        return false;
+    }
+
 }
 

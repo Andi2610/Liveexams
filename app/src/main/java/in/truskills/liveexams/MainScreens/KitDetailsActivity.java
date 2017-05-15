@@ -236,7 +236,7 @@ public class KitDetailsActivity extends AppCompatActivity {
                 coursesIncludedInKitLayout.setVisibility(View.GONE);
             }else{
                 coursesIncludedInKitLayout.setVisibility(View.VISIBLE);
-                coursesIncludedInKitListAdapter=new CoursesIncludedInKitListAdapter(coursesName,coursesId,this);
+                coursesIncludedInKitListAdapter=new CoursesIncludedInKitListAdapter(coursesName,coursesId,this,from);
                 coursesIncludedInKitList.setLayoutManager(linearLayoutManagerForCourses);
                 coursesIncludedInKitList.setItemAnimator(new DefaultItemAnimator());
                 coursesIncludedInKitList.setAdapter(coursesIncludedInKitListAdapter);
