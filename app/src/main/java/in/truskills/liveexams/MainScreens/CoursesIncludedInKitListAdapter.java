@@ -93,8 +93,6 @@ public class CoursesIncludedInKitListAdapter extends RecyclerView.Adapter<Course
                                 .getLaunchIntentForPackage("in.truskills.truteach");
                         c.startActivity(LaunchIntent);
 
-                        Toast.makeText(c, "app installed", Toast.LENGTH_SHORT).show();
-
                     } else {
                         // Do whatever we want to do if application not installed
                         // For example, Redirect to play store
