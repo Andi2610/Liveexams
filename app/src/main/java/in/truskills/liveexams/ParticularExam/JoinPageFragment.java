@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -34,6 +33,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -44,7 +44,14 @@ import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
-//This is Join Fragment where a user can enroll for a new exam..
+/**
+ * This is the JoinPage fragment, where the user enrolls for a new exam..
+ *
+ * API call made:
+ *
+ * /api/enrollUser/userId : (POST api with examId, language parameters): for enrolling a user in a new exam..
+ */
+
 
 public class JoinPageFragment extends Fragment {
 
@@ -80,9 +87,11 @@ public class JoinPageFragment extends Fragment {
         //Get shared preferences..
         prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
+        //Make an instancce for interface..
         ob = (JoinPageInterface) getActivity();
         ob.changeTitleForJoinPage();
 
+        //Render  all elements in layout file..
         start_DateJoinPage = (TextView) getActivity().findViewById(R.id.startDateJoinPage);
         end_DateJoinPage = (TextView) getActivity().findViewById(R.id.endDateJoinPage);
         start_TimeJoinPage = (TextView) getActivity().findViewById(R.id.startTimeJoinPage);
@@ -92,28 +101,7 @@ public class JoinPageFragment extends Fragment {
         myLanguageJoinPage = (Spinner) getActivity().findViewById(R.id.myLanguageJoinPage);
         join_button = (Button) getActivity().findViewById(R.id.join_button);
 
-        viewFlipperJoinPage = (ViewFlipper) getActivity().findViewById(R.id.viewFlipperJoinPage);
-
-        int[] resources = {
-                R.drawable.first,
-                R.drawable.second,
-                R.drawable.third,
-                R.drawable.fourth,
-        };
-
-        for (int i = 0; i < resources.length; i++) {
-            ImageView imageView = new ImageView(getActivity());
-            imageView.setImageResource(resources[i]);
-            viewFlipperJoinPage.addView(imageView);
-        }
-
-        viewFlipperJoinPage.setInAnimation(getActivity(), android.R.anim.fade_in);
-        viewFlipperJoinPage.setOutAnimation(getActivity(), android.R.anim.fade_out);
-
-        viewFlipperJoinPage.setAutoStart(true);
-        viewFlipperJoinPage.setFlipInterval(2000);
-
-
+        //Set typeface of required elements..
         Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         start_DateJoinPage.setTypeface(tff);
         end_DateJoinPage.setTypeface(tff);
@@ -124,6 +112,24 @@ public class JoinPageFragment extends Fragment {
         Typeface tff2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Bold.ttf");
         join_button.setTypeface(tff2);
 
+        //Prepare view flipper for sponsors image slide show..
+        viewFlipperJoinPage = (ViewFlipper) getActivity().findViewById(R.id.viewFlipperJoinPage);
+        int[] resources = {
+                R.drawable.first,
+                R.drawable.second,
+                R.drawable.third,
+                R.drawable.fourth,
+        };
+        for (int i = 0; i < resources.length; i++) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageResource(resources[i]);
+            viewFlipperJoinPage.addView(imageView);
+        }
+        viewFlipperJoinPage.setInAnimation(getActivity(), android.R.anim.fade_in);
+        viewFlipperJoinPage.setOutAnimation(getActivity(), android.R.anim.fade_out);
+        viewFlipperJoinPage.setAutoStart(true);
+        viewFlipperJoinPage.setFlipInterval(2000);
+
         //Get arguments..
         b = getArguments();
         timestamp = b.getString("timestamp");
@@ -131,16 +137,17 @@ public class JoinPageFragment extends Fragment {
         examId = b.getString("examId");
         examGiven = b.getString("examGiven");
 
+        //For entry in Answers in fabrics..
         Answers.getInstance().logCustom(new CustomEvent("Join now page inspect")
                 .putCustomAttribute("userName", prefs.getString("userName", ""))
                 .putCustomAttribute("examId", examId));
 
+        //Handler instance initialising..
         h = new Handler();
 
-        //Parse the exam details..
+        //Parse the exam details obtained from arguments..
         try {
             HashMap<String, String> mapper = MiscellaneousParser.join_start_Parser(examDetails);
-            descriptionJoinPage.setText(mapper.get("Description"));
 
             String startDate = mapper.get("StartDate");
             String myStartDate = MiscellaneousParser.parseDate(startDate);
@@ -152,11 +159,11 @@ public class JoinPageFragment extends Fragment {
             String myEndTime = MiscellaneousParser.parseTimeForDetails(endTime);
             Languages = mapper.get("Languages");
 
+            descriptionJoinPage.setText(mapper.get("Description"));
             start_DateJoinPage.setText(myStartDate);
             start_TimeJoinPage.setText(myStartTime);
             end_DateJoinPage.setText(myEndDate);
             end_TimeJoinPage.setText(myEndTime);
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -164,17 +171,45 @@ public class JoinPageFragment extends Fragment {
             e.printStackTrace();
         }
 
+        //Set spinner for list of languages..
+        ArrayList<String> listOfLanguages = new ArrayList<>();
+        try {
+            listOfLanguages = MiscellaneousParser.getLanguagesPerExam(Languages);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(getActivity(), listOfLanguages);
+        myLanguageJoinPage.setAdapter(customSpinnerForDetailsAdapter);
+        int index = customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
+        myLanguageJoinPage.setSelection(index);
+        myLanguageJoinPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                //On selection of a language, change the "language" shared preference for the user..
+                selectedLanguage = adapterView.getSelectedItem().toString();
+                SharedPreferences.Editor e = prefs.edit();
+                e.putString("language", selectedLanguage);
+                e.apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        //When Join button is clicked, call enrollUser api..
         join_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                ob = (JoinPageInterface) getActivity();
-
                 //Enroll User
 
+                //For https connection..
                 ConstantsDefined.updateAndroidSecurityProvider(getActivity());
                 ConstantsDefined.beforeVolleyConnect();
 
+                //Make a request..
                 final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                 String url = ConstantsDefined.api + "enrollUser/" + prefs.getString("userId", "abc");
                 StringRequest stringRequest = new StringRequest(Request.Method.PUT,
@@ -182,24 +217,22 @@ public class JoinPageFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            mapper = MiscellaneousParser.enrollUserParser(response);
-                            String success = mapper.get("success");
-                            if (success.equals("true")) {
-                                Log.e("messi", "onResponse: " + getActivity());
 
+                            //Parse the response..
+                            //If success, open StartFragment
+                            //Else show error message..
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success =jsonObject.getString("success");
+                            if (success.equals("true")) {
+                                mapper = MiscellaneousParser.enrollUserParser(response);
                                 h.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        String myJoinedExams = null;
-                                        try {
-                                            myJoinedExams = MiscellaneousParser.getJoinedExams(mapper.get("response"));
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
 
-                                        SharedPreferences.Editor e = prefs.edit();
-                                        e.putString("joinedExams", myJoinedExams);
-                                        e.apply();
+                                        StartPageFragment f = new StartPageFragment();
+                                        f.setArguments(b);
+                                        ob.changeFragmentFromJoinPage(f, "name");
+
                                     }
                                 });
                             }else{
@@ -235,42 +268,6 @@ public class JoinPageFragment extends Fragment {
                     }
                 };
                 requestQueue.add(stringRequest);
-
-                StartPageFragment f = new StartPageFragment();
-                f.setArguments(b);
-                ob.changeFragmentFromJoinPage(f, "name");
-            }
-        });
-
-        ArrayList<String> listOfLanguages = new ArrayList<>();
-        try {
-            listOfLanguages = MiscellaneousParser.getLanguagesPerExam(Languages);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(getActivity(), listOfLanguages);
-
-//        ArrayAdapter<String> adapterLanguage = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listOfLanguages);
-        myLanguageJoinPage.setAdapter(customSpinnerForDetailsAdapter);
-
-//        int index = customSpinnerForDetailsAdapter.getPosition(prefs.getString("language", "English"));
-//        myLanguageJoinPage.setSelection(index);
-        int index = customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
-        myLanguageJoinPage.setSelection(index);
-
-        myLanguageJoinPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedLanguage = adapterView.getSelectedItem().toString();
-                SharedPreferences.Editor e = prefs.edit();
-                e.putString("language", selectedLanguage);
-                e.apply();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
     }
@@ -299,7 +296,5 @@ public class JoinPageFragment extends Fragment {
 //Interface used for interaction with JoinFragment..
 interface JoinPageInterface {
     public void changeFragmentFromJoinPage(Fragment f, String title);
-
     public void changeTitleForJoinPage();
-
 }

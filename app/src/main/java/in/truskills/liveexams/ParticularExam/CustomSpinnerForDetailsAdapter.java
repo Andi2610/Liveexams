@@ -15,7 +15,7 @@ import java.util.List;
 import in.truskills.liveexams.R;
 
 /**
- * Created by Shivansh Gupta on 02-03-2017.
+ * This is the custom spinner adapter for list of languages of each exam displayed on Join and Start page..
  */
 
 public class CustomSpinnerForDetailsAdapter extends BaseAdapter {
