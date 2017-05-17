@@ -256,6 +256,7 @@ public class KitDetailsActivity extends AppCompatActivity {
                 intent.putExtra(ConstantsDefined.ACCESS_CODE, ConstantsDefined.accessCode);
                 intent.putExtra(ConstantsDefined.MERCHANT_ID, ConstantsDefined.merchantId);
                 intent.putExtra(ConstantsDefined.ORDER_ID, orderId);
+                Log.d("valBefore", "onClick: "+orderId);
                 intent.putExtra(ConstantsDefined.CURRENCY, ConstantsDefined.currency);
                 intent.putExtra(ConstantsDefined.AMOUNT, finalPrice);
                 intent.putExtra(ConstantsDefined.REDIRECT_URL, ConstantsDefined.redirectUrl);

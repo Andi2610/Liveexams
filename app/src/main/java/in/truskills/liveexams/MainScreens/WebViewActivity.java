@@ -149,7 +149,7 @@ public class WebViewActivity extends Activity {
 								params.append(addToPostParams(ConstantsDefined.REDIRECT_URL,mainIntent.getStringExtra(ConstantsDefined.REDIRECT_URL)));
 								params.append(addToPostParams(ConstantsDefined.CANCEL_URL,mainIntent.getStringExtra(ConstantsDefined.CANCEL_URL)));
 								try {
-									Log.d("valBefore", "onPostExecute: ");
+									Log.d("valBefore", "onPostExecute: "+encVal+" "+mainIntent.getStringExtra(ConstantsDefined.ORDER_ID));
 									params.append(addToPostParams(ConstantsDefined.ENC_VAL,URLEncoder.encode(encVal,"UTF-8")));
 								} catch (UnsupportedEncodingException e) {
 									e.printStackTrace();
@@ -187,6 +187,7 @@ public class WebViewActivity extends Activity {
 					}else{
 						Toast.makeText(WebViewActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
 					}
+					finish();
 				}
 			}){
 				@Override
