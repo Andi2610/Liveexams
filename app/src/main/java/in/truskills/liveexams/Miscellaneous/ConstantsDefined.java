@@ -45,11 +45,12 @@ public class ConstantsDefined {
     public static final String apiForKit = "http://35.154.110.122:3002/access/";
 
     public static String accessCode="AVYH69EC95CJ91HYJC";
-    public static String workingKey="867D3C3E6A67761184C412DFC506495B";
+    public static String workingKey="DDEF305F5B417483D35E56BF860FAF0B";
     public static String merchantId="6223";
-    public static String rsaUrl="http://rsa.liveexams.in/GetRSA.php";
+    public static String rsaUrl="http://www.liveexams.in/liveexams-ccavenue/GetRSA.php";
     public static String cancelUrl="http://122.182.6.216/merchant/ccavResponseHandler.php";
-    public static String redirectUrl="http://122.182.6.216/merchant/ccavResponseHandler.php";
+//    public static String redirectUrl="http://122.182.6.216/merchant/ccavResponseHandler.php";
+    public static String redirectUrl="http://www.liveexams.in/liveexams-ccavenue/ccavResponseHandler.php";
     public static String currency="INR";
 
     public static final String COMMAND = "command";

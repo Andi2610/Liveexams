@@ -111,13 +111,17 @@ public class StatusActivity extends Activity {
 					dialog.dismiss();
 
 				Log.d("purchaseResponse", "onResponse: "+response);
-				Toast.makeText(StatusActivity.this, "response"+response, Toast.LENGTH_SHORT).show();
+//				Toast.makeText(StatusActivity.this, "response"+response, Toast.LENGTH_SHORT).show();
 
 				try {
 					JSONObject jsonObject=new JSONObject(response);
 					String success=jsonObject.getString("success");
 					if(success.equals("true")){
 						Toast.makeText(StatusActivity.this, "Success", Toast.LENGTH_LONG).show();
+						Intent intent = new Intent(StatusActivity.this, MainActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+						startActivity(intent);
+						finish();
 					}else{
 						Toast.makeText(StatusActivity.this, "Something went wrong..", Toast.LENGTH_LONG).show();
 						noInternetLayoutForKit.setVisibility(View.VISIBLE);
@@ -153,7 +157,7 @@ public class StatusActivity extends Activity {
 				//Put all the required parameters for the post request..
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("userId",prefs.getString("userId",""));
-				params.put("amount",prefs.getString("userId",""));
+				params.put("amount",mainIntent.getStringExtra("amount"));
 				params.put("productKitId",mainIntent.getStringExtra("productKitId"));
 				params.put("timePeriod","4");
 				return params;
