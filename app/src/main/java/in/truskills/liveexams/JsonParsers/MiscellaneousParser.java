@@ -643,10 +643,10 @@ public class MiscellaneousParser {
         }
         for(int i=0;i<jsonArray1.length();++i){
             JSONObject jsonObject1=jsonArray1.getJSONObject(i);
-//            coursesName.add(jsonObject1.getString(courseName));
-//            coursesId.add(jsonObject1.getString(courseId));
-            coursesName.add("courseName");
-            coursesId.add("courseId");
+            coursesName.add(jsonObject1.getString(courseName));
+            coursesId.add(jsonObject1.getString(courseId));
+//            coursesName.add("courseName");
+//            coursesId.add("courseId");
         }
 
         hashMap.put("examsPaidName",examsPaidName);
