@@ -12,7 +12,15 @@ import android.widget.TextView;
 
 import in.truskills.liveexams.R;
 
-//Fragment for the rules of a particular exam..
+/**
+ * This fragment is shown to display rules of quiz on start/join page..
+ *
+ * Functions:
+ * 1. onCreate() : For basic tasks and for handling continue and exit button..
+ * 2. onResume() : Resume animation..
+ * 3. onPause() : Pause animation..
+ */
+
 public class RulesFragment extends Fragment {
 
 
@@ -33,6 +41,8 @@ public class RulesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        //Render elements from layout..
         tv1 = (TextView) getActivity().findViewById(R.id.tv1);
         tv2 = (TextView) getActivity().findViewById(R.id.tv2);
         tv3 = (TextView) getActivity().findViewById(R.id.tv3);
@@ -44,6 +54,7 @@ public class RulesFragment extends Fragment {
         tv9 = (TextView) getActivity().findViewById(R.id.tv9);
         tv10 = (TextView) getActivity().findViewById(R.id.tv10);
 
+        //Set typeface of elements..
         Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         tv1.setTypeface(tff);
         tv2.setTypeface(tff);
@@ -55,12 +66,12 @@ public class RulesFragment extends Fragment {
         tv8.setTypeface(tff);
         tv9.setTypeface(tff);
         tv10.setTypeface(tff);
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        //Resume animation..
         getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
     }
@@ -68,6 +79,7 @@ public class RulesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        //Pause animation..
         getActivity().overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
     }
 

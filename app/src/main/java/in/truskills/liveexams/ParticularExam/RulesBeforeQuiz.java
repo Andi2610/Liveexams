@@ -1,6 +1,5 @@
 package in.truskills.liveexams.ParticularExam;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -10,13 +9,21 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-
-import in.truskills.liveexams.Quiz.QuestionPaperLoad;
 import in.truskills.liveexams.Quiz.QuestionPaperLoadDevelopment;
 import in.truskills.liveexams.R;
 
-public class RulesBeforeQuiz extends AppCompatActivity {
+/**
+ * This activity is shown to display rules of quiz before starting question paper load, once the user starts the exam..
+ *
+ * Functions:
+ * 1. onCreate() : For basic tasks and for handling continue and exit button..
+ * 2. onResume() : Resume animation..
+ * 3. onPause() : Pause animation..
+ * 4. onBackPressed() : Pause animation + onBackPressed..
+ * 5. onSupportNavigationUp() : onBackPressed on toolbar..
+ */
 
+public class RulesBeforeQuiz extends AppCompatActivity {
 
     TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8,tv9,tv10;
     Button continueButton,exitButton;
@@ -28,14 +35,14 @@ public class RulesBeforeQuiz extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_rules_before_quiz);
 
+        //Set toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
         getSupportActionBar().setTitle("RULES");
 
+        //Render elements from layout..
         tv1 = (TextView) findViewById(R.id.tv1);
         tv2 = (TextView) findViewById(R.id.tv2);
         tv3 = (TextView) findViewById(R.id.tv3);
@@ -49,6 +56,7 @@ public class RulesBeforeQuiz extends AppCompatActivity {
         continueButton = (Button) findViewById(R.id.continueButton);
         exitButton = (Button) findViewById(R.id.exitButton);
 
+        //Set typeface of required fields..
         Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         tv1.setTypeface(tff);
         tv2.setTypeface(tff);
@@ -63,6 +71,7 @@ public class RulesBeforeQuiz extends AppCompatActivity {
         continueButton.setTypeface(tff);
         exitButton.setTypeface(tff);
 
+        //Get intent variables..
         examId = getIntent().getStringExtra("examId");
         paperName = getIntent().getStringExtra("name");
         selectedLanguage = getIntent().getStringExtra("language");
@@ -70,6 +79,7 @@ public class RulesBeforeQuiz extends AppCompatActivity {
         myUrl = getIntent().getStringExtra("url");
         name = getIntent().getStringExtra("name");
 
+        //On continuing, start questionPaperLoad..
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +94,7 @@ public class RulesBeforeQuiz extends AppCompatActivity {
             }
         });
 
+        //On exiting, call onBackPressed..
         exitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,23 +106,27 @@ public class RulesBeforeQuiz extends AppCompatActivity {
     protected void onResume()
     {
         super.onResume();
+        //Resume animation..
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
     protected void onPause()
     {
         super.onPause();
+        //Pause animation..
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        //Pause animation..
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
     }
 
     @Override
     public boolean onSupportNavigateUp() {
+        //On backPress on toolbar..
         super.onBackPressed();
         return true;
     }

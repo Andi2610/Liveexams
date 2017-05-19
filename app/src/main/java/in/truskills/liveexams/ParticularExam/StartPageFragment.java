@@ -56,7 +56,12 @@ import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 import in.truskills.liveexams.R;
 
-//This is Start Fragment where a user can unenroll from an exam or start the quiz of the exam..
+/**
+ * This is Start Fragment where a user can un enroll from an exam or start the quiz of the exam..
+ *
+ *
+ */
+
 
 public class StartPageFragment extends Fragment {
 
@@ -92,8 +97,6 @@ public class StartPageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        o = new QuizDatabase(getActivity());
-
         if(getActivity()!=null){
             myDialog = new ProgressDialog(getActivity());
             myDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -108,6 +111,8 @@ public class StartPageFragment extends Fragment {
         quizPrefs = getActivity().getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
         firstTime = getActivity().getSharedPreferences("firstTime", Context.MODE_PRIVATE);
         firstTimeForRules = getActivity().getSharedPreferences("firstTimeForRules", Context.MODE_PRIVATE);
+
+        o = new QuizDatabase(getActivity());
 
         ob = (StartPageInterface) getActivity();
         ob.changeTitleForStartPage();
@@ -124,22 +129,20 @@ public class StartPageFragment extends Fragment {
         start_leave_button = (Button) getActivity().findViewById(R.id.start_leave_button);
         viewFlipper = (ViewFlipper) getActivity().findViewById(R.id.viewFlipper);
 
+        //For view flipper..
         int[] resources = {
                 R.drawable.first,
                 R.drawable.second,
                 R.drawable.third,
                 R.drawable.fourth,
         };
-
         for (int i = 0; i < resources.length; i++) {
             ImageView imageView = new ImageView(getActivity());
             imageView.setImageResource(resources[i]);
             viewFlipper.addView(imageView);
         }
-
         viewFlipper.setInAnimation(getActivity(), android.R.anim.fade_in);
         viewFlipper.setOutAnimation(getActivity(), android.R.anim.fade_out);
-
         viewFlipper.setAutoStart(true);
         viewFlipper.setFlipInterval(2000);
 
