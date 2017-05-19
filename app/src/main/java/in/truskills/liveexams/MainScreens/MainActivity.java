@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         myL=new ArrayList<>();
 
         Log.d("visibility", "onCreate: "+ MyApplication.isActivityVisible());
@@ -121,6 +122,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Get shared preferences..
         prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+
+        if(prefs.getBoolean("openHome",true)){
+
+            pausedFrom="home";
+
+        }else{
+
+            pausedFrom="kit";
+        }
 
         credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
         s3client = new AmazonS3Client(credentials);

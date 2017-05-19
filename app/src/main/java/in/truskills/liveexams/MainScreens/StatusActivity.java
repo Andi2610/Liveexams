@@ -118,6 +118,9 @@ public class StatusActivity extends Activity {
 					String success=jsonObject.getString("success");
 					if(success.equals("true")){
 						Toast.makeText(StatusActivity.this, "Success", Toast.LENGTH_LONG).show();
+						SharedPreferences.Editor e= prefs.edit();
+						e.putBoolean("openHome",false);
+						e.apply();
 						Intent intent = new Intent(StatusActivity.this, MainActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
 						startActivity(intent);

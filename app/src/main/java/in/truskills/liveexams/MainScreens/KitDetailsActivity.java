@@ -1,9 +1,11 @@
 package in.truskills.liveexams.MainScreens;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,8 +13,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +43,7 @@ import in.truskills.liveexams.R;
 
 public class KitDetailsActivity extends AppCompatActivity {
 
-    String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit,from,id;
+    String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit,from,id,pCode;
 
     Button buy,promo;
 
@@ -258,7 +262,7 @@ public class KitDetailsActivity extends AppCompatActivity {
                 intent.putExtra(ConstantsDefined.ORDER_ID, orderId);
                 Log.d("valBefore", "onClick: "+orderId);
                 intent.putExtra(ConstantsDefined.CURRENCY, ConstantsDefined.currency);
-                intent.putExtra(ConstantsDefined.AMOUNT, "10");
+                intent.putExtra(ConstantsDefined.AMOUNT, "1");
                 intent.putExtra(ConstantsDefined.REDIRECT_URL, ConstantsDefined.redirectUrl);
                 intent.putExtra(ConstantsDefined.CANCEL_URL, ConstantsDefined.cancelUrl);
                 intent.putExtra(ConstantsDefined.RSA_KEY_URL, ConstantsDefined.rsaUrl);
@@ -271,7 +275,30 @@ public class KitDetailsActivity extends AppCompatActivity {
         promo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPromoCode();
+
+                LayoutInflater li = LayoutInflater.from(KitDetailsActivity.this);
+                View promptsView = li.inflate(R.layout.alert_label_editor, null);
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(KitDetailsActivity.this, R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("PROMO CODE");
+                builder.setMessage("Enter your promo code here");
+                builder.setView(promptsView);
+                final EditText text=(EditText)promptsView.findViewById(R.id.input);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        pCode=text.getText().toString();
+                        if(pCode.equals("")){
+                            Toast.makeText(KitDetailsActivity.this, "Please enter a promo code", Toast.LENGTH_SHORT).show();
+                        }else{
+                            getPromoCode(pCode);
+                        }
+                    }
+                });
+                builder.setNegativeButton("CANCEL",null);
+                builder.setCancelable(true);
+                builder.show();
+
             }
         });
     }
@@ -282,11 +309,11 @@ public class KitDetailsActivity extends AppCompatActivity {
         return true;
     }
 
-    public void getPromoCode(){
+    public void getPromoCode(String code){
 
         RequestQueue requestQueue;
 
-        String url=ConstantsDefined.api+"applyPromocode/5902cafdd19d876e14ea7b9e/IPLT20";
+        String url=ConstantsDefined.api+"applyPromocode/"+id+"/"+code;
         ConstantsDefined.updateAndroidSecurityProvider(KitDetailsActivity.this);
         ConstantsDefined.beforeVolleyConnect();
 
@@ -340,7 +367,7 @@ public class KitDetailsActivity extends AppCompatActivity {
                         }
 
                     }else{
-                        Toast.makeText(KitDetailsActivity.this, "Something went wrong..\nPlease try again..", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(KitDetailsActivity.this, "Sorry! No such promocode exists!", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
