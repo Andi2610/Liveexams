@@ -59,6 +59,20 @@ import in.truskills.liveexams.R;
 /**
  * This is Start Fragment where a user can un enroll from an exam or start the quiz of the exam..
  *
+ * Functions:
+ * * Functions:
+ * 1. onCreateView() : for layout inflation and menu for rules on toolbar..
+ * 2. onActivityCreated() : for showing exam details and for clicking on start/leave button handling...
+ * 3. onCreateOptionsMenu() : for showing rules menu..
+ * 4. onOptionsItemSelected() :  click on rules button to load rules fragment..
+ * 5. onRequestPermissionsResult() : for checking for write,camera,vibrate permissions..
+ * 6. getDate() : to get current date to determine as to  when the user gave the exam..
+ * 7. afterConnect() : to start rulesBeforeQuiz activity..
+ *
+ * API calls made:
+ * 1. /api/unenrollUser/userId : (POST api with parameters: examId) : to unenroll a user form an exam on LEAVE button click..
+ * 2. /api/getS3Url : (GET api) : to get S3 url..
+ * 3. /api/getTimeStamp : (GET api) :  to get current timestamp..
  *
  */
 
@@ -97,6 +111,7 @@ public class StartPageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //Show dialog..
         if(getActivity()!=null){
             myDialog = new ProgressDialog(getActivity());
             myDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -119,6 +134,7 @@ public class StartPageFragment extends Fragment {
 
         h = new Handler();
 
+        //Render elements from layout..
         start_Date = (TextView) getActivity().findViewById(R.id.startDate);
         end_Date = (TextView) getActivity().findViewById(R.id.endDate);
         start_Time = (TextView) getActivity().findViewById(R.id.startTime);
@@ -146,6 +162,7 @@ public class StartPageFragment extends Fragment {
         viewFlipper.setAutoStart(true);
         viewFlipper.setFlipInterval(2000);
 
+        //Set typeface..
         Typeface tff = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Comfortaa-Regular.ttf");
         start_Date.setTypeface(tff);
         end_Date.setTypeface(tff);
@@ -159,13 +176,11 @@ public class StartPageFragment extends Fragment {
         //Get arguments..
         b = getArguments();
         timestamp = b.getString("timestamp");
-
         examDetails = b.getString("examDetails");
         examId = b.getString("examId");
         examGiven = b.getString("examGiven");
 
-        Log.d("examGiven", examGiven + "");
-
+        //For Answers..
         Answers.getInstance().logCustom(new CustomEvent("Start page inspect")
                 .putCustomAttribute("userName", prefs.getString("userName", ""))
                 .putCustomAttribute("examId", examId));
@@ -173,6 +188,8 @@ public class StartPageFragment extends Fragment {
 
         //Parse the exam details..
         try {
+
+            //Parsev examDetails..
             HashMap<String, String> mapper = MiscellaneousParser.join_start_Parser(examDetails);
             descriptionStartPage.setText(mapper.get("Description"));
             String startDate = mapper.get("StartDate");
@@ -181,41 +198,21 @@ public class StartPageFragment extends Fragment {
             String myEndDate = MiscellaneousParser.parseDate(endDate);
             String startTime = mapper.get("StartTime");
             Languages = mapper.get("Languages");
-
-
-            Log.d("timeDetails", "dateInitially=" + myStartDate + "**" + myEndDate);
-
             String myStartTime = MiscellaneousParser.parseTimeForDetails(startTime);
             String endTime = mapper.get("EndTime");
             String myEndTime = MiscellaneousParser.parseTimeForDetails(endTime);
-
-            Log.d("timeDetails", "timeInitially=" + myStartTime + "**" + myEndTime);
-
-
             String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
-
-            Log.d("timeDetails", "timestampDateInitially=" + myTimestamp);
-
-
             String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
-
-            Log.d("timeDetails", "timestampTimeInitially=" + myTime);
-
-
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date start_date = simpleDateFormat.parse(myStartDate);
             Date end_date = simpleDateFormat.parse(myEndDate);
             Date middle_date = simpleDateFormat.parse(myTimestamp);
-
-            Log.d("timeDetails", "DateFinally" + start_date + "**" + middle_date + "**" + end_date);
-
             SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h-mm a");
             Date start_time = simpleDateFormat2.parse(myStartTime);
             Date end_time = simpleDateFormat2.parse(myEndTime);
             Date middle_time = simpleDateFormat2.parse(myTime);
 
-            Log.d("timeDetails", "TimeFinally" + start_time + "**" + middle_time + "**" + end_time);
-
+            //Check whether exam is over,live or upcoming..
             if (examGiven.equals("true")) {
                 start_leave_button.setText("EXAM IS OVER");
                 start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
@@ -252,15 +249,12 @@ public class StartPageFragment extends Fragment {
                 }
             }
 
-            Log.d("newTimestamp=", myTimestamp);
-
+            //Set data to different text views..
             start_Date.setText(myStartDate);
             start_Time.setText(myStartTime);
             end_Date.setText(myEndDate);
             end_Time.setText(myEndTime);
-
             name = mapper.get("ExamName");
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -268,19 +262,17 @@ public class StartPageFragment extends Fragment {
             e.printStackTrace();
         }
 
+        //For language spinner..
         ArrayList<String> listOfLanguages = new ArrayList<>();
         try {
             listOfLanguages = MiscellaneousParser.getLanguagesPerExam(Languages);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         customSpinnerForDetailsAdapter = new CustomSpinnerForDetailsAdapter(getActivity(), listOfLanguages);
         myLanguage.setAdapter(customSpinnerForDetailsAdapter);
-
         int index = customSpinnerForDetailsAdapter.getIndex(prefs.getString("language", "English"));
         myLanguage.setSelection(index);
-
         myLanguage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -293,19 +285,22 @@ public class StartPageFragment extends Fragment {
             }
         });
 
+        //Click on start/leave button..
         start_leave_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //If start time of quiz hasn't reached..
+                //If start time of quiz hasn't reached.. call unenroll api..as LEAVE is pressed..
                 if (start_leave_button.getText().equals("LEAVE")) {
+
+                    //For answers..
                     Answers.getInstance().logCustom(new CustomEvent("Leave button clicked")
                             .putCustomAttribute("userName", prefs.getString("userName", ""))
                             .putCustomAttribute("examId", examId));
 
+                    //For https connection..
                     ConstantsDefined.updateAndroidSecurityProvider(getActivity());
                     ConstantsDefined.beforeVolleyConnect();
-
                     //Unenroll user
                     final RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     String url = ConstantsDefined.api + "unenrollUser/" + prefs.getString("userId", "abc");
@@ -314,31 +309,26 @@ public class StartPageFragment extends Fragment {
                         @Override
                         public void onResponse(String response) {
                             try {
+
+                                //Parse the response..
                                 mapper = MiscellaneousParser.unenrollUserParser(response);
                                 String success = mapper.get("success");
+                                //If success.. unenrolled successfully..go to Join Page fragment..
+                                //Else show error message..
                                 if (success.equals("true")) {
-                                    //Get Joined Exams Result
+
                                     h.post(new Runnable() {
                                         @Override
                                         public void run() {
-                                            String myJoinedExams = null;
-                                            try {
-                                                myJoinedExams = MiscellaneousParser.getJoinedExams(mapper.get("response"));
-                                                SharedPreferences.Editor e = prefs.edit();
-                                                e.putString("joinedExams", myJoinedExams);
-                                                e.apply();
                                                 ob = (StartPageInterface) getActivity();
                                                 JoinPageFragment f = new JoinPageFragment();
                                                 f.setArguments(b);
                                                 ob.changeFragmentFromStartPage(f, "name");
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
                                         }
                                     });
                                 }else{
                                     if(getActivity()!=null)
-                                        Toast.makeText(getActivity(), "CAn unexpeted error occurred..\nPlease try again..", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), "An unexpeted error occurred..\nPlease try again..", Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -369,26 +359,20 @@ public class StartPageFragment extends Fragment {
                     requestQueue.add(stringRequest);
                 } else if (start_leave_button.getText().equals("START")) {
 
+                    //Exam is live..
 
-                    Log.d("start", "onClick: 1");
-
+                    //Check for write permissions..
                     boolean statusForWriteStorage = CheckForPermissions.checkForWriteStorage(getActivity());
                     if (statusForWriteStorage) {
-
-                        Log.d("start", "onClick: 2");
-
-
+                        //Check for camera permissions..
                         boolean statusForCamera = CheckForPermissions.checkForCamera(getActivity());
-
                         if(statusForCamera){
-
                             boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
-
                             if(statusForVibrate){
-
-                                Log.d("start", "onClick: 3");
-
+                                //Delete table..
                                 o.deleteMyTable();
+
+                                //Clear all shared preferences..
                                 SharedPreferences.Editor e=dataPrefs.edit();
                                 e.clear();
                                 e.apply();
@@ -402,17 +386,21 @@ public class StartPageFragment extends Fragment {
                                 eeeee.clear();
                                 eeeee.apply();
 
+                                //Get current date to store as to when the user is attempting the quiz..
                                 getDate();
                             }
 
                         }
                     }
 
+                    //For answers..
                     Answers.getInstance().logCustom(new CustomEvent("Start button clicked")
                             .putCustomAttribute("userName", prefs.getString("userName", ""))
                             .putCustomAttribute("examId", examId));
 
                 } else {
+
+                    //Exam is over..
                     if(getActivity()!=null)
                     Toast.makeText(getActivity(), "This exam is over", Toast.LENGTH_SHORT).show();
                 }
@@ -456,7 +444,11 @@ public class StartPageFragment extends Fragment {
                         boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
 
                         if(statusForVibrate) {
+
+                            //Delete table..
                             o.deleteMyTable();
+
+                            //Clear shared preferences..
                             SharedPreferences.Editor e=dataPrefs.edit();
                             e.clear();
                             e.apply();
@@ -470,9 +462,11 @@ public class StartPageFragment extends Fragment {
                             eeeee.clear();
                             eeeee.apply();
 
+                            //Get current date to store as to when the user is attempting the quiz..
                             getDate();
                         }
                     }else{
+                        //Displaying another toast if permission is not granted
                         if(getActivity()!=null)
                         Toast.makeText(getActivity(), "Oops you have denied the permission for camera\nGo to settings and grant them", Toast.LENGTH_LONG).show();
                     }
@@ -488,7 +482,10 @@ public class StartPageFragment extends Fragment {
 
                     if(statusForVibrate) {
 
+                        //Delete table..
                         o.deleteMyTable();
+
+                        //Clear shared preferences..
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
@@ -502,6 +499,7 @@ public class StartPageFragment extends Fragment {
                         eeeee.clear();
                         eeeee.apply();
 
+                        //Get current date to store as to when the user is attempting the quiz..
                         getDate();
                     }
 
@@ -518,7 +516,11 @@ public class StartPageFragment extends Fragment {
                     boolean statusForVibrate = CheckForPermissions.checkForVibrate(getActivity());
 
                     if(statusForVibrate){
+
+                        //Delete table..
                         o.deleteMyTable();
+
+                        //Clear shared preferences..
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
@@ -532,6 +534,7 @@ public class StartPageFragment extends Fragment {
                         eeeee.clear();
                         eeeee.apply();
 
+                        //Get current date to store as to when the user is attempting the quiz..
                         getDate();
                     }
                 } else {
@@ -546,16 +549,15 @@ public class StartPageFragment extends Fragment {
     }
 
     public void getDate(){
-        Log.d("myDateeeee", "getDate: ");
 
-        Log.d("start", "onClick: 5");
-
-
+        //Show dialog..
         myDialog.show();
 
+        //For https connection..
         ConstantsDefined.updateAndroidSecurityProvider(getActivity());
         ConstantsDefined.beforeVolleyConnect();
 
+        //Make a request..
         requestQueue = Volley.newRequestQueue(getActivity());
         String url = ConstantsDefined.api + "getTimeStamp";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -567,20 +569,20 @@ public class StartPageFragment extends Fragment {
 
                     String success=response.getString("success");
                     if(success.equals("true")){
+                        //Parse response..
                         final String myResponse = response.getJSONObject("response").toString();
                         JSONObject jsonObject = new JSONObject(myResponse);
                         String timestamp = jsonObject.getString("timestamp");
                         myDate = MiscellaneousParser.parseTimestamp(timestamp);
-                        Log.d("myDateeeee", "run: "+myDate);
                         h.post(new Runnable() {
                             @Override
                             public void run() {
-                                Log.d("dateeeee", "run: "+myDate);
+                                //For getting s3 url..
                                 afterResponse(myDate);
-
                             }
                         });
                     }else{
+                        //Show error message...
                         if(getActivity()!=null)
                             Toast.makeText(getActivity(), "Something went wrong..\n" +
                                     "Please try again..", Toast.LENGTH_LONG).show();
@@ -612,9 +614,11 @@ public class StartPageFragment extends Fragment {
 
     public void afterResponse(final String myDate){
 
+        //For https connection..
         ConstantsDefined.updateAndroidSecurityProvider(getActivity());
         ConstantsDefined.beforeVolleyConnect();
 
+        //Make a request..
         requestQueue = Volley.newRequestQueue(getActivity());
         String url = ConstantsDefined.api + "getS3Url";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -626,23 +630,25 @@ public class StartPageFragment extends Fragment {
 
                     String success=response.getString("success");
                     if(success.equals("true")){
+                        //If success.. store url..
                         myUrl=response.getString("response");
+
+                        //For development..
+                        //Otherwise comment this..
                         myUrl="https://s3.ap-south-1.amazonaws.com/live-exams-local/";
                         Log.d("myDateeeee", "run: "+myUrl);
                         h.post(new Runnable() {
                             @Override
                             public void run() {
-//                            Log.d("dateeeee", "run: "+myDate);
-//                            afterResponse(myDate);
                                 if(myDialog!=null)
                                     myDialog.dismiss();
 
+                                //For starting new activity for showing rules before quiz..
                                 afterConnect(myDate,myUrl);
-
-
                             }
                         });
                     }else{
+                        //Show error message..
                         if(getActivity()!=null)
                             Toast.makeText(getActivity(), "Something went wrong..\n" +
                                     "Please try again..", Toast.LENGTH_LONG).show();
@@ -656,10 +662,13 @@ public class StartPageFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                //Dismiss dialog..
                 if(myDialog!=null)
                     myDialog.dismiss();
+
+                //Show error message..
                 if(ConstantsDefined.isOnline(getActivity())){
-                    //Do nothing..
                     if(getActivity()!=null)
                     Toast.makeText(getActivity(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
@@ -669,12 +678,11 @@ public class StartPageFragment extends Fragment {
             }
         });
         requestQueue.add(jsonObjectRequest);
-
-
-//        Toast.makeText(getActivity(), "date="+myDate, Toast.LENGTH_SHORT).show();
     }
 
     public void afterConnect(String myDate,String myUrl){
+
+        //Start new activity..
         Intent i = new Intent(getActivity(), RulesBeforeQuiz.class);
         i.putExtra("examId", examId);
         i.putExtra("name", name);

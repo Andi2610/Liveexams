@@ -47,6 +47,12 @@ import in.truskills.liveexams.R;
 /**
  * This is the JoinPage fragment, where the user enrolls for a new exam..
  *
+ * Functions:
+ * 1. onCreateView() : for layout inflation and menu for rules on toolbar..
+ * 2. onActivityCreated() : for showing exam details and for clicking on join button to call enrollUser api...
+ * 3. onCreateOptionsMenu() : for showing rules menu..
+ * 4. onOptionsItemSelected() :  click on rules button to load rules fragment..
+ *
  * API call made:
  *
  * /api/enrollUser/userId : (POST api with examId, language parameters): for enrolling a user in a new exam..
