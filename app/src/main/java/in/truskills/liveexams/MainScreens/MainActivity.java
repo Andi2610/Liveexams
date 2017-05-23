@@ -130,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else{
 
             pausedFrom="kit";
+
+            SharedPreferences.Editor e=prefs.edit();
+            e.putBoolean("openHome",true);
+            e.apply();
         }
 
         credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
