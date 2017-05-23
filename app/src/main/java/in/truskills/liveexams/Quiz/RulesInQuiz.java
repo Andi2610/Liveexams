@@ -20,6 +20,13 @@ import in.truskills.liveexams.Miscellaneous.SubmitAnswerPaper;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
+/**
+ * This is for rules display inside quiz..
+ *
+ * Functions:
+ * 1. onCreate() : for basic stuff..
+ * 2. onSupportNavigateUp(),onResume(),onPause(),onBackPressed() : for navigation and its handling with quiz submission..
+ */
 public class RulesInQuiz extends AppCompatActivity {
 
     private static final String TAG = "checkkkkk-InRules";
@@ -37,10 +44,15 @@ public class RulesInQuiz extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rules_in_quiz);
 
+        //For toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+        getSupportActionBar().setTitle("RULES");
+
+        //shared preferences..
         quizPrefs=getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
         dataPrefs=getSharedPreferences("dataPrefs", Context.MODE_PRIVATE);
 
@@ -48,11 +60,7 @@ public class RulesInQuiz extends AppCompatActivity {
 
         ob=new QuizDatabase(this);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
-        getSupportActionBar().setTitle("RULES");
-
+        //Render elements from layout..
         tv1 = (TextView) findViewById(R.id.tv1);
         tv2 = (TextView) findViewById(R.id.tv2);
         tv3 = (TextView) findViewById(R.id.tv3);
@@ -64,6 +72,7 @@ public class RulesInQuiz extends AppCompatActivity {
         tv9 = (TextView) findViewById(R.id.tv9);
         tv10 = (TextView) findViewById(R.id.tv10);
 
+        //Set typeface..
         Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         tv1.setTypeface(tff);
         tv2.setTypeface(tff);
@@ -92,63 +101,18 @@ public class RulesInQuiz extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
         Log.d(TAG, "onPause: ");
         if(quizPrefs.getInt("exit",0)==0){
-//            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+            //Do nothing..
         }else{
+            //Do this for finishing quiz after 1 minute..
             visible=false;
-//            t=new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try{
-//                        Thread.sleep(ConstantsDefined.time);
-//                    }catch (Exception e){
-//
-//                    }finally {
-//                        h.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if(visible){
-//
-//                                }else{
-//                                    JSONArray jsonArray = ob.getQuizResult();
-//                                    final JSONObject jsonObject = new JSONObject();
-//                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
-//                                    String myDate=dataPrefs.getString("date","");
-//                                    String userId=dataPrefs.getString("userId","");
-//                                    String examId=dataPrefs.getString("examId","");
-//
-//                                    try {
-//                                        jsonObject.put("result", jsonArray);
-//                                        jsonObject.put("selectedLanguage", selectedLanguage);
-//                                        jsonObject.put("date", myDate);
-//
-//                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
-//                                        submitAnswerPaper.submit(ob,RulesInQuiz.this,jsonObject.toString(),userId,examId);
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-////                                    Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
-////                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-////                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-////                                    startActivity(intent);
-////                                    finish();
-//
-//                                }
-//                            }
-//                        });
-//                    }
-//                }
-//            });
-//            t.start();
             handler.postDelayed(sendData,ConstantsDefined.time);
         }
     }
-
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
-        Log.d(TAG, "onBackPressed: ");
         SharedPreferences.Editor e=quizPrefs.edit();
         e.putInt("exit",0);
         e.apply();
@@ -168,16 +132,15 @@ public class RulesInQuiz extends AppCompatActivity {
         SharedPreferences.Editor ee = dataPrefs.edit();
         ee.putInt("submit", 0);
         ee.apply();
-
-//        if(t!=null&&t.isAlive())
-//            t.interrupt();
     }
 
     private final Runnable sendData = new Runnable() {
         public void run() {
             if (visible) {
-
+                //Do nothing..
             } else {
+
+                //Submit answer paper..
                 JSONArray jsonArray = ob.getQuizResult();
                 final JSONObject jsonObject = new JSONObject();
                 String selectedLanguage = dataPrefs.getString("selectedLanguage", "");

@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by Shivansh Gupta on 19-02-2017.
+ * Pager adapter for view pager in QuizMainActivity..
  */
 
 public class MyPageAdapter extends FragmentPagerAdapter {

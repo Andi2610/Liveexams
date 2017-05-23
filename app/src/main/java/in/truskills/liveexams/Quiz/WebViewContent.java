@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
 /**
- * Created by Shivansh Gupta on 27-01-2017.
+ * This is web view content displayed on quiz screen i.e question and options..
  */
 
 public class WebViewContent {

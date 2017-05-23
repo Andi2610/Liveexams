@@ -43,7 +43,15 @@ import in.truskills.liveexams.R;
  * This is for feedback page..
  *
  * Functions:
- * 1. onCreate() :
+ * 1. onCreate() : for basic stuff and call setQuestions() method..
+ * 2. setQuestions() : for calling feedbackQuestions api and getting a list of questions to be displayed..
+ * 3. setFeedback() : to prepare feedback response and call postFeedback api..
+ * 4. onSuppportNavigationUp() : to handle cross button press on toolbar..
+ * 5. onBackPressed() : do nothing.. to disable back button..
+ *
+ * API calls made:
+ * 1. /api/feedbackQuestions : (GET api) : to get feedback questions for displaying..
+ * 2. /api/postFeedback : (POST api with parameters: feedback,examId,userId): to submit feedback response to server..
  */
 
 public class FeedbackActivity extends AppCompatActivity {
@@ -137,15 +145,14 @@ public class FeedbackActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
+        //Get feedback from adapter..
         HashMap<Integer,String> map=FeedbackListAdapter.getFeedback();
-        Log.d("feedback", "setFeedback: "+map.get(1));
-        Log.d("feedback", "setFeedback: "+map.get(2));
-        Log.d("feedback", "setFeedback: "+map.get(3));
 
         array = new JSONArray();
 
         for (int i=0;i<questionIdList.size();++i){
 
+            //Prepare feedback response..
             JSONObject j=new JSONObject();
             j.put("questionId",questionIdList.get(i));
             j.put("questionTopic",questionTopicList.get(i));
@@ -155,13 +162,10 @@ public class FeedbackActivity extends AppCompatActivity {
             array.put(j);
         }
 
-
-        Log.d("myResult", "setFeedback: "+array);
-        Log.d("myResult", "setFeedback: "+examId);
-        Log.d("myResult", "setFeedback: "+userId);
-
+        //For https connection..
         ConstantsDefined.updateAndroidSecurityProvider(FeedbackActivity.this);
         ConstantsDefined.beforeVolleyConnect();
+
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         String url=ConstantsDefined.api+"postFeedback";
@@ -171,17 +175,19 @@ public class FeedbackActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
-                Log.d("myResponseFeedback", "onResponse: "+response);
-
+                //Show dialog..
                 if(dialog!=null)
                     dialog.dismiss();
 
                 try {
 
+                    //Parse response..
                     JSONObject j=new JSONObject(response);
                     String success=j.getString("success");
                     if(success.equals("true")){
 
+                        //If true.. feedback submitted..
+                        //Else show error message..
                         Toast.makeText(FeedbackActivity.this, "Feedback submitted", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
@@ -190,6 +196,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
                     }else{
 
+                        //show message and start main activity..
                         Toast.makeText(FeedbackActivity.this, "There was some problem submitting the feedback", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
@@ -205,13 +212,13 @@ public class FeedbackActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                Log.d("myResponseFeedback", "onErrorResponse: "+error);
                 //In case the connection to the Api couldn't be established..
                 if(dialog!=null)
                     dialog.dismiss();
 
                 Toast.makeText(FeedbackActivity.this, "Sorry no internet connection..\nFeedback couldn't be submitted..", Toast.LENGTH_SHORT).show();
 
+                //Start MainActivity..
                 Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                 startActivity(intent);
@@ -235,12 +242,13 @@ public class FeedbackActivity extends AppCompatActivity {
 
     public void setQuestions(){
 
+        //Show dialog..
         aviLoad.show();
 
+        //For https connection..
         ConstantsDefined.updateAndroidSecurityProvider(FeedbackActivity.this);
         ConstantsDefined.beforeVolleyConnect();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-
         String url=ConstantsDefined.api+"feedbackQuestions";
         //Make a request..
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -248,16 +256,17 @@ public class FeedbackActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
+                //Hide dialog..
                 aviLoad.hide();
-
-                Log.d("feedback", "onResponse: "+response);
 
                 try {
 
+                    //Parse response..
                     JSONObject j=new JSONObject(response);
                     String success=j.getString("success");
                     if(success.equals("true")){
 
+                        //If success, populate the list of questions..
                         HashMap<String,ArrayList<String>> map= MiscellaneousParser.feedbackQuestionsParser(response);
                         questionIdList=map.get("id");
                         questionTextList=map.get("text");
@@ -273,6 +282,7 @@ public class FeedbackActivity extends AppCompatActivity {
                         });
 
                     }else{
+                        //Else start MainActivity..
                         Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
@@ -287,7 +297,11 @@ public class FeedbackActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
+
+                //Hide dialog..
                 aviLoad.hide();
+
+                //Start Main Activity..
                 Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                 startActivity(intent);
@@ -298,7 +312,9 @@ public class FeedbackActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
+    public boolean onSupportNavigateUp()
+    {
+        //On cross button press, finish the activity and start Main activity..
         Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
         startActivity(intent);
@@ -308,6 +324,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //Back pressing of phone is not allowed..
     }
 
 }

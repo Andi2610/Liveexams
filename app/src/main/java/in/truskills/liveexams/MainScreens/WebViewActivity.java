@@ -7,9 +7,7 @@ import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.http.util.EncodingUtils;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -21,7 +19,6 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,17 +26,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import javax.crypto.Cipher;
-
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
-
 import in.truskills.liveexams.R;
+
 
 public class WebViewActivity extends Activity {
 	private ProgressDialog dialog;
 	Intent mainIntent;
-	String html, encVal="",myResponse="";
+	String encVal="",myResponse="";
 	Handler h;
 	
 	@Override

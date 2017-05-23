@@ -115,6 +115,7 @@ public class AllKitsPerAuthorActivityListAdapter extends RecyclerView.Adapter<Al
                             try {
 
                                 JSONObject jsonObject=new JSONObject(response);
+
                                 String success=jsonObject.getString("success");
                                 if(success.equals("true")){
 

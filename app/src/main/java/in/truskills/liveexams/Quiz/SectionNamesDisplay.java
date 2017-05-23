@@ -11,18 +11,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Window;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.SubmitAnswerPaper;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
+
+/**
+ * This is for section names display dialog..
+ */
 
 public class SectionNamesDisplay extends Activity {
 
@@ -30,7 +31,6 @@ public class SectionNamesDisplay extends Activity {
     RecyclerView mySectionsList;
     int mySrno;
     String srNo;
-    String myName = "";
     HashMap<String, String> map;
     LinearLayoutManager linearLayoutManager;
     SectionNamesDisplayAdapter sectionNamesDisplayAdapter;
@@ -41,24 +41,29 @@ public class SectionNamesDisplay extends Activity {
     Thread t;
     Handler handler = new Handler();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_section_names_display);
 
+        //To prevent dialog from dismissing on touch on anywhere outside..
         this.setFinishOnTouchOutside(false);
 
         srNo = getIntent().getStringExtra("serialNumber");
         mySrno = Integer.parseInt(srNo);
+
         h=new Handler();
 
+        //shared preferences..
         quizPrefs=getSharedPreferences("quizPrefs", Context.MODE_PRIVATE);
         dataPrefs=getSharedPreferences("dataPrefs", Context.MODE_PRIVATE);
 
+        //render elements from layout..
         mySectionsList = (RecyclerView) findViewById(R.id.mySectionsList);
         TextView sectionText = (TextView) findViewById(R.id.sectionText);
+
+        //set typeface..
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         sectionText.setTypeface(tff1);
 
@@ -70,8 +75,8 @@ public class SectionNamesDisplay extends Activity {
         HashMap<String, ArrayList<String>> map = ob.getAllStringValuesPerSection();
         name = map.get("SectionNameList");
 
+        //for section names display adapter..
         sectionNamesDisplayAdapter = new SectionNamesDisplayAdapter(name, SectionNamesDisplay.this, mySrno);
-
         linearLayoutManager = new LinearLayoutManager(this);
         mySectionsList.setLayoutManager(linearLayoutManager);
         mySectionsList.setItemAnimator(new DefaultItemAnimator());
@@ -95,8 +100,6 @@ public class SectionNamesDisplay extends Activity {
         e.putInt("exit",1);
         e.apply();
         visible=true;
-//        if(t!=null&&t.isAlive())
-//            t.interrupt();
         handler.removeCallbacks(sendData);
 
         SharedPreferences.Editor ee = dataPrefs.edit();
@@ -109,57 +112,19 @@ public class SectionNamesDisplay extends Activity {
     protected void onPause() {
         super.onPause();
         if(quizPrefs.getInt("exit",0)==0){
-//            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+            //Do nothing..
         }else{
             visible=false;
-//            t=new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try{
-//                        Thread.sleep(ConstantsDefined.time);
-//                    }catch (Exception e){
-//
-//                    }finally {
-//                        h.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if(visible){
-//
-//                                }else{
-//                                    JSONArray jsonArray = ob.getQuizResult();
-//                                    final JSONObject jsonObject = new JSONObject();
-//                                    String selectedLanguage=dataPrefs.getString("selectedLanguage","");
-//                                    String myDate=dataPrefs.getString("date","");
-//                                    String userId=dataPrefs.getString("userId","");
-//                                    String examId=dataPrefs.getString("examId","");
-//
-//                                    try {
-//                                        jsonObject.put("result", jsonArray);
-//                                        jsonObject.put("selectedLanguage", selectedLanguage);
-//                                        jsonObject.put("date", myDate);
-//
-//                                        SubmitAnswerPaper submitAnswerPaper=new SubmitAnswerPaper();
-//                                        submitAnswerPaper.submit(ob,SectionNamesDisplay.this,jsonObject.toString(),userId,examId);
-//                                    } catch (JSONException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }
-//                        });
-//                    }
-//                }
-//            });
-//            t.start();
             handler.postDelayed(sendData,ConstantsDefined.time);
-
         }
     }
 
     private final Runnable sendData = new Runnable() {
         public void run() {
             if (visible) {
-
+                //Do nothing..
             } else {
+                //Submit answer paper..
                 JSONArray jsonArray = ob.getQuizResult();
                 final JSONObject jsonObject = new JSONObject();
                 String selectedLanguage = dataPrefs.getString("selectedLanguage", "");

@@ -69,7 +69,10 @@ import in.truskills.liveexams.Miscellaneous.SubmitAnswerPaper;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
-//This is the quiz main activity in which my fragment is loaded..
+/**
+ * This is the quiz main activity in which my fragment is loaded..
+ *
+ */
 
 /*
 * this interface is to call methods of FlashphonerEvents from QuizMainActivity
@@ -114,7 +117,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     String myDate,userId;
     long timeUntil;
     Button left, right;
-    Thread t;
     Vibrator vibrator;
     LinearLayout awareLayoutForSummary;
     TextView textForAwareForSummary;
@@ -122,9 +124,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
     RelativeLayout header, listLayout;
     TextView breakLine;
     LinearLayout footer;
-    AVLoadingIndicatorView avi;
     Handler handler = new Handler();
-
     FlashphonerEvents flashphoner;
     SurfaceViewRenderer extraRender;
     PercentFrameLayout parentRender;
@@ -808,7 +808,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
     }
 
-    // in/truskills/liveexams/Quiz/QuizMainActivity.java:137
     public void initSocketConnection() {
         try {
             socket = IO.socket(ConstantsDefined.socketConnectionUrl);
@@ -902,7 +901,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
             }
         });
     }
-
 
     public void formFragmentListForViewPager() {
         AsyncTaskRunner asyncTaskRunner = new AsyncTaskRunner();
@@ -1112,7 +1110,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
         public void run(){
             try {
                 //prepare and send the data here..
-
                 if(visible){
                     //Do nothing..
                 }else{
@@ -1140,8 +1137,6 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         e.printStackTrace();
                     }
                 }
-
-//                handler.postDelayed(this, 60000);
             }
             catch (Exception e) {
                 e.printStackTrace();

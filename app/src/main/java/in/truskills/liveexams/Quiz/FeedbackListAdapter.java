@@ -17,7 +17,7 @@ import java.util.HashMap;
 import in.truskills.liveexams.R;
 
 /**
- * Created by Shivansh Gupta on 27-03-2017.
+ * This is custom adapter for feedback list containing questions.. and smileys for ranking..
  */
 
 public class FeedbackListAdapter extends RecyclerView.Adapter<FeedbackListAdapter.MyViewHolder> {

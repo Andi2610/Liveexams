@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import in.truskills.liveexams.R;
 
 /**
- * Created by Shivansh Gupta on 06-02-2017.
+ * This is custom adapter for grid view displaying question numbers of each section..
+ * Numbers are colored, depending upon the question status of each question..
  */
 
 public class GridViewAdapter extends BaseAdapter {
