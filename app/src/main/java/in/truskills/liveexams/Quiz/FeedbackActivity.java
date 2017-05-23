@@ -39,6 +39,13 @@ import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
+/**
+ * This is for feedback page..
+ *
+ * Functions:
+ * 1. onCreate() :
+ */
+
 public class FeedbackActivity extends AppCompatActivity {
 
     RecyclerView feedbackList;
@@ -61,37 +68,38 @@ public class FeedbackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
 
+        //For toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
+        getSupportActionBar().setTitle("FEEDBACK");
 
+        //Get intent variables..
         examId=getIntent().getStringExtra("examId");
         userId=getIntent().getStringExtra("userId");
-
-        Log.d("ids", "onCreate: "+examId+" "+userId);
 
         aviLoad=(AVLoadingIndicatorView)findViewById(R.id.aviLoad);
 
         h=new Handler();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
-
-        getSupportActionBar().setTitle("FEEDBACK");
-
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
 
+        //Render elements from layout..
         submit=(Button)findViewById(R.id.submit);
         cancel=(Button)findViewById(R.id.cancel);
         heading=(TextView) findViewById(R.id.heading);
 
+        //set typeface..
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
-
         heading.setTypeface(tff1);
 
+        //For feedback list..
         feedbackList=(RecyclerView)findViewById(R.id.feedbackList);
         feedbackList.setLayoutManager(linearLayoutManager);
         feedbackList.setItemAnimator(new DefaultItemAnimator());
 
+        //On submit button click,call setFeedback method to prepare feedback response and send to server..
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,6 +112,7 @@ public class FeedbackActivity extends AppCompatActivity {
             }
         });
 
+        //On cancel button press, start Main activity clearing all other activities on stack..
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,88 +123,13 @@ public class FeedbackActivity extends AppCompatActivity {
             }
         });
 
+        //Call this method to set questions display onn feedback page by calling feedbackQuestions api..
         setQuestions();
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-        startActivity(intent);
-        finish();
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-    }
-
-    public void setQuestions(){
-
-        aviLoad.show();
-
-        ConstantsDefined.updateAndroidSecurityProvider(FeedbackActivity.this);
-        ConstantsDefined.beforeVolleyConnect();
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-
-        String url=ConstantsDefined.api+"feedbackQuestions";
-        //Make a request..
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                aviLoad.hide();
-
-                Log.d("feedback", "onResponse: "+response);
-
-                try {
-
-                    JSONObject j=new JSONObject(response);
-                    String success=j.getString("success");
-                    if(success.equals("true")){
-
-                        HashMap<String,ArrayList<String>> map= MiscellaneousParser.feedbackQuestionsParser(response);
-                        questionIdList=map.get("id");
-                        questionTextList=map.get("text");
-                        questionTopicList=map.get("topic");
-                        questionNumberList=map.get("number");
-                        h.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                feedbackListAdapter= new FeedbackListAdapter(questionTextList,questionIdList,questionTopicList,questionNumberList, FeedbackActivity.this);
-                                feedbackList.setAdapter(feedbackListAdapter);
-                                feedbackListAdapter.notifyDataSetChanged();
-                            }
-                        });
-
-                    }else{
-                        Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                        startActivity(intent);
-                        finish();
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //In case the connection to the Api couldn't be established..
-                aviLoad.hide();
-                Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                startActivity(intent);
-                finish();
-            }
-        });
-        requestQueue.add(stringRequest);
     }
 
     public void setFeedback() throws JSONException {
 
+        //Show dialog..
         dialog = new ProgressDialog(FeedbackActivity.this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("Submitting your feedback.. Please wait...");
@@ -274,7 +208,7 @@ public class FeedbackActivity extends AppCompatActivity {
                 Log.d("myResponseFeedback", "onErrorResponse: "+error);
                 //In case the connection to the Api couldn't be established..
                 if(dialog!=null)
-                dialog.dismiss();
+                    dialog.dismiss();
 
                 Toast.makeText(FeedbackActivity.this, "Sorry no internet connection..\nFeedback couldn't be submitted..", Toast.LENGTH_SHORT).show();
 
@@ -298,4 +232,82 @@ public class FeedbackActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
+
+    public void setQuestions(){
+
+        aviLoad.show();
+
+        ConstantsDefined.updateAndroidSecurityProvider(FeedbackActivity.this);
+        ConstantsDefined.beforeVolleyConnect();
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        String url=ConstantsDefined.api+"feedbackQuestions";
+        //Make a request..
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                aviLoad.hide();
+
+                Log.d("feedback", "onResponse: "+response);
+
+                try {
+
+                    JSONObject j=new JSONObject(response);
+                    String success=j.getString("success");
+                    if(success.equals("true")){
+
+                        HashMap<String,ArrayList<String>> map= MiscellaneousParser.feedbackQuestionsParser(response);
+                        questionIdList=map.get("id");
+                        questionTextList=map.get("text");
+                        questionTopicList=map.get("topic");
+                        questionNumberList=map.get("number");
+                        h.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                feedbackListAdapter= new FeedbackListAdapter(questionTextList,questionIdList,questionTopicList,questionNumberList, FeedbackActivity.this);
+                                feedbackList.setAdapter(feedbackListAdapter);
+                                feedbackListAdapter.notifyDataSetChanged();
+                            }
+                        });
+
+                    }else{
+                        Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                        startActivity(intent);
+                        finish();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //In case the connection to the Api couldn't be established..
+                aviLoad.hide();
+                Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                startActivity(intent);
+                finish();
+            }
+        });
+        requestQueue.add(stringRequest);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        Intent intent = new Intent(FeedbackActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+        startActivity(intent);
+        finish();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+    }
+
 }

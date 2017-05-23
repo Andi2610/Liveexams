@@ -16,7 +16,16 @@ import java.util.ArrayList;
 import in.truskills.liveexams.R;
 
 /**
- * Created by Shivansh Gupta on 06-02-2017.
+ * This is custom adapter for question number display on each page pf the quiz
+ *  i.e AllQuestionsInOneSectionAdapter..
+ *  Whenever a new holder position is clicked, the question corresponding to number is displayed..
+ *  Also, the entire list is displayed with certain colors depending upon question status:
+ *
+ *  0 : submit
+ *  1 : ticked and reviewed
+ *  2 : un ticked and reviewed
+ *  3. not answered
+ *  4. not visited
  */
 
 public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQuestionsInOneSectionAdapter.MyViewHolder> {
@@ -42,7 +51,6 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        Log.d("check", "onBindViewHolder: holderPosition=" + holder.getAdapterPosition() + " " + position);
         int cn = holder.getAdapterPosition();
         cn++;
         holder.questionNumber.setText(cn + "");
@@ -73,10 +81,8 @@ public class AllQuestionsInOneSectionAdapter extends RecyclerView.Adapter<AllQue
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("check", "onClick: position=" + holder.getAdapterPosition());
                 ob = (setValueOfPager) c;
                 int jumpPosition = myListOfFragmentIndex.get(holder.getAdapterPosition());
-                Log.d("check", "onClick: jumpPosition=" + holder.getAdapterPosition());
                 ob.SetValue(jumpPosition);
             }
         });

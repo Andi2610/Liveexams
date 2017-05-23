@@ -49,6 +49,22 @@ import in.truskills.liveexams.Miscellaneous.SubmitAnswerPaper;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 
+/**
+ * This is for all sections summary page where finish button is also visible..
+ *
+ * Functions:
+ * 1. onCreate() : for basic stuff, finish button click & first time indication..
+ * 2. makeInvisible() : hide the first time indication stuff..
+ * 3. submit() : for submitting quiz by calling answerPaper api..
+ * 4. onSupportNavigateUp() : for back button press on toolbar..
+ * 5. onCreateOptionsMenu() and onOptionsItemSelected() : for rules option menu page..
+ * 6. onPause() , onResume(), onBackPressed() : for navigation and its handling with quiz submission..
+ * 7. onDestroy() : submit the quiz..
+ *
+ * API calls made :
+ * 1. /api/answerPaper : (POST api with parameters userId, examId and answerPaper) : for submitting answer paper..
+ */
+
 public class AllSectionsSummary extends AppCompatActivity {
 
     private static final String TAG = "checkkkkk-InSummary";
@@ -75,17 +91,23 @@ public class AllSectionsSummary extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_sections_summary);
+
+        //onResume animation..
         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
+        //Set toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
+        getSupportActionBar().setTitle("SUMMARY");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         start=getIntent().getLongExtra("start",0);
 
+        //All shared preferences..
         prefs=getSharedPreferences("prefs",Context.MODE_PRIVATE);
         dataPrefs=getSharedPreferences("dataPrefs",Context.MODE_PRIVATE);
         quizPrefs=getSharedPreferences("quizPrefs",Context.MODE_PRIVATE);
@@ -93,51 +115,48 @@ public class AllSectionsSummary extends AppCompatActivity {
         firstTime=getSharedPreferences("firstTime",Context.MODE_PRIVATE);
         firstTimeForRules=getSharedPreferences("firstTimeForRules",Context.MODE_PRIVATE);
 
+        //Render layouts..
         awareLayoutForRules=(LinearLayout)findViewById(R.id.awareLayoutForRules);
         textForAwareForRules=(TextView)findViewById(R.id.textForAwareForRules);
         imageForAwareForRules=(ImageView)findViewById(R.id.imageForAwareForRules);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
-        getSupportActionBar().setTitle("SUMMARY");
-
         allSectionsList = (RecyclerView) findViewById(R.id.allSectionsList);
         finishButton = (Button) findViewById(R.id.finishButton);
-        h = new Handler();
 
+        //Get intent variables..
         examId = getIntent().getStringExtra("examId");
         userId = getIntent().getStringExtra("userId");
         selectedLanguage = getIntent().getStringExtra("selectedLanguage");
         myDate = getIntent().getStringExtra("date");
 
+        h = new Handler();
         ob = new QuizDatabase(AllSectionsSummary.this);
         sectionName = new ArrayList<>();
         questionArray = new ArrayList<>();
 
         HashMap<String, ArrayList<String>> map = ob.getAllStringValuesPerSection();
         sectionName = map.get("SectionNameList");
-
         for (int i = 0; i < sectionName.size(); ++i) {
             int sI = ob.getIntValuesPerSectionBySerialNumber(i, QuizDatabase.SectionIndex);
             HashMap<String, ArrayList<Integer>> my_map = ob.getAllIntValuesPerQuestionBySectionIndex(sI);
-            ArrayList<Integer> my_fragment_index_list = new ArrayList<>();
+            ArrayList<Integer> my_fragment_index_list ;
             my_fragment_index_list = my_map.get("FragmentIndexList");
             questionArray.add(my_fragment_index_list);
         }
 
+        //For all sections summary adapter..
         allSectionsSummaryAdapter = new AllSectionsSummaryAdapter(sectionName, questionArray, AllSectionsSummary.this);
-
         linearLayoutManager = new LinearLayoutManager(this);
         allSectionsList.setLayoutManager(linearLayoutManager);
         allSectionsList.setItemAnimator(new DefaultItemAnimator());
         allSectionsList.setAdapter(allSectionsSummaryAdapter);
         allSectionsSummaryAdapter.notifyDataSetChanged();
 
+        //Set typeface..
         Typeface tff1 = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Bold.ttf");
         finishButton.setTypeface(tff1);
         textForAwareForRules.setTypeface(tff1);
 
+        //Finish button click calls submit() function..
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,15 +180,12 @@ public class AllSectionsSummary extends AppCompatActivity {
             }
         });
 
-        Log.d("prefs", "onCreate: firstTimeForRules"+firstTimeForRules.getInt("firstTimeForRules",1));
-
+        //Show indication for RULES the first time quiz is displayed..
         if(firstTimeForRules.getInt("firstTimeForRules",1)==1){
 
             SharedPreferences.Editor eee=firstTimeForRules.edit();
             eee.putInt("firstTimeForRules",0);
             eee.apply();
-
-            Log.d("prefs", "onCreate: firstTimeForRules"+firstTimeForRules.getInt("firstTimeForRules",1));
 
             allSectionsList.setAlpha((float)0.2);
             finishButton.setAlpha((float)0.2);
@@ -194,9 +210,8 @@ public class AllSectionsSummary extends AppCompatActivity {
             }).start();
 
         }else{
-            awareLayoutForRules.setVisibility(View.GONE);
-            allSectionsList.setAlpha((float)1);
-            finishButton.setAlpha((float)1);
+            //hide..
+            makeInvisible();
         }
     }
 
@@ -209,9 +224,10 @@ public class AllSectionsSummary extends AppCompatActivity {
 
     public void submit() {
 
+        //Update time for the last page..
         updateTimeForPreviousPage();
 
-//        ob.getAllValues();
+        //Prepare the answers to be submitted to the server..
         JSONArray jsonArray = ob.getQuizResult();
         final JSONObject jsonObject = new JSONObject();
         try {
@@ -222,34 +238,20 @@ public class AllSectionsSummary extends AppCompatActivity {
             e.printStackTrace();
         }
 
-//        ob.setSubmitTrue();
-
+        //Store that submit button has been clicked.. because..
+        //in case the paper isn't submitted due to net problem, then it can happen once the internet resumes..
         SharedPreferences.Editor e=dataPrefs.edit();
         e.putInt("submit",1);
         e.apply();
 
-//        try {
-//            File root = new File(Environment.getExternalStorageDirectory(), "MyResult");
-//            if (!root.exists()) {
-//                root.mkdirs();
-//            }
-//            File gpxfile = new File(root, "MyResult");
-//            FileWriter writer = new FileWriter(gpxfile);
-//            writer.append(jsonObject.toString());
-//            writer.flush();
-//            writer.close();
-////                                    Toast.makeText(AllSectionsSummary.this, "Saved", Toast.LENGTH_SHORT).show();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        //Api to be connected to..
+        //For https connection..
         ConstantsDefined.updateAndroidSecurityProvider(this);
         ConstantsDefined.beforeVolleyConnect();
 
+        //Url to be connected to..
         String myurl = ConstantsDefined.api + "answerPaper";
-        Log.d("myurl", "submit: "+myurl);
 
+        //Show dialog..
         final ProgressDialog progressDialog = new ProgressDialog(AllSectionsSummary.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setMessage("Submitting your answers.. Please wait...");
@@ -269,7 +271,11 @@ public class AllSectionsSummary extends AppCompatActivity {
                     String success = jsonObject1.getString("success");
                     String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
+
+                        //Delete table..
                         ob.deleteMyTable();
+
+                        //Clear shared preferences..
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
@@ -282,21 +288,34 @@ public class AllSectionsSummary extends AppCompatActivity {
                         SharedPreferences.Editor eeeee=firstTimeForRules.edit();
                         eeeee.clear();
                         eeeee.apply();
+
+                        //Show appropriate toast message..
                         Toast.makeText(AllSectionsSummary.this, result+"\n" +
                                 "Result will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
+
+                        //Start feedback activity clearing all other previous activities on stack ..
                         Intent intent = new Intent(AllSectionsSummary.this, FeedbackActivity.class);
                         intent.putExtra("examId",examId);
                         intent.putExtra("userId",userId);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                         startActivity(intent);
                         finish();
+
                     } else {
+
+                        //Delete table..
                         ob.deleteMyTable();
+
+                        //Clear shared preferences..
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
+
+                        //Show appropriate toast message..
                         Toast.makeText(AllSectionsSummary.this, "Something went wrong..\n" +
                                 "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
+
+                        //Start feedback activity..
                         Intent intent = new Intent(AllSectionsSummary.this, FeedbackActivity.class);
                         intent.putExtra("examId",examId);
                         intent.putExtra("userId",userId);
@@ -306,6 +325,7 @@ public class AllSectionsSummary extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    //Hide dialog..
                     progressDialog.dismiss();
                 }
 
@@ -314,19 +334,25 @@ public class AllSectionsSummary extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //In case the connection to the Api couldn't be established..
+
+                //Hide dialog..
                 if(progressDialog!=null)
                 progressDialog.dismiss();
-                Log.d("error", error.toString() + "");
 
+                //Show error message..
                 if(ConstantsDefined.isOnline(AllSectionsSummary.this)){
-                    //Do nothing..
                     Toast.makeText(AllSectionsSummary.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
                 }else{
+
+                    //Do this to prevent user from starting any other quiz once, this answer paper is submitted first..
                     SharedPreferences.Editor e=allow.edit();
                     e.putInt("allow",0);
                     e.apply();
-                    Log.d("prefsAllow",allow.getInt("allow",1)+"");
+
+                    //Show appropriate toast message..
                     Toast.makeText(AllSectionsSummary.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
+
+                    //Start MainActivity clearing all other activities from stack..
                     Intent intent = new Intent(AllSectionsSummary.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
                     startActivity(intent);
@@ -350,7 +376,12 @@ public class AllSectionsSummary extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+
+        //On pressing back button on toolbar..
         super.onBackPressed();
+
+        //Do this to indicate the user is not leaving the quiz, but only leaving the activity..
+        //So don't submit the quiz..
         SharedPreferences.Editor e=quizPrefs.edit();
         e.putInt("exit",0);
         e.apply();
@@ -359,17 +390,24 @@ public class AllSectionsSummary extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.rules_menu, menu);//Menu Resource, Menu
+        //For rules menu..
+        getMenuInflater().inflate(R.menu.rules_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //On click on rules icon.. open RulesInQuiz activity..
             case R.id.rulesIcon:
+
+                //Do this to indicate the user is not leaving the quiz, but only leaving the activity..
+                //So don't submit the quiz..
                 SharedPreferences.Editor e=quizPrefs.edit();
                 e.putInt("exit",0);
                 e.apply();
+
+                //Start activity..
                 Intent i = new Intent(this, RulesInQuiz.class);
                 startActivity(i);
                 break;
@@ -380,10 +418,10 @@ public class AllSectionsSummary extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        //onPause animation..
         overridePendingTransition(R.anim.slide_from_left, R.anim.slide_to_right);
-        Log.d(TAG, "onPause: ");
         if(quizPrefs.getInt("exit",0)==0){
-//            Toast.makeText(this, "don'tSubmitQuiz", Toast.LENGTH_SHORT).show();
+            //Do nothing..
         }else{
             visible=false;
             int ans=dataPrefs.getInt("submit",0);
@@ -400,10 +438,7 @@ public class AllSectionsSummary extends AppCompatActivity {
         e.putInt("exit",1);
         e.apply();
         visible=true;
-//        if(t!=null&&t.isAlive())
-//            t.interrupt();
         handler.removeCallbacks(sendData);
-
         SharedPreferences.Editor ee = dataPrefs.edit();
         ee.putInt("submit", 0);
         ee.apply();
@@ -428,8 +463,11 @@ public class AllSectionsSummary extends AppCompatActivity {
     private final Runnable sendData = new Runnable() {
         public void run() {
             if (visible) {
-
+                //Do nothing..
             } else {
+
+                //Submit answer paper..
+
                 JSONArray jsonArray = ob.getQuizResult();
                 final JSONObject jsonObject = new JSONObject();
                 String selectedLanguage = dataPrefs.getString("selectedLanguage", "");

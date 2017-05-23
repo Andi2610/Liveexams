@@ -76,7 +76,6 @@ import in.truskills.liveexams.R;
  *
  */
 
-
 public class StartPageFragment extends Fragment {
 
     //Declare variables..
