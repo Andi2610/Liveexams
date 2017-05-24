@@ -20,8 +20,17 @@ import java.util.HashMap;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
-public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
+/**
+ * This is the activity for displaying the names of all authors corresponding to a particular field/stream in kit..
+ *
+ * Functions:
+ * 1. onCreate() : for basic stuff and calling setList() function..
+ * 2. setList() : for populating authors list obtained via intent..
+ * 3. onCreateOptionsMenu() : for searching among authors..
+ * 4. onSupportNavigateUp() : on back press on toolbar..
+ */
 
+public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
 
     RecyclerView authorsList;
     LinearLayoutManager linearLayoutManager;
@@ -36,14 +45,14 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_authors_per_field_for_kit);
 
+        //For toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
         getSupportActionBar().setTitle("SELECT YOUR AUTHOR");
 
+        //Render elements from layout..
         authorsList=(RecyclerView)findViewById(R.id.authorsListForMyKits);
         linearLayoutManager = new LinearLayoutManager(this);
         authorsList.setLayoutManager(linearLayoutManager);
@@ -55,12 +64,15 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
         response=b.getString("response");
         map=new HashMap<>();
 
+        //Call function..
         setList();
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        //For searching among authors list..
 
         getMenuInflater().inflate(R.menu.all_exams_menu, menu);
 
@@ -132,6 +144,8 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
     }
 
     public void setList(){
+
+        //For populating authors list..
         list=new ArrayList<>();
         list=b.getStringArrayList("list");
         authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(list, AllAuthorsPerFieldForKitActivity.this,response);
@@ -143,6 +157,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        //on back press on toolbar..
         finish();
         return true;
     }

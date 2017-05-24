@@ -20,6 +20,16 @@ import java.util.HashMap;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
+/**
+ * This is the activity for displaying the names of all authors corresponding to a particular field/stream..
+ *
+ * Functions:
+ * 1. onCreate() : for basic stuff and calling setList() function..
+ * 2. setList() : for populating authors list obtained via intent..
+ * 3. onCreateOptionsMenu() : for searching among authors..
+ * 4. onSupportNavigateUp() : on back press on toolbar..
+ */
+
 public class AllAuthorsPerFieldActivity extends AppCompatActivity {
 
     RecyclerView authorsList;
@@ -35,30 +45,33 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_authors_per_field);
 
+        //For toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
         getSupportActionBar().setTitle("SELECT YOUR AUTHOR");
 
+        //Render elements from layout..
         authorsList=(RecyclerView)findViewById(R.id.authorsList);
         linearLayoutManager = new LinearLayoutManager(this);
         authorsList.setLayoutManager(linearLayoutManager);
         authorsList.setItemAnimator(new DefaultItemAnimator());
         list=new ArrayList<>();
 
+        //Get intent variables..
         b=getIntent().getBundleExtra("bundle");
         list=b.getStringArrayList("list");
-
         response=b.getString("response");
+
         map=new HashMap<>();
 
+        //Call function..
         setList();
     }
 
     public void setList(){
+        //To populate the authors list..
         list=new ArrayList<>();
         list=b.getStringArrayList("list");
         authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(list, this,response);
@@ -70,6 +83,8 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        //For searching among authors..
 
         getMenuInflater().inflate(R.menu.all_exams_menu, menu);
 
@@ -142,6 +157,7 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        //For back press on toolbar..
         finish();
         return true;
     }

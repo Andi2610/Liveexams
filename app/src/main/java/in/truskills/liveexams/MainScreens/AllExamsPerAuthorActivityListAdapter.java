@@ -37,7 +37,11 @@ import in.truskills.liveexams.ParticularExam.ParticularExamMainActivity;
 import in.truskills.liveexams.R;
 
 /**
- * Created by 6155dx on 22-01-2017.
+ * This is custom list adapter for all exams per author..
+ * On click on a particular exam, details of it are opened (a start of ParticularExamMainActivity)..
+ *
+ * API call made:
+ * /api/examDetails : (POST api with parameters : userId, examId) : to get exam details of a particular exam..
  */
 
 public class AllExamsPerAuthorActivityListAdapter extends RecyclerView.Adapter<AllExamsPerAuthorActivityListAdapter.MyViewHolder> {

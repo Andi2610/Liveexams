@@ -22,7 +22,8 @@ import java.util.HashMap;
 import in.truskills.liveexams.R;
 
 /**
- * Created by Shivansh Gupta on 08-04-2017.
+ * This is custom list adapter for list of authors per stream..
+ * Click on a particular author, display the exams of that author..
  */
 
 public class AllAuthorsPerFieldActivityListAdapter extends RecyclerView.Adapter<AllAuthorsPerFieldActivityListAdapter.MyViewHolder> {
