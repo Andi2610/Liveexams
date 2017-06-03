@@ -20,6 +20,16 @@ import java.util.HashMap;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
+/**
+ * This is the activity for displaying the names of all authors corresponding to a particular field/stream..
+ *
+ * Functions:
+ * 1. onCreate() : for basic stuff and calling setList() function..
+ * 2. setList() : for populating authors list obtained via intent..
+ * 3. onCreateOptionsMenu() : for searching among authors..
+ * 4. onSupportNavigateUp() : on back press on toolbar..
+ */
+
 public class AllAuthorsPerFieldActivity extends AppCompatActivity {
 
     RecyclerView authorsList;
@@ -53,9 +63,6 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
         b=getIntent().getBundleExtra("bundle");
         list=b.getStringArrayList("list");
 
-        //list of joined exams passed from previous activity
-        myexams = b.getStringArrayList("myexams");
-
         response=b.getString("response");
         map=new HashMap<>();
 
@@ -65,7 +72,7 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
     public void setList(){
         list=new ArrayList<>();
         list=b.getStringArrayList("list");
-        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(list, this,myexams,response); // changed the constructor of allauthorsperfieldactivitylistadapter to pass list of joined exams.
+        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(list, this,response);
         authorsList.setLayoutManager(linearLayoutManager);
         authorsList.setItemAnimator(new DefaultItemAnimator());
         authorsList.setAdapter(authorsListAdapter);
@@ -116,7 +123,7 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
 
                     if(s.equals("")){
                         filteredList = new ArrayList<>();
-                        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(filteredList, AllAuthorsPerFieldActivity.this,myexams,response);  // changed the constructor of allauthorsperfieldactivitylistadapter to pass list of joined exams.
+                        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(filteredList, AllAuthorsPerFieldActivity.this,response);
                         authorsList.setAdapter(authorsListAdapter);
                         authorsListAdapter.notifyDataSetChanged();
 
@@ -132,7 +139,7 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
                                 filteredList.add(list.get(i));
                             }
                         }
-                        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(filteredList, AllAuthorsPerFieldActivity.this,myexams,response); // changed the constructor of allauthorsperfieldactivitylistadapter to pass list of joined exams.
+                        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(filteredList, AllAuthorsPerFieldActivity.this,response);
                         authorsList.setAdapter(authorsListAdapter);
                         authorsListAdapter.notifyDataSetChanged();
                     }

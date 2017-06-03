@@ -47,6 +47,20 @@ import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
+/**
+ * This activity is for displaying all exams of a particular author..
+ *
+ * Functions:
+ * 1. onCreate() : for basic stuff and calling setList()..
+ * 2. setList() : for preparing data to populate in list..
+ * 3. populateList() : for populating the list of exams..
+ * 4. onNetworkConnectionChanged() : for handling internet connect/disconnect..
+ * 5. onResume() : for connecting to connectivity receiver..
+ * 6. onCreateOptionsMenu() : for searching..
+ * 7. onSupportNavigateUp() : for back press on toolbar..
+ *
+ */
+
 public class AllExamsPerAuthorActivity extends AppCompatActivity implements ConnectivityReciever.ConnectivityReceiverListener {
 
     RecyclerView examsByAuthorsList;
@@ -59,9 +73,8 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
     Handler h;
     SearchView searchView;
     String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime,myExamId;
+    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
     TextView noExamsPresent;
-    LinearLayout noConnectionLayout;
-    Button retryButton;
     String author, response;
     Bundle b;
     ArrayList<String> myexams;
@@ -73,22 +86,26 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_exams_per_author);
 
+        //For toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
         getSupportActionBar().setTitle("ADD NEW EXAMS");
 
+        //Render elements from layout..
+        noExamsPresent=(TextView)findViewById(R.id.noExamsPresent);
         examsByAuthorsList = (RecyclerView) findViewById(R.id.examsByAuthorsList);
         linearLayoutManager = new LinearLayoutManager(this);
         examsByAuthorsList.setLayoutManager(linearLayoutManager);
         examsByAuthorsList.setItemAnimator(new DefaultItemAnimator());
+
+        //Get intent variables..
         b=getIntent().getBundleExtra("bundle");
         author = b.getString("author");
         response = b.getString("response");
 
+        //Set typeface..
         //getting the list of joined exams
         myexams=b.getStringArrayList("myexams");
 
@@ -99,25 +116,24 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
         noExamsPresent.setVisibility(View.GONE);
 
         valuesList=new ArrayList<>();
-
         h=new Handler();
 
+        //Call function..
         setList();
     }
 
     public void setList(){
 
+        //For setting list of exams through parsing of response obtained via intent..
+
         valuesList=new ArrayList<>();
 
         try {
             JSONObject jsonObject = new JSONObject(response);
-            Log.d("myExams", "setList: "+jsonObject);
-
             JSONObject jsonObject1=jsonObject.getJSONObject("response");
             String timestamp = jsonObject1.getString("timestamp");
             HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.getExamsByAuthors(jsonObject, author);
             JSONArray jsonArray = jsonObject1.getJSONArray("exams");
-            Log.d("myExams", "setList: "+jsonArray);
             ArrayList<String> listForLength=mapper.get("StartDate");
             int length = listForLength.size();
             if(length==0)
@@ -139,12 +155,8 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
 
                     String myTimeOfStart = MiscellaneousParser.parseTimeForDetails(myStartTime);
                     String myTimeOfEnd = MiscellaneousParser.parseTimeForDetails(myEndTime);
-                    Log.d("myTimestamp=", timestamp);
                     String myTimestamp = MiscellaneousParser.parseTimestamp(timestamp);
                     String myTime = MiscellaneousParser.parseTimestampForTime(timestamp);
-
-                    Log.d("myTimestamp=", myTimestamp);
-
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     Date start_date = simpleDateFormat.parse(myDateOfStart);
                     Date end_date = simpleDateFormat.parse(myDateOfEnd);
@@ -202,6 +214,9 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
     }
 
     public void populateList(List<Values> list) {
+
+        //Populate list..
+        allExamsListAdapter = new AllExamsPerAuthorActivityListAdapter(list, this);
         allExamsListAdapter = new AllExamsPerAuthorActivityListAdapter(list,this);
         examsByAuthorsList.setAdapter(allExamsListAdapter);
         allExamsListAdapter.notifyDataSetChanged();
@@ -228,6 +243,8 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        //For searching among exams..
 
         getMenuInflater().inflate(R.menu.all_exams_menu, menu);
 
@@ -300,6 +317,7 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
 
     @Override
     public boolean onSupportNavigateUp() {
+        //On back press on toolbar..
         finish();
         return true;
     }

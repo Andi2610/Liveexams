@@ -37,6 +37,19 @@ import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.SearchResultsActivity;
 import in.truskills.liveexams.R;
 
+
+/**
+ * This activity is for displaying all kits of a particular author..
+ *
+ * Functions:
+ * 1. onCreate() : for basic stuff and calling setList()..
+ * 2. setList() : for preparing data to populate in list..
+ * 3. populateList() : for populating the list of kits..
+ * 4. onCreateOptionsMenu() : for searching..
+ * 5. onSupportNavigateUp() : for back press on toolbar..
+ *
+ */
+
 public class AllKitsPerAuthorActivity extends AppCompatActivity {
 
     RecyclerView examsByAuthorsList;
@@ -49,9 +62,8 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
     Handler h;
     SearchView searchView;
     String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime="0", myStartTime, myEndTime,mykitid;
+    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDurationTime="0";
     TextView noExamsPresent;
-    LinearLayout noConnectionLayout;
-    Button retryButton;
     String author, response;
     Bundle b;
     ArrayList<String> mykits;
@@ -61,19 +73,21 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_kits_per_author);
 
+        //For toolbar..
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
         getSupportActionBar().setTitle("ADD NEW KITS");
 
-
+        //Render all elements from layout..
         examsByAuthorsList = (RecyclerView) findViewById(R.id.kitsByAuthorsList);
         linearLayoutManager = new LinearLayoutManager(this);
+        noExamsPresent=(TextView)findViewById(R.id.noKitsPresent);
         examsByAuthorsList.setLayoutManager(linearLayoutManager);
         examsByAuthorsList.setItemAnimator(new DefaultItemAnimator());
+
+        //Get intent variables..
         b=getIntent().getBundleExtra("bundle");
         author = b.getString("author");
         response = b.getString("response");
@@ -83,19 +97,22 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
 
         noExamsPresent=(TextView)findViewById(R.id.noKitsPresent);
 
+        //Set typeface..
         Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
         noExamsPresent.setTypeface(tff);
         noExamsPresent.setVisibility(View.GONE);
 
         valuesList=new ArrayList<>();
-
         h=new Handler();
 
+        //Call function..
         setList();
 
     }
 
     public void populateList(List<Values> list) {
+
+        //For populating list of kits..
         allExamsListAdapter = new AllKitsPerAuthorActivityListAdapter(list, this);
         examsByAuthorsList.setAdapter(allExamsListAdapter);
         allExamsListAdapter.notifyDataSetChanged();
@@ -108,6 +125,7 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        //For searching..
         getMenuInflater().inflate(R.menu.all_exams_menu, menu);
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -180,16 +198,15 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
 
     public void setList(){
 
+        //For preparing data to populate in list..
+
         valuesList=new ArrayList<>();
 
         try {
             JSONObject jsonObject = new JSONObject(response);
-            Log.d("myExams", "setList: "+jsonObject);
-
             JSONObject jsonObject1=jsonObject.getJSONObject("response");
             HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.getKitsByAuthors(jsonObject, author);
             JSONArray jsonArray = jsonObject1.getJSONArray("productKits");
-            Log.d("myExams", "setList: "+jsonArray);
             ArrayList<String> listForLength=mapper.get("StartDate");
             int length = listForLength.size();
             if(length==0)
@@ -210,6 +227,10 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                         valuesList.add(values);
                     }
+                    myDateOfStart=MiscellaneousParser.parseDateForKit(myStartDate);
+                    myDateOfEnd=MiscellaneousParser.parseDateForKit(myEndDate);
+                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                    valuesList.add(values);
                 }
 
                 h.post(new Runnable() {
@@ -229,6 +250,7 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        //On back press on toolbar..
         finish();
         return true;
     }
