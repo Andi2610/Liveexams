@@ -49,10 +49,13 @@ public class AllStreamsForKitActivityListActivity extends RecyclerView.Adapter<A
     Handler h;
     ProgressDialog dialog;
     String value;
+    ArrayList<String> mykits;
     HashMap<String,ArrayList<String>> map;
 
-    AllStreamsForKitActivityListActivity(List<String> myList, Context c) {
+    //Changed constructor of getting the list of bought kits
+    AllStreamsForKitActivityListActivity(List<String> myList,ArrayList<String> mykits, Context c) {
         this.myList = myList;
+        this.mykits = mykits;
         this.c = c;
         setHasStableIds(true);
     }
@@ -130,6 +133,7 @@ public class AllStreamsForKitActivityListActivity extends RecyclerView.Adapter<A
                                         Bundle b=new Bundle();
                                         b.putStringArrayList("list",ans);
                                         b.putString("response",jsonObject.toString());
+                                        b.putStringArrayList("mykits",mykits); // passing the list of bought kits to next activity
                                         i.putExtra("bundle",b);
                                         c.startActivity(i);
                                     }

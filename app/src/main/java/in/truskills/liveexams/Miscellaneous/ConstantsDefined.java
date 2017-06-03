@@ -48,7 +48,7 @@ public class ConstantsDefined {
     public static String workingKey="DDEF305F5B417483D35E56BF860FAF0B";
     public static String merchantId="6223";
     public static String rsaUrl="http://www.liveexams.in/liveexams-ccavenue/GetRSA.php";
-    public static String cancelUrl="http://122.182.6.216/merchant/ccavResponseHandler.php";
+    public static String cancelUrl="http://www.liveexams.in/liveexams-ccavenue/ccavResponseHandler.php";;
 //    public static String redirectUrl="http://122.182.6.216/merchant/ccavResponseHandler.php";
     public static String redirectUrl="http://www.liveexams.in/liveexams-ccavenue/ccavResponseHandler.php";
     public static String currency="INR";

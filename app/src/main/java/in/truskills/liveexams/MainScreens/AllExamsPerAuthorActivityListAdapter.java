@@ -49,6 +49,7 @@ public class AllExamsPerAuthorActivityListAdapter extends RecyclerView.Adapter<A
     ProgressDialog dialog;
     Values value;
 
+
     AllExamsPerAuthorActivityListAdapter(List<Values> myList, Context c) {
         this.myList = myList;
         this.c = c;

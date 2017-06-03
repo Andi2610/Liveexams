@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.CheckForPermissions;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
@@ -223,6 +224,9 @@ public class StartPageFragment extends Fragment {
                             start_leave_button.setBackgroundColor(Color.parseColor("#8DC640"));
                         } else {
                             start_leave_button.setText("LEAVE");
+                           // Intent i = new Intent(getActivity(), MainActivity.class);
+                            //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                           // getActivity().startActivity(i);
                             start_leave_button.setBackgroundColor(Color.parseColor("#f44336"));
                         }
                     } else if (middle_date.equals(end_date)) {
@@ -244,6 +248,9 @@ public class StartPageFragment extends Fragment {
                     start_leave_button.setBackgroundColor(Color.parseColor("#E0E0E0"));
                 } else {
                     start_leave_button.setText("LEAVE");
+                    //Intent i = new Intent(getActivity(), MainActivity.class);
+                    //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //getActivity().startActivity(i);
                     start_leave_button.setBackgroundColor(Color.parseColor("#f44336"));
                 }
             }
@@ -690,6 +697,8 @@ public class StartPageFragment extends Fragment {
         i.putExtra("url",myUrl);
         startActivity(i);
     }
+
+
 
 }
 

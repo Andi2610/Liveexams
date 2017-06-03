@@ -44,6 +44,7 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
     ProgressDialog dialog;
     Handler h;
     TextView noStreams;
+    ArrayList<String> myexams;
     LinearLayout noConnectionLayout;
     Button retryButton;
 
@@ -51,6 +52,9 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_streams);
+
+        // getting all the enrolled exams
+        myexams = getIntent().getStringArrayListExtra("myexams");
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -162,7 +166,7 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
                         noConnectionLayout.setVisibility(View.VISIBLE);
                         noStreams.setVisibility(View.GONE);
                         valuesList=new ArrayList<>();
-                        streamsListAdapter = new AllStreamsActivityListAdapter(valuesList, AllStreamsActivity.this);
+                        streamsListAdapter = new AllStreamsActivityListAdapter(valuesList,myexams, AllStreamsActivity.this); // passing the list of joined exams to next activity
                         allStreamsList.setLayoutManager(linearLayoutManager);
                         allStreamsList.setItemAnimator(new DefaultItemAnimator());
                         allStreamsList.setAdapter(streamsListAdapter);
@@ -186,7 +190,7 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 noStreams.setVisibility(View.GONE);
                 valuesList=new ArrayList<>();
-                streamsListAdapter = new AllStreamsActivityListAdapter(valuesList, AllStreamsActivity.this);
+                streamsListAdapter = new AllStreamsActivityListAdapter(valuesList,myexams, AllStreamsActivity.this); // passing the list of joined exams to next activity
                 allStreamsList.setLayoutManager(linearLayoutManager);
                 allStreamsList.setItemAnimator(new DefaultItemAnimator());
                 allStreamsList.setAdapter(streamsListAdapter);
@@ -208,7 +212,7 @@ public class AllStreamsActivity extends AppCompatActivity implements Connectivit
     }
 
     public void populateList(List<String> list) {
-        streamsListAdapter = new AllStreamsActivityListAdapter(list, this);
+        streamsListAdapter = new AllStreamsActivityListAdapter(list,myexams,this);  // passing the list of joined exams to next activity
         allStreamsList.setLayoutManager(linearLayoutManager);
         allStreamsList.setItemAnimator(new DefaultItemAnimator());
         allStreamsList.setAdapter(streamsListAdapter);

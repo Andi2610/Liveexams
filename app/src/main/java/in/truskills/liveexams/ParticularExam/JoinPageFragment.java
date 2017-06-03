@@ -2,6 +2,7 @@ package in.truskills.liveexams.ParticularExam;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.R;
 
@@ -235,10 +237,15 @@ public class JoinPageFragment extends Fragment {
                                     @Override
                                     public void run() {
 
-                                        StartPageFragment f = new StartPageFragment();
+                                        /*StartPageFragment f = new StartPageFragment();
                                         f.setArguments(b);
                                         ob.changeFragmentFromJoinPage(f, "name");
+*/
 
+                                        //after joining a exam student is redirected to home
+                                        Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getActivity().startActivity(i);
                                     }
                                 });
                             }else{

@@ -584,7 +584,9 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        //When the user opens the login drawer..
+        //When the use
+        //
+        // r opens the login drawer..
         loginDrawer.setOnDrawerOpenListener(new SlidingDrawer.OnDrawerOpenListener() {
             @Override
             public void onDrawerOpened() {

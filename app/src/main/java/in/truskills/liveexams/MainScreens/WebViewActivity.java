@@ -98,12 +98,12 @@ public class WebViewActivity extends Activity {
 										Log.d("myHtml", "processHTML: "+html);
 										String status = null;
 										boolean add=false;
-										if(html.indexOf("Failure")!=-1){
+										if(html.contains("Failure")){
 											status = "Transaction Declined!";
-										}else if(html.indexOf("Success")!=-1){
+										}else if(html.contains("Success")){
 											status = "Transaction Successful!";
 											add=true;
-										}else if(html.indexOf("Aborted")!=-1){
+										}else if(html.contains("Aborted")){
 											status = "Transaction Cancelled!";
 										}else{
 											status = "Status Not Known!";

@@ -47,12 +47,15 @@ public class AllStreamsActivityListAdapter extends RecyclerView.Adapter<AllStrea
     Context c;
     SharedPreferences prefs;
     Handler h;
+    ArrayList<String> myexams;
     ProgressDialog dialog;
     String value;
     HashMap<String,ArrayList<String>> map;
 
-    AllStreamsActivityListAdapter(List<String> myList, Context c) {
+    //Changed constructor to get that list of joined exams
+    AllStreamsActivityListAdapter(List<String> myList,ArrayList<String> myexams, Context c) {
         this.myList = myList;
+        this.myexams = myexams;
         this.c = c;
         setHasStableIds(true);
     }
@@ -122,8 +125,10 @@ public class AllStreamsActivityListAdapter extends RecyclerView.Adapter<AllStrea
                                         Bundle b=new Bundle();
                                         b.putStringArrayList("list",ans);
                                         b.putString("response",jsonObject.toString());
+                                        b.putStringArrayList("myexams",myexams); //passing the list of joined exams to next activity
                                         Intent i = new Intent(c,AllAuthorsPerFieldActivity.class);
                                         i.putExtra("bundle",b);
+                                        //i.putExtra("myexams",myexams);
                                         c.startActivity(i);
                                     }
                                 }else{

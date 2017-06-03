@@ -35,10 +35,13 @@ public class AllAuthorsPerFieldActivityListAdapter extends RecyclerView.Adapter<
     String value;
     HashMap<String,ArrayList<String>> map;
     String response;
+    ArrayList<String> myexams;
 
-    AllAuthorsPerFieldActivityListAdapter(ArrayList<String> myList, Context c, String response) {
+    // Chnaged constructor for passing the list of exams.
+    AllAuthorsPerFieldActivityListAdapter(ArrayList<String> myList, Context c,ArrayList<String> myexams, String response) {
         this.myList = myList;
         this.c = c;
+        this.myexams = myexams;
         setHasStableIds(true);
         this.response=response;
     }
@@ -73,6 +76,7 @@ public class AllAuthorsPerFieldActivityListAdapter extends RecyclerView.Adapter<
                     Bundle b=new Bundle();
                     b.putString("author",value);
                     b.putString("response",response);
+                    b.putStringArrayList("myexams",myexams); // passing that list of joined exams to AllExamsPerAuthorActivity.
                     i.putExtra("bundle",b);
                     c.startActivity(i);
                  }

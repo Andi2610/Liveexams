@@ -46,6 +46,7 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
     TextView noStreams;
     LinearLayout noConnectionLayout;
     Button retryButton;
+    ArrayList<String> mykits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,9 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
 
         allStreamsList = (RecyclerView) findViewById(R.id.allStreamsForMyKitsListTemp);
         linearLayoutManager = new LinearLayoutManager(this);
+
+        //getting all the bought kits
+        mykits = getIntent().getStringArrayListExtra("mykits");
 
 //        floatingActionButton=(FloatingActionButton)getActivity().findViewById(R.id.fab);
 
@@ -161,7 +165,7 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
                         noConnectionLayout.setVisibility(View.VISIBLE);
                         noStreams.setVisibility(View.GONE);
                         valuesList=new ArrayList<>();
-                        streamsListAdapter = new AllStreamsForKitActivityListActivity(valuesList, AllStreamsForKitActivity.this);
+                        streamsListAdapter = new AllStreamsForKitActivityListActivity(valuesList,mykits, AllStreamsForKitActivity.this);//passing the list of bought kits to next activity
                         allStreamsList.setLayoutManager(linearLayoutManager);
                         allStreamsList.setItemAnimator(new DefaultItemAnimator());
                         allStreamsList.setAdapter(streamsListAdapter);
@@ -185,7 +189,7 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
                 noConnectionLayout.setVisibility(View.VISIBLE);
                 noStreams.setVisibility(View.GONE);
                 valuesList=new ArrayList<>();
-                streamsListAdapter = new AllStreamsForKitActivityListActivity(valuesList, AllStreamsForKitActivity.this);
+                streamsListAdapter = new AllStreamsForKitActivityListActivity(valuesList,mykits, AllStreamsForKitActivity.this); //passing the list of bought kits to next activity
                 allStreamsList.setLayoutManager(linearLayoutManager);
                 allStreamsList.setItemAnimator(new DefaultItemAnimator());
                 allStreamsList.setAdapter(streamsListAdapter);
@@ -207,7 +211,7 @@ public class AllStreamsForKitActivity extends AppCompatActivity implements Conne
     }
 
     public void populateList(List<String> list) {
-        streamsListAdapter = new AllStreamsForKitActivityListActivity(list, AllStreamsForKitActivity.this);
+        streamsListAdapter = new AllStreamsForKitActivityListActivity(list, mykits, AllStreamsForKitActivity.this); //passing the list of bought kits to next activity
         allStreamsList.setLayoutManager(linearLayoutManager);
         allStreamsList.setItemAnimator(new DefaultItemAnimator());
         allStreamsList.setAdapter(streamsListAdapter);

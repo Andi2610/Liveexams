@@ -33,9 +33,12 @@ public class AllAuthorsPerFieldForKitActivityListAdapter extends RecyclerView.Ad
     String value;
     HashMap<String,ArrayList<String>> map;
     String response;
+    ArrayList<String> mykits;
 
-    AllAuthorsPerFieldForKitActivityListAdapter(ArrayList<String> myList, Context c, String response) {
+    // Changed constructor for getting list of bought kits
+    AllAuthorsPerFieldForKitActivityListAdapter(ArrayList<String> myList,ArrayList<String> mykits, Context c, String response) {
         this.myList = myList;
+        this.mykits=mykits;
         this.c = c;
         setHasStableIds(true);
         this.response=response;
@@ -62,6 +65,7 @@ public class AllAuthorsPerFieldForKitActivityListAdapter extends RecyclerView.Ad
                 Bundle b=new Bundle();
                 b.putString("author",value);
                 b.putString("response",response);
+                b.putStringArrayList("mykits",mykits); //passing the list of bought kits to AllkitsperAuthorActivity
                 Intent i = new Intent(c,AllKitsPerAuthorActivity.class);
                 i.putExtra("bundle",b);
                 c.startActivity(i);

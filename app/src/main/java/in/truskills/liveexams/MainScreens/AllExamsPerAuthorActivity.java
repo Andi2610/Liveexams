@@ -58,12 +58,14 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
     ProgressDialog dialog;
     Handler h;
     SearchView searchView;
-    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
+    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime,myExamId;
     TextView noExamsPresent;
     LinearLayout noConnectionLayout;
     Button retryButton;
     String author, response;
     Bundle b;
+    ArrayList<String> myexams;
+
 
 
     @Override
@@ -86,6 +88,9 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
         b=getIntent().getBundleExtra("bundle");
         author = b.getString("author");
         response = b.getString("response");
+
+        //getting the list of joined exams
+        myexams=b.getStringArrayList("myexams");
 
         noExamsPresent=(TextView)findViewById(R.id.noExamsPresent);
 
@@ -125,7 +130,7 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
                     myDuration = mapper.get("ExamDuration").get(i);
                     myStartTime = mapper.get("StartTime").get(i);
                     myEndTime = mapper.get("EndTime").get(i);
-
+                    myExamId = mapper.get("ExamId").get(i); //hetting all the exam ids
                     Log.d("myDate=", myStartDate + " ****** " + myEndDate + " **** " + myDuration);
 
                     myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
@@ -151,17 +156,31 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
                     Date middle_time = simpleDateFormat2.parse(myTime);
 
                     if (middle_date.before(start_date)) {
-                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                        valuesList.add(values);
+                        if(myexams.contains(myExamId)){ // if list of joined exams contains particular exam id then donothing else display
+                            //donothing
+                        }
+                        else {
+                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                            valuesList.add(values);
+                        }
                     } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
                         if (middle_date.equals(end_date)) {
                             if (!middle_time.after(end_time)) {
+                                if(myexams.contains(myExamId)){  // if list of joined exams contains particular exam id then donothing else display
+                                    //donothing
+                                }
+                                else {
+                                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                                    valuesList.add(values);
+                                }
+                            }
+                        } else {
+                            if (myexams.contains(myExamId)) {  // if list of joined exams contains particular exam id then donothing else display
+                                //donothing
+                            } else {
                                 values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                 valuesList.add(values);
                             }
-                        } else {
-                            values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                            valuesList.add(values);
                         }
                     }
                 }
@@ -183,7 +202,7 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
     }
 
     public void populateList(List<Values> list) {
-        allExamsListAdapter = new AllExamsPerAuthorActivityListAdapter(list, this);
+        allExamsListAdapter = new AllExamsPerAuthorActivityListAdapter(list,this);
         examsByAuthorsList.setAdapter(allExamsListAdapter);
         allExamsListAdapter.notifyDataSetChanged();
         if(list.size()==0)

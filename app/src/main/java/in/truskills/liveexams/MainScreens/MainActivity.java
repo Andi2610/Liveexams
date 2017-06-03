@@ -404,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             else if (requestCode == REQUEST_CAMERA) {
                 if (resultCode == RESULT_OK) {
 
-                    if(data!=null){
+                    //if(data!=null){
 
                         Log.d(CAMERA, "camera1");
                         my_path = selectedImagePath + "/" + filename;
@@ -461,9 +461,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }else{
+                   // }
+                    //else{
                         Toast.makeText(this, "Sorry!! Your profile picture couldn't be uploaded..", Toast.LENGTH_SHORT).show();
-                    }
+                    //}
 
                 } else if (resultCode == RESULT_CANCELED) {
                     Log.d(CAMERA, "User cancelled image capture");

@@ -48,12 +48,13 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
     ProgressDialog dialog;
     Handler h;
     SearchView searchView;
-    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime="0", myStartTime, myEndTime;
+    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime="0", myStartTime, myEndTime,mykitid;
     TextView noExamsPresent;
     LinearLayout noConnectionLayout;
     Button retryButton;
     String author, response;
     Bundle b;
+    ArrayList<String> mykits;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,9 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
         b=getIntent().getBundleExtra("bundle");
         author = b.getString("author");
         response = b.getString("response");
+
+        //getting the list of bought kits
+        mykits = b.getStringArrayList("mykits");
 
         noExamsPresent=(TextView)findViewById(R.id.noKitsPresent);
 
@@ -195,12 +199,17 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
                 for (int i = 0; i < length; ++i) {
                     myStartDate = mapper.get("StartDate").get(i);
                     myEndDate = mapper.get("EndDate").get(i);
+                    mykitid = mapper.get("ExamId").get(i); //getting all the id of productkits
 
-                    myDateOfStart=MiscellaneousParser.parseDateForKit(myStartDate);
-                    myDateOfEnd=MiscellaneousParser.parseDateForKit(myEndDate);
+                    myDateOfStart = MiscellaneousParser.parseDateForKit(myStartDate);
+                    myDateOfEnd = MiscellaneousParser.parseDateForKit(myEndDate);
 
-                    values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                    valuesList.add(values);
+                    if (mykits.contains(mykitid)) {  //if bought then do nothing else display
+                        //do nothing
+                    } else {
+                        values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
+                        valuesList.add(values);
+                    }
                 }
 
                 h.post(new Runnable() {

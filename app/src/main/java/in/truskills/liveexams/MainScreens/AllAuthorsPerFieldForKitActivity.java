@@ -26,7 +26,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
     RecyclerView authorsList;
     LinearLayoutManager linearLayoutManager;
     AllAuthorsPerFieldForKitActivityListAdapter authorsListAdapter;
-    ArrayList<String> list,filteredList;
+    ArrayList<String> list,filteredList,mykits;
     String response;
     HashMap<String,ArrayList<String>> map;
     Bundle b=new Bundle();
@@ -51,6 +51,9 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
         list=new ArrayList<>();
         b=getIntent().getBundleExtra("bundle");
         list=b.getStringArrayList("list");
+
+        // getting the list of bought kits from previous activity.
+        mykits = b.getStringArrayList("mykits");
 
         response=b.getString("response");
         map=new HashMap<>();
@@ -103,7 +106,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
 
                     if(s.equals("")){
                         filteredList = new ArrayList<>();
-                        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(filteredList, AllAuthorsPerFieldForKitActivity.this,response);
+                        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(filteredList,mykits, AllAuthorsPerFieldForKitActivity.this,response);  // changed the constructor of allauthorsperfieldforkitactivitylistadapter to pass list of bought kits..
                         authorsList.setAdapter(authorsListAdapter);
                         authorsListAdapter.notifyDataSetChanged();
 
@@ -119,7 +122,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
                                 filteredList.add(list.get(i));
                             }
                         }
-                        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(filteredList, AllAuthorsPerFieldForKitActivity.this,response);
+                        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(filteredList,mykits, AllAuthorsPerFieldForKitActivity.this,response);  // changed the constructor of allauthorsperfieldforkitactivitylistadapter to pass list of bought kits.
                         authorsList.setAdapter(authorsListAdapter);
                         authorsListAdapter.notifyDataSetChanged();
                     }
@@ -134,7 +137,7 @@ public class AllAuthorsPerFieldForKitActivity extends AppCompatActivity {
     public void setList(){
         list=new ArrayList<>();
         list=b.getStringArrayList("list");
-        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(list, AllAuthorsPerFieldForKitActivity.this,response);
+        authorsListAdapter = new AllAuthorsPerFieldForKitActivityListAdapter(list,mykits, AllAuthorsPerFieldForKitActivity.this,response);  // changed the constructor of allauthorsperfieldforkitactivitylistadapter to pass list of bought kits.
         authorsList.setLayoutManager(linearLayoutManager);
         authorsList.setItemAnimator(new DefaultItemAnimator());
         authorsList.setAdapter(authorsListAdapter);

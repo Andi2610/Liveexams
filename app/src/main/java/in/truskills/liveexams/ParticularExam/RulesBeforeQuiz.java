@@ -1,14 +1,31 @@
 package in.truskills.liveexams.ParticularExam;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+
+import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Quiz.QuestionPaperLoadDevelopment;
 import in.truskills.liveexams.R;
 
@@ -28,6 +45,8 @@ public class RulesBeforeQuiz extends AppCompatActivity {
     TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8,tv9,tv10;
     Button continueButton,exitButton;
     String examId,paperName,selectedLanguage,myDate,myUrl,name;
+    SharedPreferences prefs;
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +74,7 @@ public class RulesBeforeQuiz extends AppCompatActivity {
         tv10 = (TextView) findViewById(R.id.tv10);
         continueButton = (Button) findViewById(R.id.continueButton);
         exitButton = (Button) findViewById(R.id.exitButton);
+        prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
         //Set typeface of required fields..
         Typeface tff = Typeface.createFromAsset(getAssets(), "fonts/Comfortaa-Regular.ttf");
@@ -83,6 +103,48 @@ public class RulesBeforeQuiz extends AppCompatActivity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               ConstantsDefined.updateAndroidSecurityProvider(RulesBeforeQuiz.this);
+                ConstantsDefined.beforeVolleyConnect();
+
+                String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "") + examId ;
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                        url, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            String success = response.getString("success");
+                            if (success.equals("true")) {
+                                String myResponse = response.getJSONObject("response").toString();
+                                JSONObject jsonObject = new JSONObject(myResponse);
+
+                            }
+                        }
+                                catch(JSONException e){
+                                    e.printStackTrace();
+                                }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Log.d("checkForError",error.toString());
+
+
+
+                        if(ConstantsDefined.isOnline(getBaseContext())){
+                            //Do nothing..
+                            if(RulesBeforeQuiz.this !=null)
+                                Toast.makeText(getBaseContext(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        }else{
+                            if(RulesBeforeQuiz.this !=null)
+                                Toast.makeText(getBaseContext(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                requestQueue.add(jsonObjectRequest);
+
+                //if()compare that boolean variable if it's false
                 Intent i = new Intent(RulesBeforeQuiz.this, QuestionPaperLoadDevelopment.class);
                 i.putExtra("examId", examId);
                 i.putExtra("name", name);
@@ -91,6 +153,7 @@ public class RulesBeforeQuiz extends AppCompatActivity {
                 i.putExtra("url",myUrl);
                 startActivity(i);
                 finish();
+                //else toast u r giving same exam from different device
             }
         });
 

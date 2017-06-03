@@ -61,8 +61,9 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     LinearLayoutManager linearLayoutManager;
     HomeListAdapter myExamsListAdapter;
     List<Values> valuesList, filteredList;
+    ArrayList<String> myexamsid;
     Values values;
-    String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
+    String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime,myExamId;
     SharedPreferences prefs;
     RequestQueue requestQueue;
     Handler h;
@@ -70,6 +71,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     Button retryButton;
     TextView noConnectionText;
     ProgressDialog dialog;
+    String myResponse;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -93,6 +95,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
         requestQueue = Volley.newRequestQueue(getActivity());
         h = new Handler();
         valuesList = new ArrayList<>();
+        myexamsid = new ArrayList<>();
 
         //Initialise the variables..
         add = (Button) getActivity().findViewById(R.id.add);
@@ -115,6 +118,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
             public void onClick(View view) {
 
                 Intent i =new Intent(getActivity(),AllStreamsActivity.class);
+                i.putStringArrayListExtra("myexams", myexamsid); //passing the list of joined exams to next activity
                 startActivity(i);
             }
         });
@@ -201,8 +205,9 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addIcon:
-
+               // Log.d("ADD",myexamsid.get(0));
                 Intent i =new Intent(getActivity(),AllStreamsActivity.class);
+                i.putStringArrayListExtra("myexams",myexamsid);
                 startActivity(i);
 
                 break;
@@ -214,6 +219,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
     public void setList() {
 
         valuesList=new ArrayList<>();
+        myexamsid = new ArrayList<>();
 
         //connect to joinedExams api..
         if(getActivity()!=null){
@@ -242,7 +248,7 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
 
                     String success=response.getString("success");
                     if(success.equals("true")){
-                        String myResponse = response.getJSONObject("response").toString();
+                        myResponse = response.getJSONObject("response").toString();
                         JSONObject jsonObject = new JSONObject(myResponse);
                         String timestamp = jsonObject.getString("timestamp");
                         String myJoinedExams = jsonObject.getJSONArray("joinedExams").toString();
@@ -259,6 +265,8 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                                 myDuration = mapper.get("ExamDuration").get(i);
                                 myStartTime = mapper.get("StartTime").get(i);
                                 myEndTime = mapper.get("EndTime").get(i);
+                                //myexamsid.add(i,mapper.get("ExamId").get(i));
+
 
                                 myDateOfStart = MiscellaneousParser.parseDate(myStartDate);
                                 myDateOfEnd = MiscellaneousParser.parseDate(myEndDate);
@@ -285,15 +293,18 @@ public class HomeFragment extends Fragment implements ConnectivityReciever.Conne
                                 if (middle_date.before(start_date)) {
                                     values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                     valuesList.add(values);
+                                    myexamsid.add(mapper.get("ExamId").get(i)); //creating the list of joined exams
                                 } else if (middle_date.before(end_date) || middle_date.equals(end_date)) {
                                     if (middle_date.equals(end_date)) {
                                         if (!middle_time.after(end_time)) {
                                             values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                             valuesList.add(values);
+                                            myexamsid.add(mapper.get("ExamId").get(i)); //Creating the list of joined exams
                                         }
                                     } else {
                                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                                         valuesList.add(values);
+                                        myexamsid.add(mapper.get("ExamId").get(i)); //creating the list of joined exams
                                     }
                                 }
                             }

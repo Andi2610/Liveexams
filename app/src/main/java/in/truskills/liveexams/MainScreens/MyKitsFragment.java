@@ -61,6 +61,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
     LinearLayoutManager linearLayoutManager;
     MyKitsListAdapter myKitsListAdapter;
     List<Values> valuesList, filteredList;
+    ArrayList<String> mykits;
     Values values;
     String myStartDate, myDateOfStart, myEndDate, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
     SharedPreferences prefs;
@@ -93,6 +94,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
         requestQueue = Volley.newRequestQueue(getActivity());
         h = new Handler();
         valuesList = new ArrayList<>();
+        mykits = new ArrayList<>();
 
         //Initialise the variables..
         addForMyKits = (Button) getActivity().findViewById(R.id.addForKits);
@@ -117,6 +119,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
 //                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD","StreamsFragmentForMyKits");
 
                 Intent i =new Intent(getActivity(),AllStreamsForKitActivity.class);
+                i.putStringArrayListExtra("mykits",mykits); //passing the list of bought kits
                 startActivity(i);
             }
         });
@@ -206,6 +209,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
 //                StreamsFragmentForMyKits f = new StreamsFragmentForMyKits();
 //                ob.changeFragmentFromMyKits(f,"SELECT YOUR FIELD","StreamsFragmentForMyKits");
                 Intent i =new Intent(getActivity(),AllStreamsForKitActivity.class);
+                i.putStringArrayListExtra("mykits",mykits); //passing the list of bought kits
                 startActivity(i);
 
                 break;
@@ -253,6 +257,7 @@ public class MyKitsFragment extends Fragment implements ConnectivityReciever.Con
                             myDateOfEnd=MiscellaneousParser.parseDateForKit(jsonObject1.getString("endDate"));
                             values=new Values(jsonObject1.getString("name"),myDateOfStart,myDateOfEnd,"",jsonObject1.getString("productKitId"));
                             valuesList.add(values);
+                            mykits.add(jsonObject1.getString("productKitId")); //creating the list of bought kits
                         }
                         h.post(new Runnable() {
                             @Override

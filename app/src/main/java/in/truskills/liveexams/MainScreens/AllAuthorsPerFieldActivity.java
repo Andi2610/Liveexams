@@ -29,6 +29,7 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
     String response;
     HashMap<String,ArrayList<String>> map;
     Bundle b;
+    ArrayList<String> myexams;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,9 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
         b=getIntent().getBundleExtra("bundle");
         list=b.getStringArrayList("list");
 
+        //list of joined exams passed from previous activity
+        myexams = b.getStringArrayList("myexams");
+
         response=b.getString("response");
         map=new HashMap<>();
 
@@ -61,7 +65,7 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
     public void setList(){
         list=new ArrayList<>();
         list=b.getStringArrayList("list");
-        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(list, this,response);
+        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(list, this,myexams,response); // changed the constructor of allauthorsperfieldactivitylistadapter to pass list of joined exams.
         authorsList.setLayoutManager(linearLayoutManager);
         authorsList.setItemAnimator(new DefaultItemAnimator());
         authorsList.setAdapter(authorsListAdapter);
@@ -112,7 +116,7 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
 
                     if(s.equals("")){
                         filteredList = new ArrayList<>();
-                        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(filteredList, AllAuthorsPerFieldActivity.this,response);
+                        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(filteredList, AllAuthorsPerFieldActivity.this,myexams,response);  // changed the constructor of allauthorsperfieldactivitylistadapter to pass list of joined exams.
                         authorsList.setAdapter(authorsListAdapter);
                         authorsListAdapter.notifyDataSetChanged();
 
@@ -128,7 +132,7 @@ public class AllAuthorsPerFieldActivity extends AppCompatActivity {
                                 filteredList.add(list.get(i));
                             }
                         }
-                        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(filteredList, AllAuthorsPerFieldActivity.this,response);
+                        authorsListAdapter = new AllAuthorsPerFieldActivityListAdapter(filteredList, AllAuthorsPerFieldActivity.this,myexams,response); // changed the constructor of allauthorsperfieldactivitylistadapter to pass list of joined exams.
                         authorsList.setAdapter(authorsListAdapter);
                         authorsListAdapter.notifyDataSetChanged();
                     }
