@@ -314,6 +314,7 @@ public class AnswerPaperLoad extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String response = jsonObject.getString("response");
+                    Log.e("Statistics",result);
                     String success = jsonObject.getString("success");
                     if (success.equals("true")) {
                         JSONObject jsonObject1 = new JSONObject(response);

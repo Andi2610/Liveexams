@@ -162,6 +162,7 @@ public class StatusActivity extends Activity {
 				params.put("userId",prefs.getString("userId",""));
 				params.put("amount",mainIntent.getStringExtra("amount"));
 				params.put("productKitId",mainIntent.getStringExtra("productKitId"));
+				params.put("orderId",mainIntent.getStringExtra("orderId"));
 				params.put("timePeriod","4");
 				return params;
 			}

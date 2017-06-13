@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -45,9 +46,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
@@ -55,6 +59,8 @@ import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Miscellaneous.MyApplication;
 import in.truskills.liveexams.R;
+
+import static android.support.v7.appcompat.R.attr.colorPrimary;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -151,6 +157,11 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
             int myY = Integer.parseInt(simpleDateFormat.format(dayView.getDate()));
             if (myD == curr_day && myM == curr_month && myY == curr_year)
                 dayView.setBackgroundColor(Color.parseColor("#E0E0E0"));
+            else if(myM != curr_month){
+                if(myD == 01){
+                    //dayView.setBackgroundColor(Color.parseColor("#0d7770"));
+                }
+            }
         }
     }
 
@@ -165,6 +176,14 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private class color_change_on_month  implements DayDecorator{
+
+        @Override
+        public void decorate(DayView dayView) {
+
         }
     }
 
@@ -345,7 +364,7 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
     public void afterResponse() throws ParseException {
         //Initialize calendar with date
         String myTimestamp = MiscellaneousParser.parseTimestamp(timestampppp);
-        SimpleDateFormat simpleDateFormattt = new SimpleDateFormat("dd/MM/yyyy");
+        final SimpleDateFormat simpleDateFormattt = new SimpleDateFormat("dd/MM/yyyy");
         myCurrDate = simpleDateFormattt.parse(myTimestamp);
         String parts[] = myTimestamp.split("/");
         curr_day = Integer.parseInt(parts[0]);
@@ -379,20 +398,32 @@ public class CalendarFragment extends Fragment implements ConnectivityReciever.C
 
             @Override
             public void onMonthChanged(Date date) {
-                simpleDateFormat = new SimpleDateFormat("dd");
-                int dd = Integer.parseInt(simpleDateFormat.format(date));
+                simpleDateFormat = new SimpleDateFormat("MM-yyyy");
+                //int dd = Integer.parseInt(simpleDateFormat.format(date));
                 simpleDateFormat = new SimpleDateFormat("MM");
                 int mm = Integer.parseInt(simpleDateFormat.format(date));
                 simpleDateFormat = new SimpleDateFormat("yyyy");
                 int yy = Integer.parseInt(simpleDateFormat.format(date));
-                if (curr_day == dd && curr_month == mm && curr_year == yy) {
-                    populateListForCalendar(dd, mm, yy);
-                } else {
-                    valuesList = new ArrayList<>();
-                    calendarListAdapter = new CalendarListAdapter(valuesList, getActivity());
-                    myExamsList.setAdapter(calendarListAdapter);
-                    calendarListAdapter.notifyDataSetChanged();
+                //if (curr_day == dd && curr_month == mm && curr_year == yy) {
+                   populateListForCalendar(01, mm, yy);
+                String datee = yy + "/" + mm + "/" + 01;
+                Date da = null;
+                try {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                    da = formatter.parse(datee);
+                    //System.out.println("utilDate:" + utilDate);
+                } catch (ParseException e) {
+                    System.out.println(e.toString());
+                    e.printStackTrace();
                 }
+                //calendarView.setSelected(true);
+                calendarView.markDayAsSelectedDay(da);
+               // } else {
+                    //valuesList = new ArrayList<>();
+                    //calendarListAdapter = new CalendarListAdapter(valuesList, getActivity());
+                    //myExamsList.setAdapter(calendarListAdapter);
+                    //calendarListAdapter.notifyDataSetChanged();
+                //}
             }
         });
 

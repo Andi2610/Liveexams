@@ -57,7 +57,7 @@ public class WebViewContent {
                         "</head>" +
                         "<body>\n" +
                         "Question:\n <br> " + formattedQuestion +
-                        "<br><br>\n" +
+                        "<br>\n" +
                         "Options:<br>\n" +
                         "<form>\n" +
                         "<div>" + x + "</div>\n" +

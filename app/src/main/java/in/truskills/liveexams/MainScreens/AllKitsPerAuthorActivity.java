@@ -62,11 +62,12 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
     Handler h;
     SearchView searchView;
     String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime="0", myStartTime, myEndTime,mykitid;
-    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDurationTime="0";
+    //String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDurationTime="0";
     TextView noExamsPresent;
-    String author, response;
+    String response;
+    int positon;
     Bundle b;
-    ArrayList<String> mykits;
+    ArrayList<String> mykits,author;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,8 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
 
         //Get intent variables..
         b=getIntent().getBundleExtra("bundle");
-        author = b.getString("author");
+        author = b.getStringArrayList("author");
+        positon = b.getInt("position");
         response = b.getString("response");
 
         //getting the list of bought kits
@@ -205,7 +207,9 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject jsonObject1=jsonObject.getJSONObject("response");
-            HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.getKitsByAuthors(jsonObject, author);
+            Log.e("ABCD",response);
+            //Log.e("Abcd",author);
+            HashMap<String, ArrayList<String>> mapper = MiscellaneousParser.getKitsByAuthors(jsonObject, author.get(positon));
             JSONArray jsonArray = jsonObject1.getJSONArray("productKits");
             ArrayList<String> listForLength=mapper.get("StartDate");
             int length = listForLength.size();
@@ -227,10 +231,10 @@ public class AllKitsPerAuthorActivity extends AppCompatActivity {
                         values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
                         valuesList.add(values);
                     }
-                    myDateOfStart=MiscellaneousParser.parseDateForKit(myStartDate);
+                    /*myDateOfStart=MiscellaneousParser.parseDateForKit(myStartDate);
                     myDateOfEnd=MiscellaneousParser.parseDateForKit(myEndDate);
                     values = new Values(mapper.get("ExamName").get(i), myDateOfStart, myDateOfEnd, myDurationTime, mapper.get("ExamId").get(i));
-                    valuesList.add(values);
+                    valuesList.add(values);*/
                 }
 
                 h.post(new Runnable() {

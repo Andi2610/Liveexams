@@ -19,6 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -28,6 +29,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
+import in.truskills.liveexams.Quiz.AllSectionsSummary;
+import in.truskills.liveexams.Quiz.FeedbackActivity;
 import in.truskills.liveexams.R;
 import in.truskills.liveexams.SqliteDatabases.QuizDatabase;
 import in.truskills.liveexams.authentication.SplashScreen;
@@ -52,7 +56,7 @@ public class SubmitAnswerPaper {
 //        ConstantsDefined.updateAndroidSecurityProvider((Activity) context);
         ConstantsDefined.beforeVolleyConnect();
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        final RequestQueue requestQueue = Volley.newRequestQueue(context);
         String myurl = ConstantsDefined.api + "answerPaper";
         Map<String, String> params = new HashMap<String, String>();
         Log.d("params", "getParams: "+userId+" "+examId+" "+result);
@@ -96,35 +100,87 @@ public class SubmitAnswerPaper {
                         eeee.apply();
                         Log.d("prefsAllowAfter",allow.getInt("allow",1)+"");
 
-                        Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        context.startActivity(intent);
+                        //ConstantsDefined.updateAndroidSecurityProvider(SubmitAnswerPaper.this);
+                        ConstantsDefined.beforeVolleyConnect();
 
-                        h.post(new Runnable() {
+                        String url = ConstantsDefined.api + "/checkSetGivingExam";
+                        StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                                url, new Response.Listener<String>() {
+                            //String msg;
+
                             @Override
-                            public void run() {
+                            public void onResponse(String response) {
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                                try {
+                                    //Parse the signup response..
+                                    //Log.e("Verification",response);
+                                    HashMap<String, String> mapper = MiscellaneousParser.checkBeforeGivingExam(response);
+                                    if (mapper.get("success").equals("true")) {
+                                        Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        context.startActivity(intent);
 
-                                final Intent emptyIntent = new Intent(context,SplashScreen.class);
-                                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                        h.post(new Runnable() {
+                                            @Override
+                                            public void run() {
 
-                                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                                final Intent emptyIntent = new Intent(context,SplashScreen.class);
+                                                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                NotificationCompat.Builder mBuilder =
-                                        new NotificationCompat.Builder(context)
-                                                .setSmallIcon(R.drawable.app_icon)
-                                                .setContentTitle("LiveExams")
-                                                .setContentText(result)
-                                                .setSound(defaultSoundUri)
-                                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
+                                                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-                                mBuilder.setAutoCancel(true);
+                                                NotificationCompat.Builder mBuilder =
+                                                        new NotificationCompat.Builder(context)
+                                                                .setSmallIcon(R.drawable.app_icon)
+                                                                .setContentTitle("LiveExams")
+                                                                .setContentText(result)
+                                                                .setSound(defaultSoundUri)
+                                                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
 
-                                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
-                                notificationManager.notify(1, mBuilder.build());
+                                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                                                mBuilder.setAutoCancel(true);
+
+                                                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
+                                                notificationManager.notify(1, mBuilder.build());
+                                            }
+                                        });
+
+                                    } else {
+                                        String errmsg = mapper.get("response");
+                                        Toast.makeText(context,errmsg, Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        });
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //If connection could not be made..
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                                if (ConstantsDefined.isOnline(context)) {
+                                    //Do nothing..
+                                    Toast.makeText(context, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(context, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+
+                                //Attach parameters required..
+                                Map<String, String> params = new HashMap<>();
+                                params.put("userId",userId);
+                                params.put("givingExam", "false");
+                                return params;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+
 
                     } else {
                         Toast.makeText(context, "Something went wrong..\n" +
@@ -134,31 +190,83 @@ public class SubmitAnswerPaper {
                         SharedPreferences.Editor e=dataPrefs.edit();
                         e.clear();
                         e.apply();
-                        h.post(new Runnable() {
+
+                        ConstantsDefined.beforeVolleyConnect();
+
+                        String url = ConstantsDefined.api + "/checkSetGivingExam";
+                        StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                                url, new Response.Listener<String>() {
+                            //String msg;
+
                             @Override
-                            public void run() {
+                            public void onResponse(String response) {
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                                try {
+                                    //Parse the signup response..
+                                    //Log.e("Verification",response);
+                                    HashMap<String, String> mapper = MiscellaneousParser.checkBeforeGivingExam(response);
+                                    if (mapper.get("success").equals("true")) {
+                                        h.post(new Runnable() {
+                                            @Override
+                                            public void run() {
 
-                                final Intent emptyIntent = new Intent(context,SplashScreen.class);
-                                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                                final Intent emptyIntent = new Intent(context,SplashScreen.class);
+                                                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-                                NotificationCompat.Builder mBuilder =
-                                        new NotificationCompat.Builder(context)
-                                                .setSmallIcon(R.drawable.app_icon)
-                                                .setContentTitle("LiveExams")
-                                                .setContentText("Something went wrong..\n" +
-                                                        "Paper couldn't be submitted..")
-                                                .setSound(defaultSoundUri)
-                                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
+                                                NotificationCompat.Builder mBuilder =
+                                                        new NotificationCompat.Builder(context)
+                                                                .setSmallIcon(R.drawable.app_icon)
+                                                                .setContentTitle("LiveExams")
+                                                                .setContentText("Something went wrong..\n" +
+                                                                        "Paper couldn't be submitted..")
+                                                                .setSound(defaultSoundUri)
+                                                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
 
-                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-                                mBuilder.setAutoCancel(true);
+                                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                                                mBuilder.setAutoCancel(true);
 
-                                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
-                                notificationManager.notify(1, mBuilder.build());
+                                                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
+                                                notificationManager.notify(1, mBuilder.build());
+                                            }
+                                        });
+
+                                    } else {
+                                        String errmsg = mapper.get("response");
+                                        Toast.makeText(context,errmsg, Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        });
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //If connection could not be made..
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                                if (ConstantsDefined.isOnline(context)) {
+                                    //Do nothing..
+                                    Toast.makeText(context, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(context, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+
+                                //Attach parameters required..
+                                Map<String, String> params = new HashMap<>();
+                                params.put("userId",userId);
+                                params.put("givingExam", "false");
+                                return params;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+
                     }
 
                 } catch (JSONException e) {
@@ -175,30 +283,81 @@ public class SubmitAnswerPaper {
                 e.putInt("allow",0);
                 e.apply();
 
-                final Intent emptyIntent = new Intent(context,SplashScreen.class);
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                ConstantsDefined.beforeVolleyConnect();
 
-                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                String url = ConstantsDefined.api + "/checkSetGivingExam";
+                StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                        url, new Response.Listener<String>() {
+                    //String msg;
 
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(context)
-                                .setSmallIcon(R.drawable.app_icon)
-                                .setContentTitle("LiveExams")
-                                .setContentText("Something went wrong..\n" +
-                                        "Paper couldn't be submitted..\nIt will be submitted once internet resumes..")
-                                .setSound(defaultSoundUri)
-                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
+                    @Override
+                    public void onResponse(String response) {
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                        try {
+                            //Parse the signup response..
+                            //Log.e("Verification",response);
+                            HashMap<String, String> mapper = MiscellaneousParser.checkBeforeGivingExam(response);
+                            if (mapper.get("success").equals("true")) {
+                                final Intent emptyIntent = new Intent(context,SplashScreen.class);
+                                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-                mBuilder.setAutoCancel(true);
+                                Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(1, mBuilder.build());
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(context)
+                                                .setSmallIcon(R.drawable.app_icon)
+                                                .setContentTitle("LiveExams")
+                                                .setContentText("Something went wrong..\n" +
+                                                        "Paper couldn't be submitted..\nIt will be submitted once internet resumes..")
+                                                .setSound(defaultSoundUri)
+                                                .setContentIntent(pendingIntent); //Required on Gingerbread and below
 
-                Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intent);
+                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                                mBuilder.setAutoCancel(true);
+
+                                NotificationManager notificationManager = (NotificationManager)context. getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.notify(1, mBuilder.build());
+
+                                Intent intent = new Intent(context.getApplicationContext(), SplashScreen.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                context.startActivity(intent);
+
+                            } else {
+                                String errmsg = mapper.get("response");
+                                Toast.makeText(context,errmsg, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //If connection could not be made..
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                        if (ConstantsDefined.isOnline(context)) {
+                            //Do nothing..
+                            Toast.makeText(context, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+
+                        //Attach parameters required..
+                        Map<String, String> params = new HashMap<>();
+                        params.put("userId",userId);
+                        params.put("givingExam", "false");
+                        return params;
+                    }
+                };
+                requestQueue.add(stringRequest);
+
             }
         });
         requestQueue.add(stringRequest);

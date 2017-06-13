@@ -73,7 +73,7 @@ public class AllExamsPerAuthorActivity extends AppCompatActivity implements Conn
     Handler h;
     SearchView searchView;
     String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime,myExamId;
-    String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
+   // String myStartDate, myEndDate, myDateOfStart, myDateOfEnd, myDuration, myDurationTime, myStartTime, myEndTime;
     TextView noExamsPresent;
     String author, response;
     Bundle b;

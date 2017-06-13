@@ -54,7 +54,7 @@ public class AllAuthorsPerFieldForKitActivityListAdapter extends RecyclerView.Ad
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         value = myList.get(position);
         Typeface tff = Typeface.createFromAsset(c.getAssets(), "fonts/Comfortaa-Regular.ttf");
         holder.name.setText(value);
@@ -64,7 +64,8 @@ public class AllAuthorsPerFieldForKitActivityListAdapter extends RecyclerView.Ad
             public void onClick(View view) {
 
                 Bundle b=new Bundle();
-                b.putString("author",value);
+                b.putStringArrayList("author",myList);
+                b.putInt("position",position);
                 b.putString("response",response);
                 b.putStringArrayList("mykits",mykits); //passing the list of bought kits to AllkitsperAuthorActivity
                 Intent i = new Intent(c,AllKitsPerAuthorActivity.class);

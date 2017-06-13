@@ -99,6 +99,23 @@ public class MiscellaneousParser {
         return mapper;
     }
 
+    public static HashMap<String,String> checkBeforeSignUpParser(String result) throws JSONException{
+        JSONObject jsonObject = new JSONObject(result);
+        HashMap<String, String> mapper = new HashMap<>();
+        mapper.put("response", jsonObject.getString(response));
+        mapper.put("success", jsonObject.getString(success));
+        return mapper;
+
+    }
+
+    public static HashMap<String,String> checkBeforeGivingExam(String result) throws JSONException{
+        JSONObject jsonObject = new JSONObject(result);
+        HashMap<String, String> mapper = new HashMap<>();
+        mapper.put("response", jsonObject.getString(response));
+        mapper.put("success", jsonObject.getString(success));
+        return mapper;
+
+    }
     public static HashMap<String,String> loginParser(String result) throws JSONException {
         JSONObject jsonOb = new JSONObject(result);
         JSONObject jsonObject = jsonOb.optJSONObject(response);

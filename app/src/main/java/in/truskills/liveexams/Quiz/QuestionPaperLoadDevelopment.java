@@ -170,6 +170,7 @@ public class QuestionPaperLoadDevelopment extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     String success = jsonObject.getString("success");
+                    Log.e("PAPER",result);
                     if (success.equals("true")) {
                         h.post(new Runnable() {
                             @Override

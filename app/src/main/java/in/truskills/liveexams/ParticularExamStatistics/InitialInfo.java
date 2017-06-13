@@ -156,7 +156,7 @@ public class InitialInfo extends AppCompatActivity {
         totalScore.setText("/" + totalMarks);
 
         float myPer=(((Integer.parseInt(totalStudents)-(Integer.parseInt(rank)))/(float)Integer.parseInt(totalStudents))*100);
-        Log.d("per", "onCreate: "+myPer);
+        Log.e("percent", "onCreate: "+myPer);
         String ss = String.format("%.2f", myPer);
         myPercentile.setText(ss+"%le");
         totalPercentile.setText("/100");

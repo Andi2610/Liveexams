@@ -31,7 +31,7 @@ public class WebViewContentForAnswers {
         for (int i = 0; i < optionsListSize; ++i) {
             //Design proper format of the options..
             String formattedOption = optionsList.get(i);
-            Log.d("text", formattedOption);
+            Log.e("text", formattedOption);
             formattedOptions.add(formattedOption);
         }
 
@@ -44,16 +44,16 @@ public class WebViewContentForAnswers {
                 if(myAnswerId==correctanswerId){
                     x = x + "<div>\n" +
 //                        "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
-                            "\t<span><img src=\"file:///android_asset/right_answer_icon.png\" height=30 width=30/></span>\n" +
-                            "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
+                            "\t<p><img src=\"file:///android_asset/right_answer_icon.png\" height=20 width=20 align=\"middle\"/>\n" +
+                             formattedOptions.get(i).substring(3,formattedOptions.get(i).length()-4) + "</p>\n" +
                             "</div>\n" +
                             "<br>";
                 }else{
                     x = x + "<div>\n" +
 //                        "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
-                            "\t<span><img src=\"file:///android_asset/right_answer_icon.png\" height=30 width=30/></span>\n" +
-                            "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
-                            "<span style=\"float:right;\" onclick=\"ok.performClick(this.value);\"><img src=\"file:///android_asset/explanation_icon.png\" height=30 width=30/></span>" +
+                            "\t<p><img src=\"file:///android_asset/right_answer_icon.png\" height=30 width=30 align=\"middle\"/>\n" +
+                            formattedOptions.get(i).substring(3,formattedOptions.get(i).length()-4) + "\n" +
+                            "<img src=\"file:///android_asset/explanation_icon.png\" height=30 width=30  align=\"middle\" style=\"float:right;\" onclick=\"ok.performClick(this.value);\"/></p>" +
                             "</div>\n" +
                             "<br>";
                 }
@@ -61,23 +61,23 @@ public class WebViewContentForAnswers {
                 if (myAnswerId == correctanswerId) {
                     x = x + "<div>\n" +
 //                            "\t<span><img src=\"https://nlsblogdotorg.files.wordpress.com/2011/09/approve.png\" height=30 width=30/></span>\n" +
-                            "\t<span><img src=\"file:///android_asset/right_answer_icon.png\" height=30 width=30/></span>\n" +
-                            "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
+                            "\t<p><img src=\"file:///android_asset/right_answer_icon.png\" height=30 width=30 align=\"middle\"/>\n" +
+                            formattedOptions.get(i).substring(3,formattedOptions.get(i).length()-4) + "</p>\n" +
                             "</div>\n" +
                             "<br>";
                 } else {
                     x = x + "<div>\n" +
 //                            "\t<span><img src=\"https://uploads.wishloop.com/uploads/img_f4325850c9cbe4473e780daa08bffa4b3656b8f6.png\" height=30 width=30/></span>\n" +
-                            "\t<span><img src=\"file:///android_asset/wrong_answer_icon.png\" height=30 width=30/></span>\n" +
-                            "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
+                            "\t<p><img src=\"file:///android_asset/wrong_answer_icon.png\" height=30 width=30 align=\"middle\"/>\n" +
+                            formattedOptions.get(i).substring(3,formattedOptions.get(i).length()-4) + "</p>\n" +
                             "</div>\n" +
                             "<br>";
                 }
             } else {
                 x = x + "<div>\n" +
 //                        "\t<span><img src=\"https://data.unhcr.org/horn-of-africa/images/circle_grey.png\" height=30 width=30/></span>\n" +
-                        "\t<span><img src=\"file:///android_asset/no_answer_icon.png\" height=30 width=30/></span>\n" +
-                        "\t<span style=\"margin-left:20px\">" + formattedOptions.get(i) + "</span>\n" +
+                        "\t<p><img src=\"file:///android_asset/no_answer_icon.png\" height=30 width=30 align=\"middle\"/>\n" +
+                        formattedOptions.get(i).substring(3,formattedOptions.get(i).length()-4) + "</p>\n" +
                         "</div>\n" +
                         "<br>";
             }
@@ -88,13 +88,14 @@ public class WebViewContentForAnswers {
                 "<html>\n" +
                         "<body>\n" +
                         "Question:\n<br>" + formattedQuestion +
-                        "<br><br>\n" +
+                        "<br>\n" +
                         "Options:<br>\n" +
                         "<form>\n" +
                         "<div>" + x + "</div>\n" +
                         "</form>\n" +
                         "</body>\n" +
                         "</html>";
+        Log.e("HTML",content);
         webView.loadDataWithBaseURL(null, content, "text/HTML", "UTF-8", null);
         webView.addJavascriptInterface(new Object() {
             @JavascriptInterface           // For API 17+

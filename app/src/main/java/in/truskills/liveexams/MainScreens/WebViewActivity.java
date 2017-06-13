@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ public class WebViewActivity extends Activity {
 		super.onCreate(bundle);
 		setContentView(R.layout.activity_webview);
 		mainIntent = getIntent();
+		Log.e("Verification",mainIntent.getStringExtra(ConstantsDefined.AMOUNT));
 		h=new Handler();
 		makeRequest();
 	}
@@ -73,7 +75,7 @@ public class WebViewActivity extends Activity {
 					if (dialog.isShowing())
 						dialog.dismiss();
 
-					Log.d("webViewResponse", "onResponse: " + response);
+					Log.e("webViewResponse", "onResponse: " + response);
 					myResponse=response;
 
 					h.post(new Runnable() {
@@ -114,20 +116,24 @@ public class WebViewActivity extends Activity {
 										intent.putExtra("add",add);
 										intent.putExtra("amount",mainIntent.getStringExtra(ConstantsDefined.AMOUNT));
 										intent.putExtra("productKitId",mainIntent.getStringExtra("productKitId"));
+										intent.putExtra("orderId",mainIntent.getStringExtra(ConstantsDefined.ORDER_ID));
 										startActivity(intent);
 									}
 								}
 
 								final WebView webview = (WebView) findViewById(R.id.webview);
 								webview.getSettings().setJavaScriptEnabled(true);
+								webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 								webview.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
 								webview.setWebViewClient(new WebViewClient(){
 									@Override
 									public void onPageFinished(WebView view, String url) {
 										super.onPageFinished(webview, url);
+
 										if(url.indexOf("/ccavResponseHandler.php")!=-1){
 											webview.loadUrl("javascript:window.HTMLOUT.processHTML('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
 										}
+
 									}
 
 									@Override

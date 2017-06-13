@@ -1,8 +1,10 @@
 package in.truskills.liveexams.MainScreens;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -21,10 +23,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -35,6 +39,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
@@ -46,18 +51,17 @@ public class KitDetailsActivity extends AppCompatActivity {
     String response,description,startDate,endDate,myDateOfStart,myDateOfEnd,price,boughtProductKit,from,id,pCode;
 
     Button buy,promo;
-
+    SharedPreferences prefs;
     RecyclerView tryForFreeExamsList,examsIncludedInKitList,coursesIncludedInKitList;
     LinearLayoutManager linearLayoutManager,linearLayoutManagerForPaidExams,linearLayoutManagerForCourses;
     LinearLayout discountLayout;
-
+    RequestQueue requestQueue;
     TryForFreeExamsListAdapter tryForFreeExamsListAdapter;
     ExamsIncludedInKitListAdapter examsIncludedInKitListAdapter;
     CoursesIncludedInKitListAdapter coursesIncludedInKitListAdapter;
 
     List<Values> valuesList,valuesListForPaidExams,valuesListForCourses;
     Values values;
-
     ProgressDialog dialog;
     String finalPrice="";
 
@@ -95,12 +99,12 @@ public class KitDetailsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
-
+        requestQueue = Volley.newRequestQueue(KitDetailsActivity.this);
         b=getIntent().getBundleExtra("bundle");
         response=b.getString("response");
         from=b.getString("from");
         String name=b.getString("name");
-
+        prefs=getSharedPreferences("prefs", Context.MODE_PRIVATE);
         getSupportActionBar().setTitle(name);
 
         Log.d("transfer", "onActivityCreated: "+from+" "+response);
@@ -254,20 +258,65 @@ public class KitDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Integer randomNum = randInt(0, 9999999);
-                String orderId=randomNum.toString();
-                Intent intent = new Intent(KitDetailsActivity.this, WebViewActivity.class);
-                intent.putExtra(ConstantsDefined.ACCESS_CODE, ConstantsDefined.accessCode);
-                intent.putExtra(ConstantsDefined.MERCHANT_ID, ConstantsDefined.merchantId);
-                intent.putExtra(ConstantsDefined.ORDER_ID, orderId);
-                Log.d("valBefore", "onClick: "+orderId);
-                intent.putExtra(ConstantsDefined.CURRENCY, ConstantsDefined.currency);
-                intent.putExtra(ConstantsDefined.AMOUNT, "1");
-                intent.putExtra(ConstantsDefined.REDIRECT_URL, ConstantsDefined.redirectUrl);
-                intent.putExtra(ConstantsDefined.CANCEL_URL, ConstantsDefined.cancelUrl);
-                intent.putExtra(ConstantsDefined.RSA_KEY_URL, ConstantsDefined.rsaUrl);
-                intent.putExtra("productKitId",id);
-                startActivity(intent);
+                ConstantsDefined.updateAndroidSecurityProvider(KitDetailsActivity.this);
+                ConstantsDefined.beforeVolleyConnect();
+
+                dialog = new ProgressDialog(KitDetailsActivity.this);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("Loading Please Wait...");
+                dialog.setIndeterminate(true);
+                dialog.setCancelable(false);
+                dialog.show();
+                String url = ConstantsDefined.apiForKit+"getPurchaseNumber/"+prefs.getString("userId","");
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                        url, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response)
+                    {
+                        if (dialog != null)
+                            dialog.dismiss();
+                        try {
+                            String success=response.getString("success");
+                            String number = response.getString("response");
+                            int number_of_purchased_kits = Integer.parseInt(number);
+                            number_of_purchased_kits++;
+                            String order_id = prefs.getString("userId","")+"_"+number_of_purchased_kits;
+                            Log.e("Verification",finalPrice);
+                            if(success.equals("True")){
+                                Intent intent = new Intent(KitDetailsActivity.this, WebViewActivity.class);
+                                intent.putExtra(ConstantsDefined.ACCESS_CODE, ConstantsDefined.accessCode);
+                                intent.putExtra(ConstantsDefined.MERCHANT_ID, ConstantsDefined.merchantId);
+                                intent.putExtra(ConstantsDefined.ORDER_ID, order_id);
+                                Log.d("valBefore", "onClick: "+order_id);
+                                intent.putExtra(ConstantsDefined.CURRENCY, ConstantsDefined.currency);
+                                intent.putExtra(ConstantsDefined.AMOUNT, finalPrice);
+                                intent.putExtra(ConstantsDefined.REDIRECT_URL, ConstantsDefined.redirectUrl);
+                                intent.putExtra(ConstantsDefined.CANCEL_URL, ConstantsDefined.cancelUrl);
+                                intent.putExtra(ConstantsDefined.RSA_KEY_URL, ConstantsDefined.rsaUrl);
+                                intent.putExtra("productKitId",id);
+                                startActivity(intent);
+
+                            }else{
+                                Toast.makeText(KitDetailsActivity.this,"Cannot connect please try again later",Toast.LENGTH_SHORT).show();
+                            }
+                        }catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        if (dialog != null)
+                            dialog.dismiss();
+                        Log.d("checkForError",error.toString());
+
+                    }
+                });
+                requestQueue.add(jsonObjectRequest);
+
+                //Integer randomNum = randInt(0, 9999999);
+                //String orderId=randomNum.toString();
 
             }
         });

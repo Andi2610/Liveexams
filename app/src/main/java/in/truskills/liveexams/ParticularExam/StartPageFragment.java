@@ -641,7 +641,7 @@ public class StartPageFragment extends Fragment {
 
                         //For development..
                         //Otherwise comment this..
-                        myUrl="https://s3.ap-south-1.amazonaws.com/live-exams-local/";
+                        //myUrl="https://s3.ap-south-1.amazonaws.com/live-exams-local/";
                         Log.d("myDateeeee", "run: "+myUrl);
                         h.post(new Runnable() {
                             @Override

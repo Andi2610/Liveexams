@@ -34,12 +34,12 @@
                 android:layout_weight="90"/>
 
             <ImageView
+                android:id="@+id/contactUsHandleImage"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:id="@+id/contactUsHandleImage"
+                android:layout_gravity="center"
                 android:layout_weight="10"
-                android:src="@drawable/up_arrow"
-                android:layout_gravity="center"/>
+                android:src="@drawable/up_arrow" />
 
         </LinearLayout>
 

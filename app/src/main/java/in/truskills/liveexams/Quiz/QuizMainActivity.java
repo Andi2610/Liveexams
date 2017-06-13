@@ -61,6 +61,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.MainScreens.MainActivity;
 import in.truskills.liveexams.Miscellaneous.ConnectivityReciever;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
@@ -1293,7 +1294,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
 
         updateTimeForPreviousPage();
 
-        RequestQueue requestQueue;
+       final RequestQueue requestQueue;
 
         requestQueue = Volley.newRequestQueue(getApplicationContext());
 //        ob.getAllValues();
@@ -1352,7 +1353,7 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 try {
                     JSONObject jsonObject1 = new JSONObject(response);
                     String success = jsonObject1.getString("success");
-                    String result = jsonObject1.getString("response");
+                    final String result = jsonObject1.getString("response");
                     if (success.equals("true")) {
 
                         ob.deleteMyTable();
@@ -1368,29 +1369,133 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                         SharedPreferences.Editor eeeee = firstTimeForRules.edit();
                         eeeee.clear();
                         eeeee.apply();
-                        Toast.makeText(QuizMainActivity.this, result+"\n" +
-                                "Result will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
-                        intent.putExtra("examId",examId);
-                        intent.putExtra("userId",userId);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                        startActivity(intent);
-                        finish();
+                        ConstantsDefined.updateAndroidSecurityProvider(QuizMainActivity.this);
+                        ConstantsDefined.beforeVolleyConnect();
+
+                        String url = ConstantsDefined.api + "/checkSetGivingExam";
+                        StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                                url, new Response.Listener<String>() {
+                            //String msg;
+
+                            @Override
+                            public void onResponse(String response) {
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                                try {
+                                    //Parse the signup response..
+                                    //Log.e("Verification",response);
+                                    HashMap<String, String> mapper = MiscellaneousParser.checkBeforeGivingExam(response);
+                                    if (mapper.get("success").equals("true")) {
+                                        //Show appropriate toast message..
+                                        Toast.makeText(QuizMainActivity.this, result+"\n" +
+                                                "Result will be generated after the exam duration ends..", Toast.LENGTH_LONG).show();
+
+                                        //Start feedback activity clearing all other previous activities on stack ..
+                                        Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
+                                        intent.putExtra("examId",examId);
+                                        intent.putExtra("userId",userId);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        String errmsg = mapper.get("response");
+                                        Toast.makeText(QuizMainActivity.this,errmsg, Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //If connection could not be made..
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                                if (ConstantsDefined.isOnline(QuizMainActivity.this)) {
+                                    //Do nothing..
+                                    Toast.makeText(QuizMainActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+
+                                //Attach parameters required..
+                                Map<String, String> params = new HashMap<>();
+                                params.put("userId",prefs.getString("userId", ""));
+                                params.put("givingExam", "false");
+                                return params;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
                     } else {
                         ob.deleteMyTable();
                         SharedPreferences.Editor e = dataPrefs.edit();
                         e.clear();
                         e.apply();
 
-                        Toast.makeText(QuizMainActivity.this, "Something went wrong..\n" +
-                                "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
+                        ConstantsDefined.updateAndroidSecurityProvider(QuizMainActivity.this);
+                        ConstantsDefined.beforeVolleyConnect();
 
-                        Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
-                        intent.putExtra("examId",examId);
-                        intent.putExtra("userId",userId);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                        startActivity(intent);
-                        finish();
+                        String url = ConstantsDefined.api + "/checkSetGivingExam";
+                        StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                                url, new Response.Listener<String>() {
+                            //String msg;
+
+                            @Override
+                            public void onResponse(String response) {
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                                try {
+                                    //Parse the signup response..
+                                    //Log.e("Verification",response);
+                                    HashMap<String, String> mapper = MiscellaneousParser.checkBeforeGivingExam(response);
+                                    if (mapper.get("success").equals("true")) {
+                                        Toast.makeText(QuizMainActivity.this, "Something went wrong..\n" +
+                                                "Paper couldn't be submitted..", Toast.LENGTH_LONG).show();
+
+                                        Intent intent = new Intent(QuizMainActivity.this, FeedbackActivity.class);
+                                        intent.putExtra("examId",examId);
+                                        intent.putExtra("userId",userId);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        String errmsg = mapper.get("response");
+                                        Toast.makeText(QuizMainActivity.this,errmsg, Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                //If connection could not be made..
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                                if (ConstantsDefined.isOnline(QuizMainActivity.this)) {
+                                    //Do nothing..
+                                    Toast.makeText(QuizMainActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }) {
+                            @Override
+                            protected Map<String, String> getParams() {
+
+                                //Attach parameters required..
+                                Map<String, String> params = new HashMap<>();
+                                params.put("userId",prefs.getString("userId", ""));
+                                params.put("givingExam", "false");
+                                return params;
+                            }
+                        };
+                        requestQueue.add(stringRequest);
+
 
                     }
                 } catch (JSONException e) {
@@ -1411,11 +1516,63 @@ public class QuizMainActivity extends AppCompatActivity implements setValueOfPag
                 e.putInt("allow", 0);
                 e.apply();
                 Log.d("prefsAllow", allow.getInt("allow", 1) + "");
-                Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
-                startActivity(intent);
-                finish();
+
+                ConstantsDefined.updateAndroidSecurityProvider(QuizMainActivity.this);
+                ConstantsDefined.beforeVolleyConnect();
+
+                String url = ConstantsDefined.api + "/checkSetGivingExam";
+                StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                        url, new Response.Listener<String>() {
+                    //String msg;
+
+                    @Override
+                    public void onResponse(String response) {
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                        try {
+                            //Parse the signup response..
+                            //Log.e("Verification",response);
+                            HashMap<String, String> mapper = MiscellaneousParser.checkBeforeGivingExam(response);
+                            if (mapper.get("success").equals("true")) {
+                                Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection\nYour answers will be submitted once reconnected to internet", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(QuizMainActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Removes other Activities from stack
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                String errmsg = mapper.get("response");
+                                Toast.makeText(QuizMainActivity.this,errmsg, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //If connection could not be made..
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                        if (ConstantsDefined.isOnline(QuizMainActivity.this)) {
+                            //Do nothing..
+                            Toast.makeText(QuizMainActivity.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(QuizMainActivity.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+
+                        //Attach parameters required..
+                        Map<String, String> params = new HashMap<>();
+                        params.put("userId",prefs.getString("userId", ""));
+                        params.put("givingExam", "false");
+                        return params;
+                    }
+                };
+                requestQueue.add(stringRequest);
+
             }
         }) {
             @Override

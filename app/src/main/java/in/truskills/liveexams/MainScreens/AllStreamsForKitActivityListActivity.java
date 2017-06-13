@@ -123,7 +123,6 @@ public class AllStreamsForKitActivityListActivity extends RecyclerView.Adapter<A
                                 if(success.equals("true")){
                                     ArrayList<String> ans;
                                     ans=MiscellaneousParser.searchExamsByStreamNameParserForMyKits(jsonObject);
-
                                     if(ans.size()==0){
                                         if(c!=null)
                                             Toast.makeText(c, "No kits available for this stream at present", Toast.LENGTH_LONG).show();

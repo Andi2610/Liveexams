@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.animation.Animation;
@@ -860,8 +861,105 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
 
         //If all valid.. signup..
         if ((len>=2&&len<=20&&(!name.contains(" "))) && !fullName.equals("")&& !gender.equals("GENDER") && !location.equals("LOCATION") && signupLanguageAlternate.getVisibility() == View.GONE && mobile.length() == 10 && password.length() >= 6 && password.equals(confirmPassword) && (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
-            signupFunction();
-        } else {
+            //signupFunction();
+            ConstantsDefined.updateAndroidSecurityProvider(Signup_Login.this);
+            ConstantsDefined.beforeVolleyConnect();
+            String url = ConstantsDefined.api + "/checkBeforeSignUp";
+            dialog = new ProgressDialog(Signup_Login.this);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.setMessage("Verifying your details. Please wait...");
+            dialog.setIndeterminate(true);
+            dialog.setCancelable(false);
+            dialog.show();
+
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                    url, new Response.Listener<String>() {
+                String msg;
+
+                @Override
+                public void onResponse(String response) {
+                    if (dialog != null)
+                        dialog.dismiss();
+                    try {
+                        //Parse the response..
+                        Log.e("Verification",response);
+                        HashMap<String, String> mapper = MiscellaneousParser.checkBeforeSignUpParser(response);
+                        if (mapper.get("success").equals("true")) {
+                            String result = mapper.get("response");
+                            HashMap<String, String> var = new HashMap<>();
+                            JSONObject jsonObject = new JSONObject(result);
+                            Boolean username = jsonObject.getBoolean("userName");
+                            Boolean mobilenumber = jsonObject.getBoolean("mobileNumber");
+                            Boolean emailaddress = jsonObject.getBoolean("emailAddress");
+                            if (username == false && mobilenumber == false && emailaddress == false) {
+                                signupFunction();
+                            } else {
+                                if (username == true) {
+                                    if (mobilenumber == false && emailaddress == false) {
+                                        msg = "Username Already Exists";
+                                    } else {
+                                        if (mobilenumber == true && emailaddress == false) {
+                                            msg = "Username and Mobilenumber Already Exists";
+                                        } else {
+                                            if (mobilenumber == false && emailaddress == true) {
+                                                msg = "Username and EmailAddress Already Exists";
+                                            } else {
+                                                msg = "Username, MobileNumber and Email Address already Exists";
+                                            }
+
+                                        }
+                                    }
+                                } else {
+                                    if (mobilenumber == true && emailaddress == false) {
+                                        msg = "Mobilenumber Already Exists";
+                                    } else {
+                                        if (mobilenumber == false && emailaddress == true) {
+                                            msg = "EmailAddress Already Exists";
+                                        } else {
+                                            msg = "MobileNumber and Email Address already Exists";
+                                        }
+                                    }
+                                }
+                            }
+                            Toast.makeText(Signup_Login.this, msg, Toast.LENGTH_LONG).show();
+                        } else {
+                            String errmsg = mapper.get("response");
+                            Toast.makeText(Signup_Login.this, "Couldn't Signup: " + errmsg, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //If connection could not be made..
+                    if (dialog != null)
+                        dialog.dismiss();
+                    if (ConstantsDefined.isOnline(Signup_Login.this)) {
+                        //Do nothing..
+                        Toast.makeText(Signup_Login.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(Signup_Login.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+
+                    //Attach parameters required..
+                    Map<String, String> params = new HashMap<>();
+                    params.put("userName", name);
+                    params.put("emailAddress", email);
+                    params.put("mobileNumber", mobile);
+                    return params;
+                }
+            };
+            requestQueue.add(stringRequest);
+
+
+        }else {
             //Else display desired error messages..
             if(fullName.equals(""))
                 signupFullName.setError("Required");
@@ -882,6 +980,7 @@ public class Signup_Login extends AppCompatActivity implements View.OnClickListe
             if (!password.equals(confirmPassword))
                 signupConfirmPassword.setError("Do not match with Password", dr);
         }
+
     }
 
     public void signupFunction() {

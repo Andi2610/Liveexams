@@ -19,15 +19,21 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
+import in.truskills.liveexams.JsonParsers.MiscellaneousParser;
 import in.truskills.liveexams.Miscellaneous.ConstantsDefined;
 import in.truskills.liveexams.Quiz.QuestionPaperLoadDevelopment;
 import in.truskills.liveexams.R;
+import in.truskills.liveexams.authentication.Signup_Login;
 
 /**
  * This activity is shown to display rules of quiz before starting question paper load, once the user starts the exam..
@@ -60,6 +66,7 @@ public class RulesBeforeQuiz extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_chevron_left_white_24dp);
         getSupportActionBar().setTitle("RULES");
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
 
         //Render elements from layout..
         tv1 = (TextView) findViewById(R.id.tv1);
@@ -106,53 +113,65 @@ public class RulesBeforeQuiz extends AppCompatActivity {
                ConstantsDefined.updateAndroidSecurityProvider(RulesBeforeQuiz.this);
                 ConstantsDefined.beforeVolleyConnect();
 
-                String url = ConstantsDefined.api + "joinedExams/" + prefs.getString("userId", "") + examId ;
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                        url, new Response.Listener<JSONObject>() {
+                String url = ConstantsDefined.api + "/checkSetGivingExam";
+                StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                        url, new Response.Listener<String>() {
+                    //String msg;
 
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(String response) {
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
                         try {
-                            String success = response.getString("success");
-                            if (success.equals("true")) {
-                                String myResponse = response.getJSONObject("response").toString();
-                                JSONObject jsonObject = new JSONObject(myResponse);
-
+                            //Parse the signup response..
+                            //Log.e("Verification",response);
+                            HashMap<String, String> mapper = MiscellaneousParser.checkBeforeGivingExam(response);
+                            Log.e("check",response);
+                            if (mapper.get("success").equals("true")) {
+                                Intent i = new Intent(RulesBeforeQuiz.this, QuestionPaperLoadDevelopment.class);
+                                i.putExtra("examId", examId);
+                                i.putExtra("name", name);
+                                i.putExtra("language", selectedLanguage);
+                                i.putExtra("date",myDate);
+                                i.putExtra("url",myUrl);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                String errmsg = mapper.get("response");
+                                Toast.makeText(RulesBeforeQuiz.this,errmsg, Toast.LENGTH_SHORT).show();
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                                catch(JSONException e){
-                                    e.printStackTrace();
-                                }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                        Log.d("checkForError",error.toString());
-
-
-
-                        if(ConstantsDefined.isOnline(getBaseContext())){
+                        //If connection could not be made..
+                        /*if (dialog != null)
+                            dialog.dismiss();*/
+                        if (ConstantsDefined.isOnline(RulesBeforeQuiz.this)) {
                             //Do nothing..
-                            if(RulesBeforeQuiz.this !=null)
-                                Toast.makeText(getBaseContext(), "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
-                        }else{
-                            if(RulesBeforeQuiz.this !=null)
-                                Toast.makeText(getBaseContext(), "Sorry! Couldn't connect", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RulesBeforeQuiz.this, "Couldn't connect..Please try again..", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(RulesBeforeQuiz.this, "Sorry! No internet connection", Toast.LENGTH_SHORT).show();
                         }
                     }
-                });
-                requestQueue.add(jsonObjectRequest);
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+
+                        //Attach parameters required..
+                        Map<String, String> params = new HashMap<>();
+                        params.put("userId",prefs.getString("userId", ""));
+                        params.put("givingExam", "true");
+                        return params;
+                    }
+                };
+                requestQueue.add(stringRequest);
 
                 //if()compare that boolean variable if it's false
-                Intent i = new Intent(RulesBeforeQuiz.this, QuestionPaperLoadDevelopment.class);
-                i.putExtra("examId", examId);
-                i.putExtra("name", name);
-                i.putExtra("language", selectedLanguage);
-                i.putExtra("date",myDate);
-                i.putExtra("url",myUrl);
-                startActivity(i);
-                finish();
+
                 //else toast u r giving same exam from different device
             }
         });

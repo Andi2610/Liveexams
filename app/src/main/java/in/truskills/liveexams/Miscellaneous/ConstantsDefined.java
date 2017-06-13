@@ -40,9 +40,9 @@ import javax.net.ssl.X509TrustManager;
 public class ConstantsDefined {
     //Api used to connect to the server..
 //    public static final String api = "https://api.liveexams.in/api/";
-    public static final String api = "http://35.154.110.122:3002/api/";
-    public static final String api2 = "http://35.154.110.122:3002/api/";
-    public static final String apiForKit = "http://35.154.110.122:3002/access/";
+    public static final String api = "http://35.154.110.122:3001/api/";
+    public static final String api2 = "http://35.154.110.122:3001/api/";
+    public static final String apiForKit = "http://35.154.110.122:3001/access/";
 
     public static String accessCode="AVYH69EC95CJ91HYJC";
     public static String workingKey="DDEF305F5B417483D35E56BF860FAF0B";
